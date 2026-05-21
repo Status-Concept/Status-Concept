@@ -1,0 +1,326 @@
+import { useState, useEffect } from "react";
+import useNavLinks from "../useNavLinks";
+
+const STATUS_CONCEPT_HOMEPAGE = () => {
+  useNavLinks();
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState("furniture");
+  const [headerSolid, setHeaderSolid] = useState(false);
+  const [visibleSections, setVisibleSections] = useState(new Set());
+  const [activeProject, setActiveProject] = useState(0);
+  const [langOpen, setLangOpen] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => setHeaderSolid(window.scrollY > 80);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => entries.forEach((e) => { if (e.isIntersecting) setVisibleSections((p) => new Set([...p, e.target.id])); }),
+      { threshold: 0.12 }
+    );
+    document.querySelectorAll("[data-animate]").forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
+  }, []);
+
+  const vis = (id) => visibleSections.has(id);
+
+  const collections = {
+    furniture: [
+      { name: "Bella", desc: "Reclining sofa & dining", img: "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=600&h=400&fit=crop" },
+      { name: "Oxford", desc: "Timeless modular lounge", img: "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=600&h=400&fit=crop" },
+      { name: "Sicily", desc: "Modern modular set", img: "https://images.unsplash.com/photo-1506439773649-6e0eb8cfb237?w=600&h=400&fit=crop" },
+      { name: "Miami", desc: "Contemporary sofa set", img: "https://images.unsplash.com/photo-1618220179428-22790b461013?w=600&h=400&fit=crop" },
+      { name: "Laguna", desc: "Elegant dining collection", img: "https://images.unsplash.com/photo-1600585152220-90363fe7e115?w=600&h=400&fit=crop" },
+      { name: "Cairo", desc: "Luxury sofa set", img: "https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?w=600&h=400&fit=crop" },
+    ],
+    shade: [
+      { name: "Glatz Parasols", desc: "Swiss precision shading", img: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=600&h=400&fit=crop" },
+      { name: "Bioclimatic Pergolas", desc: "Intelligent climate control", img: "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c0?w=600&h=400&fit=crop" },
+      { name: "Retractable Pergolas", desc: "Flexible outdoor roofing", img: "https://images.unsplash.com/photo-1600607687644-c7171b42498f?w=600&h=400&fit=crop" },
+    ],
+    kitchen: [
+      { name: "Outdoor Kitchens", desc: "Complete cooking stations", img: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=600&h=400&fit=crop" },
+      { name: "BBQ Systems", desc: "Premium grilling solutions", img: "https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=600&h=400&fit=crop" },
+      { name: "Pizza Ovens", desc: "Artisan wood-fired ovens", img: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=600&h=400&fit=crop" },
+    ],
+  };
+
+  const projects = [
+    { name: "Villa Quinta do Lago", location: "Quinta do Lago", img: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&h=500&fit=crop" },
+    { name: "Residence Vale do Lobo", location: "Vale do Lobo", img: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&h=500&fit=crop" },
+    { name: "Private Estate Vilamoura", location: "Vilamoura", img: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=800&h=500&fit=crop" },
+    { name: "Luxury Home Almancil", location: "Almancil", img: "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c0?w=800&h=500&fit=crop" },
+  ];
+
+  const cats = [
+    { name: "Lounge", sub: "Sofas & Sets" }, { name: "Dining", sub: "Tables & Chairs" },
+    { name: "Sun Loungers", sub: "Relax & Recline" }, { name: "Day Beds", sub: "Ultimate Comfort" },
+    { name: "Shade", sub: "Parasols & Pergolas" }, { name: "Kitchens", sub: "Outdoor Cooking" },
+    { name: "Decor", sub: "Carpets & Vases" }, { name: "Leisure", sub: "Sound & Games" },
+  ];
+
+  const S = {
+    section: (id) => ({
+      opacity: vis(id) ? 1 : 0, transform: vis(id) ? "translateY(0)" : "translateY(30px)",
+      transition: "all 1s cubic-bezier(0.22, 1, 0.36, 1)",
+    }),
+  };
+
+  return (
+    <div style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", color: "#1a1a18", background: "#faf9f6", minHeight: "100vh", overflowX: "hidden" }}>
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Outfit:wght@200;300;400;500&display=swap');
+        *{margin:0;padding:0;box-sizing:border-box}
+        :root{--sand:#c4b5a0;--sand-l:#e8e0d4;--sand-d:#8a7d6b;--ocean:#2a5f7a;--ocean-d:#1a3d52;--ocean-l:#a8c5d4;--stone:#1a1a18;--stone-l:#3d3d3a;--cream:#faf9f6;--cream-w:#f5f0e8;--gold:#b8965a;--gold-l:#d4bc8a}
+        .fs{font-family:'Outfit',sans-serif}.ff{font-family:'Cormorant Garamond',Georgia,serif}
+        @keyframes hu{from{opacity:0;transform:translateY(30px) skewY(2deg)}to{opacity:1;transform:translateY(0) skewY(0)}}
+        @keyframes fi{from{opacity:0}to{opacity:1}}
+        .cc{position:relative;overflow:hidden;cursor:pointer;border-radius:2px}
+        .cc img{transition:transform .8s cubic-bezier(.22,1,.36,1),filter .6s ease;width:100%;height:100%;object-fit:cover}
+        .cc:hover img{transform:scale(1.06);filter:brightness(.85)}
+        .cc .ov{position:absolute;bottom:0;left:0;right:0;padding:28px;background:linear-gradient(transparent,rgba(0,0,0,.65));transition:padding-bottom .5s}
+        .cc:hover .ov{padding-bottom:36px}
+        .cc .disc{opacity:0;transform:translateY(10px);transition:all .4s}
+        .cc:hover .disc{opacity:1;transform:translateY(0)}
+        .pc{cursor:pointer;transition:all .6s}.pc:hover{transform:translateY(-4px)}
+        .pc img{transition:transform .8s cubic-bezier(.22,1,.36,1)}.pc:hover img{transform:scale(1.04)}
+        .cp{padding:16px 28px;border:1px solid var(--sand);background:transparent;cursor:pointer;transition:all .4s;display:flex;flex-direction:column;align-items:center;gap:4px}
+        .cp:hover{background:var(--stone);color:var(--cream);border-color:var(--stone)}
+        .cp:hover .cs{color:var(--sand-l)}
+        .nl{position:relative;text-decoration:none;color:inherit;transition:color .3s;padding-bottom:2px}
+        .nl::after{content:'';position:absolute;bottom:-2px;left:0;width:0;height:1px;background:var(--gold);transition:width .4s cubic-bezier(.22,1,.36,1)}
+        .nl:hover::after{width:100%}.nl:hover{color:var(--gold)}
+        .tb{padding:10px 24px;border:none;cursor:pointer;font-family:'Outfit',sans-serif;font-size:13px;letter-spacing:2.5px;text-transform:uppercase;transition:all .4s;background:transparent}
+        .tb.ac{color:var(--stone);border-bottom:2px solid var(--gold)}.tb:not(.ac){color:var(--sand-d);border-bottom:2px solid transparent}
+        .cb{display:inline-flex;align-items:center;gap:10px;padding:14px 36px;font-family:'Outfit',sans-serif;font-size:12px;letter-spacing:3px;text-transform:uppercase;text-decoration:none;border:1px solid;transition:all .5s cubic-bezier(.22,1,.36,1);cursor:pointer}
+        .cl{color:#fff;border-color:rgba(255,255,255,.4);background:transparent}.cl:hover{background:#fff;color:var(--stone);border-color:#fff}
+        .cd{color:var(--stone);border-color:var(--stone);background:transparent}.cd:hover{background:var(--stone);color:var(--cream)}
+        .cg{color:var(--cream);border-color:var(--gold);background:var(--gold)}.cg:hover{background:var(--gold-l);border-color:var(--gold-l)}
+        .la{width:60px;height:1px;background:var(--gold)}.law{width:60px;height:1px;background:rgba(255,255,255,.5)}
+        .sl{font-family:'Outfit',sans-serif;font-size:11px;letter-spacing:4px;text-transform:uppercase;color:var(--sand-d)}
+        .mb{display:inline-flex;align-items:center;gap:8px;padding:8px 20px;border:1px solid var(--sand);font-family:'Outfit',sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--sand-d)}
+        .mo{position:fixed;top:0;right:0;width:100%;max-width:420px;height:100vh;background:var(--cream);z-index:1000;padding:80px 40px 40px;transform:translateX(100%);transition:transform .5s cubic-bezier(.22,1,.36,1);overflow-y:auto}
+        .mo.op{transform:translateX(0)}
+        .moo{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.4);z-index:999;opacity:0;pointer-events:none;transition:opacity .4s}
+        .moo.op{opacity:1;pointer-events:all}
+      `}</style>
+
+      {/* HEADER */}
+      <header style={{position:"fixed",top:0,left:0,right:0,zIndex:100,background:headerSolid?"rgba(250,249,246,.97)":"transparent",backdropFilter:headerSolid?"blur(12px)":"none",borderBottom:headerSolid?"1px solid rgba(196,181,160,.3)":"1px solid transparent",transition:"all .5s"}}>
+        <div className="fs" style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"8px 48px",fontSize:"11px",letterSpacing:"1.5px",color:headerSolid?"var(--sand-d)":"rgba(255,255,255,.7)",borderBottom:headerSolid?"1px solid rgba(196,181,160,.15)":"1px solid rgba(255,255,255,.1)",transition:"all .5s"}}>
+          <div style={{display:"flex",gap:"24px",alignItems:"center"}}><span>+351 289 030 179</span><span style={{opacity:.4}}>|</span><span>info@statusconcept.com</span></div>
+          <div style={{display:"flex",gap:"16px"}}>{["Fb","Ig","Pi","Li"].map(s=><span key={s} style={{cursor:"pointer",opacity:.7}}>{s}</span>)}</div>
+        </div>
+        <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"16px 48px"}}>
+          <div style={{display:"flex",alignItems:"baseline",gap:"4px",cursor:"pointer"}}>
+            <span className="ff" style={{fontSize:"28px",fontWeight:500,letterSpacing:"3px",color:headerSolid?"var(--stone)":"#fff",transition:"color .5s"}}>STATUS</span>
+            <span className="fs" style={{fontSize:"10px",letterSpacing:"4px",textTransform:"uppercase",color:headerSolid?"var(--sand-d)":"rgba(255,255,255,.6)",transition:"color .5s",marginLeft:"4px"}}>CONCEPT</span>
+          </div>
+          <nav className="fs" style={{display:"flex",gap:"32px",alignItems:"center",fontSize:"12px",letterSpacing:"2px",textTransform:"uppercase",color:headerSolid?"var(--stone-l)":"rgba(255,255,255,.9)",transition:"color .5s"}}>
+            {["Furniture","Shade","Kitchens","Decor","Projects","Showrooms","Contact"].map(i=><a key={i} className="nl" href="#" style={{color:"inherit"}}>{i}</a>)}
+          </nav>
+          <div style={{display:"flex",alignItems:"center",gap:"20px"}}>
+            <div style={{position:"relative"}}>
+              <button className="fs" onClick={()=>setLangOpen(!langOpen)} style={{background:"none",border:"none",cursor:"pointer",fontSize:"11px",letterSpacing:"2px",color:headerSolid?"var(--sand-d)":"rgba(255,255,255,.7)",transition:"color .5s"}}>EN ▾</button>
+              {langOpen&&<div style={{position:"absolute",top:"100%",right:0,marginTop:8,background:"var(--cream)",border:"1px solid var(--sand-l)",padding:"8px 0",minWidth:80}}>{["EN","PT"].map(l=><div key={l} className="fs" style={{padding:"6px 16px",fontSize:"11px",letterSpacing:"2px",cursor:"pointer",color:"var(--stone-l)"}} onClick={()=>setLangOpen(false)}>{l}</div>)}</div>}
+            </div>
+            <button onClick={()=>setMenuOpen(true)} style={{background:"none",border:"none",cursor:"pointer",padding:4,color:headerSolid?"var(--stone)":"#fff",transition:"color .5s",display:"flex",flexDirection:"column",gap:"5px"}}>
+              <div style={{width:24,height:1.5,background:"currentColor"}}/><div style={{width:18,height:1.5,background:"currentColor",marginLeft:"auto"}}/>
+            </button>
+          </div>
+        </div>
+      </header>
+
+      {/* MOBILE MENU */}
+      <div className={`moo ${menuOpen?"op":""}`} onClick={()=>setMenuOpen(false)}/>
+      <div className={`mo ${menuOpen?"op":""}`}>
+        <button onClick={()=>setMenuOpen(false)} style={{position:"absolute",top:28,right:28,background:"none",border:"none",fontSize:28,cursor:"pointer",color:"var(--stone)",fontWeight:300}}>×</button>
+        <nav style={{display:"flex",flexDirection:"column"}}>
+          {[{l:"Furniture",s:["Lounge","Dining","Sun Loungers","Day Beds","Coffee Tables","Bar & Patio"]},{l:"Shade Solutions",s:["Parasols","Bioclimatic Pergolas","Retractable Pergolas"]},{l:"Outdoor Kitchens",s:["BBQ Systems","Pizza Ovens","Full Kitchens"]},{l:"Decor",s:["Carpets","Vases & Statues"]},{l:"Leisure",s:["Sound Systems"]},{l:"Projects",s:[]},{l:"Why Us",s:[]},{l:"After Care",s:[]},{l:"Contact",s:[]}].map(item=>(
+            <div key={item.l} style={{borderBottom:"1px solid var(--sand-l)",padding:"16px 0"}}>
+              <span className="ff" style={{fontSize:22,fontWeight:400,color:"var(--stone)",cursor:"pointer"}}>{item.l}</span>
+              {item.s.length>0&&<div className="fs" style={{marginTop:10,display:"flex",flexDirection:"column",gap:6}}>{item.s.map(s=><span key={s} style={{fontSize:12,letterSpacing:1,color:"var(--sand-d)",cursor:"pointer",paddingLeft:12}}>{s}</span>)}</div>}
+            </div>
+          ))}
+        </nav>
+        <div style={{marginTop:32,display:"flex",gap:12}}><span className="mb">Sunbrella®</span><span className="mb">Glatz</span></div>
+      </div>
+
+      {/* HERO */}
+      <section style={{position:"relative",height:"100vh",minHeight:700,background:"linear-gradient(165deg,rgba(26,26,24,.3) 0%,rgba(26,26,24,.15) 40%,rgba(42,95,122,.2) 100%),url('https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1600&h=1000&fit=crop') center/cover",display:"flex",alignItems:"flex-end",padding:"0 0 100px 0"}}>
+        <div style={{position:"absolute",top:140,left:48,width:60,height:60,borderLeft:"1px solid rgba(255,255,255,.2)",borderTop:"1px solid rgba(255,255,255,.2)"}}/>
+        <div style={{position:"absolute",bottom:40,right:48,width:60,height:60,borderRight:"1px solid rgba(255,255,255,.2)",borderBottom:"1px solid rgba(255,255,255,.2)"}}/>
+        <div style={{padding:"0 48px",maxWidth:800}}>
+          <div className="fs sl" style={{color:"rgba(255,255,255,.6)",marginBottom:20,animation:"hu 1s .2s both"}}>Luxury outdoor living — Algarve, Portugal</div>
+          <h1 className="ff" style={{fontSize:"clamp(42px,6vw,72px)",fontWeight:300,color:"#fff",lineHeight:1.05,marginBottom:24,animation:"hu 1s .4s both"}}>Where Design<br/>Meets the Sun</h1>
+          <p className="fs" style={{fontSize:15,color:"rgba(255,255,255,.7)",lineHeight:1.7,maxWidth:500,marginBottom:36,fontWeight:300,animation:"hu 1s .6s both"}}>Curated outdoor furniture of excellence for the most distinguished residences across the Algarve. From Quinta do Lago to Vilamoura — elegance, crafted for your space.</p>
+          <div style={{display:"flex",gap:16,animation:"hu 1s .8s both"}}><a href="#" className="cb cl">Explore collections</a><a href="#" className="cb cg">Visit showroom</a></div>
+        </div>
+        <div style={{position:"absolute",bottom:32,left:"50%",transform:"translateX(-50%)",display:"flex",flexDirection:"column",alignItems:"center",gap:8,animation:"fi 1s 1.2s both"}}>
+          <span className="fs" style={{fontSize:10,letterSpacing:3,color:"rgba(255,255,255,.4)",textTransform:"uppercase"}}>Scroll</span>
+          <div style={{width:1,height:40,background:"linear-gradient(transparent,rgba(255,255,255,.4))"}}/>
+        </div>
+      </section>
+
+      {/* INTRO */}
+      <section id="intro" data-animate style={{padding:"100px 48px",textAlign:"center",...S.section("intro")}}>
+        <div className="la" style={{margin:"0 auto 28px"}}/>
+        <p className="ff" style={{fontSize:"clamp(22px,3vw,32px)",fontWeight:300,lineHeight:1.6,maxWidth:780,margin:"0 auto",color:"var(--stone-l)"}}>Proud of what we represent, understanding our customers' needs, we are committed to providing furniture of the highest quality — partnering with manufacturers where attention to detail is essential.</p>
+        <div style={{display:"flex",justifyContent:"center",gap:24,marginTop:36}}><span className="mb">Sunbrella® Fabrics</span><span className="mb">Interpon Coating</span><span className="mb">Premium Aluminium</span></div>
+      </section>
+
+      {/* COLLECTIONS */}
+      <section id="colls" data-animate style={{padding:"60px 48px 100px",...S.section("colls")}}>
+        <div style={{textAlign:"center",marginBottom:48}}>
+          <span className="fs sl">Our world</span>
+          <h2 className="ff" style={{fontSize:"clamp(32px,4vw,48px)",fontWeight:300,marginTop:12}}>Collections</h2>
+        </div>
+        <div style={{display:"flex",justifyContent:"center",gap:8,marginBottom:48,borderBottom:"1px solid var(--sand-l)"}}>
+          {[{k:"furniture",l:"Furniture"},{k:"shade",l:"Shade Solutions"},{k:"kitchen",l:"Outdoor Kitchens"}].map(t=><button key={t.k} className={`tb ${activeTab===t.k?"ac":""}`} onClick={()=>setActiveTab(t.k)}>{t.l}</button>)}
+        </div>
+        <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:20,maxWidth:1200,margin:"0 auto"}}>
+          {collections[activeTab].map((c,i)=>(
+            <div key={c.name} className="cc" style={{height:i===0||i===3?440:360}}>
+              <img src={c.img} alt={c.name}/>
+              <div className="ov">
+                <h3 className="ff" style={{fontSize:26,fontWeight:400,color:"#fff",marginBottom:4}}>{c.name}</h3>
+                <p className="fs" style={{fontSize:12,color:"rgba(255,255,255,.7)",letterSpacing:1}}>{c.desc}</p>
+                <span className="disc fs" style={{display:"inline-block",marginTop:12,fontSize:11,letterSpacing:2.5,textTransform:"uppercase",color:"var(--gold-l)"}}>Discover →</span>
+              </div>
+            </div>
+          ))}
+        </div>
+        <div style={{textAlign:"center",marginTop:48}}><a href="#" className="cb cd">View all products</a></div>
+      </section>
+
+      {/* CATEGORIES */}
+      <section id="cats" data-animate style={{padding:"80px 48px",background:"var(--cream-w)",...S.section("cats")}}>
+        <div style={{textAlign:"center",marginBottom:40}}>
+          <span className="fs sl">Browse by type</span>
+          <h2 className="ff" style={{fontSize:"clamp(28px,3.5vw,40px)",fontWeight:300,marginTop:12}}>Product Categories</h2>
+        </div>
+        <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:12,maxWidth:1000,margin:"0 auto"}}>
+          {cats.map(c=>(
+            <div key={c.name} className="cp">
+              <span className="ff" style={{fontSize:18,fontWeight:400}}>{c.name}</span>
+              <span className="cs fs" style={{fontSize:10,letterSpacing:1.5,color:"var(--sand-d)",transition:"color .4s"}}>{c.sub}</span>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* WHY STATUS */}
+      <section id="why" data-animate style={{display:"grid",gridTemplateColumns:"1fr 1fr",minHeight:600,...S.section("why")}}>
+        <div style={{background:"url('https://images.unsplash.com/photo-1600566753190-17f0baa2a6c0?w=800&h=600&fit=crop') center/cover"}}/>
+        <div style={{background:"var(--stone)",color:"#fff",padding:"80px 60px",display:"flex",flexDirection:"column",justifyContent:"center"}}>
+          <span className="fs sl" style={{color:"var(--gold-l)",marginBottom:20}}>Why Status Concept</span>
+          <h2 className="ff" style={{fontSize:36,fontWeight:300,marginBottom:28,lineHeight:1.2}}>Over a Decade of<br/>Outdoor Excellence</h2>
+          <div className="law" style={{marginBottom:28}}/>
+          <p className="fs" style={{fontSize:14,lineHeight:1.8,color:"rgba(255,255,255,.7)",fontWeight:300,marginBottom:32}}>We provide outdoor furniture to the most prestigious addresses in the Algarve — Vale do Lobo, Quinta do Lago, Vilamoura, Almancil, Tavira, and beyond. Our success is built on a passion and vast experience acquired over more than a decade of furnishing elegant residences across Europe.</p>
+          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:24,marginBottom:36}}>
+            {[{n:"10+",l:"Years experience"},{n:"2",l:"Showrooms"},{n:"76+",l:"Furniture pieces"},{n:"∞",l:"Customisation"}].map(s=>(
+              <div key={s.l}><div className="ff" style={{fontSize:32,fontWeight:300,color:"var(--gold)"}}>{s.n}</div><div className="fs" style={{fontSize:11,letterSpacing:1.5,color:"rgba(255,255,255,.5)",textTransform:"uppercase"}}>{s.l}</div></div>
+            ))}
+          </div>
+          <a href="#" className="cb cl" style={{alignSelf:"flex-start"}}>Learn more</a>
+        </div>
+      </section>
+
+      {/* PROJECTS */}
+      <section id="proj" data-animate style={{padding:"100px 48px",...S.section("proj")}}>
+        <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-end",marginBottom:48}}>
+          <div><span className="fs sl">Inspiration</span><h2 className="ff" style={{fontSize:"clamp(32px,4vw,48px)",fontWeight:300,marginTop:12}}>Featured Projects</h2></div>
+          <a href="#" className="cb cd" style={{marginBottom:4}}>View all</a>
+        </div>
+        <div style={{display:"grid",gridTemplateColumns:"1.4fr 1fr",gap:20,maxWidth:1200}}>
+          <div className="pc" style={{position:"relative",overflow:"hidden",borderRadius:2,height:480}}>
+            <img src={projects[activeProject].img} alt={projects[activeProject].name} style={{width:"100%",height:"100%",objectFit:"cover"}}/>
+            <div style={{position:"absolute",bottom:0,left:0,right:0,padding:36,background:"linear-gradient(transparent,rgba(0,0,0,.7))"}}>
+              <h3 className="ff" style={{fontSize:28,color:"#fff",fontWeight:400}}>{projects[activeProject].name}</h3>
+              <p className="fs" style={{fontSize:12,letterSpacing:1.5,color:"rgba(255,255,255,.6)"}}>{projects[activeProject].location}</p>
+            </div>
+          </div>
+          <div style={{display:"grid",gridTemplateRows:"1fr 1fr",gap:20}}>
+            {projects.filter((_,i)=>i!==activeProject).slice(0,2).map(p=>(
+              <div key={p.name} className="pc" onClick={()=>setActiveProject(projects.indexOf(p))} style={{position:"relative",overflow:"hidden",borderRadius:2}}>
+                <img src={p.img} alt={p.name} style={{width:"100%",height:"100%",objectFit:"cover"}}/>
+                <div style={{position:"absolute",bottom:0,left:0,right:0,padding:24,background:"linear-gradient(transparent,rgba(0,0,0,.65))"}}>
+                  <h4 className="ff" style={{fontSize:20,color:"#fff",fontWeight:400}}>{p.name}</h4>
+                  <p className="fs" style={{fontSize:11,letterSpacing:1,color:"rgba(255,255,255,.6)"}}>{p.location}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* AFTER CARE BANNER */}
+      <section id="ac" data-animate style={{position:"relative",padding:"100px 48px",background:"linear-gradient(135deg,var(--ocean-d) 0%,var(--ocean) 100%)",textAlign:"center",color:"#fff",...S.section("ac")}}>
+        <div style={{position:"absolute",top:40,left:48,width:40,height:40,borderLeft:"1px solid rgba(255,255,255,.15)",borderTop:"1px solid rgba(255,255,255,.15)"}}/>
+        <div style={{position:"absolute",bottom:40,right:48,width:40,height:40,borderRight:"1px solid rgba(255,255,255,.15)",borderBottom:"1px solid rgba(255,255,255,.15)"}}/>
+        <span className="fs sl" style={{color:"var(--ocean-l)"}}>Exclusive service</span>
+        <h2 className="ff" style={{fontSize:"clamp(32px,4vw,48px)",fontWeight:300,marginTop:16,marginBottom:20}}>After Care & Valet Service</h2>
+        <div className="law" style={{margin:"0 auto 24px"}}/>
+        <p className="fs" style={{fontSize:14,lineHeight:1.8,color:"rgba(255,255,255,.7)",maxWidth:600,margin:"0 auto 36px",fontWeight:300}}>Our skilled team handles all cleaning and maintenance to the highest standard. We care for your outdoor furniture seasonally — ensuring it stays as beautiful as the day it arrived.</p>
+        <a href="#" className="cb cl">Discover after care</a>
+      </section>
+
+      {/* SHOWROOMS */}
+      <section id="shows" data-animate style={{padding:"100px 48px",...S.section("shows")}}>
+        <div style={{textAlign:"center",marginBottom:56}}>
+          <span className="fs sl">Visit us</span>
+          <h2 className="ff" style={{fontSize:"clamp(32px,4vw,48px)",fontWeight:300,marginTop:12}}>Our Showrooms</h2>
+        </div>
+        <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:32,maxWidth:1000,margin:"0 auto"}}>
+          {[{name:"Quinta do Lago",addr:"Estr. Quinta do Lago-Vale do Lobo\n8135-106 Almancil",ph:"+351 289 030 179",img:"https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=600&h=360&fit=crop"},{name:"Almancil",addr:"Avenida 5 de Outubro 298\n8135-103 Almancil",ph:"+351 289 092 890",img:"https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=600&h=360&fit=crop"}].map(s=>(
+            <div key={s.name} style={{cursor:"pointer"}}>
+              <div style={{overflow:"hidden",borderRadius:2,marginBottom:20,height:280}}>
+                <img src={s.img} alt={s.name} style={{width:"100%",height:"100%",objectFit:"cover",transition:"transform .8s"}} onMouseEnter={e=>e.target.style.transform="scale(1.04)"} onMouseLeave={e=>e.target.style.transform="scale(1)"}/>
+              </div>
+              <h3 className="ff" style={{fontSize:24,fontWeight:400,marginBottom:8}}>Showroom {s.name}</h3>
+              <p className="fs" style={{fontSize:13,color:"var(--sand-d)",lineHeight:1.6,whiteSpace:"pre-line"}}>{s.addr}</p>
+              <p className="fs" style={{fontSize:13,color:"var(--ocean)",marginTop:8}}>{s.ph}</p>
+              <a href="#" className="fs" style={{display:"inline-block",marginTop:12,fontSize:11,letterSpacing:2,textTransform:"uppercase",color:"var(--gold)",textDecoration:"none",borderBottom:"1px solid var(--gold)",paddingBottom:2}}>Get directions →</a>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* NEWSLETTER */}
+      <section style={{padding:"72px 48px",background:"var(--cream-w)",textAlign:"center",borderTop:"1px solid var(--sand-l)"}}>
+        <span className="fs sl">Stay inspired</span>
+        <h2 className="ff" style={{fontSize:28,fontWeight:300,marginTop:12,marginBottom:24}}>Join Our World</h2>
+        <div style={{display:"flex",maxWidth:480,margin:"0 auto"}}>
+          <input type="email" placeholder="Your email address" className="fs" style={{flex:1,padding:"14px 20px",border:"1px solid var(--sand)",borderRight:"none",background:"transparent",fontSize:13,letterSpacing:.5,outline:"none",color:"var(--stone)"}}/>
+          <button className="fs" style={{padding:"14px 28px",background:"var(--stone)",color:"#fff",border:"1px solid var(--stone)",fontSize:11,letterSpacing:2.5,textTransform:"uppercase",cursor:"pointer"}}>Subscribe</button>
+        </div>
+      </section>
+
+      {/* FOOTER */}
+      <footer style={{background:"var(--stone)",color:"#fff",padding:"72px 48px 36px"}}>
+        <div style={{display:"grid",gridTemplateColumns:"1.5fr 1fr 1fr 1fr 1fr",gap:40,maxWidth:1200,margin:"0 auto",paddingBottom:48,borderBottom:"1px solid rgba(255,255,255,.08)"}}>
+          <div>
+            <div style={{marginBottom:20}}><span className="ff" style={{fontSize:24,fontWeight:500,letterSpacing:3}}>STATUS</span><span className="fs" style={{fontSize:9,letterSpacing:3,marginLeft:4,color:"rgba(255,255,255,.4)"}}>CONCEPT</span></div>
+            <p className="fs" style={{fontSize:13,lineHeight:1.7,color:"rgba(255,255,255,.5)",fontWeight:300}}>High quality lifestyle furniture in the Algarve. Serving Vale do Lobo, Quinta do Lago, Vilamoura, and beyond.</p>
+            <div style={{display:"flex",gap:16,marginTop:20}}>{["Fb","Ig","Pi","Li"].map(s=><span key={s} className="fs" style={{fontSize:11,letterSpacing:1,color:"rgba(255,255,255,.4)",cursor:"pointer"}}>{s}</span>)}</div>
+          </div>
+          {[{t:"Furniture",ls:["Lounge","Dining","Sun Loungers","Day Beds","Coffee Tables","Bar & Patio"]},{t:"Solutions",ls:["Parasols","Bioclimatic Pergolas","Outdoor Kitchens","Decor","Leisure"]},{t:"Company",ls:["Why Us","After Care","Projects","Gallery","Catalogue"]},{t:"Contact",ls:["Showroom Quinta do Lago","Showroom Almancil","+351 289 030 179","info@statusconcept.com"]}].map(c=>(
+            <div key={c.t}>
+              <h4 className="fs" style={{fontSize:11,letterSpacing:2.5,textTransform:"uppercase",color:"var(--gold)",marginBottom:16}}>{c.t}</h4>
+              <div style={{display:"flex",flexDirection:"column",gap:8}}>{c.ls.map(l=><a key={l} href="#" className="fs" style={{fontSize:13,color:"rgba(255,255,255,.5)",textDecoration:"none",fontWeight:300}}>{l}</a>)}</div>
+            </div>
+          ))}
+        </div>
+        <div className="fs" style={{display:"flex",justifyContent:"space-between",alignItems:"center",paddingTop:24,fontSize:11,color:"rgba(255,255,255,.25)",letterSpacing:1}}>
+          <span>© 2026 Status Concept. All rights reserved.</span>
+          <div style={{display:"flex",gap:24}}><a href="#" style={{color:"inherit",textDecoration:"none"}}>Privacy Policy</a><a href="#" style={{color:"inherit",textDecoration:"none"}}>Cookie Policy</a><a href="#" style={{color:"inherit",textDecoration:"none"}}>Terms</a></div>
+        </div>
+      </footer>
+    </div>
+  );
+};
+
+export default STATUS_CONCEPT_HOMEPAGE;

@@ -1,0 +1,12 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "status-concept",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev"],
+      "port": 5173,
+      "cwd": "C:\\Users\\Santi\\OneDrive\\Desktop\\STATUS ~CONCEPT WB\\Status-Concept"
+    }
+  ]
+}
