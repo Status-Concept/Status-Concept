@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import useNavLinks from "../useNavLinks";
 
 const STATUS_CONCEPT_HOMEPAGE = () => {
   useNavLinks();
+  const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("furniture");
   const [headerSolid, setHeaderSolid] = useState(false);
@@ -29,30 +31,30 @@ const STATUS_CONCEPT_HOMEPAGE = () => {
 
   const collections = {
     furniture: [
-      { name: "Bella", desc: "Reclining sofa & dining", img: "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=600&h=400&fit=crop" },
-      { name: "Oxford", desc: "Timeless modular lounge", img: "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=600&h=400&fit=crop" },
-      { name: "Sicily", desc: "Modern modular set", img: "https://images.unsplash.com/photo-1506439773649-6e0eb8cfb237?w=600&h=400&fit=crop" },
-      { name: "Miami", desc: "Contemporary sofa set", img: "https://images.unsplash.com/photo-1618220179428-22790b461013?w=600&h=400&fit=crop" },
-      { name: "Laguna", desc: "Elegant dining collection", img: "https://images.unsplash.com/photo-1600585152220-90363fe7e115?w=600&h=400&fit=crop" },
-      { name: "Cairo", desc: "Luxury sofa set", img: "https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?w=600&h=400&fit=crop" },
+      { name: "Bella", desc: "Reclining sofa & dining", img: "/placeholder.svg" },
+      { name: "Oxford", desc: "Timeless modular lounge", img: "/placeholder.svg" },
+      { name: "Sicily", desc: "Modern modular set", img: "/placeholder.svg" },
+      { name: "Miami", desc: "Contemporary sofa set", img: "/placeholder.svg" },
+      { name: "Laguna", desc: "Elegant dining collection", img: "/placeholder.svg" },
+      { name: "Cairo", desc: "Luxury sofa set", img: "/placeholder.svg" },
     ],
     shade: [
-      { name: "Glatz Parasols", desc: "Swiss precision shading", img: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=600&h=400&fit=crop" },
-      { name: "Bioclimatic Pergolas", desc: "Intelligent climate control", img: "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c0?w=600&h=400&fit=crop" },
-      { name: "Retractable Pergolas", desc: "Flexible outdoor roofing", img: "https://images.unsplash.com/photo-1600607687644-c7171b42498f?w=600&h=400&fit=crop" },
+      { name: "Glatz Parasols", desc: "Swiss precision shading", img: "/placeholder.svg" },
+      { name: "Bioclimatic Pergolas", desc: "Intelligent climate control", img: "/placeholder.svg" },
+      { name: "Retractable Pergolas", desc: "Flexible outdoor roofing", img: "/placeholder.svg" },
     ],
     kitchen: [
-      { name: "Outdoor Kitchens", desc: "Complete cooking stations", img: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=600&h=400&fit=crop" },
-      { name: "BBQ Systems", desc: "Premium grilling solutions", img: "https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=600&h=400&fit=crop" },
-      { name: "Pizza Ovens", desc: "Artisan wood-fired ovens", img: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=600&h=400&fit=crop" },
+      { name: "Outdoor Kitchens", desc: "Complete cooking stations", img: "/placeholder.svg" },
+      { name: "BBQ Systems", desc: "Premium grilling solutions", img: "/placeholder.svg" },
+      { name: "Pizza Ovens", desc: "Artisan wood-fired ovens", img: "/placeholder.svg" },
     ],
   };
 
   const projects = [
-    { name: "Villa Quinta do Lago", location: "Quinta do Lago", img: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&h=500&fit=crop" },
-    { name: "Residence Vale do Lobo", location: "Vale do Lobo", img: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&h=500&fit=crop" },
-    { name: "Private Estate Vilamoura", location: "Vilamoura", img: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=800&h=500&fit=crop" },
-    { name: "Luxury Home Almancil", location: "Almancil", img: "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c0?w=800&h=500&fit=crop" },
+    { name: "Villa Quinta do Lago", location: "Quinta do Lago", img: "/placeholder.svg" },
+    { name: "Residence Vale do Lobo", location: "Vale do Lobo", img: "/placeholder.svg" },
+    { name: "Private Estate Vilamoura", location: "Vilamoura", img: "/placeholder.svg" },
+    { name: "Luxury Home Almancil", location: "Almancil", img: "/placeholder.svg" },
   ];
 
   const cats = [
@@ -150,14 +152,14 @@ const STATUS_CONCEPT_HOMEPAGE = () => {
       </div>
 
       {/* HERO */}
-      <section style={{position:"relative",height:"100vh",minHeight:700,background:"linear-gradient(165deg,rgba(26,26,24,.3) 0%,rgba(26,26,24,.15) 40%,rgba(42,95,122,.2) 100%),url('https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1600&h=1000&fit=crop') center/cover",display:"flex",alignItems:"flex-end",padding:"0 0 100px 0"}}>
+      <section style={{position:"relative",height:"100vh",minHeight:700,background:"linear-gradient(165deg,rgba(26,26,24,.3) 0%,rgba(26,26,24,.15) 40%,rgba(42,95,122,.2) 100%),url('/placeholder.svg') center/cover",display:"flex",alignItems:"flex-end",padding:"0 0 100px 0"}}>
         <div style={{position:"absolute",top:140,left:48,width:60,height:60,borderLeft:"1px solid rgba(255,255,255,.2)",borderTop:"1px solid rgba(255,255,255,.2)"}}/>
         <div style={{position:"absolute",bottom:40,right:48,width:60,height:60,borderRight:"1px solid rgba(255,255,255,.2)",borderBottom:"1px solid rgba(255,255,255,.2)"}}/>
         <div style={{padding:"0 48px",maxWidth:800}}>
           <div className="fs sl" style={{color:"rgba(255,255,255,.6)",marginBottom:20,animation:"hu 1s .2s both"}}>Luxury outdoor living — Algarve, Portugal</div>
           <h1 className="ff" style={{fontSize:"clamp(42px,6vw,72px)",fontWeight:300,color:"#fff",lineHeight:1.05,marginBottom:24,animation:"hu 1s .4s both"}}>Where Design<br/>Meets the Sun</h1>
           <p className="fs" style={{fontSize:15,color:"rgba(255,255,255,.7)",lineHeight:1.7,maxWidth:500,marginBottom:36,fontWeight:300,animation:"hu 1s .6s both"}}>Curated outdoor furniture of excellence for the most distinguished residences across the Algarve. From Quinta do Lago to Vilamoura — elegance, crafted for your space.</p>
-          <div style={{display:"flex",gap:16,animation:"hu 1s .8s both"}}><a href="#" className="cb cl">Explore collections</a><a href="#" className="cb cg">Visit showroom</a></div>
+          <div style={{display:"flex",gap:16,animation:"hu 1s .8s both"}}><a href="#" className="cb cl" onClick={(e)=>{e.preventDefault();navigate('/products')}}>Explore collections</a><a href="#" className="cb cg" onClick={(e)=>{e.preventDefault();navigate('/contact')}}>Visit showroom</a></div>
         </div>
         <div style={{position:"absolute",bottom:32,left:"50%",transform:"translateX(-50%)",display:"flex",flexDirection:"column",alignItems:"center",gap:8,animation:"fi 1s 1.2s both"}}>
           <span className="fs" style={{fontSize:10,letterSpacing:3,color:"rgba(255,255,255,.4)",textTransform:"uppercase"}}>Scroll</span>
@@ -183,7 +185,7 @@ const STATUS_CONCEPT_HOMEPAGE = () => {
         </div>
         <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:20,maxWidth:1200,margin:"0 auto"}}>
           {collections[activeTab].map((c,i)=>(
-            <div key={c.name} className="cc" style={{height:i===0||i===3?440:360}}>
+            <div key={c.name} className="cc" onClick={()=>navigate('/collection')} style={{height:i===0||i===3?440:360}}>
               <img src={c.img} alt={c.name}/>
               <div className="ov">
                 <h3 className="ff" style={{fontSize:26,fontWeight:400,color:"#fff",marginBottom:4}}>{c.name}</h3>
@@ -193,7 +195,7 @@ const STATUS_CONCEPT_HOMEPAGE = () => {
             </div>
           ))}
         </div>
-        <div style={{textAlign:"center",marginTop:48}}><a href="#" className="cb cd">View all products</a></div>
+        <div style={{textAlign:"center",marginTop:48}}><a href="#" className="cb cd" onClick={(e)=>{e.preventDefault();navigate('/products')}}>View all products</a></div>
       </section>
 
       {/* CATEGORIES */}
@@ -204,7 +206,7 @@ const STATUS_CONCEPT_HOMEPAGE = () => {
         </div>
         <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:12,maxWidth:1000,margin:"0 auto"}}>
           {cats.map(c=>(
-            <div key={c.name} className="cp">
+            <div key={c.name} className="cp" onClick={()=>navigate('/products')}>
               <span className="ff" style={{fontSize:18,fontWeight:400}}>{c.name}</span>
               <span className="cs fs" style={{fontSize:10,letterSpacing:1.5,color:"var(--sand-d)",transition:"color .4s"}}>{c.sub}</span>
             </div>
@@ -214,7 +216,7 @@ const STATUS_CONCEPT_HOMEPAGE = () => {
 
       {/* WHY STATUS */}
       <section id="why" data-animate style={{display:"grid",gridTemplateColumns:"1fr 1fr",minHeight:600,...S.section("why")}}>
-        <div style={{background:"url('https://images.unsplash.com/photo-1600566753190-17f0baa2a6c0?w=800&h=600&fit=crop') center/cover"}}/>
+        <div style={{background:"url('/placeholder.svg') center/cover"}}/>
         <div style={{background:"var(--stone)",color:"#fff",padding:"80px 60px",display:"flex",flexDirection:"column",justifyContent:"center"}}>
           <span className="fs sl" style={{color:"var(--gold-l)",marginBottom:20}}>Why Status Concept</span>
           <h2 className="ff" style={{fontSize:36,fontWeight:300,marginBottom:28,lineHeight:1.2}}>Over a Decade of<br/>Outdoor Excellence</h2>
@@ -225,7 +227,7 @@ const STATUS_CONCEPT_HOMEPAGE = () => {
               <div key={s.l}><div className="ff" style={{fontSize:32,fontWeight:300,color:"var(--gold)"}}>{s.n}</div><div className="fs" style={{fontSize:11,letterSpacing:1.5,color:"rgba(255,255,255,.5)",textTransform:"uppercase"}}>{s.l}</div></div>
             ))}
           </div>
-          <a href="#" className="cb cl" style={{alignSelf:"flex-start"}}>Learn more</a>
+          <a href="#" className="cb cl" onClick={(e)=>{e.preventDefault();navigate('/about')}} style={{alignSelf:"flex-start"}}>Learn more</a>
         </div>
       </section>
 
@@ -233,10 +235,10 @@ const STATUS_CONCEPT_HOMEPAGE = () => {
       <section id="proj" data-animate style={{padding:"100px 48px",...S.section("proj")}}>
         <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-end",marginBottom:48}}>
           <div><span className="fs sl">Inspiration</span><h2 className="ff" style={{fontSize:"clamp(32px,4vw,48px)",fontWeight:300,marginTop:12}}>Featured Projects</h2></div>
-          <a href="#" className="cb cd" style={{marginBottom:4}}>View all</a>
+          <a href="#" className="cb cd" onClick={(e)=>{e.preventDefault();navigate('/projects')}} style={{marginBottom:4}}>View all</a>
         </div>
         <div style={{display:"grid",gridTemplateColumns:"1.4fr 1fr",gap:20,maxWidth:1200}}>
-          <div className="pc" style={{position:"relative",overflow:"hidden",borderRadius:2,height:480}}>
+          <div className="pc" onClick={()=>navigate('/projects')} style={{position:"relative",overflow:"hidden",borderRadius:2,height:480}}>
             <img src={projects[activeProject].img} alt={projects[activeProject].name} style={{width:"100%",height:"100%",objectFit:"cover"}}/>
             <div style={{position:"absolute",bottom:0,left:0,right:0,padding:36,background:"linear-gradient(transparent,rgba(0,0,0,.7))"}}>
               <h3 className="ff" style={{fontSize:28,color:"#fff",fontWeight:400}}>{projects[activeProject].name}</h3>
@@ -265,7 +267,7 @@ const STATUS_CONCEPT_HOMEPAGE = () => {
         <h2 className="ff" style={{fontSize:"clamp(32px,4vw,48px)",fontWeight:300,marginTop:16,marginBottom:20}}>After Care & Valet Service</h2>
         <div className="law" style={{margin:"0 auto 24px"}}/>
         <p className="fs" style={{fontSize:14,lineHeight:1.8,color:"rgba(255,255,255,.7)",maxWidth:600,margin:"0 auto 36px",fontWeight:300}}>Our skilled team handles all cleaning and maintenance to the highest standard. We care for your outdoor furniture seasonally — ensuring it stays as beautiful as the day it arrived.</p>
-        <a href="#" className="cb cl">Discover after care</a>
+        <a href="#" className="cb cl" onClick={(e)=>{e.preventDefault();navigate('/about')}}>Discover after care</a>
       </section>
 
       {/* SHOWROOMS */}
@@ -275,8 +277,8 @@ const STATUS_CONCEPT_HOMEPAGE = () => {
           <h2 className="ff" style={{fontSize:"clamp(32px,4vw,48px)",fontWeight:300,marginTop:12}}>Our Showrooms</h2>
         </div>
         <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:32,maxWidth:1000,margin:"0 auto"}}>
-          {[{name:"Quinta do Lago",addr:"Estr. Quinta do Lago-Vale do Lobo\n8135-106 Almancil",ph:"+351 289 030 179",img:"https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=600&h=360&fit=crop"},{name:"Almancil",addr:"Avenida 5 de Outubro 298\n8135-103 Almancil",ph:"+351 289 092 890",img:"https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=600&h=360&fit=crop"}].map(s=>(
-            <div key={s.name} style={{cursor:"pointer"}}>
+          {[{name:"Quinta do Lago",addr:"Estr. Quinta do Lago-Vale do Lobo\n8135-106 Almancil",ph:"+351 289 030 179",img:"/placeholder.svg"},{name:"Almancil",addr:"Avenida 5 de Outubro 298\n8135-103 Almancil",ph:"+351 289 092 890",img:"/placeholder.svg"}].map(s=>(
+            <div key={s.name} style={{cursor:"pointer"}} onClick={()=>navigate('/contact')}>
               <div style={{overflow:"hidden",borderRadius:2,marginBottom:20,height:280}}>
                 <img src={s.img} alt={s.name} style={{width:"100%",height:"100%",objectFit:"cover",transition:"transform .8s"}} onMouseEnter={e=>e.target.style.transform="scale(1.04)"} onMouseLeave={e=>e.target.style.transform="scale(1)"}/>
               </div>

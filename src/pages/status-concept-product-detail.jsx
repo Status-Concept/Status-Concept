@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import useNavLinks from "../useNavLinks";
 
 const PRODUCT_DETAIL = () => {
   useNavLinks();
+  const navigate = useNavigate();
   const [activeImg, setActiveImg] = useState(0);
   const [specsOpen, setSpecsOpen] = useState(true);
   const [dimsOpen, setDimsOpen] = useState(false);
@@ -26,11 +28,11 @@ const PRODUCT_DETAIL = () => {
     collection: "Sicily",
     tagline: "Contemporary modular outdoor sofa with infinite configuration possibilities",
     images: [
-      "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=800&h=800&fit=crop",
-      "https://images.unsplash.com/photo-1506439773649-6e0eb8cfb237?w=800&h=800&fit=crop",
-      "https://images.unsplash.com/photo-1618220179428-22790b461013?w=800&h=800&fit=crop",
-      "https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?w=800&h=800&fit=crop",
-      "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=800&h=800&fit=crop",
+      "/placeholder.svg",
+      "/placeholder.svg",
+      "/placeholder.svg",
+      "/placeholder.svg",
+      "/placeholder.svg",
     ],
     specs: [
       { label: "Type", value: "Modular Sofa Set" },
@@ -54,10 +56,10 @@ const PRODUCT_DETAIL = () => {
     ],
     colors: ["Anthracite", "White", "Taupe", "Sand"],
     related: [
-      { name: "Miami Sofa Set", collection: "Miami", img: "https://images.unsplash.com/photo-1600585152220-90363fe7e115?w=400&h=400&fit=crop" },
-      { name: "Oxford Modular Sofa", collection: "Oxford", img: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=400&h=400&fit=crop" },
-      { name: "Berlin Modular Sofa", collection: "Berlin", img: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=400&h=400&fit=crop" },
-      { name: "Cairo Sofa Set", collection: "Cairo", img: "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c0?w=400&h=400&fit=crop" },
+      { name: "Miami Sofa Set", collection: "Miami", img: "/placeholder.svg" },
+      { name: "Oxford Modular Sofa", collection: "Oxford", img: "/placeholder.svg" },
+      { name: "Berlin Modular Sofa", collection: "Berlin", img: "/placeholder.svg" },
+      { name: "Cairo Sofa Set", collection: "Cairo", img: "/placeholder.svg" },
     ],
   };
 
@@ -121,11 +123,11 @@ const PRODUCT_DETAIL = () => {
       {/* BREADCRUMB */}
       <div style={{paddingTop:115,padding:"115px 48px 0",background:"var(--cream)"}}>
         <div className="fs" style={{fontSize:11,letterSpacing:2,color:"var(--sand-d)",textTransform:"uppercase"}}>
-          <a href="#" style={{color:"inherit",textDecoration:"none"}}>Home</a>
+          <a href="#" onClick={(e)=>{e.preventDefault();navigate('/')}} style={{color:"inherit",textDecoration:"none"}}>Home</a>
           <span style={{margin:"0 8px",opacity:.4}}>/</span>
-          <a href="#" style={{color:"inherit",textDecoration:"none"}}>Furniture</a>
+          <a href="#" onClick={(e)=>{e.preventDefault();navigate('/products')}} style={{color:"inherit",textDecoration:"none"}}>Furniture</a>
           <span style={{margin:"0 8px",opacity:.4}}>/</span>
-          <a href="#" style={{color:"inherit",textDecoration:"none"}}>Lounge</a>
+          <a href="#" onClick={(e)=>{e.preventDefault();navigate('/products')}} style={{color:"inherit",textDecoration:"none"}}>Lounge</a>
           <span style={{margin:"0 8px",opacity:.4}}>/</span>
           <span style={{color:"var(--stone)"}}>{product.name}</span>
         </div>
@@ -240,11 +242,11 @@ const PRODUCT_DETAIL = () => {
             <span className="fs sl">You may also like</span>
             <h2 className="ff" style={{fontSize:"clamp(28px,3vw,36px)",fontWeight:300,marginTop:8}}>Related Products</h2>
           </div>
-          <a href="#" className="fs" style={{fontSize:11,letterSpacing:2,textTransform:"uppercase",color:"var(--gold)",textDecoration:"none",borderBottom:"1px solid var(--gold)",paddingBottom:2}}>View all lounge →</a>
+          <a href="#" onClick={(e)=>{e.preventDefault();navigate('/products')}} className="fs" style={{fontSize:11,letterSpacing:2,textTransform:"uppercase",color:"var(--gold)",textDecoration:"none",borderBottom:"1px solid var(--gold)",paddingBottom:2}}>View all lounge →</a>
         </div>
         <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:24}}>
           {product.related.map((r)=>(
-            <div key={r.name} className="related-card">
+            <div key={r.name} className="related-card" onClick={()=>navigate(`/product/${r.collection.toLowerCase()}`)}>
               <div style={{overflow:"hidden",borderRadius:2,marginBottom:12}}>
                 <img src={r.img} alt={r.name} />
               </div>

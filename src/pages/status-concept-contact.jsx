@@ -25,14 +25,14 @@ const CONTACT_PAGE = () => {
       name: "Quinta do Lago", address: "Estr. Quinta do Lago-Vale do Lobo\n8135-106 Almancil",
       phone: "+351 289 030 179", mobile: "+351 937 573 600",
       gps: "37.062229, -8.038336",
-      img: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=700&h=400&fit=crop",
+      img: "/placeholder.svg",
       desc: "Our flagship showroom located on the road between Quinta do Lago and Vale do Lobo. Experience our full collection in a luxurious setting that mirrors the Algarve lifestyle.",
     },
     {
       name: "Almancil", address: "Avenida 5 de Outubro 298\n8135-103 Almancil",
       phone: "+351 289 092 890", mobile: "+351 937 573 600",
       gps: "37.0927, -8.0400",
-      img: "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=700&h=400&fit=crop",
+      img: "/placeholder.svg",
       desc: "Our Almancil showroom on the main avenue, easily accessible and featuring an extensive range of outdoor furniture, shade solutions, and outdoor kitchen displays.",
     },
   ];

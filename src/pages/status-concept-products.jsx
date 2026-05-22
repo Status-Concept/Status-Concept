@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import useNavLinks from "../useNavLinks";
 
 const PRODUCTS_PAGE = () => {
   useNavLinks();
+  const navigate = useNavigate();
   const [headerSolid, setHeaderSolid] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeCategory, setActiveCategory] = useState("all");
@@ -39,30 +41,30 @@ const PRODUCTS_PAGE = () => {
   ];
 
   const allProducts = [
-    { name: "Bella Reclining Sofa Set", collection: "Bella", category: "lounge", img: "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=500&h=500&fit=crop", tag: "Popular" },
-    { name: "Oxford Modular Sofa", collection: "Oxford", category: "lounge", img: "https://images.unsplash.com/photo-1506439773649-6e0eb8cfb237?w=500&h=500&fit=crop", tag: "" },
-    { name: "Sicily Modular Set", collection: "Sicily", category: "lounge", img: "https://images.unsplash.com/photo-1618220179428-22790b461013?w=500&h=500&fit=crop", tag: "New" },
-    { name: "Miami Sofa Set", collection: "Miami", category: "lounge", img: "https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?w=500&h=500&fit=crop", tag: "" },
-    { name: "Cairo Sofa Set", collection: "Cairo", category: "lounge", img: "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=500&h=500&fit=crop", tag: "" },
-    { name: "Berlin Modular Sofa", collection: "Berlin", category: "lounge", img: "https://images.unsplash.com/photo-1600585152220-90363fe7e115?w=500&h=500&fit=crop", tag: "" },
-    { name: "Laguna Dining Set", collection: "Laguna", category: "dining", img: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=500&h=500&fit=crop", tag: "" },
-    { name: "Florida Dining Table", collection: "Florida", category: "dining", img: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=500&h=500&fit=crop", tag: "" },
-    { name: "Munich Dining Table", collection: "Munich", category: "dining", img: "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c0?w=500&h=500&fit=crop", tag: "" },
-    { name: "Orlando Dining Armchairs", collection: "Orlando", category: "dining", img: "https://images.unsplash.com/photo-1600607687644-c7171b42498f?w=500&h=500&fit=crop", tag: "" },
-    { name: "Bella Reclining Dining Set", collection: "Bella", category: "dining", img: "https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=500&h=500&fit=crop", tag: "" },
-    { name: "MAUI Sun Lounger", collection: "MAUI", category: "sunlounger", img: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=500&h=500&fit=crop", tag: "New" },
-    { name: "Bonaire Sun Lounger", collection: "Bonaire", category: "sunlounger", img: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=500&h=500&fit=crop", tag: "" },
-    { name: "Crete Sun Lounger", collection: "Crete", category: "sunlounger", img: "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=500&h=500&fit=crop", tag: "" },
-    { name: "Antalya Daybed", collection: "Antalya", category: "daybed", img: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=500&h=500&fit=crop", tag: "" },
-    { name: "Sophia Gazebo", collection: "Sophia", category: "daybed", img: "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c0?w=500&h=500&fit=crop", tag: "" },
-    { name: "Reno Balcony Set", collection: "Reno", category: "bar", img: "https://images.unsplash.com/photo-1600585152220-90363fe7e115?w=500&h=500&fit=crop", tag: "" },
-    { name: "Zanzibar Coffee Table", collection: "Zanzibar", category: "coffee", img: "https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?w=500&h=500&fit=crop", tag: "" },
-    { name: "Tahiti Side Table", collection: "Tahiti", category: "side", img: "https://images.unsplash.com/photo-1618220179428-22790b461013?w=500&h=500&fit=crop", tag: "" },
-    { name: "Naples Coffee Table", collection: "Naples", category: "coffee", img: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=500&h=500&fit=crop", tag: "" },
-    { name: "Bern Side Table", collection: "Bern", category: "side", img: "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=500&h=500&fit=crop", tag: "" },
-    { name: "Dakkar Coffee Table", collection: "Dakkar", category: "coffee", img: "https://images.unsplash.com/photo-1600607687644-c7171b42498f?w=500&h=500&fit=crop", tag: "" },
-    { name: "Manila Bar Set", collection: "Manila", category: "bar", img: "https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=500&h=500&fit=crop", tag: "" },
-    { name: "Dijon Pouf", collection: "Dijon", category: "puffs", img: "https://images.unsplash.com/photo-1506439773649-6e0eb8cfb237?w=500&h=500&fit=crop", tag: "" },
+    { name: "Bella Reclining Sofa Set", collection: "Bella", category: "lounge", img: "/placeholder.svg", tag: "Popular" },
+    { name: "Oxford Modular Sofa", collection: "Oxford", category: "lounge", img: "/placeholder.svg", tag: "" },
+    { name: "Sicily Modular Set", collection: "Sicily", category: "lounge", img: "/placeholder.svg", tag: "New" },
+    { name: "Miami Sofa Set", collection: "Miami", category: "lounge", img: "/placeholder.svg", tag: "" },
+    { name: "Cairo Sofa Set", collection: "Cairo", category: "lounge", img: "/placeholder.svg", tag: "" },
+    { name: "Berlin Modular Sofa", collection: "Berlin", category: "lounge", img: "/placeholder.svg", tag: "" },
+    { name: "Laguna Dining Set", collection: "Laguna", category: "dining", img: "/placeholder.svg", tag: "" },
+    { name: "Florida Dining Table", collection: "Florida", category: "dining", img: "/placeholder.svg", tag: "" },
+    { name: "Munich Dining Table", collection: "Munich", category: "dining", img: "/placeholder.svg", tag: "" },
+    { name: "Orlando Dining Armchairs", collection: "Orlando", category: "dining", img: "/placeholder.svg", tag: "" },
+    { name: "Bella Reclining Dining Set", collection: "Bella", category: "dining", img: "/placeholder.svg", tag: "" },
+    { name: "MAUI Sun Lounger", collection: "MAUI", category: "sunlounger", img: "/placeholder.svg", tag: "New" },
+    { name: "Bonaire Sun Lounger", collection: "Bonaire", category: "sunlounger", img: "/placeholder.svg", tag: "" },
+    { name: "Crete Sun Lounger", collection: "Crete", category: "sunlounger", img: "/placeholder.svg", tag: "" },
+    { name: "Antalya Daybed", collection: "Antalya", category: "daybed", img: "/placeholder.svg", tag: "" },
+    { name: "Sophia Gazebo", collection: "Sophia", category: "daybed", img: "/placeholder.svg", tag: "" },
+    { name: "Reno Balcony Set", collection: "Reno", category: "bar", img: "/placeholder.svg", tag: "" },
+    { name: "Zanzibar Coffee Table", collection: "Zanzibar", category: "coffee", img: "/placeholder.svg", tag: "" },
+    { name: "Tahiti Side Table", collection: "Tahiti", category: "side", img: "/placeholder.svg", tag: "" },
+    { name: "Naples Coffee Table", collection: "Naples", category: "coffee", img: "/placeholder.svg", tag: "" },
+    { name: "Bern Side Table", collection: "Bern", category: "side", img: "/placeholder.svg", tag: "" },
+    { name: "Dakkar Coffee Table", collection: "Dakkar", category: "coffee", img: "/placeholder.svg", tag: "" },
+    { name: "Manila Bar Set", collection: "Manila", category: "bar", img: "/placeholder.svg", tag: "" },
+    { name: "Dijon Pouf", collection: "Dijon", category: "puffs", img: "/placeholder.svg", tag: "" },
   ];
 
   const filteredProducts = activeCategory === "all" ? allProducts : allProducts.filter((p) => p.category === activeCategory);
@@ -124,7 +126,7 @@ const PRODUCTS_PAGE = () => {
       <section style={{paddingTop:"140px",paddingBottom:"60px",paddingLeft:"48px",paddingRight:"48px",background:"var(--cream-w)",borderBottom:"1px solid var(--sand-l)"}}>
         <div style={{maxWidth:"800px"}}>
           <div className="fs" style={{fontSize:"11px",letterSpacing:"3px",color:"var(--sand-d)",textTransform:"uppercase",marginBottom:"8px",animation:"fu .8s .2s both"}}>
-            <a href="#" style={{color:"inherit",textDecoration:"none"}}>Home</a> <span style={{margin:"0 8px",opacity:.4}}>/</span> Furniture Series
+            <a href="#" onClick={(e)=>{e.preventDefault();navigate('/')}} style={{color:"inherit",textDecoration:"none"}}>Home</a> <span style={{margin:"0 8px",opacity:.4}}>/</span> Furniture Series
           </div>
           <h1 className="ff" style={{fontSize:"clamp(36px,5vw,56px)",fontWeight:300,lineHeight:1.1,marginBottom:"20px",animation:"fu .8s .3s both"}}>Furniture Series</h1>
           <p className="fs" style={{fontSize:"15px",color:"var(--stone-l)",lineHeight:1.7,maxWidth:"600px",fontWeight:300,animation:"fu .8s .45s both"}}>
@@ -160,6 +162,7 @@ const PRODUCTS_PAGE = () => {
         <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:"24px",maxWidth:"1300px"}}>
           {filteredProducts.map((p, i) => (
             <div key={p.name + i} className="product-card"
+              onClick={() => navigate(`/product/${p.collection.toLowerCase()}`)}
               onMouseEnter={() => setHoveredProduct(i)}
               onMouseLeave={() => setHoveredProduct(null)}
               style={{animation: `fu .6s ${0.05 * i}s both`}}>
@@ -177,7 +180,7 @@ const PRODUCTS_PAGE = () => {
 
         {activeCategory === "all" && (
           <div style={{textAlign:"center",marginTop:"56px"}}>
-            <a href="#" className="cb cd">Load more products</a>
+            <a href="#" className="cb cd" onClick={(e)=>e.preventDefault()}>Load more products</a>
           </div>
         )}
       </section>
@@ -195,6 +198,7 @@ const PRODUCTS_PAGE = () => {
               fontSize:"12px",letterSpacing:"1.5px",color:"var(--stone-l)",
               transition:"all .35s",background:"transparent",
             }}
+            onClick={()=>navigate('/collection')}
             onMouseEnter={(e)=>{e.target.style.background="var(--stone)";e.target.style.color="var(--cream)";e.target.style.borderColor="var(--stone)"}}
             onMouseLeave={(e)=>{e.target.style.background="transparent";e.target.style.color="var(--stone-l)";e.target.style.borderColor="var(--sand)"}}
             >{c}</span>
@@ -205,10 +209,10 @@ const PRODUCTS_PAGE = () => {
       {/* SHADE & KITCHEN CTA */}
       <section id="othercats" data-animate style={{display:"grid",gridTemplateColumns:"1fr 1fr",minHeight:"400px",...S("othercats")}}>
         {[
-          { title: "Shade Solutions", desc: "Parasols, bioclimatic & retractable pergolas", img: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=700&h=400&fit=crop" },
-          { title: "Outdoor Kitchens", desc: "BBQ systems, pizza ovens & full outdoor kitchens", img: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=700&h=400&fit=crop" },
+          { title: "Shade Solutions", desc: "Parasols, bioclimatic & retractable pergolas", img: "/placeholder.svg" },
+          { title: "Outdoor Kitchens", desc: "BBQ systems, pizza ovens & full outdoor kitchens", img: "/placeholder.svg" },
         ].map((item) => (
-          <div key={item.title} style={{position:"relative",overflow:"hidden",cursor:"pointer"}}>
+          <div key={item.title} onClick={()=>navigate('/products')} style={{position:"relative",overflow:"hidden",cursor:"pointer"}}>
             <img src={item.img} alt={item.title} style={{width:"100%",height:"100%",objectFit:"cover",transition:"transform .8s cubic-bezier(.22,1,.36,1)"}}
               onMouseEnter={(e)=>e.target.style.transform="scale(1.04)"}
               onMouseLeave={(e)=>e.target.style.transform="scale(1)"} />

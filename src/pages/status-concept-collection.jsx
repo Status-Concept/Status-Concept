@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import useNavLinks from "../useNavLinks";
 
 const COLLECTION_DETAIL = () => {
   useNavLinks();
+  const navigate = useNavigate();
   const [activeImg, setActiveImg] = useState(0);
   const [visibleSections, setVisibleSections] = useState(new Set());
 
@@ -23,26 +25,26 @@ const COLLECTION_DETAIL = () => {
     tagline: "Reclining Elegance",
     desc: "The Bella collection brings together sophisticated design and effortless comfort. Featuring adjustable reclining mechanisms and plush Sunbrella® cushions, each piece invites you to settle in and enjoy the Algarve breeze. The premium aluminium frames are finished with Interpon powder coating for lasting beauty, while the modular design lets you configure your perfect outdoor setting.",
     gallery: [
-      "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=1200&h=700&fit=crop",
-      "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=1200&h=700&fit=crop",
-      "https://images.unsplash.com/photo-1506439773649-6e0eb8cfb237?w=1200&h=700&fit=crop",
-      "https://images.unsplash.com/photo-1618220179428-22790b461013?w=1200&h=700&fit=crop",
-      "https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?w=1200&h=700&fit=crop",
-      "https://images.unsplash.com/photo-1600585152220-90363fe7e115?w=1200&h=700&fit=crop",
+      "/placeholder.svg",
+      "/placeholder.svg",
+      "/placeholder.svg",
+      "/placeholder.svg",
+      "/placeholder.svg",
+      "/placeholder.svg",
     ],
     materials: ["Sunbrella® Fabrics", "Interpon Coating", "Premium Aluminium", "Quick-dry Foam"],
     products: [
-      { name: "Bella 3-Seat Reclining Sofa", type: "Sofa", img: "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=500&h=500&fit=crop" },
-      { name: "Bella 2-Seat Reclining Sofa", type: "Sofa", img: "https://images.unsplash.com/photo-1506439773649-6e0eb8cfb237?w=500&h=500&fit=crop" },
-      { name: "Bella Reclining Dining Set", type: "Dining Set", img: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=500&h=500&fit=crop" },
-      { name: "Bella Dining Table", type: "Table", img: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=500&h=500&fit=crop" },
-      { name: "Bella Dining Chair", type: "Chair", img: "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c0?w=500&h=500&fit=crop" },
-      { name: "Bella Coffee Table", type: "Coffee Table", img: "https://images.unsplash.com/photo-1618220179428-22790b461013?w=500&h=500&fit=crop" },
+      { name: "Bella 3-Seat Reclining Sofa", type: "Sofa", img: "/placeholder.svg" },
+      { name: "Bella 2-Seat Reclining Sofa", type: "Sofa", img: "/placeholder.svg" },
+      { name: "Bella Reclining Dining Set", type: "Dining Set", img: "/placeholder.svg" },
+      { name: "Bella Dining Table", type: "Table", img: "/placeholder.svg" },
+      { name: "Bella Dining Chair", type: "Chair", img: "/placeholder.svg" },
+      { name: "Bella Coffee Table", type: "Coffee Table", img: "/placeholder.svg" },
     ],
     otherCollections: [
-      { name: "Oxford", img: "https://images.unsplash.com/photo-1600585152220-90363fe7e115?w=400&h=300&fit=crop" },
-      { name: "Sicily", img: "https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?w=400&h=300&fit=crop" },
-      { name: "Miami", img: "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=400&h=300&fit=crop" },
+      { name: "Oxford", img: "/placeholder.svg" },
+      { name: "Sicily", img: "/placeholder.svg" },
+      { name: "Miami", img: "/placeholder.svg" },
     ],
   };
 
@@ -141,7 +143,7 @@ const COLLECTION_DETAIL = () => {
           <div className="la" style={{marginBottom:24}} />
           <p className="fs" style={{fontSize:14,lineHeight:1.8,color:"var(--stone-l)",fontWeight:300}}>{collection.desc}</p>
           <div style={{display:"flex",gap:12,marginTop:28}}>
-            <a href="#" className="cb cd">Request a quote</a>
+            <a href="#" className="cb cd" onClick={(e)=>{e.preventDefault();navigate('/contact')}}>Request a quote</a>
           </div>
         </div>
         <div>
@@ -180,14 +182,14 @@ const COLLECTION_DETAIL = () => {
         </div>
         <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:24,maxWidth:1100}}>
           {collection.products.map((p)=>(
-            <div key={p.name} className="prod-card">
+            <div key={p.name} className="prod-card" onClick={()=>navigate(`/product/${p.name.toLowerCase().replace(/\s+/g,'-')}`)}>
               <div style={{overflow:"hidden",borderRadius:2,marginBottom:12}}>
                 <img src={p.img} alt={p.name} />
               </div>
               <h3 className="ff" style={{fontSize:20,fontWeight:400,marginBottom:4}}>{p.name}</h3>
               <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
                 <p className="fs" style={{fontSize:11,letterSpacing:1.5,color:"var(--sand-d)",textTransform:"uppercase"}}>{p.type}</p>
-                <a href="#" className="fs" style={{fontSize:11,letterSpacing:1.5,color:"var(--gold)",textDecoration:"none",textTransform:"uppercase"}}>View →</a>
+                <span className="fs" style={{fontSize:11,letterSpacing:1.5,color:"var(--gold)",textDecoration:"none",textTransform:"uppercase"}}>View →</span>
               </div>
             </div>
           ))}
@@ -201,11 +203,11 @@ const COLLECTION_DETAIL = () => {
             <span className="fs sl">Discover more</span>
             <h2 className="ff" style={{fontSize:"clamp(28px,3.5vw,36px)",fontWeight:300,marginTop:8}}>Other Collections</h2>
           </div>
-          <a href="#" className="fs" style={{fontSize:11,letterSpacing:2,textTransform:"uppercase",color:"var(--gold)",textDecoration:"none",borderBottom:"1px solid var(--gold)",paddingBottom:2}}>View all →</a>
+          <a href="#" onClick={(e)=>{e.preventDefault();navigate('/products')}} className="fs" style={{fontSize:11,letterSpacing:2,textTransform:"uppercase",color:"var(--gold)",textDecoration:"none",borderBottom:"1px solid var(--gold)",paddingBottom:2}}>View all →</a>
         </div>
         <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:20}}>
           {collection.otherCollections.map((c)=>(
-            <div key={c.name} className="coll-card" style={{borderRadius:2}}>
+            <div key={c.name} className="coll-card" onClick={()=>navigate('/collection')} style={{borderRadius:2}}>
               <img src={c.img} alt={c.name} />
               <div style={{position:"absolute",inset:0,background:"linear-gradient(transparent 40%,rgba(0,0,0,.55))",display:"flex",flexDirection:"column",justifyContent:"flex-end",padding:28}}>
                 <h3 className="ff" style={{fontSize:28,fontWeight:400,color:"#fff"}}>{c.name}</h3>

@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import useNavLinks from "../useNavLinks";
 
 const ABOUT_PAGE = () => {
   useNavLinks();
+  const navigate = useNavigate();
   const [headerSolid] = useState(true);
   const [visibleSections, setVisibleSections] = useState(new Set());
 
@@ -61,7 +63,7 @@ const ABOUT_PAGE = () => {
       </header>
 
       {/* HERO BANNER */}
-      <section style={{position:"relative",height:"50vh",minHeight:400,paddingTop:100,background:"linear-gradient(165deg,rgba(26,26,24,.4),rgba(42,95,122,.25)),url('https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1400&h=600&fit=crop') center/cover",display:"flex",alignItems:"center",justifyContent:"center",textAlign:"center"}}>
+      <section style={{position:"relative",height:"50vh",minHeight:400,paddingTop:100,background:"linear-gradient(165deg,rgba(26,26,24,.4),rgba(42,95,122,.25)),url('/placeholder.svg') center/cover",display:"flex",alignItems:"center",justifyContent:"center",textAlign:"center"}}>
         <div>
           <span className="fs sl" style={{color:"rgba(255,255,255,.6)",display:"block",marginBottom:16,animation:"fu .8s .2s both"}}>About Status Concept</span>
           <h1 className="ff" style={{fontSize:"clamp(38px,5vw,60px)",fontWeight:300,color:"#fff",lineHeight:1.1,animation:"fu .8s .4s both"}}>Crafting Outdoor<br/>Excellence Since 2013</h1>
@@ -84,7 +86,7 @@ const ABOUT_PAGE = () => {
             Our success is linked to a passion and vast experience acquired over more than a decade of providing elegant furniture to residences across Europe.
           </p>
         </div>
-        <div style={{background:"url('https://images.unsplash.com/photo-1600566753190-17f0baa2a6c0?w=700&h=700&fit=crop') center/cover",minHeight:500}} />
+        <div style={{background:"url('/placeholder.svg') center/cover",minHeight:500}} />
       </section>
 
       {/* VALUES / STATS */}
@@ -123,19 +125,19 @@ const ABOUT_PAGE = () => {
           {[
             {
               title: "Sunbrella® Fabrics",
-              img: "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=400&h=300&fit=crop",
+              img: "/placeholder.svg",
               points: ["UV resistant", "Water & stain resistant", "Breathable & mold resistant", "Easy care with soapy water", "Color-fast through the core"],
               desc: "Sunbrella® fibres are steeped in top quality dyes during manufacturing when the acrylic is still liquid, coloring yarn all the way to the core for lasting vibrancy.",
             },
             {
               title: "Interpon Powder Coating",
-              img: "https://images.unsplash.com/photo-1600585152220-90363fe7e115?w=400&h=300&fit=crop",
+              img: "/placeholder.svg",
               points: ["Corrosion protection", "UV stability", "Scratch resistant", "Environmentally friendly", "Premium finish"],
               desc: "Our aluminium frames are treated with Interpon powder coating, providing a durable protective layer that withstands the coastal elements while maintaining a flawless appearance.",
             },
             {
               title: "Microfiber Leather",
-              img: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=400&h=300&fit=crop",
+              img: "/placeholder.svg",
               points: ["Highest grade synthetic", "Natural leather simulation", "Sea-island fibre base", "Superior durability", "Low maintenance"],
               desc: "The highest grade synthetic leather, simulating the structure of natural leather using sea-island microfiber technology for unmatched outdoor performance.",
             },
@@ -173,7 +175,7 @@ const ABOUT_PAGE = () => {
           <p className="fs" style={{fontSize:14,lineHeight:1.8,color:"rgba(255,255,255,.7)",fontWeight:300,marginBottom:24}}>
             Our team will clean and care for your outdoor furniture for the upcoming winter or at your request — ensuring every piece stays as immaculate as the day it was delivered.
           </p>
-          <a href="#" className="cb cl">Book a service</a>
+          <a href="#" className="cb cl" onClick={(e)=>{e.preventDefault();navigate('/contact')}}>Book a service</a>
         </div>
         <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:20}}>
           {[
@@ -195,8 +197,8 @@ const ABOUT_PAGE = () => {
         <h2 className="ff" style={{fontSize:"clamp(28px,3.5vw,40px)",fontWeight:300,marginBottom:16}}>Ready to Transform Your Outdoor Space?</h2>
         <p className="fs" style={{fontSize:14,color:"var(--stone-l)",maxWidth:500,margin:"0 auto 28px",fontWeight:300,lineHeight:1.7}}>Visit our showrooms or get in touch. We'll help you create the outdoor living experience your home deserves.</p>
         <div style={{display:"flex",gap:12,justifyContent:"center"}}>
-          <a href="#" className="cb cd">Visit showroom</a>
-          <a href="#" className="cb" style={{color:"var(--gold)",borderColor:"var(--gold)",background:"transparent"}}>Request a quote</a>
+          <a href="#" className="cb cd" onClick={(e)=>{e.preventDefault();navigate('/contact')}}>Visit showroom</a>
+          <a href="#" className="cb" onClick={(e)=>{e.preventDefault();navigate('/contact')}} style={{color:"var(--gold)",borderColor:"var(--gold)",background:"transparent"}}>Request a quote</a>
         </div>
       </section>
 

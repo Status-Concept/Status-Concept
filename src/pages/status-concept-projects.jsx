@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import useNavLinks from "../useNavLinks";
 
 const PROJECTS_PAGE = () => {
   useNavLinks();
+  const navigate = useNavigate();
   const [visibleSections, setVisibleSections] = useState(new Set());
   const [activeProject, setActiveProject] = useState(null);
   const [filter, setFilter] = useState("all");
@@ -22,12 +24,12 @@ const PROJECTS_PAGE = () => {
   const projects = [
     {
       name: "Villa Serena", location: "Quinta do Lago", type: "villa",
-      img: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=700&h=500&fit=crop",
-      detail: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1200&h=700&fit=crop",
+      img: "/placeholder.svg",
+      detail: "/placeholder.svg",
       gallery: [
-        "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=600&h=400&fit=crop",
-        "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=600&h=400&fit=crop",
-        "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=600&h=400&fit=crop",
+        "/placeholder.svg",
+        "/placeholder.svg",
+        "/placeholder.svg",
       ],
       desc: "A stunning contemporary villa overlooking the Ria Formosa natural park. We furnished the entire outdoor living area with the Oxford modular collection, complemented by Glatz parasols and a custom outdoor kitchen installation.",
       products: ["Oxford Modular Sofa", "Glatz Sunwing Parasol", "Custom Outdoor Kitchen", "Laguna Dining Set"],
@@ -35,12 +37,12 @@ const PROJECTS_PAGE = () => {
     },
     {
       name: "Residence Vale Royal", location: "Vale do Lobo", type: "villa",
-      img: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=700&h=500&fit=crop",
-      detail: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1200&h=700&fit=crop",
+      img: "/placeholder.svg",
+      detail: "/placeholder.svg",
       gallery: [
-        "https://images.unsplash.com/photo-1600607687644-c7171b42498f?w=600&h=400&fit=crop",
-        "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=600&h=400&fit=crop",
-        "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c0?w=600&h=400&fit=crop",
+        "/placeholder.svg",
+        "/placeholder.svg",
+        "/placeholder.svg",
       ],
       desc: "This beachfront property required furniture that could withstand the Atlantic coastal elements while maintaining elegance. The Bella reclining collection proved the perfect match, with the Antalya daybed as the pool centrepiece.",
       products: ["Bella Reclining Sofa Set", "Antalya Daybed", "MAUI Sun Loungers", "Naples Coffee Table"],
@@ -48,12 +50,12 @@ const PROJECTS_PAGE = () => {
     },
     {
       name: "Villa Mimosa", location: "Vilamoura", type: "villa",
-      img: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=700&h=500&fit=crop",
-      detail: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1200&h=700&fit=crop",
+      img: "/placeholder.svg",
+      detail: "/placeholder.svg",
       gallery: [
-        "https://images.unsplash.com/photo-1600585152220-90363fe7e115?w=600&h=400&fit=crop",
-        "https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?w=600&h=400&fit=crop",
-        "https://images.unsplash.com/photo-1618220179428-22790b461013?w=600&h=400&fit=crop",
+        "/placeholder.svg",
+        "/placeholder.svg",
+        "/placeholder.svg",
       ],
       desc: "An expansive marina-facing terrace transformed into a seamless indoor-outdoor entertainment space. We installed the Sicily modular system across three distinct zones — lounge, dining, and a sunbathing area with Crete loungers.",
       products: ["Sicily Modular Set", "Crete Sun Loungers", "Munich Dining Table", "Bioclimatic Pergola"],
@@ -61,12 +63,12 @@ const PROJECTS_PAGE = () => {
     },
     {
       name: "Casa Algarvia", location: "Almancil", type: "villa",
-      img: "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c0?w=700&h=500&fit=crop",
-      detail: "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c0?w=1200&h=700&fit=crop",
+      img: "/placeholder.svg",
+      detail: "/placeholder.svg",
       gallery: [
-        "https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=600&h=400&fit=crop",
-        "https://images.unsplash.com/photo-1506439773649-6e0eb8cfb237?w=600&h=400&fit=crop",
-        "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=600&h=400&fit=crop",
+        "/placeholder.svg",
+        "/placeholder.svg",
+        "/placeholder.svg",
       ],
       desc: "A traditional Algarve quinta reimagined for modern living. The courtyard features the Cairo sofa set under a retractable pergola, with the Laguna dining collection positioned for alfresco meals under the stars.",
       products: ["Cairo Sofa Set", "Laguna Dining Set", "Retractable Pergola", "Zanzibar Coffee Table"],
@@ -74,11 +76,11 @@ const PROJECTS_PAGE = () => {
     },
     {
       name: "Penthouse Azure", location: "Tavira", type: "apartment",
-      img: "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=700&h=500&fit=crop",
-      detail: "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=1200&h=700&fit=crop",
+      img: "/placeholder.svg",
+      detail: "/placeholder.svg",
       gallery: [
-        "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=600&h=400&fit=crop",
-        "https://images.unsplash.com/photo-1600607687644-c7171b42498f?w=600&h=400&fit=crop",
+        "/placeholder.svg",
+        "/placeholder.svg",
       ],
       desc: "A rooftop terrace with panoramic views over the Gilão River. Space-efficient Reno balcony furniture paired with a compact BBQ cart created the ultimate urban outdoor retreat.",
       products: ["Reno Balcony Set", "BBQ Cart", "Glatz Parasol", "Dijon Poufs"],
@@ -86,11 +88,11 @@ const PROJECTS_PAGE = () => {
     },
     {
       name: "Villa Oceânica", location: "Carvoeiro", type: "villa",
-      img: "https://images.unsplash.com/photo-1600585152220-90363fe7e115?w=700&h=500&fit=crop",
-      detail: "https://images.unsplash.com/photo-1600585152220-90363fe7e115?w=1200&h=700&fit=crop",
+      img: "/placeholder.svg",
+      detail: "/placeholder.svg",
       gallery: [
-        "https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?w=600&h=400&fit=crop",
-        "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=600&h=400&fit=crop",
+        "/placeholder.svg",
+        "/placeholder.svg",
       ],
       desc: "Perched on the clifftops with dramatic ocean views, this property demanded furniture as bold as its setting. The Miami collection with its clean contemporary lines complemented the architectural vision perfectly.",
       products: ["Miami Sofa Set", "Florida Dining Table", "Bonaire Sun Loungers", "Sophia Gazebo"],
@@ -150,7 +152,7 @@ const PROJECTS_PAGE = () => {
       </header>
 
       {/* PAGE HERO */}
-      <section style={{position:"relative",height:"45vh",minHeight:360,paddingTop:100,background:"linear-gradient(165deg,rgba(26,26,24,.4),rgba(42,95,122,.2)),url('https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1400&h=600&fit=crop') center/cover",display:"flex",alignItems:"center",justifyContent:"center",textAlign:"center"}}>
+      <section style={{position:"relative",height:"45vh",minHeight:360,paddingTop:100,background:"linear-gradient(165deg,rgba(26,26,24,.4),rgba(42,95,122,.2)),url('/placeholder.svg') center/cover",display:"flex",alignItems:"center",justifyContent:"center",textAlign:"center"}}>
         <div>
           <span className="fs sl" style={{color:"rgba(255,255,255,.6)",display:"block",marginBottom:16,animation:"fu .8s .2s both"}}>Our portfolio</span>
           <h1 className="ff" style={{fontSize:"clamp(38px,5vw,60px)",fontWeight:300,color:"#fff",lineHeight:1.1,animation:"fu .8s .4s both"}}>Featured Projects</h1>
@@ -231,7 +233,7 @@ const PROJECTS_PAGE = () => {
 
               {/* CTA */}
               <div style={{marginTop:28,display:"flex",gap:12}}>
-                <a href="#" className="cb cd">Request similar project</a>
+                <a href="#" className="cb cd" onClick={(e)=>{e.preventDefault();navigate('/contact')}}>Request similar project</a>
                 <a href="#" className="fs" style={{padding:"14px 28px",border:"1px solid var(--sand)",color:"var(--ocean)",textDecoration:"none",fontSize:12,letterSpacing:2,textTransform:"uppercase",display:"inline-flex",alignItems:"center",transition:"all .4s"}}>Contact us</a>
               </div>
             </div>
@@ -244,7 +246,7 @@ const PROJECTS_PAGE = () => {
         <span className="fs" style={{fontSize:11,letterSpacing:3,textTransform:"uppercase",color:"var(--gold)",display:"block",marginBottom:16}}>Your project next?</span>
         <h2 className="ff" style={{fontSize:"clamp(28px,4vw,44px)",fontWeight:300,marginBottom:16}}>Let Us Furnish Your Vision</h2>
         <p className="fs" style={{fontSize:14,color:"rgba(255,255,255,.6)",maxWidth:500,margin:"0 auto 28px",fontWeight:300,lineHeight:1.7}}>Whether it's a new build, renovation, or complete outdoor transformation — our team will create a bespoke proposal tailored to your space.</p>
-        <a href="#" className="cb" style={{color:"#fff",borderColor:"var(--gold)",background:"var(--gold)"}}>Start your project</a>
+        <a href="#" className="cb" onClick={(e)=>{e.preventDefault();navigate('/contact')}} style={{color:"#fff",borderColor:"var(--gold)",background:"var(--gold)"}}>Start your project</a>
       </section>
 
       {/* FOOTER */}
