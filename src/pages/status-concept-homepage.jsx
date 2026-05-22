@@ -277,21 +277,91 @@ const STATUS_CONCEPT_HOMEPAGE = () => {
       </section>
 
       {/* SHOWROOMS */}
-      <section id="shows" data-animate style={{padding:"100px 48px",...S.section("shows")}}>
-        <div style={{textAlign:"center",marginBottom:56}}>
-          <span className="fs sl">Visit us</span>
-          <h2 className="ff" style={{fontSize:"clamp(32px,4vw,48px)",fontWeight:300,marginTop:12}}>Our Showrooms</h2>
-        </div>
-        <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:32,maxWidth:1000,margin:"0 auto"}}>
-          {[{name:"Quinta do Lago",addr:"Estr. Quinta do Lago-Vale do Lobo\n8135-106 Almancil",ph:"+351 289 030 179",img:"/placeholder.svg"},{name:"Almancil",addr:"Avenida 5 de Outubro 298\n8135-103 Almancil",ph:"+351 289 092 890",img:"/placeholder.svg"}].map(s=>(
-            <div key={s.name} style={{cursor:"pointer"}} onClick={()=>navigate('/contact')}>
-              <div style={{overflow:"hidden",borderRadius:2,marginBottom:20,height:280}}>
-                <img src={s.img} alt={s.name} style={{width:"100%",height:"100%",objectFit:"cover",transition:"transform .8s"}} onMouseEnter={e=>e.target.style.transform="scale(1.04)"} onMouseLeave={e=>e.target.style.transform="scale(1)"}/>
+      <section id="shows" data-animate style={{...S.section("shows")}}>
+        {/* Full-width hero banner */}
+        <div style={{position:"relative",height:500,overflow:"hidden",background:"linear-gradient(135deg,var(--stone) 0%,var(--stone-l) 100%)"}}>
+          <div style={{position:"absolute",inset:0,display:"grid",gridTemplateColumns:"1fr 1fr"}}>
+            {[{name:"Quinta do Lago",img:"/placeholder.svg"},{name:"Almancil",img:"/placeholder.svg"}].map((s,i)=>(
+              <div key={s.name} style={{position:"relative",overflow:"hidden",cursor:"pointer"}} onClick={()=>navigate('/contact')}>
+                <img src={s.img} alt={s.name} style={{width:"100%",height:"100%",objectFit:"cover",transition:"transform 1.2s cubic-bezier(.22,1,.36,1),filter .6s",filter:"brightness(.55)"}}
+                  onMouseEnter={e=>{e.target.style.transform="scale(1.08)";e.target.style.filter="brightness(.4)"}}
+                  onMouseLeave={e=>{e.target.style.transform="scale(1)";e.target.style.filter="brightness(.55)"}} />
+                {i===0 && <div style={{position:"absolute",top:0,right:0,bottom:0,width:1,background:"rgba(255,255,255,.15)"}} />}
+                <div style={{position:"absolute",bottom:0,left:0,right:0,padding:"40px 48px",background:"linear-gradient(transparent,rgba(0,0,0,.5))"}}>
+                  <span className="fs" style={{fontSize:10,letterSpacing:3,textTransform:"uppercase",color:"var(--gold-l)",display:"block",marginBottom:8}}>Showroom {String(i+1).padStart(2,'0')}</span>
+                  <h3 className="ff" style={{fontSize:"clamp(28px,3.5vw,40px)",fontWeight:300,color:"#fff",marginBottom:4}}>{s.name}</h3>
+                  <span className="fs" style={{fontSize:11,letterSpacing:2,textTransform:"uppercase",color:"rgba(255,255,255,.5)",display:"flex",alignItems:"center",gap:6}}>
+                    Visit showroom <span style={{display:"inline-block",width:20,height:1,background:"var(--gold)"}}/>
+                  </span>
+                </div>
               </div>
-              <h3 className="ff" style={{fontSize:24,fontWeight:400,marginBottom:8}}>Showroom {s.name}</h3>
-              <p className="fs" style={{fontSize:13,color:"var(--sand-d)",lineHeight:1.6,whiteSpace:"pre-line"}}>{s.addr}</p>
-              <p className="fs" style={{fontSize:13,color:"var(--ocean)",marginTop:8}}>{s.ph}</p>
-              <a href="#" className="fs" style={{display:"inline-block",marginTop:12,fontSize:11,letterSpacing:2,textTransform:"uppercase",color:"var(--gold)",textDecoration:"none",borderBottom:"1px solid var(--gold)",paddingBottom:2}}>Get directions →</a>
+            ))}
+          </div>
+          {/* Centered title overlay */}
+          <div style={{position:"absolute",top:"50%",left:"50%",transform:"translate(-50%,-50%)",textAlign:"center",zIndex:2,pointerEvents:"none"}}>
+            <span className="fs" style={{fontSize:11,letterSpacing:5,textTransform:"uppercase",color:"var(--gold-l)",display:"block",marginBottom:12}}>Visit us</span>
+            <h2 className="ff" style={{fontSize:"clamp(36px,5vw,56px)",fontWeight:300,color:"#fff",lineHeight:1.1,textShadow:"0 2px 40px rgba(0,0,0,.5)"}}>Our Showrooms</h2>
+            <div style={{width:60,height:1,background:"var(--gold)",margin:"20px auto 0"}} />
+          </div>
+          {/* Corner accents */}
+          <div style={{position:"absolute",top:32,left:48,width:50,height:50,borderLeft:"1px solid rgba(255,255,255,.15)",borderTop:"1px solid rgba(255,255,255,.15)"}} />
+          <div style={{position:"absolute",bottom:32,right:48,width:50,height:50,borderRight:"1px solid rgba(255,255,255,.15)",borderBottom:"1px solid rgba(255,255,255,.15)"}} />
+        </div>
+
+        {/* Showroom details strip */}
+        <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",background:"var(--stone)",borderTop:"1px solid rgba(255,255,255,.06)"}}>
+          {[
+            {name:"Quinta do Lago",addr:"Estr. Quinta do Lago-Vale do Lobo, 8135-106 Almancil",ph:"+351 289 030 179",mob:"+351 937 573 600",desc:"Our flagship showroom on the road between Quinta do Lago and Vale do Lobo — experience the full collection in person."},
+            {name:"Almancil",addr:"Avenida 5 de Outubro 298, 8135-103 Almancil",ph:"+351 289 092 890",mob:"+351 937 573 600",desc:"Our Almancil location on the main avenue — easily accessible, featuring outdoor furniture, shade solutions, and kitchen displays."},
+          ].map((s,i)=>(
+            <div key={s.name} style={{padding:"40px 48px",borderRight:i===0?"1px solid rgba(255,255,255,.06)":"none",cursor:"pointer",transition:"background .4s"}}
+              onClick={()=>navigate('/contact')}
+              onMouseEnter={e=>e.currentTarget.style.background="rgba(255,255,255,.03)"}
+              onMouseLeave={e=>e.currentTarget.style.background="transparent"}>
+              <div style={{display:"flex",alignItems:"center",gap:12,marginBottom:16}}>
+                <div style={{width:36,height:36,borderRadius:"50%",border:"1px solid var(--gold)",display:"flex",alignItems:"center",justifyContent:"center"}}>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                </div>
+                <div>
+                  <h3 className="ff" style={{fontSize:22,fontWeight:400,color:"#fff"}}>{s.name}</h3>
+                </div>
+              </div>
+              <p className="fs" style={{fontSize:13,color:"rgba(255,255,255,.5)",lineHeight:1.7,fontWeight:300,marginBottom:20}}>{s.desc}</p>
+              <div style={{display:"flex",flexDirection:"column",gap:10}}>
+                <div className="fs" style={{display:"flex",alignItems:"center",gap:10,fontSize:12}}>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--sand-d)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                  <span style={{color:"rgba(255,255,255,.6)"}}>{s.addr}</span>
+                </div>
+                <div className="fs" style={{display:"flex",alignItems:"center",gap:10,fontSize:12}}>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--sand-d)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                  <span style={{color:"var(--ocean-l)"}}>{s.ph}</span>
+                </div>
+                <div className="fs" style={{display:"flex",alignItems:"center",gap:10,fontSize:12}}>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--sand-d)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+                  <span style={{color:"var(--ocean-l)"}}>{s.mob}</span>
+                </div>
+              </div>
+              <div style={{marginTop:20,display:"flex",gap:16,alignItems:"center"}}>
+                <span className="fs" style={{fontSize:11,letterSpacing:2.5,textTransform:"uppercase",color:"var(--gold)",borderBottom:"1px solid var(--gold)",paddingBottom:2}}>Get directions →</span>
+                <span className="fs" style={{fontSize:11,letterSpacing:2.5,textTransform:"uppercase",color:"rgba(255,255,255,.4)"}}>Book a visit →</span>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Hours bar */}
+        <div style={{background:"var(--cream-w)",padding:"28px 48px",display:"flex",justifyContent:"center",gap:48,alignItems:"center",borderBottom:"1px solid var(--sand-l)"}}>
+          {[
+            {label:"Mon – Fri",value:"10:00 – 18:30"},
+            {label:"Saturday",value:"10:00 – 13:00"},
+            {label:"Sunday",value:"Closed"},
+          ].map((h,i)=>(
+            <div key={h.label} style={{display:"flex",alignItems:"center",gap:i<2?48:0}}>
+              <div style={{textAlign:"center"}}>
+                <span className="fs" style={{fontSize:10,letterSpacing:2.5,textTransform:"uppercase",color:"var(--sand-d)",display:"block",marginBottom:4}}>{h.label}</span>
+                <span className="fs" style={{fontSize:14,fontWeight:400,color:h.value==="Closed"?"var(--sand-d)":"var(--stone)",letterSpacing:.5}}>{h.value}</span>
+              </div>
+              {i<2 && <div style={{width:1,height:28,background:"var(--sand-l)"}} />}
             </div>
           ))}
         </div>
