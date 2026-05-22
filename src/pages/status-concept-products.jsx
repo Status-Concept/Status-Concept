@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import useNavLinks from "../useNavLinks";
+import FavoriteButton from "../FavoriteButton";
 
 const PRODUCTS_PAGE = () => {
   useNavLinks();
@@ -167,6 +168,11 @@ const PRODUCTS_PAGE = () => {
               onMouseLeave={() => setHoveredProduct(null)}
               style={{animation: `fu .6s ${0.05 * i}s both`}}>
               {p.tag && <span className={`tag ${p.tag === "New" ? "tag-new" : "tag-popular"}`}>{p.tag}</span>}
+              <FavoriteButton
+                product={{id:p.name.toLowerCase().replace(/\s+/g,'-'),name:p.name,collection:p.collection,img:p.img,category:p.category,route:`/product/${p.collection.toLowerCase()}`}}
+                size={16}
+                style={{position:"absolute",top:12,right:12,zIndex:3}}
+              />
               <img src={p.img} alt={p.name} />
               <div className="card-overlay" />
               <span className="card-cta fs" style={{fontSize:"11px",letterSpacing:"2.5px",textTransform:"uppercase",color:"#fff",borderBottom:"1px solid rgba(255,255,255,.5)",paddingBottom:"2px"}}>View details</span>

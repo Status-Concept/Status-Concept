@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import useNavLinks from "../useNavLinks";
+import FavoriteButton from "../FavoriteButton";
 
 const PRODUCT_DETAIL = () => {
   useNavLinks();
@@ -140,6 +141,11 @@ const PRODUCT_DETAIL = () => {
           <div style={{overflow:"hidden",borderRadius:2,marginBottom:16,position:"relative",background:"var(--cream-w)"}}>
             <img src={product.images[activeImg]} alt={product.name} style={{width:"100%",aspectRatio:"1",objectFit:"cover",transition:"opacity .4s"}} />
             <span className="fs" style={{position:"absolute",top:16,left:16,padding:"4px 12px",background:"var(--gold)",color:"#fff",fontSize:10,letterSpacing:2,textTransform:"uppercase"}}>New</span>
+            <FavoriteButton
+              product={{id:"sicily-modular-set",name:product.name,collection:product.collection,img:product.images[0],route:"/product/sicily"}}
+              size={20}
+              style={{position:"absolute",top:16,right:16}}
+            />
           </div>
           <div style={{display:"flex",gap:8}}>
             {product.images.map((img, i) => (
@@ -247,7 +253,12 @@ const PRODUCT_DETAIL = () => {
         <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:24}}>
           {product.related.map((r)=>(
             <div key={r.name} className="related-card" onClick={()=>navigate(`/product/${r.collection.toLowerCase()}`)}>
-              <div style={{overflow:"hidden",borderRadius:2,marginBottom:12}}>
+              <div style={{overflow:"hidden",borderRadius:2,marginBottom:12,position:"relative"}}>
+                <FavoriteButton
+                  product={{id:r.name.toLowerCase().replace(/\s+/g,'-'),name:r.name,collection:r.collection,img:r.img,route:`/product/${r.collection.toLowerCase()}`}}
+                  size={16}
+                  style={{position:"absolute",top:12,right:12,zIndex:3}}
+                />
                 <img src={r.img} alt={r.name} />
               </div>
               <h3 className="ff" style={{fontSize:20,fontWeight:400,marginBottom:4}}>{r.name}</h3>

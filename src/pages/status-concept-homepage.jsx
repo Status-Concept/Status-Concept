@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import useNavLinks from "../useNavLinks";
+import FavoriteButton from "../FavoriteButton";
 
 const STATUS_CONCEPT_HOMEPAGE = () => {
   useNavLinks();
@@ -186,6 +187,11 @@ const STATUS_CONCEPT_HOMEPAGE = () => {
         <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:20,maxWidth:1200,margin:"0 auto"}}>
           {collections[activeTab].map((c,i)=>(
             <div key={c.name} className="cc" onClick={()=>navigate('/collection')} style={{height:i===0||i===3?440:360}}>
+              <FavoriteButton
+                product={{id:`collection-${c.name.toLowerCase()}`,name:c.name,collection:c.name,img:c.img,route:'/collection'}}
+                size={16}
+                style={{position:"absolute",top:12,right:12,zIndex:3}}
+              />
               <img src={c.img} alt={c.name}/>
               <div className="ov">
                 <h3 className="ff" style={{fontSize:26,fontWeight:400,color:"#fff",marginBottom:4}}>{c.name}</h3>

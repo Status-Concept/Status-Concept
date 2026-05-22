@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import useNavLinks from "../useNavLinks";
+import FavoriteButton from "../FavoriteButton";
 
 const COLLECTION_DETAIL = () => {
   useNavLinks();
@@ -183,7 +184,12 @@ const COLLECTION_DETAIL = () => {
         <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:24,maxWidth:1100}}>
           {collection.products.map((p)=>(
             <div key={p.name} className="prod-card" onClick={()=>navigate(`/product/${p.name.toLowerCase().replace(/\s+/g,'-')}`)}>
-              <div style={{overflow:"hidden",borderRadius:2,marginBottom:12}}>
+              <div style={{overflow:"hidden",borderRadius:2,marginBottom:12,position:"relative"}}>
+                <FavoriteButton
+                  product={{id:p.name.toLowerCase().replace(/\s+/g,'-'),name:p.name,collection:"Bella",img:p.img,route:`/product/${p.name.toLowerCase().replace(/\s+/g,'-')}`}}
+                  size={16}
+                  style={{position:"absolute",top:12,right:12,zIndex:3}}
+                />
                 <img src={p.img} alt={p.name} />
               </div>
               <h3 className="ff" style={{fontSize:20,fontWeight:400,marginBottom:4}}>{p.name}</h3>
