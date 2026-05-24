@@ -9,7 +9,7 @@ const PRODUCTS_PAGE = () => {
   const [headerSolid, setHeaderSolid] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeCategory, setActiveCategory] = useState("all");
-  const [visibleSections, setVisibleSections] = useState(new Set());
+  const [visibleSections, setVisibleSections] = useState(new Set(["filters", "grid"]));
   const [hoveredProduct, setHoveredProduct] = useState(null);
 
   useEffect(() => {
@@ -176,9 +176,12 @@ const PRODUCTS_PAGE = () => {
               <img src={p.img} alt={p.name} />
               <div className="card-overlay" />
               <span className="card-cta fs" style={{fontSize:"11px",letterSpacing:"2.5px",textTransform:"uppercase",color:"#fff",borderBottom:"1px solid rgba(255,255,255,.5)",paddingBottom:"2px"}}>View details</span>
-              <div style={{padding:"16px 0 8px"}}>
-                <h3 className="ff" style={{fontSize:"20px",fontWeight:400,marginBottom:"4px"}}>{p.name}</h3>
-                <p className="fs" style={{fontSize:"11px",letterSpacing:"1.5px",color:"var(--sand-d)",textTransform:"uppercase"}}>{p.collection} Collection</p>
+              <div style={{padding:"18px 0 10px",borderTop:"1px solid var(--sand-l)"}}>
+                <h3 className="ff" style={{fontSize:"21px",fontWeight:400,marginBottom:"6px",letterSpacing:".3px"}}>{p.name}</h3>
+                <div style={{display:"flex",alignItems:"center",justifyContent:"space-between"}}>
+                  <p className="fs" style={{fontSize:"10px",letterSpacing:"1.5px",color:"var(--sand-d)",textTransform:"uppercase"}}>{p.collection}</p>
+                  <span className="fs" style={{fontSize:"10px",letterSpacing:"1px",color:"var(--ocean)",opacity:.75}}>View →</span>
+                </div>
               </div>
             </div>
           ))}

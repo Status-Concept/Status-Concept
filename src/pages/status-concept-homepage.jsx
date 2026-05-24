@@ -109,13 +109,39 @@ const STATUS_CONCEPT_HOMEPAGE = () => {
         .mo.op{transform:translateX(0)}
         .moo{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.4);z-index:999;opacity:0;pointer-events:none;transition:opacity .4s}
         .moo.op{opacity:1;pointer-events:all}
+        .cat-item{padding:40px 32px;cursor:pointer;transition:background .5s;position:relative;overflow:hidden;border-right:1px solid var(--sand-l);border-bottom:1px solid var(--sand-l)}
+        .cat-item:hover{background:var(--stone)}
+        .cat-n{font-family:'Cormorant Garamond',Georgia,serif;font-size:22px;font-weight:400;color:var(--stone);display:block;margin-bottom:8px;position:relative;transition:color .5s}
+        .cat-item:hover .cat-n{color:#fff}
+        .cat-s{font-family:'Outfit',sans-serif;font-size:10px;letter-spacing:2px;color:var(--sand-d);text-transform:uppercase;position:relative;transition:color .5s}
+        .cat-item:hover .cat-s{color:rgba(255,255,255,.4)}
+        .cat-bg{font-family:'Cormorant Garamond',Georgia,serif;font-size:88px;font-weight:300;color:var(--sand-l);position:absolute;bottom:-8px;right:12px;line-height:1;transition:color .5s;pointer-events:none;user-select:none}
+        .cat-item:hover .cat-bg{color:rgba(255,255,255,.06)}
+        .cat-arrow{position:absolute;bottom:20px;right:24px;opacity:0;font-family:'Outfit',sans-serif;font-size:11px;letter-spacing:2px;color:var(--gold);transition:all .4s;transform:translateX(-6px)}
+        .cat-item:hover .cat-arrow{opacity:1;transform:translateX(0)}
+        .si{display:flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;transition:background .3s;text-decoration:none;color:inherit;flex-shrink:0}
+        .si:hover{background:rgba(255,255,255,.12)}
+        @keyframes mk{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+        .marquee-wrap{overflow:hidden;border-top:1px solid var(--sand-l);border-bottom:1px solid var(--sand-l);padding:14px 0;background:var(--cream)}
+        .marquee-track{display:flex;width:max-content;animation:mk 28s linear infinite}
+        .marquee-item{font-family:'Outfit',sans-serif;font-size:10px;letter-spacing:4px;text-transform:uppercase;color:var(--sand-d);padding:0 40px;white-space:nowrap}
+        .marquee-dot{color:var(--gold);padding:0 4px}
       `}</style>
 
       {/* HEADER */}
       <header style={{position:"fixed",top:0,left:0,right:0,zIndex:100,background:headerSolid?"rgba(250,249,246,.97)":"transparent",backdropFilter:headerSolid?"blur(12px)":"none",borderBottom:headerSolid?"1px solid rgba(196,181,160,.3)":"1px solid transparent",transition:"all .5s"}}>
         <div className="fs" style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"8px 48px",fontSize:"11px",letterSpacing:"1.5px",color:headerSolid?"var(--sand-d)":"rgba(255,255,255,.7)",borderBottom:headerSolid?"1px solid rgba(196,181,160,.15)":"1px solid rgba(255,255,255,.1)",transition:"all .5s"}}>
           <div style={{display:"flex",gap:"24px",alignItems:"center"}}><span>+351 289 030 179</span><span style={{opacity:.4}}>|</span><span>info@statusconcept.com</span></div>
-          <div style={{display:"flex",gap:"16px"}}>{["Fb","Ig","Pi","Li"].map(s=><span key={s} style={{cursor:"pointer",opacity:.7}}>{s}</span>)}</div>
+          <div style={{display:"flex",gap:"2px",alignItems:"center"}}>
+            {[
+              {n:"Facebook",svg:<svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>},
+              {n:"Instagram",svg:<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>},
+              {n:"Pinterest",svg:<svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12c0 4.24 2.65 7.86 6.39 9.29-.09-.78-.17-1.98.03-2.83.18-.77 1.19-5.03 1.19-5.03s-.3-.61-.3-1.51c0-1.41.82-2.46 1.84-2.46.87 0 1.29.65 1.29 1.44 0 .88-.56 2.19-.85 3.4-.24 1.01.5 1.84 1.5 1.84 1.8 0 3.18-1.9 3.18-4.64 0-2.43-1.74-4.13-4.24-4.13-2.88 0-4.58 2.16-4.58 4.4 0 .87.33 1.8.75 2.31.07.09.1.2.07.29l-.28 1.15c-.04.18-.15.22-.34.13C5.61 14.94 5 13.2 5 11.45c0-3.19 2.32-6.13 6.7-6.13 3.52 0 6.25 2.51 6.25 5.86 0 3.49-2.2 6.3-5.26 6.3-1.03 0-1.99-.53-2.32-1.16l-.63 2.41c-.23.88-.85 1.98-1.26 2.66.95.29 1.96.45 3 .45 5.52 0 10-4.48 10-10S17.52 2 12 2z"/></svg>},
+              {n:"LinkedIn",svg:<svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>},
+            ].map(({n,svg})=>(
+              <a key={n} href="#" aria-label={n} className="si" style={{opacity:.65}}>{svg}</a>
+            ))}
+          </div>
         </div>
         <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"16px 48px"}}>
           <div style={{display:"flex",alignItems:"baseline",gap:"4px",cursor:"pointer"}}>
@@ -157,7 +183,7 @@ const STATUS_CONCEPT_HOMEPAGE = () => {
         <div style={{position:"absolute",top:140,left:48,width:60,height:60,borderLeft:"1px solid rgba(255,255,255,.2)",borderTop:"1px solid rgba(255,255,255,.2)"}}/>
         <div style={{position:"absolute",bottom:40,right:48,width:60,height:60,borderRight:"1px solid rgba(255,255,255,.2)",borderBottom:"1px solid rgba(255,255,255,.2)"}}/>
         <div style={{padding:"0 48px",maxWidth:800}}>
-          <div className="fs sl" style={{color:"rgba(255,255,255,.6)",marginBottom:20,animation:"hu 1s .2s both"}}>Luxury outdoor living — Algarve, Portugal</div>
+          <div className="fs sl" style={{color:"rgba(255,255,255,.6)",marginBottom:20,animation:"hu 1s .2s both"}}>Luxury outdoor living · Algarve, Portugal</div>
           <h1 className="ff" style={{fontSize:"clamp(42px,6vw,72px)",fontWeight:300,color:"#fff",lineHeight:1.05,marginBottom:24,animation:"hu 1s .4s both"}}>Where Design<br/>Meets the Sun</h1>
           <p className="fs" style={{fontSize:15,color:"rgba(255,255,255,.7)",lineHeight:1.7,maxWidth:500,marginBottom:36,fontWeight:300,animation:"hu 1s .6s both"}}>Curated outdoor furniture of excellence for the most distinguished residences across the Algarve. From Quinta do Lago to Vilamoura — elegance, crafted for your space.</p>
           <div style={{display:"flex",gap:16,animation:"hu 1s .8s both"}}><a href="#" className="cb cl" onClick={(e)=>{e.preventDefault();navigate('/products')}}>Explore collections</a><a href="#" className="cb cg" onClick={(e)=>{e.preventDefault();navigate('/contact')}}>Visit showroom</a></div>
@@ -171,7 +197,7 @@ const STATUS_CONCEPT_HOMEPAGE = () => {
       {/* INTRO */}
       <section id="intro" data-animate style={{padding:"100px 48px",textAlign:"center",...S.section("intro")}}>
         <div className="la" style={{margin:"0 auto 28px"}}/>
-        <p className="ff" style={{fontSize:"clamp(22px,3vw,32px)",fontWeight:300,lineHeight:1.6,maxWidth:780,margin:"0 auto",color:"var(--stone-l)"}}>Proud of what we represent, understanding our customers' needs, we are committed to providing furniture of the highest quality — partnering with manufacturers where attention to detail is essential.</p>
+        <p className="ff" style={{fontSize:"clamp(22px,3vw,32px)",fontWeight:300,lineHeight:1.6,maxWidth:780,margin:"0 auto",color:"var(--stone-l)"}}>Proud of what we represent, understanding our customers' needs, we are committed to providing furniture of the highest quality, partnering with manufacturers where attention to detail is essential.</p>
         <div style={{display:"flex",justifyContent:"center",gap:24,marginTop:36}}><span className="mb">Sunbrella® Fabrics</span><span className="mb">Interpon Coating</span><span className="mb">Premium Aluminium</span></div>
       </section>
 
@@ -210,11 +236,13 @@ const STATUS_CONCEPT_HOMEPAGE = () => {
           <span className="fs sl">Browse by type</span>
           <h2 className="ff" style={{fontSize:"clamp(28px,3.5vw,40px)",fontWeight:300,marginTop:12}}>Product Categories</h2>
         </div>
-        <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:12,maxWidth:1000,margin:"0 auto"}}>
-          {cats.map(c=>(
-            <div key={c.name} className="cp" onClick={()=>navigate('/products')}>
-              <span className="ff" style={{fontSize:18,fontWeight:400}}>{c.name}</span>
-              <span className="cs fs" style={{fontSize:10,letterSpacing:1.5,color:"var(--sand-d)",transition:"color .4s"}}>{c.sub}</span>
+        <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",maxWidth:1100,margin:"0 auto",borderTop:"1px solid var(--sand-l)",borderLeft:"1px solid var(--sand-l)"}}>
+          {cats.map((c,i)=>(
+            <div key={c.name} className="cat-item" onClick={()=>navigate('/products')}>
+              <span className="cat-bg">{String(i+1).padStart(2,'0')}</span>
+              <span className="cat-n">{c.name}</span>
+              <span className="cat-s">{c.sub}</span>
+              <span className="cat-arrow">→</span>
             </div>
           ))}
         </div>
@@ -229,7 +257,7 @@ const STATUS_CONCEPT_HOMEPAGE = () => {
           <div className="law" style={{marginBottom:28}}/>
           <p className="fs" style={{fontSize:14,lineHeight:1.8,color:"rgba(255,255,255,.7)",fontWeight:300,marginBottom:32}}>We provide outdoor furniture to the most prestigious addresses in the Algarve — Vale do Lobo, Quinta do Lago, Vilamoura, Almancil, Tavira, and beyond. Our success is built on a passion and vast experience acquired over more than a decade of furnishing elegant residences across Europe.</p>
           <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:24,marginBottom:36}}>
-            {[{n:"10+",l:"Years experience"},{n:"2",l:"Showrooms"},{n:"76+",l:"Furniture pieces"},{n:"∞",l:"Customisation"}].map(s=>(
+            {[{n:"10+",l:"Years of excellence"},{n:"2",l:"Showrooms"},{n:"76+",l:"Furniture pieces"},{n:"5★",l:"Service rating"}].map(s=>(
               <div key={s.l}><div className="ff" style={{fontSize:32,fontWeight:300,color:"var(--gold)"}}>{s.n}</div><div className="fs" style={{fontSize:11,letterSpacing:1.5,color:"rgba(255,255,255,.5)",textTransform:"uppercase"}}>{s.l}</div></div>
             ))}
           </div>
@@ -367,13 +395,26 @@ const STATUS_CONCEPT_HOMEPAGE = () => {
         </div>
       </section>
 
+      {/* MARQUEE */}
+      <div className="marquee-wrap">
+        <div className="marquee-track">
+          {[...Array(2)].map((_,r)=>(
+            ["Sunbrella® Fabrics","Premium Aluminium","Glatz Parasols","Bioclimatic Pergolas","Quinta do Lago","Vale do Lobo","Vilamoura","Custom Upholstery","10+ Years Experience","Outdoor Living"].map((t,i)=>(
+              <span key={`${r}-${i}`} className="marquee-item">{t}<span className="marquee-dot">·</span></span>
+            ))
+          ))}
+        </div>
+      </div>
+
       {/* NEWSLETTER */}
-      <section style={{padding:"72px 48px",background:"var(--cream-w)",textAlign:"center",borderTop:"1px solid var(--sand-l)"}}>
+      <section style={{padding:"88px 48px",background:"var(--cream-w)",textAlign:"center",borderTop:"1px solid var(--sand-l)",backgroundImage:"radial-gradient(circle,rgba(196,181,160,.18) 1px,transparent 1px)",backgroundSize:"24px 24px"}}>
+        <div className="la" style={{margin:"0 auto 24px"}}/>
         <span className="fs sl">Stay inspired</span>
-        <h2 className="ff" style={{fontSize:28,fontWeight:300,marginTop:12,marginBottom:24}}>Join Our World</h2>
-        <div style={{display:"flex",maxWidth:480,margin:"0 auto"}}>
-          <input type="email" placeholder="Your email address" className="fs" style={{flex:1,padding:"14px 20px",border:"1px solid var(--sand)",borderRight:"none",background:"transparent",fontSize:13,letterSpacing:.5,outline:"none",color:"var(--stone)"}}/>
-          <button className="fs" style={{padding:"14px 28px",background:"var(--stone)",color:"#fff",border:"1px solid var(--stone)",fontSize:11,letterSpacing:2.5,textTransform:"uppercase",cursor:"pointer"}}>Subscribe</button>
+        <h2 className="ff" style={{fontSize:"clamp(24px,3vw,38px)",fontWeight:300,marginTop:12,marginBottom:12}}>Join Our World</h2>
+        <p className="fs" style={{fontSize:14,color:"var(--stone-l)",lineHeight:1.75,maxWidth:400,margin:"0 auto 32px",fontWeight:300}}>Receive our latest collections, project features, and seasonal care guides.</p>
+        <div style={{display:"flex",maxWidth:480,margin:"0 auto",boxShadow:"0 4px 32px rgba(0,0,0,.07)"}}>
+          <input type="email" placeholder="Your email address" className="fs" style={{flex:1,padding:"16px 20px",border:"1px solid var(--sand)",borderRight:"none",background:"#fff",fontSize:13,letterSpacing:.5,outline:"none",color:"var(--stone)"}}/>
+          <button className="fs" style={{padding:"16px 28px",background:"var(--stone)",color:"#fff",border:"none",fontSize:10,letterSpacing:3,textTransform:"uppercase",cursor:"pointer",whiteSpace:"nowrap"}}>Subscribe</button>
         </div>
       </section>
 
@@ -383,7 +424,16 @@ const STATUS_CONCEPT_HOMEPAGE = () => {
           <div>
             <div style={{marginBottom:20}}><span className="ff" style={{fontSize:24,fontWeight:500,letterSpacing:3}}>STATUS</span><span className="fs" style={{fontSize:9,letterSpacing:3,marginLeft:4,color:"rgba(255,255,255,.4)"}}>CONCEPT</span></div>
             <p className="fs" style={{fontSize:13,lineHeight:1.7,color:"rgba(255,255,255,.5)",fontWeight:300}}>High quality lifestyle furniture in the Algarve. Serving Vale do Lobo, Quinta do Lago, Vilamoura, and beyond.</p>
-            <div style={{display:"flex",gap:16,marginTop:20}}>{["Fb","Ig","Pi","Li"].map(s=><span key={s} className="fs" style={{fontSize:11,letterSpacing:1,color:"rgba(255,255,255,.4)",cursor:"pointer"}}>{s}</span>)}</div>
+            <div style={{display:"flex",gap:"2px",marginTop:20}}>
+              {[
+                {n:"Facebook",svg:<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>},
+                {n:"Instagram",svg:<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>},
+                {n:"Pinterest",svg:<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12c0 4.24 2.65 7.86 6.39 9.29-.09-.78-.17-1.98.03-2.83.18-.77 1.19-5.03 1.19-5.03s-.3-.61-.3-1.51c0-1.41.82-2.46 1.84-2.46.87 0 1.29.65 1.29 1.44 0 .88-.56 2.19-.85 3.4-.24 1.01.5 1.84 1.5 1.84 1.8 0 3.18-1.9 3.18-4.64 0-2.43-1.74-4.13-4.24-4.13-2.88 0-4.58 2.16-4.58 4.4 0 .87.33 1.8.75 2.31.07.09.1.2.07.29l-.28 1.15c-.04.18-.15.22-.34.13C5.61 14.94 5 13.2 5 11.45c0-3.19 2.32-6.13 6.7-6.13 3.52 0 6.25 2.51 6.25 5.86 0 3.49-2.2 6.3-5.26 6.3-1.03 0-1.99-.53-2.32-1.16l-.63 2.41c-.23.88-.85 1.98-1.26 2.66.95.29 1.96.45 3 .45 5.52 0 10-4.48 10-10S17.52 2 12 2z"/></svg>},
+                {n:"LinkedIn",svg:<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>},
+              ].map(({n,svg})=>(
+                <a key={n} href="#" aria-label={n} className="si" style={{color:"rgba(255,255,255,.4)"}}>{svg}</a>
+              ))}
+            </div>
           </div>
           {[{t:"Furniture",ls:["Lounge","Dining","Sun Loungers","Day Beds","Coffee Tables","Bar & Patio"]},{t:"Solutions",ls:["Parasols","Bioclimatic Pergolas","Outdoor Kitchens","Decor","Leisure"]},{t:"Company",ls:["Why Us","After Care","Projects","Gallery","Catalogue"]},{t:"Contact",ls:["Showroom Quinta do Lago","Showroom Almancil","+351 289 030 179","info@statusconcept.com"]}].map(c=>(
             <div key={c.t}>
