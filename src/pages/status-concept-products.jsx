@@ -42,30 +42,30 @@ const PRODUCTS_PAGE = () => {
   ];
 
   const allProducts = [
-    { name: "Bella Reclining Sofa Set", collection: "Bella", category: "lounge", img: "/placeholder.svg", tag: "Popular" },
-    { name: "Oxford Modular Sofa", collection: "Oxford", category: "lounge", img: "/placeholder.svg", tag: "" },
-    { name: "Sicily Modular Set", collection: "Sicily", category: "lounge", img: "/placeholder.svg", tag: "New" },
-    { name: "Miami Sofa Set", collection: "Miami", category: "lounge", img: "/placeholder.svg", tag: "" },
-    { name: "Cairo Sofa Set", collection: "Cairo", category: "lounge", img: "/placeholder.svg", tag: "" },
-    { name: "Berlin Modular Sofa", collection: "Berlin", category: "lounge", img: "/placeholder.svg", tag: "" },
-    { name: "Laguna Dining Set", collection: "Laguna", category: "dining", img: "/placeholder.svg", tag: "" },
-    { name: "Florida Dining Table", collection: "Florida", category: "dining", img: "/placeholder.svg", tag: "" },
-    { name: "Munich Dining Table", collection: "Munich", category: "dining", img: "/placeholder.svg", tag: "" },
-    { name: "Orlando Dining Armchairs", collection: "Orlando", category: "dining", img: "/placeholder.svg", tag: "" },
-    { name: "Bella Reclining Dining Set", collection: "Bella", category: "dining", img: "/placeholder.svg", tag: "" },
-    { name: "MAUI Sun Lounger", collection: "MAUI", category: "sunlounger", img: "/placeholder.svg", tag: "New" },
-    { name: "Bonaire Sun Lounger", collection: "Bonaire", category: "sunlounger", img: "/placeholder.svg", tag: "" },
-    { name: "Crete Sun Lounger", collection: "Crete", category: "sunlounger", img: "/placeholder.svg", tag: "" },
-    { name: "Antalya Daybed", collection: "Antalya", category: "daybed", img: "/placeholder.svg", tag: "" },
-    { name: "Sophia Gazebo", collection: "Sophia", category: "daybed", img: "/placeholder.svg", tag: "" },
-    { name: "Reno Balcony Set", collection: "Reno", category: "bar", img: "/placeholder.svg", tag: "" },
-    { name: "Zanzibar Coffee Table", collection: "Zanzibar", category: "coffee", img: "/placeholder.svg", tag: "" },
-    { name: "Tahiti Side Table", collection: "Tahiti", category: "side", img: "/placeholder.svg", tag: "" },
-    { name: "Naples Coffee Table", collection: "Naples", category: "coffee", img: "/placeholder.svg", tag: "" },
-    { name: "Bern Side Table", collection: "Bern", category: "side", img: "/placeholder.svg", tag: "" },
-    { name: "Dakkar Coffee Table", collection: "Dakkar", category: "coffee", img: "/placeholder.svg", tag: "" },
-    { name: "Manila Bar Set", collection: "Manila", category: "bar", img: "/placeholder.svg", tag: "" },
-    { name: "Dijon Pouf", collection: "Dijon", category: "puffs", img: "/placeholder.svg", tag: "" },
+    { name: "Bali Lounge Set", collection: "Bali", category: "lounge", img: "/src/assets/images/bali-able.jpg", tag: "Popular" },
+    { name: "Berlin Sofa Set", collection: "Berlin", category: "lounge", img: "/src/assets/images/berlin.jpg", tag: "" },
+    { name: "Bonaire Corner Set", collection: "Bonaire", category: "lounge", img: "/src/assets/images/bonaire-lounge.jpg", tag: "New" },
+    { name: "Ibiza Lounge Set", collection: "Ibiza", category: "lounge", img: "/src/assets/images/ibiza-able.jpg", tag: "" },
+    { name: "Maya Sofa Set", collection: "Maya", category: "lounge", img: "/src/assets/images/maya.jpg", tag: "" },
+    { name: "Bora Bora Sofa Set", collection: "Bora Bora", category: "lounge", img: "/src/assets/images/bora-bora.jpg", tag: "" },
+    { name: "Armona Sofa Set", collection: "Armona", category: "lounge", img: "/src/assets/images/armona.jpg", tag: "" },
+    { name: "Aruba S Lounge", collection: "Aruba S", category: "lounge", img: "/src/assets/images/aruba.jpg", tag: "" },
+    { name: "Antigua Corner Set", collection: "Antigua", category: "dining", img: "/src/assets/images/antigua.jpg", tag: "" },
+    { name: "Imperia Dining Set", collection: "Imperia", category: "dining", img: "/src/assets/images/imperia.jpg", tag: "" },
+    { name: "Dunbar Dining", collection: "Dunbar", category: "dining", img: "/src/assets/images/dunbar.jpg", tag: "" },
+    { name: "Corsica Dining Set", collection: "Corsica", category: "dining", img: "/src/assets/images/corsica.jpg", tag: "" },
+    { name: "Bonaire Sun Lounger", collection: "Bonaire", category: "sunlounger", img: "/src/assets/images/bonaire-lounger.jpg", tag: "Popular" },
+    { name: "Crete Sun Lounger", collection: "Crete", category: "sunlounger", img: "/src/assets/images/crete-lounger.jpg", tag: "" },
+    { name: "Fiji Sun Lounger", collection: "Fiji", category: "sunlounger", img: "/src/assets/images/fiji.jpg", tag: "New" },
+    { name: "Bali Double Sunlounger", collection: "Bali", category: "sunlounger", img: "/src/assets/images/prod-double-sunlounger.jpg", tag: "" },
+    { name: "Hawaii Daybed", collection: "Hawaii", category: "daybed", img: "/src/assets/images/hawaii.jpg", tag: "" },
+    { name: "Bermuda Daybed", collection: "Bermuda", category: "daybed", img: "/src/assets/images/bermuda.jpg", tag: "" },
+    { name: "Bern Coffee Table", collection: "Bern", category: "coffee", img: "/src/assets/images/bern.jpg", tag: "" },
+    { name: "Bonaire Coffee Table", collection: "Bonaire", category: "coffee", img: "/src/assets/images/prod-coffee-table.jpg", tag: "" },
+    { name: "Lagos Side Table", collection: "Lagos", category: "side", img: "/src/assets/images/lagos.jpg", tag: "" },
+    { name: "Luanda Bar Set", collection: "Luanda", category: "bar", img: "/src/assets/images/luanda.jpg", tag: "" },
+    { name: "Barcelona Bar Set", collection: "Barcelona", category: "bar", img: "/src/assets/images/barcelona.jpg", tag: "" },
+    { name: "Ibiza Armchair", collection: "Ibiza", category: "puffs", img: "/src/assets/images/prod-armchair.jpg", tag: "" },
   ];
 
   const filteredProducts = activeCategory === "all" ? allProducts : allProducts.filter((p) => p.category === activeCategory);
@@ -198,7 +198,7 @@ const PRODUCTS_PAGE = () => {
           <h2 className="ff" style={{fontSize:"clamp(28px,3.5vw,40px)",fontWeight:300,marginTop:"12px"}}>Named Collections</h2>
         </div>
         <div style={{display:"flex",gap:"12px",flexWrap:"wrap",justifyContent:"center",maxWidth:"1000px",margin:"0 auto"}}>
-          {["Bella","Oxford","Sicily","Miami","Laguna","Cairo","Berlin","Florida","Reno","Munich","Dakkar","Naples","Bern","Manila","Tahiti","Zanzibar","Luanda","Dijon","Orlando","Antalya","Sophia","MAUI","Bonaire","Crete"].map((c) => (
+          {["Bali","Berlin","Bonaire","Bora Bora","Ibiza","Maya","Armona","Aruba S","Antigua","Imperia","Dunbar","Corsica","Crete","Fiji","Hawaii","Bermuda","Bern","Lagos","Luanda","Barcelona","Athens","Bermuda","Lyon","Lisbon"].map((c) => (
             <span key={c} className="fs" style={{
               padding:"10px 24px",border:"1px solid var(--sand)",cursor:"pointer",
               fontSize:"12px",letterSpacing:"1.5px",color:"var(--stone-l)",
@@ -215,8 +215,8 @@ const PRODUCTS_PAGE = () => {
       {/* SHADE & KITCHEN CTA */}
       <section id="othercats" data-animate style={{display:"grid",gridTemplateColumns:"1fr 1fr",minHeight:"400px",...S("othercats")}}>
         {[
-          { title: "Shade Solutions", desc: "Parasols, bioclimatic & retractable pergolas", img: "/placeholder.svg" },
-          { title: "Outdoor Kitchens", desc: "BBQ systems, pizza ovens & full outdoor kitchens", img: "/placeholder.svg" },
+          { title: "Shade Solutions", desc: "Parasols, bioclimatic & retractable pergolas", img: "/src/assets/images/shade-parasols.jpg" },
+          { title: "Outdoor Kitchens", desc: "BBQ systems, pizza ovens & full outdoor kitchens", img: "/src/assets/images/kitchen-bbq.jpg" },
         ].map((item) => (
           <div key={item.title} onClick={()=>navigate('/products')} style={{position:"relative",overflow:"hidden",cursor:"pointer"}}>
             <img src={item.img} alt={item.title} style={{width:"100%",height:"100%",objectFit:"cover",transition:"transform .8s cubic-bezier(.22,1,.36,1)"}}

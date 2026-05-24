@@ -32,30 +32,30 @@ const STATUS_CONCEPT_HOMEPAGE = () => {
 
   const collections = {
     furniture: [
-      { name: "Bella", desc: "Reclining sofa & dining", img: "/placeholder.svg" },
-      { name: "Oxford", desc: "Timeless modular lounge", img: "/placeholder.svg" },
-      { name: "Sicily", desc: "Modern modular set", img: "/placeholder.svg" },
-      { name: "Miami", desc: "Contemporary sofa set", img: "/placeholder.svg" },
-      { name: "Laguna", desc: "Elegant dining collection", img: "/placeholder.svg" },
-      { name: "Cairo", desc: "Luxury sofa set", img: "/placeholder.svg" },
+      { name: "Bali", desc: "Modular lounge collection", img: "/src/assets/images/bali-able.jpg" },
+      { name: "Berlin", desc: "Classic sofa & armchairs", img: "/src/assets/images/berlin.jpg" },
+      { name: "Bonaire", desc: "Luxury corner lounge set", img: "/src/assets/images/bonaire-lounge.jpg" },
+      { name: "Ibiza", desc: "Contemporary lounge set", img: "/src/assets/images/ibiza-able.jpg" },
+      { name: "Maya", desc: "Elegant sofa collection", img: "/src/assets/images/maya.jpg" },
+      { name: "Bora Bora", desc: "Premium outdoor sofa", img: "/src/assets/images/bora-bora.jpg" },
     ],
     shade: [
-      { name: "Glatz Parasols", desc: "Swiss precision shading", img: "/placeholder.svg" },
-      { name: "Bioclimatic Pergolas", desc: "Intelligent climate control", img: "/placeholder.svg" },
-      { name: "Retractable Pergolas", desc: "Flexible outdoor roofing", img: "/placeholder.svg" },
+      { name: "Glatz Parasols", desc: "Swiss precision shading", img: "/src/assets/images/glatz-parasol.jpg" },
+      { name: "Bioclimatic Pergolas", desc: "Intelligent climate control", img: "/src/assets/images/glatz-bioclimatic.jpg" },
+      { name: "Retractable Pergolas", desc: "Flexible outdoor roofing", img: "/src/assets/images/glatz-retractable.jpg" },
     ],
     kitchen: [
-      { name: "Outdoor Kitchens", desc: "Complete cooking stations", img: "/placeholder.svg" },
-      { name: "BBQ Systems", desc: "Premium grilling solutions", img: "/placeholder.svg" },
-      { name: "Pizza Ovens", desc: "Artisan wood-fired ovens", img: "/placeholder.svg" },
+      { name: "Outdoor Kitchens", desc: "Complete cooking stations", img: "/src/assets/images/kitchen-sink.jpg" },
+      { name: "BBQ Systems", desc: "Premium grilling solutions", img: "/src/assets/images/kitchen-bbq.jpg" },
+      { name: "Pizza Ovens", desc: "Artisan wood-fired ovens", img: "/src/assets/images/kitchen-fridge.jpg" },
     ],
   };
 
   const projects = [
-    { name: "Villa Quinta do Lago", location: "Quinta do Lago", img: "/placeholder.svg" },
-    { name: "Residence Vale do Lobo", location: "Vale do Lobo", img: "/placeholder.svg" },
-    { name: "Private Estate Vilamoura", location: "Vilamoura", img: "/placeholder.svg" },
-    { name: "Luxury Home Almancil", location: "Almancil", img: "/placeholder.svg" },
+    { name: "Villa Quinta do Lago", location: "Quinta do Lago", img: "/src/assets/images/project-quinta.jpg" },
+    { name: "Residence Vale do Lobo", location: "Vale do Lobo", img: "/src/assets/images/project-valedolobo.jpg" },
+    { name: "Private Estate Vilamoura", location: "Vilamoura", img: "/src/assets/images/project-vilamoura.jpg" },
+    { name: "Luxury Home Almancil", location: "Almancil", img: "/src/assets/images/project-almancil.jpg" },
   ];
 
   const cats = [
@@ -153,7 +153,7 @@ const STATUS_CONCEPT_HOMEPAGE = () => {
       </div>
 
       {/* HERO */}
-      <section style={{position:"relative",height:"100vh",minHeight:700,background:"linear-gradient(165deg,rgba(26,26,24,.3) 0%,rgba(26,26,24,.15) 40%,rgba(42,95,122,.2) 100%),url('/placeholder.svg') center/cover",display:"flex",alignItems:"flex-end",padding:"0 0 100px 0"}}>
+      <section style={{position:"relative",height:"100vh",minHeight:700,background:"linear-gradient(165deg,rgba(26,26,24,.3) 0%,rgba(26,26,24,.15) 40%,rgba(42,95,122,.2) 100%),url('/src/assets/images/hero.jpg') center/cover",display:"flex",alignItems:"flex-end",padding:"0 0 100px 0"}}>
         <div style={{position:"absolute",top:140,left:48,width:60,height:60,borderLeft:"1px solid rgba(255,255,255,.2)",borderTop:"1px solid rgba(255,255,255,.2)"}}/>
         <div style={{position:"absolute",bottom:40,right:48,width:60,height:60,borderRight:"1px solid rgba(255,255,255,.2)",borderBottom:"1px solid rgba(255,255,255,.2)"}}/>
         <div style={{padding:"0 48px",maxWidth:800}}>
@@ -222,7 +222,7 @@ const STATUS_CONCEPT_HOMEPAGE = () => {
 
       {/* WHY STATUS */}
       <section id="why" data-animate style={{display:"grid",gridTemplateColumns:"1fr 1fr",minHeight:600,...S.section("why")}}>
-        <div style={{background:"url('/placeholder.svg') center/cover"}}/>
+        <div style={{background:"url('/src/assets/images/why-status.jpg') center/cover"}}/>
         <div style={{background:"var(--stone)",color:"#fff",padding:"80px 60px",display:"flex",flexDirection:"column",justifyContent:"center"}}>
           <span className="fs sl" style={{color:"var(--gold-l)",marginBottom:20}}>Why Status Concept</span>
           <h2 className="ff" style={{fontSize:36,fontWeight:300,marginBottom:28,lineHeight:1.2}}>Over a Decade of<br/>Outdoor Excellence</h2>
@@ -281,7 +281,7 @@ const STATUS_CONCEPT_HOMEPAGE = () => {
         {/* Full-width hero banner */}
         <div style={{position:"relative",height:500,overflow:"hidden",background:"linear-gradient(135deg,var(--stone) 0%,var(--stone-l) 100%)"}}>
           <div style={{position:"absolute",inset:0,display:"grid",gridTemplateColumns:"1fr 1fr"}}>
-            {[{name:"Quinta do Lago",img:"/placeholder.svg"},{name:"Almancil",img:"/placeholder.svg"}].map((s,i)=>(
+            {[{name:"Quinta do Lago",img:"/src/assets/images/showroom-quinta.jpg"},{name:"Almancil",img:"/src/assets/images/showroom-almancil.jpg"}].map((s,i)=>(
               <div key={s.name} style={{position:"relative",overflow:"hidden",cursor:"pointer"}} onClick={()=>navigate('/contact')}>
                 <img src={s.img} alt={s.name} style={{width:"100%",height:"100%",objectFit:"cover",transition:"transform 1.2s cubic-bezier(.22,1,.36,1),filter .6s",filter:"brightness(.55)"}}
                   onMouseEnter={e=>{e.target.style.transform="scale(1.08)";e.target.style.filter="brightness(.4)"}}
