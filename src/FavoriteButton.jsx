@@ -1,4 +1,4 @@
-import { useState } from "react";
+﻿import { useState } from "react";
 import { useFavorites } from "./FavoritesContext";
 
 export default function FavoriteButton({ product, size = 20, style = {} }) {
@@ -29,20 +29,20 @@ export default function FavoriteButton({ product, size = 20, style = {} }) {
         alignItems: "center",
         justifyContent: "center",
         cursor: "pointer",
-        transition: "all .3s ease",
+        transition: "all .3s cubic-bezier(0.16, 1, 0.3, 1)",
         transform: animate ? "scale(1.3)" : "scale(1)",
         zIndex: 5,
         ...style,
       }}
-      onMouseEnter={(e) => { e.currentTarget.style.background = "rgba(0,0,0,.55)"; }}
-      onMouseLeave={(e) => { e.currentTarget.style.background = "rgba(0,0,0,.35)"; }}
+      onMouseEnter={(e) => { e.currentTarget.style.background = "rgba(0,0,0,.55)"; e.currentTarget.style.transform = "scale(1.1)"; }}
+      onMouseLeave={(e) => { e.currentTarget.style.background = "rgba(0,0,0,.35)"; e.currentTarget.style.transform = animate ? "scale(1.3)" : "scale(1)"; }}
     >
       <svg
         width={size}
         height={size}
         viewBox="0 0 24 24"
-        fill={active ? "#b8965a" : "none"}
-        stroke={active ? "#b8965a" : "rgba(255,255,255,.9)"}
+        fill={active ? "#c41e3a" : "none"}
+        stroke={active ? "#c41e3a" : "rgba(255,255,255,.9)"}
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
