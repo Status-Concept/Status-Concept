@@ -90,20 +90,20 @@ const PRODUCTS_PAGE = () => {
     { name: "Retractable Pergola", collection: "Pergolas", category: "shade", img: "/placeholder.svg", tag: "" },
     { name: "Wall-Mounted Parasol", collection: "Glatz", category: "shade", img: "/placeholder.svg", tag: "" },
     { name: "Free-Standing Pergola", collection: "Pergolas", category: "shade", img: "/placeholder.svg", tag: "New" },
-    { name: "6 Burner Black SS BBQ", collection: "Modular Kitchen", category: "kitchen", img: "/src/assets/images/kitchen/blk-6burner-bbq.jpg", tag: "Popular" },
-    { name: "4 Burner Black SS BBQ", collection: "Modular Kitchen", category: "kitchen", img: "/src/assets/images/kitchen/blk-4burner-bbq.jpg", tag: "" },
-    { name: "Black SS Double Fridge", collection: "Modular Kitchen", category: "kitchen", img: "/src/assets/images/kitchen/blk-double-fridge.jpg", tag: "" },
-    { name: "Black SS Sink & Fridge", collection: "Modular Kitchen", category: "kitchen", img: "/src/assets/images/kitchen/blk-sink-fridge.jpg", tag: "" },
-    { name: "Black SS Sear Station", collection: "Modular Kitchen", category: "kitchen", img: "/src/assets/images/kitchen/blk-sear-station.jpg", tag: "" },
-    { name: "Black SS Corner Unit", collection: "Modular Kitchen", category: "kitchen", img: "/src/assets/images/kitchen/blk-corner.jpg", tag: "" },
-    { name: "Teak 6 Burner BBQ", collection: "Modular Kitchen", category: "kitchen", img: "/src/assets/images/kitchen/teak-6burner-bbq.jpg", tag: "" },
-    { name: "Teak Kitchen Setup", collection: "Modular Kitchen", category: "kitchen", img: "/src/assets/images/kitchen/teak-setup-1.jpg", tag: "" },
-    { name: "Teak Corner Unit", collection: "Modular Kitchen", category: "kitchen", img: "/src/assets/images/kitchen/teak-corner.jpg", tag: "" },
-    { name: "Teak Front Cabinet", collection: "Modular Kitchen", category: "kitchen", img: "/src/assets/images/kitchen/teak-front.jpg", tag: "" },
-    { name: "Carbon Line 6 Burner", collection: "Modular Kitchen", category: "kitchen", img: "/src/assets/images/kitchen/carbon-setup-1.jpg", tag: "New" },
-    { name: "Carbon Line Kitchen", collection: "Modular Kitchen", category: "kitchen", img: "/src/assets/images/kitchen/carbon-setup-2.jpg", tag: "" },
-    { name: "Carbon Line Island", collection: "Modular Kitchen", category: "kitchen", img: "/src/assets/images/kitchen/carbon-line-1.jpg", tag: "" },
-    { name: "Carbon Line Lifestyle", collection: "Modular Kitchen", category: "kitchen", img: "/src/assets/images/kitchen/carbon-lifestyle-1.jpg", tag: "" },
+    { name: "Nero 6 Burner BBQ", collection: "Nero Range", category: "kitchen", img: "/src/assets/images/kitchen/blk-6burner-bbq.jpg", tag: "Popular", price: "€2,333", desc: "304-grade black stainless steel, 90,000 BTU, LED knobs, rear infrared burner, granite worktop. 110×73.5cm" },
+    { name: "Nero 4 Burner BBQ", collection: "Nero Range", category: "kitchen", img: "/src/assets/images/kitchen/blk-4burner-bbq.jpg", tag: "", price: "€2,110", desc: "304-grade black stainless steel, 65,000 BTU, 4 power burners + rear burner, granite worktop. 81×73.5cm" },
+    { name: "Nero Double Fridge Cabinet", collection: "Nero Range", category: "kitchen", img: "/src/assets/images/kitchen/blk-double-fridge.jpg", tag: "", price: "€2,055", desc: "Twin 60L fridges, triple-glazed doors, blue LED lighting, digital controls, granite worktop. 96×70cm" },
+    { name: "Nero Sink & Fridge Cabinet", collection: "Nero Range", category: "kitchen", img: "/src/assets/images/kitchen/blk-sink-fridge.jpg", tag: "", price: "€1,832", desc: "60L fridge + matt black sink, 360° swivel tap, hot/cold water, granite worktop. 96×70cm" },
+    { name: "Nero Sear Station", collection: "Nero Range", category: "kitchen", img: "/src/assets/images/kitchen/blk-sear-station.jpg", tag: "", price: "€850", desc: "Ceramic infrared burner, 13,300 BTU, piezo ignition, granite worktop, gas bottle storage. 49×70cm" },
+    { name: "Nero 90° Corner Cabinet", collection: "Nero Range", category: "kitchen", img: "/src/assets/images/kitchen/blk-corner.jpg", tag: "", price: "€667", desc: "L-shape or U-shape connector, 304-grade black stainless steel, granite worktop. 75×75cm" },
+    { name: "Teak 6 Burner BBQ Unit", collection: "Teak Range", category: "kitchen", img: "/src/assets/images/kitchen/teak-6burner-bbq.jpg", tag: "", price: "€2,587", desc: "Reclaimed teak housing, 304-grade SS BBQ, 90,000 BTU, sintered stone flanges, ceramic worktop. 128×63cm" },
+    { name: "Teak Outdoor Kitchen Setup", collection: "Teak Range", category: "kitchen", img: "/src/assets/images/kitchen/teak-setup-1.jpg", tag: "", price: "Request quote", desc: "Complete modular teak kitchen configuration with BBQ, cabinets, and ceramic worktops" },
+    { name: "Teak Corner Cabinet", collection: "Teak Range", category: "kitchen", img: "/src/assets/images/kitchen/teak-corner.jpg", tag: "", price: "€1,778", desc: "Reclaimed teak, dark stone ceramic worktop, 3 drawers + shelf, soft-close doors. 119.8×63cm" },
+    { name: "Teak Single Door Cabinet", collection: "Teak Range", category: "kitchen", img: "/src/assets/images/kitchen/teak-front.jpg", tag: "", price: "€794", desc: "Reclaimed teak, dark stone ceramic worktop, soft-close door, adjustable levelling feet. 57.6×63cm" },
+    { name: "Carbon Line 6 Burner BBQ", collection: "Carbon Line", category: "kitchen", img: "/src/assets/images/kitchen/carbon-setup-1.jpg", tag: "New", price: "€3,277", desc: "Black reclaimed teak + 304-grade black SS BBQ, 90,000 BTU, Hafele fittings, ceramic worktop. 163×62.5cm" },
+    { name: "Carbon Line Kitchen Setup", collection: "Carbon Line", category: "kitchen", img: "/src/assets/images/kitchen/carbon-setup-2.jpg", tag: "", price: "Request quote", desc: "Premium carbon black teak modular kitchen with black stainless steel appliances and ceramic worktops" },
+    { name: "Carbon Line Island Unit", collection: "Carbon Line", category: "kitchen", img: "/src/assets/images/kitchen/carbon-line-1.jpg", tag: "", price: "€2,054", desc: "Carbon black reclaimed teak, white ceramic worktop, Hafele German fittings, UV-stabilised finish. 180×80cm" },
+    { name: "Carbon Line Complete Kitchen", collection: "Carbon Line", category: "kitchen", img: "/src/assets/images/kitchen/carbon-lifestyle-1.jpg", tag: "", price: "Request quote", desc: "Full Carbon Line outdoor kitchen installation with BBQ, fridge, sink, and storage modules" },
     { name: "Outdoor Carpet Algarve", collection: "Decor", category: "decor", img: "/placeholder.svg", tag: "" },
     { name: "Garden Vase Collection", collection: "Decor", category: "decor", img: "/placeholder.svg", tag: "" },
     { name: "LED Garden Lighting", collection: "Decor", category: "decor", img: "/placeholder.svg", tag: "New" },
@@ -204,9 +204,10 @@ const PRODUCTS_PAGE = () => {
               <span className="card-cta fs" style={{fontSize:"11px",letterSpacing:"2.5px",textTransform:"uppercase",color:"#fff",borderBottom:"1px solid rgba(255,255,255,.5)",paddingBottom:"2px"}}>View details</span>
               <div style={{padding:"18px 4px 10px",borderTop:"1px solid var(--sand-l)"}}>
                 <h3 className="ff" style={{fontSize:"21px",fontWeight:400,marginBottom:"6px",letterSpacing:".3px"}}>{p.name}</h3>
+                {p.desc && <p className="fs" style={{fontSize:"11px",color:"var(--sand-d)",lineHeight:1.5,marginBottom:6,fontWeight:300,display:"-webkit-box",WebkitLineClamp:2,WebkitBoxOrient:"vertical",overflow:"hidden"}}>{p.desc}</p>}
                 <div style={{display:"flex",alignItems:"center",justifyContent:"space-between"}}>
                   <p className="fs" style={{fontSize:"10px",letterSpacing:"1.5px",color:"var(--sand-d)",textTransform:"uppercase"}}>{p.collection}</p>
-                  <span className="fs" style={{fontSize:"10px",letterSpacing:"1px",color:"var(--gold)",opacity:.85,transition:"opacity .3s"}}>View →</span>
+                  {p.price ? <span className="fs" style={{fontSize:"12px",fontWeight:500,color:"var(--stone)"}}>{p.price}</span> : <span className="fs" style={{fontSize:"10px",letterSpacing:"1px",color:"var(--gold)",opacity:.85,transition:"opacity .3s"}}>View →</span>}
                 </div>
               </div>
             </div>
