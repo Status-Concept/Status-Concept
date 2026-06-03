@@ -53,7 +53,7 @@ const PRODUCT_DETAIL = () => {
       colors: [{name:"Sutty",hex:"#3a3a3a"},{name:"Savanne Whisper",hex:"#e8e7e4"},{name:"Lynn",hex:"#e0d5c3"}],
     },
     "nero-6-burner-bbq": {
-      name: "Nero 6 Burner BBQ", collection: "Nero Range", category: "kitchen", tag: "Popular", price: "€2,333",
+      name: "Nero 6 Burner BBQ", collection: "Nero Range", category: "kitchen", tag: "Popular",
       tagline: "304-grade black stainless steel BBQ with 90,000 BTU output, LED backlit controls, and ceramic rear infrared burner",
       images: ["/src/assets/images/kitchen/blk-6burner-bbq.jpg","/src/assets/images/kitchen/blk-sear-station.jpg","/src/assets/images/kitchen/blk-corner.jpg"],
       specs: [
@@ -69,7 +69,7 @@ const PRODUCT_DETAIL = () => {
       colorLabel: "Finish", colors: [{name:"Nero Black",hex:"#1a1a1a"}],
     },
     "nero-4-burner-bbq": {
-      name: "Nero 4 Burner BBQ", collection: "Nero Range", category: "kitchen", price: "€2,110",
+      name: "Nero 4 Burner BBQ", collection: "Nero Range", category: "kitchen",
       tagline: "Compact 4-burner black stainless steel BBQ with 65,000 BTU output and ceramic infrared rear burner",
       images: ["/src/assets/images/kitchen/blk-4burner-bbq.jpg","/src/assets/images/kitchen/blk-6burner-bbq.jpg"],
       specs: [
@@ -82,7 +82,7 @@ const PRODUCT_DETAIL = () => {
       colorLabel: "Finish", colors: [{name:"Nero Black",hex:"#1a1a1a"}],
     },
     "nero-double-fridge-cabinet": {
-      name: "Nero Double Fridge Cabinet", collection: "Nero Range", category: "kitchen", price: "€2,055",
+      name: "Nero Double Fridge Cabinet", collection: "Nero Range", category: "kitchen",
       tagline: "Twin 60-litre fridges with triple-glazed doors, blue LED lighting, and digital touchpad controls",
       images: ["/src/assets/images/kitchen/blk-double-fridge.jpg","/src/assets/images/kitchen/blk-sink-fridge.jpg"],
       specs: [
@@ -95,7 +95,7 @@ const PRODUCT_DETAIL = () => {
       colorLabel: "Finish", colors: [{name:"Nero Black",hex:"#1a1a1a"}],
     },
     "nero-sink-fridge-cabinet": {
-      name: "Nero Sink & Fridge Cabinet", collection: "Nero Range", category: "kitchen", price: "€1,832",
+      name: "Nero Sink & Fridge Cabinet", collection: "Nero Range", category: "kitchen",
       tagline: "Combined 60L fridge and matt black sink with 360° swivel tap, hot and cold water connection",
       images: ["/src/assets/images/kitchen/blk-sink-fridge.jpg","/src/assets/images/kitchen/blk-double-fridge.jpg"],
       specs: [
@@ -108,7 +108,7 @@ const PRODUCT_DETAIL = () => {
       colorLabel: "Finish", colors: [{name:"Nero Black",hex:"#1a1a1a"}],
     },
     "nero-sear-station": {
-      name: "Nero Sear Station", collection: "Nero Range", category: "kitchen", price: "€850",
+      name: "Nero Sear Station", collection: "Nero Range", category: "kitchen",
       tagline: "Powerful ceramic infrared burner reaching extreme temperatures for quick, efficient searing",
       images: ["/src/assets/images/kitchen/blk-sear-station.jpg","/src/assets/images/kitchen/blk-corner.jpg"],
       specs: [
@@ -121,7 +121,7 @@ const PRODUCT_DETAIL = () => {
       colorLabel: "Finish", colors: [{name:"Nero Black",hex:"#1a1a1a"}],
     },
     "nero-90-corner-cabinet": {
-      name: "Nero 90° Corner Cabinet", collection: "Nero Range", category: "kitchen", price: "€667",
+      name: "Nero 90° Corner Cabinet", collection: "Nero Range", category: "kitchen",
       tagline: "L-shape or U-shape connector module with granite worktop for versatile kitchen configurations",
       images: ["/src/assets/images/kitchen/blk-corner.jpg","/src/assets/images/kitchen/blk-sear-station.jpg"],
       specs: [
@@ -133,7 +133,7 @@ const PRODUCT_DETAIL = () => {
       colorLabel: "Finish", colors: [{name:"Nero Black",hex:"#1a1a1a"}],
     },
     "teak-6-burner-bbq-unit": {
-      name: "Teak 6 Burner BBQ Unit", collection: "Teak Range", category: "kitchen", price: "€2,587",
+      name: "Teak 6 Burner BBQ Unit", collection: "Teak Range", category: "kitchen",
       tagline: "Reclaimed teak housing with premium 304-grade stainless steel 6-burner BBQ and sintered stone flanges",
       images: ["/src/assets/images/kitchen/teak-6burner-bbq.jpg","/src/assets/images/kitchen/teak-setup-1.jpg","/src/assets/images/kitchen/teak-front.jpg"],
       specs: [
@@ -146,7 +146,7 @@ const PRODUCT_DETAIL = () => {
       colorLabel: "Finish", colors: [{name:"Natural Teak",hex:"#a07848"}],
     },
     "teak-corner-cabinet": {
-      name: "Teak Corner Cabinet", collection: "Teak Range", category: "kitchen", price: "€1,778",
+      name: "Teak Corner Cabinet", collection: "Teak Range", category: "kitchen",
       tagline: "Reclaimed teak corner unit with dark stone ceramic worktop, 3 drawers and shelf storage",
       images: ["/src/assets/images/kitchen/teak-corner.jpg","/src/assets/images/kitchen/teak-setup-1.jpg"],
       specs: [
@@ -159,7 +159,7 @@ const PRODUCT_DETAIL = () => {
       colorLabel: "Finish", colors: [{name:"Natural Teak",hex:"#a07848"}],
     },
     "teak-single-door-cabinet": {
-      name: "Teak Single Door Cabinet", collection: "Teak Range", category: "kitchen", price: "€794",
+      name: "Teak Single Door Cabinet", collection: "Teak Range", category: "kitchen",
       tagline: "Compact reclaimed teak storage cabinet with dark stone ceramic worktop and soft-close door",
       images: ["/src/assets/images/kitchen/teak-front.jpg","/src/assets/images/kitchen/teak-corner.jpg"],
       specs: [
@@ -171,7 +171,7 @@ const PRODUCT_DETAIL = () => {
       colorLabel: "Finish", colors: [{name:"Natural Teak",hex:"#a07848"}],
     },
     "carbon-line-6-burner-bbq": {
-      name: "Carbon Line 6 Burner BBQ", collection: "Carbon Line", category: "kitchen", tag: "New", price: "€3,277",
+      name: "Carbon Line 6 Burner BBQ", collection: "Carbon Line", category: "kitchen", tag: "New",
       tagline: "Premium black reclaimed teak cabinet with 304-grade black stainless steel 6-burner BBQ and Hafele German fittings",
       images: ["/src/assets/images/kitchen/carbon-setup-1.jpg","/src/assets/images/kitchen/carbon-setup-2.jpg","/src/assets/images/kitchen/carbon-line-1.jpg"],
       specs: [
@@ -184,7 +184,7 @@ const PRODUCT_DETAIL = () => {
       colorLabel: "Finish", colors: [{name:"Carbon Black",hex:"#2a2a2a"}],
     },
     "carbon-line-island-unit": {
-      name: "Carbon Line Island Unit", collection: "Carbon Line", category: "kitchen", price: "€2,054",
+      name: "Carbon Line Island Unit", collection: "Carbon Line", category: "kitchen",
       tagline: "Central hub for outdoor cooking, carbon black reclaimed teak with white ceramic worktop and Hafele fittings",
       images: ["/src/assets/images/kitchen/carbon-line-1.jpg","/src/assets/images/kitchen/carbon-lifestyle-1.jpg","/src/assets/images/kitchen/carbon-line-2.jpg"],
       specs: [
