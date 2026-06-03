@@ -215,7 +215,7 @@ const STATUS_CONCEPT_HOMEPAGE = () => {
       <section id="why" data-animate style={{display:"grid",gridTemplateColumns:"1fr 1fr",minHeight:600,...S.section("why")}}>
         <div style={{background:"url('/src/assets/images/why-status.jpg') center/cover"}}/>
         <div style={{background:"var(--stone)",color:"#fff",padding:"clamp(48px,8vh,100px) 60px",display:"flex",flexDirection:"column",justifyContent:"center"}}>
-          <span className="fs sl" style={{color:"var(--gold-l)",marginBottom:20}}>Why Status Concept</span>
+          <span className="fs sl" style={{color:"var(--gold-l)",marginBottom:20}}>Why Statvs</span>
           <h2 className="ff" style={{fontSize:36,fontWeight:300,marginBottom:28,lineHeight:1.2,letterSpacing:"-0.01em"}}>Over a Decade of<br/>Outdoor Excellence</h2>
           <div className="law" style={{marginBottom:28}}/>
           <p className="fs" style={{fontSize:14,lineHeight:1.8,color:"rgba(255,255,255,.7)",fontWeight:300,marginBottom:32}}>We provide outdoor furniture to the most prestigious addresses in the Algarve: Vale do Lobo, Quinta do Lago, Vilamoura, Almancil, Tavira, and beyond. Our success is built on a passion and vast experience acquired over more than a decade of furnishing elegant residences across Europe.</p>
@@ -399,7 +399,7 @@ const STATUS_CONCEPT_HOMEPAGE = () => {
           ))}
         </div>
         <div className="fs" style={{display:"flex",justifyContent:"space-between",alignItems:"center",paddingTop:24,fontSize:11,color:"rgba(255,255,255,.25)",letterSpacing:1,flexWrap:"wrap",gap:12}}>
-          <span>© 2026 Status Concept. All rights reserved.</span>
+          <span>© 2026 Statvs. All rights reserved.</span>
           <div style={{display:"flex",gap:24}}><a href="#" style={{color:"inherit",textDecoration:"none"}}>Privacy Policy</a><a href="#" style={{color:"inherit",textDecoration:"none"}}>Cookie Policy</a><a href="#" style={{color:"inherit",textDecoration:"none"}}>Terms</a></div>
         </div>
       </footer>

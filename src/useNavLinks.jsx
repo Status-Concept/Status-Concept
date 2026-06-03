@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+﻿import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 const navMap = {
@@ -26,7 +26,7 @@ export default function useNavLinks() {
       }
 
       const el = e.target
-      if (el.tagName === 'SPAN' && el.textContent.trim() === 'STATUS') {
+      if (el.tagName === 'SPAN' && el.textContent.trim() === 'STATVS') {
         const parent = el.parentElement
         if (parent && parent.style && parent.style.cursor === 'pointer') {
           e.preventDefault()

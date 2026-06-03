@@ -211,7 +211,7 @@ const COLLECTION_DETAIL = () => {
           ))}
         </div>
         <div className="fs" style={{display:"flex",justifyContent:"space-between",paddingTop:24,fontSize:11,color:"rgba(255,255,255,.25)",letterSpacing:1,flexWrap:"wrap",gap:12}}>
-          <span>© 2026 Status Concept. All rights reserved.</span>
+          <span>© 2026 Statvs. All rights reserved.</span>
           <div style={{display:"flex",gap:24}}><a href="#" style={{color:"inherit",textDecoration:"none"}}>Privacy</a><a href="#" style={{color:"inherit",textDecoration:"none"}}>Terms</a></div>
         </div>
       </footer>

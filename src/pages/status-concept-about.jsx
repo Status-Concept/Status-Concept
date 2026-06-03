@@ -61,7 +61,7 @@ const ABOUT_PAGE = () => {
       {/* HERO BANNER */}
       <section style={{position:"relative",height:"50vh",minHeight:400,paddingTop:100,background:"linear-gradient(165deg,rgba(44,42,37,.45),rgba(42,95,122,.25)),url('/src/assets/images/showroom-quinta.jpg') center/cover",display:"flex",alignItems:"center",justifyContent:"center",textAlign:"center"}}>
         <div>
-          <span className="fs sl" style={{color:"rgba(255,255,255,.6)",display:"block",marginBottom:16,animation:"fu .6s .2s both"}}>About Status Concept</span>
+          <span className="fs sl" style={{color:"rgba(255,255,255,.6)",display:"block",marginBottom:16,animation:"fu .6s .2s both"}}>About Statvs</span>
           <h1 className="ff" style={{fontSize:"clamp(38px,5vw,60px)",fontWeight:300,color:"#fff",lineHeight:1.1,letterSpacing:"-0.01em",animation:"fu .6s .4s both"}}>Crafting Outdoor<br/>Excellence Since 2013</h1>
         </div>
       </section>
@@ -90,7 +90,7 @@ const ABOUT_PAGE = () => {
         <div style={{maxWidth:900,margin:"0 auto"}}>
           <div style={{textAlign:"center",marginBottom:48}}>
             <span className="fs sl">What sets us apart</span>
-            <h2 className="ff" style={{fontSize:"clamp(28px,3.5vw,40px)",fontWeight:300,marginTop:12,letterSpacing:"-0.01em"}}>Why Status Concept</h2>
+            <h2 className="ff" style={{fontSize:"clamp(28px,3.5vw,40px)",fontWeight:300,marginTop:12,letterSpacing:"-0.01em"}}>Why Statvs</h2>
           </div>
           {[
             { num: "01", title: "Curated Partnerships", desc: "We work exclusively with manufacturers who share our commitment to quality, selecting each partner for their attention to detail, material innovation, and design excellence." },
@@ -202,7 +202,7 @@ const ABOUT_PAGE = () => {
           ))}
         </div>
         <div className="fs" style={{display:"flex",justifyContent:"space-between",paddingTop:24,fontSize:11,color:"rgba(255,255,255,.25)",letterSpacing:1,flexWrap:"wrap",gap:12}}>
-          <span>© 2026 Status Concept. All rights reserved.</span>
+          <span>© 2026 Statvs. All rights reserved.</span>
           <div style={{display:"flex",gap:24}}><a href="#" style={{color:"inherit",textDecoration:"none"}}>Privacy Policy</a><a href="#" style={{color:"inherit",textDecoration:"none"}}>Terms</a></div>
         </div>
       </footer>
