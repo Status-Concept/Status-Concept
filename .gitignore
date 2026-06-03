@@ -11,6 +11,9 @@ node_modules
 dist
 dist-ssr
 *.local
+.env
+.env.*
+!.env.example
 
 # Editor directories and files
 .vscode/*
@@ -26,4 +29,10 @@ dist-ssr
 .agents/
 .claude/skills/
 .claude/launch.json
+.claude/*.local.json
 skills-lock.json
+
+# Local image generation drafts
+src/assets/images/enhanced/*-bg-ai.png
+src/assets/images/enhanced/shade-empty-garden-bg-ai.png
+src/assets/images/enhanced/shade-grass-hero-ai.png
