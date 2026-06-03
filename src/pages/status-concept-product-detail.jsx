@@ -1,5 +1,5 @@
 ﻿import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import useNavLinks from "../useNavLinks";
 import FavoriteButton from "../FavoriteButton";
 
@@ -31,35 +31,174 @@ const PRODUCT_DETAIL = () => {
   const vis = (id) => visibleSections.has(id);
   const S = (id) => ({ opacity: vis(id) ? 1 : 0, transform: vis(id) ? "translateY(0) scale(1)" : "translateY(32px) scale(0.98)", transition: "all 0.8s cubic-bezier(0.16, 1, 0.3, 1)" });
 
-  const product = {
-    name: "Sicily Modular Set", collection: "Sicily",
-    tagline: "Contemporary modular outdoor sofa with infinite configuration possibilities",
-    images: ["/src/assets/images/sicily-corner.jpg","/src/assets/images/sicily-centre.jpg","/src/assets/images/sicily-ottoman.jpg"],
-    specs: [
-      { label: "Type", value: "Modular Sofa Set" },{ label: "Frame", value: "Premium Aluminium" },
-      { label: "Coating", value: "Interpon Powder Coated" },{ label: "Upholstery", value: "Sunbrella® Acrylic Fabric" },
-      { label: "Cushion Fill", value: "Quick-dry Foam Core" },{ label: "Stackable", value: "No" },
-    ],
-    dims: [
-      { piece: "Corner Module", w: "85", d: "85", h: "68", sh: "42" },
-      { piece: "Centre Module", w: "75", d: "85", h: "68", sh: "42" },
-      { piece: "Armless Module", w: "65", d: "85", h: "68", sh: "42" },
-      { piece: "Coffee Table", w: "120", d: "60", h: "35", sh: "—" },
-    ],
-    materials: [
-      "Sunbrella® fabric: UV resistant, water-repellent, mold resistant, fade-proof",
-      "Interpon powder coating: corrosion protection, scratch resistant, UV stable",
-      "Premium aluminium frame: lightweight, durable, weather resistant",
-      "Quick-dry foam cushions: rapid drainage, mold resistant, comfortable",
-    ],
-    colors: ["Sutty", "Savanne Whisper", "Lynn"],
-    related: [
-      { name: "Miami Sofa Set", collection: "Miami", img: "/placeholder.svg" },
-      { name: "Oxford Modular Sofa", collection: "Oxford", img: "/placeholder.svg" },
-      { name: "Berlin Modular Sofa", collection: "Berlin", img: "/placeholder.svg" },
-      { name: "Cairo Sofa Set", collection: "Cairo", img: "/placeholder.svg" },
-    ],
+  const { id } = useParams();
+
+  const allProducts = {
+    "sicily-modular-set": {
+      name: "Sicily Modular Set", collection: "Sicily", category: "lounge", tag: "Popular",
+      tagline: "Contemporary modular outdoor sofa with infinite configuration possibilities",
+      images: ["/src/assets/images/sicily-corner.jpg","/src/assets/images/sicily-centre.jpg","/src/assets/images/sicily-ottoman.jpg"],
+      specs: [
+        { label: "Type", value: "Modular Sofa Set" },{ label: "Frame", value: "Premium Aluminium" },
+        { label: "Coating", value: "Interpon Powder Coated" },{ label: "Upholstery", value: "Sunbrella® Acrylic Fabric" },
+        { label: "Cushion Fill", value: "Quick-dry Foam Core" },{ label: "Stackable", value: "No" },
+      ],
+      dims: [
+        { piece: "Corner Module", w: "85", d: "85", h: "68", sh: "42" },
+        { piece: "Centre Module", w: "75", d: "85", h: "68", sh: "42" },
+        { piece: "Armless Module", w: "65", d: "85", h: "68", sh: "42" },
+      ],
+      materials: ["Sunbrella® fabric: UV resistant, water-repellent, mold resistant, fade-proof","Interpon powder coating: corrosion protection, scratch resistant, UV stable","Premium aluminium frame: lightweight, durable, weather resistant","Quick-dry foam cushions: rapid drainage, mold resistant, comfortable"],
+      colorLabel: "Fabric Colours",
+      colors: [{name:"Sutty",hex:"#3a3a3a"},{name:"Savanne Whisper",hex:"#e8e7e4"},{name:"Lynn",hex:"#e0d5c3"}],
+    },
+    "nero-6-burner-bbq": {
+      name: "Nero 6 Burner BBQ", collection: "Nero Range", category: "kitchen", tag: "Popular", price: "€2,333",
+      tagline: "304-grade black stainless steel BBQ with 90,000 BTU output, LED backlit controls, and ceramic rear infrared burner",
+      images: ["/src/assets/images/kitchen/blk-6burner-bbq.jpg","/src/assets/images/kitchen/blk-sear-station.jpg","/src/assets/images/kitchen/blk-corner.jpg"],
+      specs: [
+        { label: "Model", value: "DRAK806" },{ label: "Material", value: "304-grade Black Stainless Steel" },
+        { label: "Total Output", value: "90,000 BTU (26.37kW)" },{ label: "Burners", value: "6 Power + Ceramic Rear" },
+        { label: "Ignition", value: "Manual Piezo" },{ label: "Certification", value: "CE Certified" },
+      ],
+      dims: [
+        { piece: "BBQ Unit", w: "110", d: "73.5", h: "119", sh: "—" },
+        { piece: "Cooking Area", w: "95.5", d: "45.5", h: "—", sh: "—" },
+      ],
+      materials: ["304-grade black stainless steel construction","Heavy-duty stainless steel cooking grills","Cast stainless steel power burners","Black stainless steel flame tamers","Double-skinned hood with Cool to Touch technology","Premium granite worktops"],
+      colorLabel: "Finish", colors: [{name:"Nero Black",hex:"#1a1a1a"}],
+    },
+    "nero-4-burner-bbq": {
+      name: "Nero 4 Burner BBQ", collection: "Nero Range", category: "kitchen", price: "€2,110",
+      tagline: "Compact 4-burner black stainless steel BBQ with 65,000 BTU output and ceramic infrared rear burner",
+      images: ["/src/assets/images/kitchen/blk-4burner-bbq.jpg","/src/assets/images/kitchen/blk-6burner-bbq.jpg"],
+      specs: [
+        { label: "Model", value: "DRAK804" },{ label: "Material", value: "304-grade Black Stainless Steel" },
+        { label: "Total Output", value: "65,000 BTU (19.04kW)" },{ label: "Burners", value: "4 Power + Ceramic Rear" },
+        { label: "Ignition", value: "Manual Piezo" },{ label: "Certification", value: "CE Certified" },
+      ],
+      dims: [{ piece: "BBQ Unit", w: "81", d: "73.5", h: "119", sh: "—" },{ piece: "Cooking Area", w: "73", d: "45.5", h: "—", sh: "—" }],
+      materials: ["304-grade black stainless steel construction","Heavy-duty stainless steel cooking grills","LED backlit control knobs","Internal grill lights","Premium granite worktops"],
+      colorLabel: "Finish", colors: [{name:"Nero Black",hex:"#1a1a1a"}],
+    },
+    "nero-double-fridge-cabinet": {
+      name: "Nero Double Fridge Cabinet", collection: "Nero Range", category: "kitchen", price: "€2,055",
+      tagline: "Twin 60-litre fridges with triple-glazed doors, blue LED lighting, and digital touchpad controls",
+      images: ["/src/assets/images/kitchen/blk-double-fridge.jpg","/src/assets/images/kitchen/blk-sink-fridge.jpg"],
+      specs: [
+        { label: "Model", value: "DRA8056" },{ label: "Material", value: "304-grade Black Stainless Steel" },
+        { label: "Fridge Capacity", value: "2 × 60L" },{ label: "Temp Range", value: "2–10°C" },
+        { label: "Rating", value: "IPX4" },{ label: "Glass", value: "Triple-glazed Low E" },
+      ],
+      dims: [{ piece: "Cabinet", w: "96", d: "70", h: "90", sh: "—" }],
+      materials: ["304-grade black stainless steel exterior and interior","700mm deep granite worktop","Triple glazed Low E glass doors","Blue LED interior lighting","Digital touchpad controls"],
+      colorLabel: "Finish", colors: [{name:"Nero Black",hex:"#1a1a1a"}],
+    },
+    "nero-sink-fridge-cabinet": {
+      name: "Nero Sink & Fridge Cabinet", collection: "Nero Range", category: "kitchen", price: "€1,832",
+      tagline: "Combined 60L fridge and matt black sink with 360° swivel tap, hot and cold water connection",
+      images: ["/src/assets/images/kitchen/blk-sink-fridge.jpg","/src/assets/images/kitchen/blk-double-fridge.jpg"],
+      specs: [
+        { label: "Model", value: "DRA8064" },{ label: "Material", value: "304-grade Black Stainless Steel" },
+        { label: "Fridge Capacity", value: "60L" },{ label: "Tap Height", value: "62cm" },
+        { label: "Rating", value: "IPX4" },{ label: "Water", value: "Hot & Cold" },
+      ],
+      dims: [{ piece: "Cabinet", w: "96", d: "70", h: "90", sh: "—" }],
+      materials: ["304-grade black stainless steel","Solid granite worktop","Matt black sink and tap","360° swivel tap with spray/jet modes","Triple-glazed Low E glass fridge door"],
+      colorLabel: "Finish", colors: [{name:"Nero Black",hex:"#1a1a1a"}],
+    },
+    "nero-sear-station": {
+      name: "Nero Sear Station", collection: "Nero Range", category: "kitchen", price: "€850",
+      tagline: "Powerful ceramic infrared burner reaching extreme temperatures for quick, efficient searing",
+      images: ["/src/assets/images/kitchen/blk-sear-station.jpg","/src/assets/images/kitchen/blk-corner.jpg"],
+      specs: [
+        { label: "Model", value: "DRA8053" },{ label: "Material", value: "304-grade Black Stainless Steel" },
+        { label: "Output", value: "13,300 BTU" },{ label: "Burner", value: "Ceramic Infra-Red" },
+        { label: "Ignition", value: "Manual Piezo" },{ label: "Certification", value: "CE Certified" },
+      ],
+      dims: [{ piece: "Cabinet", w: "49", d: "70", h: "90", sh: "—" },{ piece: "Cooking Area", w: "29", d: "28", h: "—", sh: "—" }],
+      materials: ["304-grade black stainless steel","Premium granite worktops","Heavy-duty stainless steel cooking grill","Easy-clean fat collection tray","Soft-close cabinet doors"],
+      colorLabel: "Finish", colors: [{name:"Nero Black",hex:"#1a1a1a"}],
+    },
+    "nero-90-corner-cabinet": {
+      name: "Nero 90° Corner Cabinet", collection: "Nero Range", category: "kitchen", price: "€667",
+      tagline: "L-shape or U-shape connector module with granite worktop for versatile kitchen configurations",
+      images: ["/src/assets/images/kitchen/blk-corner.jpg","/src/assets/images/kitchen/blk-sear-station.jpg"],
+      specs: [
+        { label: "Model", value: "DRA8057" },{ label: "Material", value: "304-grade Black Stainless Steel" },
+        { label: "Worktop", value: "Solid Granite" },{ label: "Configuration", value: "L or U shape" },
+      ],
+      dims: [{ piece: "Cabinet", w: "75", d: "75", h: "90", sh: "—" }],
+      materials: ["304-grade black stainless steel","Solid granite worktop","Heavy-duty castor wheels","Integrated levelling feet"],
+      colorLabel: "Finish", colors: [{name:"Nero Black",hex:"#1a1a1a"}],
+    },
+    "teak-6-burner-bbq-unit": {
+      name: "Teak 6 Burner BBQ Unit", collection: "Teak Range", category: "kitchen", price: "€2,587",
+      tagline: "Reclaimed teak housing with premium 304-grade stainless steel 6-burner BBQ and sintered stone flanges",
+      images: ["/src/assets/images/kitchen/teak-6burner-bbq.jpg","/src/assets/images/kitchen/teak-setup-1.jpg","/src/assets/images/kitchen/teak-front.jpg"],
+      specs: [
+        { label: "Model", value: "DRA5027" },{ label: "BBQ Material", value: "304-grade Stainless Steel" },
+        { label: "Housing", value: "Reclaimed Teak" },{ label: "Total Output", value: "90,000 BTU" },
+        { label: "Burners", value: "6 + Ceramic Rear" },{ label: "Worktop", value: "Sintered Stone" },
+      ],
+      dims: [{ piece: "BBQ", w: "110", d: "57.5", h: "54", sh: "—" },{ piece: "Housing", w: "128.1", d: "63", h: "92", sh: "—" }],
+      materials: ["304-grade stainless steel BBQ","Reclaimed teak with sintered stone flanges","Fire-resistant cement board lining","LED control knobs","Glass viewing window hood"],
+      colorLabel: "Finish", colors: [{name:"Natural Teak",hex:"#a07848"}],
+    },
+    "teak-corner-cabinet": {
+      name: "Teak Corner Cabinet", collection: "Teak Range", category: "kitchen", price: "€1,778",
+      tagline: "Reclaimed teak corner unit with dark stone ceramic worktop, 3 drawers and shelf storage",
+      images: ["/src/assets/images/kitchen/teak-corner.jpg","/src/assets/images/kitchen/teak-setup-1.jpg"],
+      specs: [
+        { label: "Model", value: "DRA5018" },{ label: "Material", value: "Reclaimed Teak" },
+        { label: "Worktop", value: "Dark Stone Ceramic" },{ label: "Storage", value: "3 Drawers + Shelf" },
+        { label: "Doors", value: "Soft-close Teak Panels" },{ label: "Warranty", value: "1 Year" },
+      ],
+      dims: [{ piece: "Cabinet", w: "119.8", d: "63", h: "97.7", sh: "—" }],
+      materials: ["Reclaimed teak frame and cabinetry","Dark stone ceramic worktop","Soft-close hardware","Adjustable levelling feet"],
+      colorLabel: "Finish", colors: [{name:"Natural Teak",hex:"#a07848"}],
+    },
+    "teak-single-door-cabinet": {
+      name: "Teak Single Door Cabinet", collection: "Teak Range", category: "kitchen", price: "€794",
+      tagline: "Compact reclaimed teak storage cabinet with dark stone ceramic worktop and soft-close door",
+      images: ["/src/assets/images/kitchen/teak-front.jpg","/src/assets/images/kitchen/teak-corner.jpg"],
+      specs: [
+        { label: "Model", value: "DRA5013" },{ label: "Material", value: "Reclaimed Teak" },
+        { label: "Worktop", value: "Dark Stone Ceramic" },{ label: "Storage", value: "1 Shelf" },
+      ],
+      dims: [{ piece: "Cabinet", w: "57.6", d: "63", h: "97.7", sh: "—" }],
+      materials: ["Reclaimed teak construction","Dark stone ceramic worktop","Premium soft-close hinges","Water and rot-resistant"],
+      colorLabel: "Finish", colors: [{name:"Natural Teak",hex:"#a07848"}],
+    },
+    "carbon-line-6-burner-bbq": {
+      name: "Carbon Line 6 Burner BBQ", collection: "Carbon Line", category: "kitchen", tag: "New", price: "€3,277",
+      tagline: "Premium black reclaimed teak cabinet with 304-grade black stainless steel 6-burner BBQ and Hafele German fittings",
+      images: ["/src/assets/images/kitchen/carbon-setup-1.jpg","/src/assets/images/kitchen/carbon-setup-2.jpg","/src/assets/images/kitchen/carbon-line-1.jpg"],
+      specs: [
+        { label: "Model", value: "DRA5571" },{ label: "BBQ Material", value: "304-grade Black SS" },
+        { label: "Cabinet", value: "Black Reclaimed Teak" },{ label: "Total Output", value: "90,000 BTU" },
+        { label: "Fittings", value: "Hafele German" },{ label: "Worktop", value: "Ceramic" },
+      ],
+      dims: [{ piece: "BBQ", w: "110.2", d: "57.6", h: "54.3", sh: "—" },{ piece: "Cabinet", w: "163.4", d: "62.5", h: "94.7", sh: "—" }],
+      materials: ["304-grade black stainless steel BBQ","Black reclaimed teak with eco-friendly water-based paint","Hafele German soft-close hinges","Brushed aluminium handles","Ceramic worktop","Fire-resistant cement board lining"],
+      colorLabel: "Finish", colors: [{name:"Carbon Black",hex:"#2a2a2a"}],
+    },
+    "carbon-line-island-unit": {
+      name: "Carbon Line Island Unit", collection: "Carbon Line", category: "kitchen", price: "€2,054",
+      tagline: "Central hub for outdoor cooking, carbon black reclaimed teak with white ceramic worktop and Hafele fittings",
+      images: ["/src/assets/images/kitchen/carbon-line-1.jpg","/src/assets/images/kitchen/carbon-lifestyle-1.jpg","/src/assets/images/kitchen/carbon-line-2.jpg"],
+      specs: [
+        { label: "Model", value: "DRA5563" },{ label: "Material", value: "Black Reclaimed Teak" },
+        { label: "Worktop", value: "White Ceramic" },{ label: "Finish", value: "UV-stabilised" },
+        { label: "Fittings", value: "Hafele German" },
+      ],
+      dims: [{ piece: "Island", w: "180", d: "80", h: "90.8", sh: "—" }],
+      materials: ["Black reclaimed teak with carbon black coating","White ceramic worktop, heat-resistant","Hafele German-engineered fittings","UV-stabilised water-based finish"],
+      colorLabel: "Finish", colors: [{name:"Carbon Black",hex:"#2a2a2a"}],
+    },
   };
+
+  const product = allProducts[id] || allProducts["sicily-modular-set"];
 
   const AccordionSection = ({ title, open, toggle, children }) => (
     <div style={{ borderBottom: "1px solid var(--sand-l)" }}>
@@ -132,7 +271,7 @@ const PRODUCT_DETAIL = () => {
         <div>
           <div style={{overflow:"hidden",borderRadius:3,marginBottom:16,position:"relative",background:"var(--cream-w)"}}>
             <img src={product.images[activeImg]} alt={product.name} style={{width:"100%",aspectRatio:"4/3",objectFit:"contain",transition:"opacity .4s"}} />
-            <span className="tag tag-popular" style={{position:"absolute",top:16,left:16}}>Popular</span>
+            {product.tag && <span className={`tag ${product.tag === "New" ? "tag-new" : "tag-popular"}`} style={{position:"absolute",top:16,left:16}}>{product.tag}</span>}
             <FavoriteButton product={{id:"sicily-modular-set",name:product.name,collection:product.collection,img:product.images[0],route:"/product/sicily"}} size={20} style={{position:"absolute",top:16,right:16}} />
           </div>
           <div style={{display:"flex",gap:8}}>
@@ -149,16 +288,23 @@ const PRODUCT_DETAIL = () => {
           <p className="fs" style={{fontSize:14,lineHeight:1.7,color:"var(--stone-l)",fontWeight:300,marginBottom:28}}>{product.tagline}</p>
 
           <div style={{marginBottom:28}}>
-            <span className="fs" style={{fontSize:11,letterSpacing:2,textTransform:"uppercase",color:"var(--sand-d)",display:"block",marginBottom:12}}>Fabric Colours</span>
+            <span className="fs" style={{fontSize:11,letterSpacing:2,textTransform:"uppercase",color:"var(--sand-d)",display:"block",marginBottom:12}}>{product.colorLabel || "Colours"}</span>
             <div style={{display:"flex",gap:10}}>
-              {product.colors.map((c, i) => (
-                <div key={c} style={{display:"flex",flexDirection:"column",alignItems:"center",gap:4}}>
-                  <div className="color-dot" style={{background: i===0?"#3a3a3a":i===1?"#e8e7e4":"#e0d5c3"}} />
-                  <span className="fs" style={{fontSize:10,color:"var(--sand-d)"}}>{c}</span>
+              {product.colors.map((c) => (
+                <div key={c.name} style={{display:"flex",flexDirection:"column",alignItems:"center",gap:4}}>
+                  <div className="color-dot" style={{background:c.hex}} />
+                  <span className="fs" style={{fontSize:10,color:"var(--sand-d)"}}>{c.name}</span>
                 </div>
               ))}
             </div>
           </div>
+
+          {product.price && (
+            <div style={{marginBottom:28}}>
+              <span className="ff" style={{fontSize:32,fontWeight:300,color:"var(--stone)"}}>{product.price}</span>
+              <span className="fs" style={{fontSize:11,color:"var(--sand-d)",marginLeft:8}}>exc. VAT</span>
+            </div>
+          )}
 
           <div style={{display:"flex",gap:12,marginBottom:36,flexWrap:"wrap"}}>
             <button className="cb cg">Request a quote</button>
@@ -221,27 +367,29 @@ const PRODUCT_DETAIL = () => {
       </section>
 
       {/* RELATED PRODUCTS */}
+      {(product.related && product.related.length > 0) && (
       <section id="related" data-animate style={{padding:"60px 48px clamp(60px,10vh,100px)",background:"var(--cream-w)",borderTop:"1px solid var(--sand-l)",...S("related")}}>
         <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-end",marginBottom:36}}>
           <div>
             <span className="fs sl">You may also like</span>
             <h2 className="ff" style={{fontSize:"clamp(28px,3vw,36px)",fontWeight:300,marginTop:8,letterSpacing:"-0.01em"}}>Related Products</h2>
           </div>
-          <a href="#" onClick={(e)=>{e.preventDefault();navigate('/products')}} className="fs" style={{fontSize:11,letterSpacing:2,textTransform:"uppercase",color:"var(--gold)",textDecoration:"none",borderBottom:"1px solid var(--gold)",paddingBottom:2}}>View all lounge →</a>
+          <a href="#" onClick={(e)=>{e.preventDefault();navigate('/products')}} className="fs" style={{fontSize:11,letterSpacing:2,textTransform:"uppercase",color:"var(--gold)",textDecoration:"none",borderBottom:"1px solid var(--gold)",paddingBottom:2}}>View all →</a>
         </div>
         <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:24}}>
           {product.related.map((r, i)=>(
-            <div key={r.name} className="related-card" onClick={()=>navigate(`/product/${r.collection.toLowerCase()}`)} style={{animation:vis("related")?`fu 0.5s ${0.08*i}s both`:"none"}}>
+            <div key={r.name} className="related-card" onClick={()=>navigate(`/product/${r.name.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'')}`)} style={{animation:vis("related")?`fu 0.5s ${0.08*i}s both`:"none"}}>
               <div style={{overflow:"hidden",borderRadius:3,marginBottom:12,position:"relative"}}>
-                <FavoriteButton product={{id:r.name.toLowerCase().replace(/\s+/g,'-'),name:r.name,collection:r.collection,img:r.img,route:`/product/${r.collection.toLowerCase()}`}} size={16} style={{position:"absolute",top:12,right:12,zIndex:3}} />
+                <FavoriteButton product={{id:r.name.toLowerCase().replace(/\s+/g,'-'),name:r.name,collection:r.collection,img:r.img,route:`/product/${r.name.toLowerCase().replace(/[^a-z0-9]+/g,'-')}`}} size={16} style={{position:"absolute",top:12,right:12,zIndex:3}} />
                 <img src={r.img} alt={r.name} />
               </div>
               <h3 className="ff" style={{fontSize:20,fontWeight:400,marginBottom:4}}>{r.name}</h3>
-              <p className="fs" style={{fontSize:11,letterSpacing:1.5,color:"var(--sand-d)",textTransform:"uppercase"}}>{r.collection} Collection</p>
+              <p className="fs" style={{fontSize:11,letterSpacing:1.5,color:"var(--sand-d)",textTransform:"uppercase"}}>{r.collection}</p>
             </div>
           ))}
         </div>
       </section>
+      )}
 
       {/* FOOTER */}
       <footer style={{background:"var(--stone)",color:"#fff",padding:"72px 48px 36px"}}>

@@ -201,7 +201,7 @@ const PRODUCTS_PAGE = () => {
         <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:"28px",maxWidth:"1300px"}}>
           {filteredProducts.map((p, i) => (
             <div key={p.name + i} className="product-card"
-              onClick={() => navigate(`/product/${p.collection.toLowerCase()}`)}
+              onClick={() => navigate(`/product/${p.name.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'')}`)}
               onMouseEnter={() => setHoveredProduct(i)}
               onMouseLeave={() => setHoveredProduct(null)}
               style={{animation: `fu .5s ${0.06 * i}s both`, borderRadius: 3}}>
