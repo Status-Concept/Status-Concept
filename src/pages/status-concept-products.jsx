@@ -44,7 +44,7 @@ const PRODUCTS_PAGE = () => {
   const vis = (id) => visibleSections.has(id);
 
   const categories = [
-    { key: "all", label: "All", count: 90 },
+    { key: "all", label: "All", count: 100 },
     { key: "lounge", label: "Lounge", count: 18 },
     { key: "dining", label: "Dining", count: 14 },
     { key: "sunlounger", label: "Sun Loungers", count: 8 },
@@ -54,7 +54,7 @@ const PRODUCTS_PAGE = () => {
     { key: "bar", label: "Bar & Patio", count: 8 },
     { key: "puffs", label: "Puffs", count: 8 },
     { key: "shade", label: "Shade", count: 6 },
-    { key: "kitchen", label: "Kitchens", count: 4 },
+    { key: "kitchen", label: "Modular Kitchen", count: 14 },
     { key: "decor", label: "Decor", count: 4 },
   ];
 
@@ -90,10 +90,20 @@ const PRODUCTS_PAGE = () => {
     { name: "Retractable Pergola", collection: "Pergolas", category: "shade", img: "/placeholder.svg", tag: "" },
     { name: "Wall-Mounted Parasol", collection: "Glatz", category: "shade", img: "/placeholder.svg", tag: "" },
     { name: "Free-Standing Pergola", collection: "Pergolas", category: "shade", img: "/placeholder.svg", tag: "New" },
-    { name: "Outdoor Kitchen Island", collection: "Kitchens", category: "kitchen", img: "/placeholder.svg", tag: "" },
-    { name: "Built-in BBQ System", collection: "Kitchens", category: "kitchen", img: "/placeholder.svg", tag: "Popular" },
-    { name: "Pizza Oven Station", collection: "Kitchens", category: "kitchen", img: "/placeholder.svg", tag: "" },
-    { name: "Compact BBQ Cart", collection: "Kitchens", category: "kitchen", img: "/placeholder.svg", tag: "" },
+    { name: "6 Burner Black SS BBQ", collection: "Modular Kitchen", category: "kitchen", img: "/src/assets/images/kitchen/blk-6burner-bbq.jpg", tag: "Popular" },
+    { name: "4 Burner Black SS BBQ", collection: "Modular Kitchen", category: "kitchen", img: "/src/assets/images/kitchen/blk-4burner-bbq.jpg", tag: "" },
+    { name: "Black SS Double Fridge", collection: "Modular Kitchen", category: "kitchen", img: "/src/assets/images/kitchen/blk-double-fridge.jpg", tag: "" },
+    { name: "Black SS Sink & Fridge", collection: "Modular Kitchen", category: "kitchen", img: "/src/assets/images/kitchen/blk-sink-fridge.jpg", tag: "" },
+    { name: "Black SS Sear Station", collection: "Modular Kitchen", category: "kitchen", img: "/src/assets/images/kitchen/blk-sear-station.jpg", tag: "" },
+    { name: "Black SS Corner Unit", collection: "Modular Kitchen", category: "kitchen", img: "/src/assets/images/kitchen/blk-corner.jpg", tag: "" },
+    { name: "Teak 6 Burner BBQ", collection: "Modular Kitchen", category: "kitchen", img: "/src/assets/images/kitchen/teak-6burner-bbq.jpg", tag: "" },
+    { name: "Teak Kitchen Setup", collection: "Modular Kitchen", category: "kitchen", img: "/src/assets/images/kitchen/teak-setup-1.jpg", tag: "" },
+    { name: "Teak Corner Unit", collection: "Modular Kitchen", category: "kitchen", img: "/src/assets/images/kitchen/teak-corner.jpg", tag: "" },
+    { name: "Teak Front Cabinet", collection: "Modular Kitchen", category: "kitchen", img: "/src/assets/images/kitchen/teak-front.jpg", tag: "" },
+    { name: "Carbon Line 6 Burner", collection: "Modular Kitchen", category: "kitchen", img: "/src/assets/images/kitchen/carbon-setup-1.jpg", tag: "New" },
+    { name: "Carbon Line Kitchen", collection: "Modular Kitchen", category: "kitchen", img: "/src/assets/images/kitchen/carbon-setup-2.jpg", tag: "" },
+    { name: "Carbon Line Island", collection: "Modular Kitchen", category: "kitchen", img: "/src/assets/images/kitchen/carbon-line-1.jpg", tag: "" },
+    { name: "Carbon Line Lifestyle", collection: "Modular Kitchen", category: "kitchen", img: "/src/assets/images/kitchen/carbon-lifestyle-1.jpg", tag: "" },
     { name: "Outdoor Carpet Algarve", collection: "Decor", category: "decor", img: "/placeholder.svg", tag: "" },
     { name: "Garden Vase Collection", collection: "Decor", category: "decor", img: "/placeholder.svg", tag: "" },
     { name: "LED Garden Lighting", collection: "Decor", category: "decor", img: "/placeholder.svg", tag: "New" },
@@ -143,11 +153,11 @@ const PRODUCTS_PAGE = () => {
       <section style={{paddingTop:"140px",paddingBottom:"60px",paddingLeft:"48px",paddingRight:"48px",background:"var(--cream-w)",borderBottom:"1px solid var(--sand-l)"}}>
         <div style={{maxWidth:"800px"}}>
           <div className="fs" style={{fontSize:"11px",letterSpacing:"3px",color:"var(--sand-d)",textTransform:"uppercase",marginBottom:"8px",animation:"fu .6s .2s both"}}>
-            <a href="#" onClick={(e)=>{e.preventDefault();navigate('/')}} style={{color:"inherit",textDecoration:"none",transition:"color .2s"}} onMouseEnter={e=>e.target.style.color="var(--gold)"} onMouseLeave={e=>e.target.style.color="inherit"}>Home</a> <span style={{margin:"0 8px",opacity:.4}}>/</span> {catParam === "shade" ? "Shade Solutions" : catParam === "kitchen" ? "Outdoor Kitchens" : catParam === "decor" ? "Decor & Leisure" : "Furniture Series"}
+            <a href="#" onClick={(e)=>{e.preventDefault();navigate('/')}} style={{color:"inherit",textDecoration:"none",transition:"color .2s"}} onMouseEnter={e=>e.target.style.color="var(--gold)"} onMouseLeave={e=>e.target.style.color="inherit"}>Home</a> <span style={{margin:"0 8px",opacity:.4}}>/</span> {catParam === "shade" ? "Shade Solutions" : catParam === "kitchen" ? "Modular Kitchen" : catParam === "decor" ? "Decor & Leisure" : "Furniture Series"}
           </div>
-          <h1 className="ff" style={{fontSize:"clamp(36px,5vw,56px)",fontWeight:300,lineHeight:1.1,marginBottom:"20px",letterSpacing:"-0.01em",animation:"fu .6s .3s both"}}>{catParam === "shade" ? "Shade Solutions" : catParam === "kitchen" ? "Outdoor Kitchens" : catParam === "decor" ? "Decor & Leisure" : "Furniture Series"}</h1>
+          <h1 className="ff" style={{fontSize:"clamp(36px,5vw,56px)",fontWeight:300,lineHeight:1.1,marginBottom:"20px",letterSpacing:"-0.01em",animation:"fu .6s .3s both"}}>{catParam === "shade" ? "Shade Solutions" : catParam === "kitchen" ? "Modular Kitchen" : catParam === "decor" ? "Decor & Leisure" : "Furniture Series"}</h1>
           <p className="fs" style={{fontSize:"15px",color:"var(--stone-l)",lineHeight:1.7,maxWidth:"600px",fontWeight:300,animation:"fu .6s .45s both"}}>
-            {catParam === "shade" ? "Premium parasols, bioclimatic and retractable pergolas for the perfect outdoor shade solution." : catParam === "kitchen" ? "Complete outdoor kitchen systems, BBQ stations, pizza ovens and cooking islands." : catParam === "decor" ? "Outdoor carpets, garden vases, lighting, sound systems and leisure accessories." : "Explore our complete range of luxury outdoor furniture: from reclining sofa sets to elegant dining collections. Each piece crafted with Sunbrella® fabrics and premium aluminium for the Algarve lifestyle."}
+            {catParam === "shade" ? "Premium parasols, bioclimatic and retractable pergolas for the perfect outdoor shade solution." : catParam === "kitchen" ? "Premium modular outdoor kitchens: Black Stainless Steel, Teak, and Carbon Line ranges. BBQ stations, fridge cabinets, sink units, and corner modules." : catParam === "decor" ? "Outdoor carpets, garden vases, lighting, sound systems and leisure accessories." : "Explore our complete range of luxury outdoor furniture: from reclining sofa sets to elegant dining collections. Each piece crafted with Sunbrella® fabrics and premium aluminium for the Algarve lifestyle."}
           </p>
         </div>
       </section>
