@@ -150,17 +150,29 @@ const PRODUCTS_PAGE = () => {
       </header>
 
       {/* PAGE HERO */}
-      <section style={{paddingTop:"140px",paddingBottom:"60px",paddingLeft:"48px",paddingRight:"48px",background:"var(--cream-w)",borderBottom:"1px solid var(--sand-l)"}}>
-        <div style={{maxWidth:"800px"}}>
-          <div className="fs" style={{fontSize:"11px",letterSpacing:"3px",color:"var(--sand-d)",textTransform:"uppercase",marginBottom:"8px",animation:"fu .6s .2s both"}}>
-            <a href="#" onClick={(e)=>{e.preventDefault();navigate('/')}} style={{color:"inherit",textDecoration:"none",transition:"color .2s"}} onMouseEnter={e=>e.target.style.color="var(--gold)"} onMouseLeave={e=>e.target.style.color="inherit"}>Home</a> <span style={{margin:"0 8px",opacity:.4}}>/</span> {catParam === "shade" ? "Shade Solutions" : catParam === "kitchen" ? "Modular Kitchen" : catParam === "decor" ? "Decor & Leisure" : "Furniture Series"}
+      {catParam === "kitchen" ? (
+        <section style={{position:"relative",height:"50vh",minHeight:380,paddingTop:100,background:"linear-gradient(165deg,rgba(26,26,46,.5),rgba(26,26,46,.25)),url('/src/assets/images/kitchen/kitchen-hero.jpg') center/cover",display:"flex",alignItems:"flex-end",padding:"0 0 60px 0"}}>
+          <div style={{padding:"0 48px",position:"relative",zIndex:2,maxWidth:700}}>
+            <div className="fs" style={{fontSize:"11px",letterSpacing:"3px",color:"rgba(255,255,255,.6)",textTransform:"uppercase",marginBottom:"12px",animation:"fu .6s .2s both"}}>
+              <a href="#" onClick={(e)=>{e.preventDefault();navigate('/')}} style={{color:"inherit",textDecoration:"none"}}>Home</a> <span style={{margin:"0 8px",opacity:.4}}>/</span> <a href="#" onClick={(e)=>{e.preventDefault();navigate('/products')}} style={{color:"inherit",textDecoration:"none"}}>Products</a> <span style={{margin:"0 8px",opacity:.4}}>/</span> Modular Kitchen
+            </div>
+            <h1 className="ff" style={{fontSize:"clamp(38px,5vw,60px)",fontWeight:300,color:"#fff",lineHeight:1.1,marginBottom:"16px",letterSpacing:"-0.01em",animation:"fu .6s .3s both"}}>Modular Kitchen</h1>
+            <p className="fs" style={{fontSize:"15px",color:"rgba(255,255,255,.75)",lineHeight:1.7,fontWeight:300,animation:"fu .6s .45s both"}}>Premium modular outdoor kitchens: Black Stainless Steel, Teak, and Carbon Line ranges. BBQ stations, fridge cabinets, sink units, and corner modules.</p>
           </div>
-          <h1 className="ff" style={{fontSize:"clamp(36px,5vw,56px)",fontWeight:300,lineHeight:1.1,marginBottom:"20px",letterSpacing:"-0.01em",animation:"fu .6s .3s both"}}>{catParam === "shade" ? "Shade Solutions" : catParam === "kitchen" ? "Modular Kitchen" : catParam === "decor" ? "Decor & Leisure" : "Furniture Series"}</h1>
-          <p className="fs" style={{fontSize:"15px",color:"var(--stone-l)",lineHeight:1.7,maxWidth:"600px",fontWeight:300,animation:"fu .6s .45s both"}}>
-            {catParam === "shade" ? "Premium parasols, bioclimatic and retractable pergolas for the perfect outdoor shade solution." : catParam === "kitchen" ? "Premium modular outdoor kitchens: Black Stainless Steel, Teak, and Carbon Line ranges. BBQ stations, fridge cabinets, sink units, and corner modules." : catParam === "decor" ? "Outdoor carpets, garden vases, lighting, sound systems and leisure accessories." : "Explore our complete range of luxury outdoor furniture: from reclining sofa sets to elegant dining collections. Each piece crafted with Sunbrella® fabrics and premium aluminium for the Algarve lifestyle."}
-          </p>
-        </div>
-      </section>
+        </section>
+      ) : (
+        <section style={{paddingTop:"140px",paddingBottom:"60px",paddingLeft:"48px",paddingRight:"48px",background:"var(--cream-w)",borderBottom:"1px solid var(--sand-l)"}}>
+          <div style={{maxWidth:"800px"}}>
+            <div className="fs" style={{fontSize:"11px",letterSpacing:"3px",color:"var(--sand-d)",textTransform:"uppercase",marginBottom:"8px",animation:"fu .6s .2s both"}}>
+              <a href="#" onClick={(e)=>{e.preventDefault();navigate('/')}} style={{color:"inherit",textDecoration:"none",transition:"color .2s"}} onMouseEnter={e=>e.target.style.color="var(--gold)"} onMouseLeave={e=>e.target.style.color="inherit"}>Home</a> <span style={{margin:"0 8px",opacity:.4}}>/</span> {catParam === "shade" ? "Shade Solutions" : catParam === "decor" ? "Decor & Leisure" : "Furniture Series"}
+            </div>
+            <h1 className="ff" style={{fontSize:"clamp(36px,5vw,56px)",fontWeight:300,lineHeight:1.1,marginBottom:"20px",letterSpacing:"-0.01em",animation:"fu .6s .3s both"}}>{catParam === "shade" ? "Shade Solutions" : catParam === "decor" ? "Decor & Leisure" : "Furniture Series"}</h1>
+            <p className="fs" style={{fontSize:"15px",color:"var(--stone-l)",lineHeight:1.7,maxWidth:"600px",fontWeight:300,animation:"fu .6s .45s both"}}>
+              {catParam === "shade" ? "Premium parasols, bioclimatic and retractable pergolas for the perfect outdoor shade solution." : catParam === "decor" ? "Outdoor carpets, garden vases, lighting, sound systems and leisure accessories." : "Explore our complete range of luxury outdoor furniture: from reclining sofa sets to elegant dining collections. Each piece crafted with Sunbrella® fabrics and premium aluminium for the Algarve lifestyle."}
+            </p>
+          </div>
+        </section>
+      )}
 
       {/* FILTER BAR */}
       <section id="filters" data-animate style={{padding:"32px 48px",borderBottom:"1px solid var(--sand-l)",position:"sticky",top:"95px",zIndex:50,background:"rgba(232,240,248,.97)",backdropFilter:"blur(12px)",...S("filters")}}>
