@@ -107,9 +107,9 @@ const STATUS_CONCEPT_HOMEPAGE = () => {
           </div>
         </div>
         <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"16px 48px"}}>
-          <div style={{display:"flex",alignItems:"baseline",gap:"4px",cursor:"pointer"}}>
-            <span className="ff" style={{fontSize:"28px",fontWeight:500,letterSpacing:"3px",color:headerSolid?"var(--stone)":"#fff",transition:"color .4s"}}>STATUS</span>
-            <span className="fs" style={{fontSize:"10px",letterSpacing:"4px",textTransform:"uppercase",color:headerSolid?"var(--sand-d)":"rgba(255,255,255,.6)",transition:"color .4s",marginLeft:"4px"}}>CONCEPT</span>
+          <div style={{cursor:"pointer",lineHeight:1}}>
+            <span className="ff" style={{fontSize:28,fontWeight:400,letterSpacing:8,color:headerSolid?"var(--stone)":"#fff",transition:"color .4s"}}>ST<span style={{color:"var(--gold)"}}>A</span>TVS</span>
+            <div className="fs" style={{fontSize:7,letterSpacing:3,color:headerSolid?"var(--sand-d)":"rgba(255,255,255,.6)",transition:"color .4s",marginTop:2}}>OUTDOOR FURNITURE SPECIALISTS</div>
           </div>
           <nav className="fs nav-desktop" style={{display:"flex",gap:"32px",alignItems:"center",fontSize:"12px",letterSpacing:"2px",textTransform:"uppercase",color:headerSolid?"var(--stone-l)":"rgba(255,255,255,.9)",transition:"color .4s"}}>
             {["Furniture","Shade","Kitchens","Decor","Projects","Showrooms","Contact"].map(i=><a key={i} className="nl" href="#" style={{color:"inherit"}}>{i}</a>)}
@@ -383,7 +383,7 @@ const STATUS_CONCEPT_HOMEPAGE = () => {
       <footer style={{background:"var(--stone)",color:"#fff",padding:"72px 48px 36px"}}>
         <div className="footer-grid" style={{display:"grid",gridTemplateColumns:"1.5fr 1fr 1fr 1fr 1fr",gap:40,maxWidth:1200,margin:"0 auto",paddingBottom:48,borderBottom:"1px solid rgba(255,255,255,.08)"}}>
           <div>
-            <div style={{marginBottom:20}}><span className="ff" style={{fontSize:24,fontWeight:500,letterSpacing:3}}>STATUS</span><span className="fs" style={{fontSize:9,letterSpacing:3,marginLeft:4,color:"rgba(255,255,255,.4)"}}>CONCEPT</span></div>
+            <div style={{marginBottom:20}}><span className="ff" style={{fontSize:24,fontWeight:400,letterSpacing:8}}>ST<span style={{color:"var(--gold)"}}>A</span>TVS</span><div className="fs" style={{fontSize:7,letterSpacing:3,color:"rgba(255,255,255,.4)",marginTop:2}}>OUTDOOR FURNITURE SPECIALISTS</div></div>
             <p className="fs" style={{fontSize:13,lineHeight:1.7,color:"rgba(255,255,255,.5)",fontWeight:300}}>High quality lifestyle furniture in the Algarve. Serving Vale do Lobo, Quinta do Lago, Vilamoura, and beyond.</p>
             <div style={{display:"flex",gap:"2px",marginTop:20}}>
               {socialIcons.map(({n,svg})=>(

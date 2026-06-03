@@ -64,9 +64,9 @@ const CONTACT_PAGE = () => {
           </div>
         </div>
         <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"16px 48px"}}>
-          <div style={{display:"flex",alignItems:"baseline",cursor:"pointer"}}>
-            <span className="ff" style={{fontSize:28,fontWeight:500,letterSpacing:3,color:"var(--stone)"}}>STATUS</span>
-            <span className="fs" style={{fontSize:10,letterSpacing:4,textTransform:"uppercase",color:"var(--sand-d)",marginLeft:4}}>CONCEPT</span>
+          <div style={{cursor:"pointer",lineHeight:1}}>
+            <span className="ff" style={{fontSize:28,fontWeight:400,letterSpacing:8,color:"var(--stone)"}}>ST<span style={{color:"var(--gold)"}}>A</span>TVS</span>
+            <div className="fs" style={{fontSize:7,letterSpacing:3,color:"var(--sand-d)",marginTop:2}}>OUTDOOR FURNITURE SPECIALISTS</div>
           </div>
           <nav className="fs nav-desktop" style={{display:"flex",gap:32,fontSize:12,letterSpacing:2,textTransform:"uppercase",color:"var(--stone-l)"}}>
             {["Furniture","Shade","Kitchens","Decor","Projects","Showrooms","Contact"].map(i=><a key={i} className="nl" href="#" style={{color:"inherit"}}>{i}</a>)}
@@ -181,7 +181,7 @@ const CONTACT_PAGE = () => {
       <footer style={{background:"var(--stone)",color:"#fff",padding:"72px 48px 36px",borderTop:"1px solid rgba(255,255,255,.08)"}}>
         <div className="footer-grid" style={{display:"grid",gridTemplateColumns:"1.5fr 1fr 1fr 1fr 1fr",gap:40,maxWidth:1200,margin:"0 auto",paddingBottom:48,borderBottom:"1px solid rgba(255,255,255,.08)"}}>
           <div>
-            <div style={{marginBottom:20}}><span className="ff" style={{fontSize:24,fontWeight:500,letterSpacing:3}}>STATUS</span><span className="fs" style={{fontSize:9,letterSpacing:3,marginLeft:4,color:"rgba(255,255,255,.4)"}}>CONCEPT</span></div>
+            <div style={{marginBottom:20}}><span className="ff" style={{fontSize:24,fontWeight:400,letterSpacing:8}}>ST<span style={{color:"var(--gold)"}}>A</span>TVS</span><div className="fs" style={{fontSize:7,letterSpacing:3,color:"rgba(255,255,255,.4)",marginTop:2}}>OUTDOOR FURNITURE SPECIALISTS</div></div>
             <p className="fs" style={{fontSize:13,lineHeight:1.7,color:"rgba(255,255,255,.5)",fontWeight:300}}>High quality lifestyle furniture in the Algarve.</p>
             <div style={{display:"flex",gap:"2px",marginTop:20}}>
               {socialIcons.map(({n,svg})=>(<a key={n} href="#" aria-label={n} className="si" style={{color:"rgba(255,255,255,.4)"}}>{svg}</a>))}
