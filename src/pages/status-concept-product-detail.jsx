@@ -149,6 +149,31 @@ const PRODUCT_DETAIL = () => {
             ))}
           </div>
 
+          {product.sizeOptions && product.sizeOptions.length > 0 && (
+            <div style={{ marginBottom: 28 }}>
+              <span className="fs" style={{ display: "block", fontSize: 11, letterSpacing: 2, textTransform: "uppercase", color: "var(--sand-d)", marginBottom: 14 }}>Select Size</span>
+              <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                {product.sizeOptions.map((opt, i) => (
+                  <button key={opt.sku} type="button" className="fs" style={{
+                    display: "flex", justifyContent: "space-between", alignItems: "center",
+                    padding: "16px 20px", border: i === 0 ? "2px solid var(--gold)" : "1px solid var(--sand-l)",
+                    background: i === 0 ? "rgba(196,30,58,.06)" : "transparent", borderRadius: 4, cursor: "pointer",
+                    transition: "all .3s", textAlign: "left",
+                  }}
+                  onMouseEnter={e => { e.currentTarget.style.borderColor = "var(--gold)"; e.currentTarget.style.background = "rgba(196,30,58,.06)"; }}
+                  onMouseLeave={e => { if (i !== 0) { e.currentTarget.style.borderColor = "var(--sand-l)"; e.currentTarget.style.background = "transparent"; } }}
+                  >
+                    <div>
+                      <span style={{ fontSize: 14, fontWeight: 500, color: "var(--stone)", display: "block" }}>{opt.label}</span>
+                      <span style={{ fontSize: 11, color: "var(--sand-d)", marginTop: 2, display: "block" }}>{opt.dimensions}</span>
+                    </div>
+                    <span style={{ fontSize: 10, letterSpacing: 1.5, textTransform: "uppercase", color: "var(--sand-d)", whiteSpace: "nowrap" }}>SKU: {opt.sku}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+
           <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginBottom: 28 }}>
             <button type="button" className="cb cg" onClick={() => navigate("/contact")}>Request quote</button>
             <button type="button" className="cb cd" onClick={() => navigate("/contact")}>Book showroom</button>
