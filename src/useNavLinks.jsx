@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom'
 const navMap = {
   'Furniture': '/products',
   'Shade': '/products?cat=shade',
-  'Kitchens': '/products?cat=nero',
+  'Kitchens': '/products?cat=kitchen',
   'Decor': '/products?cat=decor',
   'Projects': '/projects',
   'Showrooms': '/contact',
