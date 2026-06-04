@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+﻿import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import useNavLinks from "../useNavLinks";
 import FavoriteButton from "../FavoriteButton";
@@ -8,15 +8,7 @@ import heroImg from "../assets/images/enhanced/hero-ai.png";
 import showroomQuintaImg from "../assets/images/enhanced/showroom-quinta-ai.png";
 import showroomAlmancilImg from "../assets/images/enhanced/showroom-almancil-ai.png";
 import whyStatusImg from "../assets/images/enhanced/why-status-ai.png";
-import baliImg from "../assets/images/bali-able.jpg";
-import berlinImg from "../assets/images/berlin.jpg";
-import bonaireImg from "../assets/images/bonaire-lounge.jpg";
-import ibizaImg from "../assets/images/ibiza-able.jpg";
-import mayaImg from "../assets/images/maya.jpg";
-import boraBoraImg from "../assets/images/bora-bora.jpg";
-import glatzParasolImg from "../assets/images/enhanced-safe/glatz-parasol-safe.jpg";
-import glatzBioclimaticImg from "../assets/images/enhanced-safe/glatz-bioclimatic-safe.jpg";
-import glatzRetractableImg from "../assets/images/enhanced-safe/glatz-retractable-safe.jpg";
+const placeholderImg = "/placeholder.svg";
 import neroKitchenImg from "../assets/images/kitchen/blk-6burner-bbq.jpg";
 import teakKitchenImg from "../assets/images/kitchen/teak-setup-1.jpg";
 import carbonKitchenImg from "../assets/images/kitchen/carbon-line-1.jpg";
@@ -51,17 +43,17 @@ const STATUS_CONCEPT_HOMEPAGE = () => {
 
   const collections = {
     furniture: [
-      { name: "Bali", desc: "Relaxed outdoor seating with deep cushions and a resort-inspired profile.", img: baliImg, route: "/products?cat=lounge" },
-      { name: "Berlin", desc: "Classic outdoor sofa proportions with a clean aluminium frame.", img: berlinImg, route: "/products?cat=lounge" },
-      { name: "Bonaire", desc: "Corner lounge comfort made for long terrace afternoons.", img: bonaireImg, route: "/products?cat=lounge" },
-      { name: "Ibiza", desc: "Contemporary lounge seating with a light visual footprint.", img: ibizaImg, route: "/products?cat=lounge" },
-      { name: "Maya", desc: "Soft outdoor comfort with a tailored silhouette.", img: mayaImg, route: "/products?cat=lounge" },
-      { name: "Bora Bora", desc: "Premium outdoor sofa styling for poolside spaces.", img: boraBoraImg, route: "/products?cat=lounge" },
+      { name: "Bali", desc: "Relaxed outdoor seating with deep cushions and a resort-inspired profile.", img: placeholderImg, route: "/products?cat=lounge" },
+      { name: "Berlin", desc: "Classic outdoor sofa proportions with a clean aluminium frame.", img: placeholderImg, route: "/products?cat=lounge" },
+      { name: "Bonaire", desc: "Corner lounge comfort made for long terrace afternoons.", img: placeholderImg, route: "/products?cat=lounge" },
+      { name: "Ibiza", desc: "Contemporary lounge seating with a light visual footprint.", img: placeholderImg, route: "/products?cat=lounge" },
+      { name: "Maya", desc: "Soft outdoor comfort with a tailored silhouette.", img: placeholderImg, route: "/products?cat=lounge" },
+      { name: "Bora Bora", desc: "Premium outdoor sofa styling for poolside spaces.", img: placeholderImg, route: "/products?cat=lounge" },
     ],
     shade: [
-      { name: "Glatz Parasols", desc: "Swiss engineered parasol shade for flexible terrace coverage.", img: glatzParasolImg, route: "/products?cat=shade" },
-      { name: "Bioclimatic Pergolas", desc: "Architectural shade with adjustable climate control.", img: glatzBioclimaticImg, route: "/products?cat=shade" },
-      { name: "Retractable Pergolas", desc: "Flexible roof coverage for changing Algarve weather.", img: glatzRetractableImg, route: "/products?cat=shade" },
+      { name: "Glatz Parasols", desc: "Swiss engineered parasol shade for flexible terrace coverage.", img: placeholderImg, route: "/products?cat=shade" },
+      { name: "Bioclimatic Pergolas", desc: "Architectural shade with adjustable climate control.", img: placeholderImg, route: "/products?cat=shade" },
+      { name: "Retractable Pergolas", desc: "Flexible roof coverage for changing Algarve weather.", img: placeholderImg, route: "/products?cat=shade" },
     ],
     kitchen: [
       { name: "Nero Range", desc: "Black stainless steel modules with granite tops, BBQs, fridges and sinks.", img: neroKitchenImg, route: "/products?cat=kitchen" },
