@@ -44,17 +44,19 @@ const PRODUCTS_PAGE = () => {
   const vis = (id) => visibleSections.has(id);
 
   const categories = [
-    { key: "all", label: "All", count: 100 },
-    { key: "lounge", label: "Lounge", count: 18 },
-    { key: "dining", label: "Dining", count: 14 },
-    { key: "sunlounger", label: "Sun Loungers", count: 8 },
-    { key: "daybed", label: "Day Beds", count: 4 },
-    { key: "coffee", label: "Coffee Tables", count: 10 },
-    { key: "side", label: "Side Tables", count: 6 },
-    { key: "bar", label: "Bar & Patio", count: 8 },
-    { key: "puffs", label: "Puffs", count: 8 },
+    { key: "all", label: "All", count: 78 },
+    { key: "lounge", label: "Lounge", count: 9 },
+    { key: "dining", label: "Dining", count: 4 },
+    { key: "sunlounger", label: "Sun Loungers", count: 4 },
+    { key: "daybed", label: "Day Beds", count: 2 },
+    { key: "coffee", label: "Coffee Tables", count: 2 },
+    { key: "side", label: "Side Tables", count: 1 },
+    { key: "bar", label: "Bar & Patio", count: 2 },
+    { key: "puffs", label: "Puffs", count: 1 },
     { key: "shade", label: "Shade", count: 6 },
-    { key: "kitchen", label: "Modular Kitchen", count: 14 },
+    { key: "nero", label: "Nero Black SS", count: 13 },
+    { key: "teak", label: "Teak Range", count: 12 },
+    { key: "carbon", label: "Carbon Line", count: 18 },
     { key: "decor", label: "Decor", count: 4 },
   ];
 
@@ -90,20 +92,52 @@ const PRODUCTS_PAGE = () => {
     { name: "Retractable Pergola", collection: "Pergolas", category: "shade", img: "/placeholder.svg", tag: "" },
     { name: "Wall-Mounted Parasol", collection: "Glatz", category: "shade", img: "/placeholder.svg", tag: "" },
     { name: "Free-Standing Pergola", collection: "Pergolas", category: "shade", img: "/placeholder.svg", tag: "New" },
-    { name: "Nero 6 Burner BBQ", collection: "Nero Range", category: "kitchen", img: "/src/assets/images/kitchen/blk-6burner-bbq.jpg", tag: "Popular", desc: "304-grade black stainless steel, 90,000 BTU, LED knobs, rear infrared burner, granite worktop. 110×73.5cm" },
-    { name: "Nero 4 Burner BBQ", collection: "Nero Range", category: "kitchen", img: "/src/assets/images/kitchen/blk-4burner-bbq.jpg", tag: "", desc: "304-grade black stainless steel, 65,000 BTU, 4 power burners + rear burner, granite worktop. 81×73.5cm" },
-    { name: "Nero Double Fridge Cabinet", collection: "Nero Range", category: "kitchen", img: "/src/assets/images/kitchen/blk-double-fridge.jpg", tag: "", desc: "Twin 60L fridges, triple-glazed doors, blue LED lighting, digital controls, granite worktop. 96×70cm" },
-    { name: "Nero Sink & Fridge Cabinet", collection: "Nero Range", category: "kitchen", img: "/src/assets/images/kitchen/blk-sink-fridge.jpg", tag: "", desc: "60L fridge + matt black sink, 360° swivel tap, hot/cold water, granite worktop. 96×70cm" },
-    { name: "Nero Sear Station", collection: "Nero Range", category: "kitchen", img: "/src/assets/images/kitchen/blk-sear-station.jpg", tag: "", desc: "Ceramic infrared burner, 13,300 BTU, piezo ignition, granite worktop, gas bottle storage. 49×70cm" },
-    { name: "Nero 90° Corner Cabinet", collection: "Nero Range", category: "kitchen", img: "/src/assets/images/kitchen/blk-corner.jpg", tag: "", desc: "L-shape or U-shape connector, 304-grade black stainless steel, granite worktop. 75×75cm" },
-    { name: "Teak 6 Burner BBQ Unit", collection: "Teak Range", category: "kitchen", img: "/src/assets/images/kitchen/teak-6burner-bbq.jpg", tag: "", desc: "Reclaimed teak housing, 304-grade SS BBQ, 90,000 BTU, sintered stone flanges, ceramic worktop. 128×63cm" },
-    { name: "Teak Outdoor Kitchen Setup", collection: "Teak Range", category: "kitchen", img: "/src/assets/images/kitchen/teak-setup-1.jpg", tag: "", desc: "Complete modular teak kitchen configuration with BBQ, cabinets, and ceramic worktops" },
-    { name: "Teak Corner Cabinet", collection: "Teak Range", category: "kitchen", img: "/src/assets/images/kitchen/teak-corner.jpg", tag: "", desc: "Reclaimed teak, dark stone ceramic worktop, 3 drawers + shelf, soft-close doors. 119.8×63cm" },
-    { name: "Teak Single Door Cabinet", collection: "Teak Range", category: "kitchen", img: "/src/assets/images/kitchen/teak-front.jpg", tag: "", desc: "Reclaimed teak, dark stone ceramic worktop, soft-close door, adjustable levelling feet. 57.6×63cm" },
-    { name: "Carbon Line 6 Burner BBQ", collection: "Carbon Line", category: "kitchen", img: "/src/assets/images/kitchen/carbon-setup-1.jpg", tag: "New", desc: "Black reclaimed teak + 304-grade black SS BBQ, 90,000 BTU, Hafele fittings, ceramic worktop. 163×62.5cm" },
-    { name: "Carbon Line Kitchen Setup", collection: "Carbon Line", category: "kitchen", img: "/src/assets/images/kitchen/carbon-setup-2.jpg", tag: "", desc: "Premium carbon black teak modular kitchen with black stainless steel appliances and ceramic worktops" },
-    { name: "Carbon Line Island Unit", collection: "Carbon Line", category: "kitchen", img: "/src/assets/images/kitchen/carbon-line-1.jpg", tag: "", desc: "Carbon black reclaimed teak, white ceramic worktop, Hafele German fittings, UV-stabilised finish. 180×80cm" },
-    { name: "Carbon Line Complete Kitchen", collection: "Carbon Line", category: "kitchen", img: "/src/assets/images/kitchen/carbon-lifestyle-1.jpg", tag: "", desc: "Full Carbon Line outdoor kitchen installation with BBQ, fridge, sink, and storage modules" },
+    // NERO RANGE (13 products)
+    { name: "Nero 6 Burner BBQ", collection: "Nero Range", category: "nero", img: "/src/assets/images/kitchen/blk-6burner-bbq.jpg", tag: "Popular", desc: "304-grade black SS, 90,000 BTU, 6 power burners + ceramic rear, LED knobs, granite top" },
+    { name: "Nero 4 Burner BBQ", collection: "Nero Range", category: "nero", img: "/src/assets/images/kitchen/blk-4burner-bbq.jpg", tag: "", desc: "304-grade black SS, 65,000 BTU, 4 power burners + ceramic rear, granite top" },
+    { name: "Nero Double Fridge Cabinet", collection: "Nero Range", category: "nero", img: "/src/assets/images/kitchen/blk-double-fridge.jpg", tag: "", desc: "Twin 60L fridges, triple-glazed Low E doors, blue LED, digital controls, granite top" },
+    { name: "Nero Sink & Fridge Cabinet", collection: "Nero Range", category: "nero", img: "/src/assets/images/kitchen/blk-sink-fridge.jpg", tag: "", desc: "60L fridge + matt black sink, 360° swivel tap, hot/cold water, granite top" },
+    { name: "Nero Single Fridge Cabinet", collection: "Nero Range", category: "nero", img: "/src/assets/images/kitchen/blk-single-fridge.jpg", tag: "", desc: "60L fridge, triple-glazed door, blue LED lighting, digital controls, granite top" },
+    { name: "Nero Sink Cabinet", collection: "Nero Range", category: "nero", img: "/src/assets/images/kitchen/blk-sink-cabinet.jpg", tag: "", desc: "Matt black sink with 360° swivel tap, hot/cold water connection, granite top" },
+    { name: "Nero Large 3 Drawer Cabinet", collection: "Nero Range", category: "nero", img: "/src/assets/images/kitchen/blk-4drawer.jpg", tag: "", desc: "Spacious 3-drawer storage, soft-close mechanisms, granite worktop" },
+    { name: "Nero Waste Bin Cabinet", collection: "Nero Range", category: "nero", img: "/src/assets/images/kitchen/blk-waste-bin.webp", tag: "", desc: "Integrated slide-out waste bin, soft-close door, granite worktop" },
+    { name: "Nero Double Door Cabinet", collection: "Nero Range", category: "nero", img: "/src/assets/images/kitchen/blk-double-door.jpg", tag: "", desc: "Double door storage with shelf, soft-close doors, granite worktop" },
+    { name: "Nero Triple Drawer Cabinet", collection: "Nero Range", category: "nero", img: "/src/assets/images/kitchen/blk-triple-drawer.jpg", tag: "", desc: "Three-drawer storage unit, soft-close mechanisms, granite worktop" },
+    { name: "Nero Sear Station", collection: "Nero Range", category: "nero", img: "/src/assets/images/kitchen/blk-sear-station.jpg", tag: "", desc: "Ceramic infrared burner, 13,300 BTU, piezo ignition, granite top" },
+    { name: "Nero Single Cabinet", collection: "Nero Range", category: "nero", img: "/src/assets/images/kitchen/blk-single-cabinet.jpg", tag: "", desc: "Single door bottle cabinet with shelf, soft-close door, granite top" },
+    { name: "Nero 90° Corner Cabinet", collection: "Nero Range", category: "nero", img: "/src/assets/images/kitchen/blk-corner.jpg", tag: "", desc: "L-shape or U-shape connector, 304-grade black SS, granite top" },
+    // TEAK RANGE (12 products)
+    { name: "Teak 6 Burner BBQ Unit", collection: "Teak Range", category: "teak", img: "/src/assets/images/kitchen/teak-6burner-bbq.jpg", tag: "Popular", desc: "Reclaimed teak housing, 304-grade SS 6-burner BBQ, 90,000 BTU, ceramic top" },
+    { name: "Teak Double Fridge Cabinet", collection: "Teak Range", category: "teak", img: "/src/assets/images/kitchen/teak-double-fridge.png", tag: "", desc: "Twin fridges in reclaimed teak frame, dark stone ceramic worktop" },
+    { name: "Teak 4 Burner BBQ Unit", collection: "Teak Range", category: "teak", img: "/src/assets/images/kitchen/teak-4burner.jpg", tag: "", desc: "Reclaimed teak housing, 304-grade SS 4-burner BBQ, ceramic top" },
+    { name: "Teak Corner Cabinet", collection: "Teak Range", category: "teak", img: "/src/assets/images/kitchen/teak-corner.jpg", tag: "", desc: "Reclaimed teak, 3 drawers + shelf, soft-close doors, ceramic top" },
+    { name: "Teak Single Fridge Cabinet", collection: "Teak Range", category: "teak", img: "/src/assets/images/kitchen/teak-single-fridge.png", tag: "", desc: "Single fridge in reclaimed teak frame, dark stone ceramic worktop" },
+    { name: "Teak Coffee Bar", collection: "Teak Range", category: "teak", img: "/src/assets/images/kitchen/teak-coffee-bar.png", tag: "New", desc: "Coffee station with storage shelves, reclaimed teak, ceramic top" },
+    { name: "Teak Double Door Cabinet", collection: "Teak Range", category: "teak", img: "/src/assets/images/kitchen/teak-double-door.png", tag: "", desc: "Double door storage, reclaimed teak, soft-close doors, ceramic top" },
+    { name: "Teak Sink Cabinet", collection: "Teak Range", category: "teak", img: "/src/assets/images/kitchen/teak-sink.png", tag: "", desc: "Integrated sink with tap, reclaimed teak, dark stone ceramic top" },
+    { name: "Teak Wine Cabinet", collection: "Teak Range", category: "teak", img: "/src/assets/images/kitchen/teak-wine.png", tag: "", desc: "Wine rack storage, reclaimed teak, dark stone ceramic worktop" },
+    { name: "Teak 90° Corner Cabinet", collection: "Teak Range", category: "teak", img: "/src/assets/images/kitchen/teak-90corner.jpg", tag: "", desc: "Corner connector unit, reclaimed teak, ceramic worktop" },
+    { name: "Teak 3 Drawer Cabinet", collection: "Teak Range", category: "teak", img: "/src/assets/images/kitchen/teak-3drawer.png", tag: "", desc: "Triple drawer storage, reclaimed teak, soft-close, ceramic top" },
+    { name: "Teak Single Door Cabinet", collection: "Teak Range", category: "teak", img: "/src/assets/images/kitchen/teak-front.jpg", tag: "", desc: "Single door with shelf, reclaimed teak, soft-close, ceramic top" },
+    // CARBON LINE (18 key products)
+    { name: "Carbon Line 6 Burner Black SS BBQ", collection: "Carbon Line", category: "carbon", img: "/src/assets/images/kitchen/carbon-setup-1.jpg", tag: "New", desc: "Black reclaimed teak + 304-grade black SS BBQ, 90,000 BTU, Hafele fittings" },
+    { name: "Carbon Line 4 Burner Black SS BBQ", collection: "Carbon Line", category: "carbon", img: "/src/assets/images/kitchen/carbon-4burner-blk.jpg", tag: "", desc: "Black reclaimed teak + 304-grade black SS 4-burner BBQ, Hafele fittings" },
+    { name: "Carbon Line Double Fridge Black SS", collection: "Carbon Line", category: "carbon", img: "/src/assets/images/kitchen/carbon-dbl-fridge-blk.jpg", tag: "", desc: "Twin fridges, black SS doors, black reclaimed teak cabinet, ceramic top" },
+    { name: "Carbon Line Island Unit", collection: "Carbon Line", category: "carbon", img: "/src/assets/images/kitchen/carbon-line-1.jpg", tag: "", desc: "Central kitchen island, carbon black teak, white ceramic top, 180×80cm" },
+    { name: "Carbon Line Kamado Egg Table 27\"", collection: "Carbon Line", category: "carbon", img: "/src/assets/images/kitchen/carbon-kamado.jpg", tag: "", desc: "Kamado egg BBQ table (70cm), black reclaimed teak, ceramic top" },
+    { name: "Carbon Line Single Fridge Black SS", collection: "Carbon Line", category: "carbon", img: "/src/assets/images/kitchen/carbon-lifestyle-2.jpg", tag: "", desc: "Single fridge, black SS door, black reclaimed teak cabinet, ceramic top" },
+    { name: "Carbon Line Sink Cabinet", collection: "Carbon Line", category: "carbon", img: "/src/assets/images/kitchen/carbon-sink.jpg", tag: "", desc: "Integrated sink, black reclaimed teak, Hafele fittings, ceramic top" },
+    { name: "Carbon Line Side Burner", collection: "Carbon Line", category: "carbon", img: "/src/assets/images/kitchen/carbon-side-burner.png", tag: "", desc: "Side burner station, black reclaimed teak cabinet, ceramic top" },
+    { name: "Carbon Line 3 Drawer Unit", collection: "Carbon Line", category: "carbon", img: "/src/assets/images/kitchen/carbon-line-2.jpg", tag: "", desc: "Triple drawer storage, black reclaimed teak, Hafele fittings, ceramic top" },
+    { name: "Carbon Line 90° Corner", collection: "Carbon Line", category: "carbon", img: "/src/assets/images/kitchen/carbon-line-3.jpg", tag: "", desc: "Corner connector, black reclaimed teak, ceramic worktop" },
+    { name: "Carbon Line 3 Drawer Cabinet", collection: "Carbon Line", category: "carbon", img: "/src/assets/images/kitchen/carbon-lifestyle-3.jpg", tag: "", desc: "Compact 3-drawer cabinet, black reclaimed teak, ceramic top" },
+    { name: "Carbon Line Single Door Cabinet", collection: "Carbon Line", category: "carbon", img: "/src/assets/images/kitchen/carbon-single-door.jpg", tag: "", desc: "Single door storage, black reclaimed teak, Hafele fittings, ceramic top" },
+    { name: "Carbon Line Double Door & Drawer", collection: "Carbon Line", category: "carbon", img: "/src/assets/images/kitchen/carbon-setup-2.jpg", tag: "", desc: "Double door + drawer cabinet, black reclaimed teak, ceramic top" },
+    { name: "Carbon Line 2 Door Add On", collection: "Carbon Line", category: "carbon", img: "/src/assets/images/kitchen/carbon-line-4.jpg", tag: "", desc: "Add-on 2 door cabinet, black reclaimed teak, ceramic top" },
+    { name: "Carbon Line 60cm Kamado Table", collection: "Carbon Line", category: "carbon", img: "/src/assets/images/kitchen/carbon-lifestyle-1.jpg", tag: "", desc: "Compact kamado table (60cm), black reclaimed teak, ceramic top" },
+    { name: "Carbon Line 70cm Kamado Table", collection: "Carbon Line", category: "carbon", img: "/src/assets/images/kitchen/carbon-kamado.jpg", tag: "", desc: "Standard kamado table (70cm), black reclaimed teak, ceramic top" },
+    { name: "Carbon Line Slatted Shelf", collection: "Carbon Line", category: "carbon", img: "/src/assets/images/kitchen/carbon-line-3.jpg", tag: "", desc: "Add-on slatted shelf with hook-on storage boxes" },
+    { name: "Carbon Line Double Shelf", collection: "Carbon Line", category: "carbon", img: "/src/assets/images/kitchen/carbon-line-2.jpg", tag: "", desc: "Add-on double shelf unit for extra storage" },
     { name: "Outdoor Carpet Algarve", collection: "Decor", category: "decor", img: "/placeholder.svg", tag: "" },
     { name: "Garden Vase Collection", collection: "Decor", category: "decor", img: "/placeholder.svg", tag: "" },
     { name: "LED Garden Lighting", collection: "Decor", category: "decor", img: "/placeholder.svg", tag: "New" },
@@ -150,14 +184,14 @@ const PRODUCTS_PAGE = () => {
       </header>
 
       {/* PAGE HERO */}
-      {catParam === "kitchen" ? (
+      {(catParam === "nero" || catParam === "teak" || catParam === "carbon") ? (
         <section style={{position:"relative",height:"50vh",minHeight:380,paddingTop:100,background:"linear-gradient(165deg,rgba(26,26,46,.5),rgba(26,26,46,.25)),url('/src/assets/images/kitchen/kitchen-hero.jpg') center/cover",display:"flex",alignItems:"flex-end",padding:"0 0 60px 0"}}>
           <div style={{padding:"0 48px",position:"relative",zIndex:2,maxWidth:700}}>
             <div className="fs" style={{fontSize:"11px",letterSpacing:"3px",color:"rgba(255,255,255,.6)",textTransform:"uppercase",marginBottom:"12px",animation:"fu .6s .2s both"}}>
-              <a href="#" onClick={(e)=>{e.preventDefault();navigate('/')}} style={{color:"inherit",textDecoration:"none"}}>Home</a> <span style={{margin:"0 8px",opacity:.4}}>/</span> <a href="#" onClick={(e)=>{e.preventDefault();navigate('/products')}} style={{color:"inherit",textDecoration:"none"}}>Products</a> <span style={{margin:"0 8px",opacity:.4}}>/</span> Modular Kitchen
+              <a href="#" onClick={(e)=>{e.preventDefault();navigate('/')}} style={{color:"inherit",textDecoration:"none"}}>Home</a> <span style={{margin:"0 8px",opacity:.4}}>/</span> <a href="#" onClick={(e)=>{e.preventDefault();navigate('/products')}} style={{color:"inherit",textDecoration:"none"}}>Products</a> <span style={{margin:"0 8px",opacity:.4}}>/</span> {catParam === "nero" ? "Nero Black SS" : catParam === "teak" ? "Teak Range" : "Carbon Line"}
             </div>
-            <h1 className="ff" style={{fontSize:"clamp(38px,5vw,60px)",fontWeight:300,color:"#fff",lineHeight:1.1,marginBottom:"16px",letterSpacing:"-0.01em",animation:"fu .6s .3s both"}}>Modular Kitchen</h1>
-            <p className="fs" style={{fontSize:"15px",color:"rgba(255,255,255,.75)",lineHeight:1.7,fontWeight:300,animation:"fu .6s .45s both"}}>Premium modular outdoor kitchens: Black Stainless Steel, Teak, and Carbon Line ranges. BBQ stations, fridge cabinets, sink units, and corner modules.</p>
+            <h1 className="ff" style={{fontSize:"clamp(38px,5vw,60px)",fontWeight:300,color:"#fff",lineHeight:1.1,marginBottom:"16px",letterSpacing:"-0.01em",animation:"fu .6s .3s both"}}>{catParam === "nero" ? "Nero Black Stainless Steel" : catParam === "teak" ? "Teak Outdoor Kitchen" : "Carbon Line Teak"}</h1>
+            <p className="fs" style={{fontSize:"15px",color:"rgba(255,255,255,.75)",lineHeight:1.7,fontWeight:300,animation:"fu .6s .45s both"}}>{catParam === "nero" ? "Premium 304-grade black stainless steel modular outdoor kitchen. BBQ stations, fridge cabinets, sink units, sear stations, and corner modules with granite worktops." : catParam === "teak" ? "Reclaimed teak modular outdoor kitchen with dark stone ceramic worktops. BBQ units, fridges, coffee bars, wine cabinets, and storage modules." : "Premium carbon black reclaimed teak with Hafele German fittings. BBQ stations, fridges, kamado tables, island units, and storage with ceramic worktops."}</p>
           </div>
         </section>
       ) : (
