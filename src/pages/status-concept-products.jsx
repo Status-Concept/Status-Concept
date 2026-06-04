@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+﻿import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import useNavLinks from "../useNavLinks";
 import Layout from "../components/Layout";
@@ -7,28 +7,7 @@ import { kitchenCollectionMeta, kitchenProducts } from "../data/kitchenProducts"
 import kitchenHeroImg from "../assets/images/kitchen/kitchen-hero.jpg";
 import shadeRealProductsHeroImg from "../assets/images/enhanced/shade-real-products-hero.png";
 import sicilyCornerImg from "../assets/images/sicily-corner.jpg";
-import baliImg from "../assets/images/enhanced-safe/bali-divano-safe.jpg";
-import berlinImg from "../assets/images/berlin.jpg";
-import bonaireImg from "../assets/images/bonaire-lounge.jpg";
-import ibizaImg from "../assets/images/ibiza-able.jpg";
-import mayaImg from "../assets/images/maya.jpg";
-import boraBoraImg from "../assets/images/bora-bora.jpg";
-import armonaImg from "../assets/images/armona.jpg";
-import arubaImg from "../assets/images/aruba.jpg";
-import antiguaImg from "../assets/images/antigua.jpg";
-import imperiaImg from "../assets/images/imperia.jpg";
-import dunbarImg from "../assets/images/dunbar.jpg";
-import corsicaImg from "../assets/images/corsica.jpg";
-import creteImg from "../assets/images/enhanced-safe/crete-lounger-safe.jpg";
-import fijiImg from "../assets/images/enhanced-safe/fiji-safe.jpg";
-import hawaiiImg from "../assets/images/hawaii.jpg";
-import bernImg from "../assets/images/bern.jpg";
-import lagosImg from "../assets/images/lagos.jpg";
-import luandaImg from "../assets/images/luanda.jpg";
-import barcelonaImg from "../assets/images/barcelona.jpg";
-import shadeParasolImg from "../assets/images/enhanced-safe/shade-parasols-safe.jpg";
-import shadeBioImg from "../assets/images/enhanced-safe/shade-bioclimatic-safe.jpg";
-import shadeRetractableImg from "../assets/images/enhanced-safe/shade-retractable-safe.jpg";
+const placeholderImg = "/placeholder.svg";
 
 const slug = (value) => value.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
 
@@ -65,45 +44,45 @@ const PRODUCTS_PAGE = () => {
 
   const allProducts = [
     { id: "sicily-modular-set", name: "Sicily Modular Set", collection: "Sicily", category: "lounge", img: sicilyCornerImg, tag: "Popular", desc: "A contemporary modular lounge system for generous outdoor living areas." },
-    { id: "bali-lounge-set", name: "Bali Lounge Set", collection: "Bali", category: "lounge", img: baliImg, tag: "", desc: "Relaxed outdoor seating with deep cushions and a resort-inspired profile." },
-    { id: "berlin-sofa-set", name: "Berlin Sofa Set", collection: "Berlin", category: "lounge", img: berlinImg, tag: "", desc: "Classic outdoor sofa proportions with a clean aluminium frame." },
-    { id: "bonaire-corner-set", name: "Bonaire Corner Set", collection: "Bonaire", category: "lounge", img: bonaireImg, tag: "New", desc: "A corner lounge set made for long terrace afternoons." },
-    { id: "ibiza-lounge-set", name: "Ibiza Lounge Set", collection: "Ibiza", category: "lounge", img: ibizaImg, tag: "", desc: "Contemporary lounge seating with a light visual footprint." },
-    { id: "maya-sofa-set", name: "Maya Sofa Set", collection: "Maya", category: "lounge", img: mayaImg, tag: "", desc: "Soft outdoor comfort with a tailored silhouette." },
-    { id: "bora-bora-sofa-set", name: "Bora Bora Sofa Set", collection: "Bora Bora", category: "lounge", img: boraBoraImg, tag: "", desc: "Premium outdoor sofa styling for poolside spaces." },
-    { id: "armona-sofa-set", name: "Armona Sofa Set", collection: "Armona", category: "lounge", img: armonaImg, tag: "", desc: "A refined lounge set for compact and open patios." },
-    { id: "aruba-s-lounge", name: "Aruba S Lounge", collection: "Aruba S", category: "lounge", img: arubaImg, tag: "", desc: "A relaxed lounge form with coastal character." },
-    { id: "antigua-corner-set", name: "Antigua Corner Set", collection: "Antigua", category: "dining", img: antiguaImg, tag: "", desc: "Outdoor dining and lounging with a generous footprint." },
-    { id: "imperia-dining-set", name: "Imperia Dining Set", collection: "Imperia", category: "dining", img: imperiaImg, tag: "", desc: "Elegant dining proportions for long alfresco lunches." },
-    { id: "dunbar-dining", name: "Dunbar Dining", collection: "Dunbar", category: "dining", img: dunbarImg, tag: "", desc: "A clean dining setting for contemporary terraces." },
-    { id: "corsica-dining-set", name: "Corsica Dining Set", collection: "Corsica", category: "dining", img: corsicaImg, tag: "", desc: "A durable dining collection with relaxed Mediterranean lines." },
-    { id: "bonaire-sun-lounger", name: "Bonaire Sun Lounger", collection: "Bonaire", category: "sunlounger", img: bonaireImg, tag: "", desc: "Low, comfortable lounging for poolside relaxation." },
-    { id: "crete-sun-lounger", name: "Crete Sun Lounger", collection: "Crete", category: "sunlounger", img: creteImg, tag: "", desc: "A sculpted lounger with an easy recline posture." },
-    { id: "fiji-sun-lounger", name: "Fiji Sun Lounger", collection: "Fiji", category: "sunlounger", img: fijiImg, tag: "New", desc: "Simple, elegant sun lounging for quiet outdoor corners." },
-    { id: "bali-double-sunlounger", name: "Bali Double Sunlounger", collection: "Bali", category: "sunlounger", img: baliImg, tag: "", desc: "A double-width lounger for shared poolside comfort." },
-    { id: "hawaii-daybed", name: "Hawaii Daybed", collection: "Hawaii", category: "daybed", img: hawaiiImg, tag: "", desc: "A generous daybed for shaded outdoor retreat spaces." },
-    { id: "bermuda-daybed", name: "Bermuda Daybed", collection: "Bermuda", category: "daybed", img: sicilyCornerImg, tag: "", desc: "A soft daybed format for resort-style relaxation." },
-    { id: "bern-coffee-table", name: "Bern Coffee Table", collection: "Bern", category: "coffee", img: bernImg, tag: "", desc: "A practical table with understated outdoor presence." },
-    { id: "bonaire-coffee-table", name: "Bonaire Coffee Table", collection: "Bonaire", category: "coffee", img: bonaireImg, tag: "", desc: "A low table designed to complete the Bonaire lounge setting." },
-    { id: "lagos-side-table", name: "Lagos Side Table", collection: "Lagos", category: "side", img: lagosImg, tag: "", desc: "A compact side table for drinks, books and terrace essentials." },
-    { id: "luanda-bar-set", name: "Luanda Bar Set", collection: "Luanda", category: "bar", img: luandaImg, tag: "", desc: "A raised outdoor set for informal entertaining." },
-    { id: "barcelona-bar-set", name: "Barcelona Bar Set", collection: "Barcelona", category: "bar", img: barcelonaImg, tag: "", desc: "A clean bar-height arrangement for patio hosting." },
-    { id: "ibiza-armchair", name: "Ibiza Armchair", collection: "Ibiza", category: "puffs", img: ibizaImg, tag: "", desc: "An individual seat with relaxed outdoor proportions." },
-    { id: "glatz-sombrano-parasol", name: "Glatz Sombrano Parasol", collection: "Glatz", category: "shade", img: shadeParasolImg, tag: "", desc: "Swiss engineered parasol shade for flexible terrace coverage." },
-    { id: "glatz-sunwing-parasol", name: "Glatz Sunwing Parasol", collection: "Glatz", category: "shade", img: shadeParasolImg, tag: "Popular", desc: "A precise, elegant parasol for controlled outdoor shade." },
-    { id: "bioclimatic-pergola", name: "Bioclimatic Pergola", collection: "Pergolas", category: "shade", img: shadeBioImg, tag: "", desc: "Architectural shade with adjustable climate control." },
-    { id: "retractable-pergola", name: "Retractable Pergola", collection: "Pergolas", category: "shade", img: shadeRetractableImg, tag: "", desc: "Flexible roof coverage for changing Algarve weather." },
-    { id: "wall-mounted-parasol", name: "Wall-Mounted Parasol", collection: "Glatz", category: "shade", img: shadeParasolImg, tag: "", desc: "A space-saving shade solution for compact terraces." },
-    { id: "free-standing-pergola", name: "Free-Standing Pergola", collection: "Pergolas", category: "shade", img: shadeBioImg, tag: "New", desc: "A self-supporting pergola for open garden layouts." },
+    { id: "bali-lounge-set", name: "Bali Lounge Set", collection: "Bali", category: "lounge", img: placeholderImg, tag: "", desc: "Relaxed outdoor seating with deep cushions and a resort-inspired profile." },
+    { id: "berlin-sofa-set", name: "Berlin Sofa Set", collection: "Berlin", category: "lounge", img: placeholderImg, tag: "", desc: "Classic outdoor sofa proportions with a clean aluminium frame." },
+    { id: "bonaire-corner-set", name: "Bonaire Corner Set", collection: "Bonaire", category: "lounge", img: placeholderImg, tag: "New", desc: "A corner lounge set made for long terrace afternoons." },
+    { id: "ibiza-lounge-set", name: "Ibiza Lounge Set", collection: "Ibiza", category: "lounge", img: placeholderImg, tag: "", desc: "Contemporary lounge seating with a light visual footprint." },
+    { id: "maya-sofa-set", name: "Maya Sofa Set", collection: "Maya", category: "lounge", img: placeholderImg, tag: "", desc: "Soft outdoor comfort with a tailored silhouette." },
+    { id: "bora-bora-sofa-set", name: "Bora Bora Sofa Set", collection: "Bora Bora", category: "lounge", img: placeholderImg, tag: "", desc: "Premium outdoor sofa styling for poolside spaces." },
+    { id: "armona-sofa-set", name: "Armona Sofa Set", collection: "Armona", category: "lounge", img: placeholderImg, tag: "", desc: "A refined lounge set for compact and open patios." },
+    { id: "aruba-s-lounge", name: "Aruba S Lounge", collection: "Aruba S", category: "lounge", img: placeholderImg, tag: "", desc: "A relaxed lounge form with coastal character." },
+    { id: "antigua-corner-set", name: "Antigua Corner Set", collection: "Antigua", category: "dining", img: placeholderImg, tag: "", desc: "Outdoor dining and lounging with a generous footprint." },
+    { id: "imperia-dining-set", name: "Imperia Dining Set", collection: "Imperia", category: "dining", img: placeholderImg, tag: "", desc: "Elegant dining proportions for long alfresco lunches." },
+    { id: "dunbar-dining", name: "Dunbar Dining", collection: "Dunbar", category: "dining", img: placeholderImg, tag: "", desc: "A clean dining setting for contemporary terraces." },
+    { id: "corsica-dining-set", name: "Corsica Dining Set", collection: "Corsica", category: "dining", img: placeholderImg, tag: "", desc: "A durable dining collection with relaxed Mediterranean lines." },
+    { id: "bonaire-sun-lounger", name: "Bonaire Sun Lounger", collection: "Bonaire", category: "sunlounger", img: placeholderImg, tag: "", desc: "Low, comfortable lounging for poolside relaxation." },
+    { id: "crete-sun-lounger", name: "Crete Sun Lounger", collection: "Crete", category: "sunlounger", img: placeholderImg, tag: "", desc: "A sculpted lounger with an easy recline posture." },
+    { id: "fiji-sun-lounger", name: "Fiji Sun Lounger", collection: "Fiji", category: "sunlounger", img: placeholderImg, tag: "New", desc: "Simple, elegant sun lounging for quiet outdoor corners." },
+    { id: "bali-double-sunlounger", name: "Bali Double Sunlounger", collection: "Bali", category: "sunlounger", img: placeholderImg, tag: "", desc: "A double-width lounger for shared poolside comfort." },
+    { id: "hawaii-daybed", name: "Hawaii Daybed", collection: "Hawaii", category: "daybed", img: placeholderImg, tag: "", desc: "A generous daybed for shaded outdoor retreat spaces." },
+    { id: "bermuda-daybed", name: "Bermuda Daybed", collection: "Bermuda", category: "daybed", img: placeholderImg, tag: "", desc: "A soft daybed format for resort-style relaxation." },
+    { id: "bern-coffee-table", name: "Bern Coffee Table", collection: "Bern", category: "coffee", img: placeholderImg, tag: "", desc: "A practical table with understated outdoor presence." },
+    { id: "bonaire-coffee-table", name: "Bonaire Coffee Table", collection: "Bonaire", category: "coffee", img: placeholderImg, tag: "", desc: "A low table designed to complete the Bonaire lounge setting." },
+    { id: "lagos-side-table", name: "Lagos Side Table", collection: "Lagos", category: "side", img: placeholderImg, tag: "", desc: "A compact side table for drinks, books and terrace essentials." },
+    { id: "luanda-bar-set", name: "Luanda Bar Set", collection: "Luanda", category: "bar", img: placeholderImg, tag: "", desc: "A raised outdoor set for informal entertaining." },
+    { id: "barcelona-bar-set", name: "Barcelona Bar Set", collection: "Barcelona", category: "bar", img: placeholderImg, tag: "", desc: "A clean bar-height arrangement for patio hosting." },
+    { id: "ibiza-armchair", name: "Ibiza Armchair", collection: "Ibiza", category: "puffs", img: placeholderImg, tag: "", desc: "An individual seat with relaxed outdoor proportions." },
+    { id: "glatz-sombrano-parasol", name: "Glatz Sombrano Parasol", collection: "Glatz", category: "shade", img: placeholderImg, tag: "", desc: "Swiss engineered parasol shade for flexible terrace coverage." },
+    { id: "glatz-sunwing-parasol", name: "Glatz Sunwing Parasol", collection: "Glatz", category: "shade", img: placeholderImg, tag: "Popular", desc: "A precise, elegant parasol for controlled outdoor shade." },
+    { id: "bioclimatic-pergola", name: "Bioclimatic Pergola", collection: "Pergolas", category: "shade", img: placeholderImg, tag: "", desc: "Architectural shade with adjustable climate control." },
+    { id: "retractable-pergola", name: "Retractable Pergola", collection: "Pergolas", category: "shade", img: placeholderImg, tag: "", desc: "Flexible roof coverage for changing Algarve weather." },
+    { id: "wall-mounted-parasol", name: "Wall-Mounted Parasol", collection: "Glatz", category: "shade", img: placeholderImg, tag: "", desc: "A space-saving shade solution for compact terraces." },
+    { id: "free-standing-pergola", name: "Free-Standing Pergola", collection: "Pergolas", category: "shade", img: placeholderImg, tag: "New", desc: "A self-supporting pergola for open garden layouts." },
     ...kitchenProducts,
-    { id: "outdoor-carpet-algarve", name: "Outdoor Carpet Algarve", collection: "Decor", category: "decor", img: sicilyCornerImg, tag: "", desc: "A soft finishing layer for outdoor living zones." },
-    { id: "garden-vase-collection", name: "Garden Vase Collection", collection: "Decor", category: "decor", img: whyStatusImgFallback(), tag: "", desc: "Decorative vessels for terraces and garden rooms." },
-    { id: "led-garden-lighting", name: "LED Garden Lighting", collection: "Decor", category: "decor", img: shadeBioImg, tag: "New", desc: "Low-profile lighting for evening outdoor atmosphere." },
-    { id: "outdoor-sound-system", name: "Outdoor Sound System", collection: "Leisure", category: "decor", img: shadeRetractableImg, tag: "", desc: "Integrated outdoor sound for leisure and entertaining." },
+    { id: "outdoor-carpet-algarve", name: "Outdoor Carpet Algarve", collection: "Decor", category: "decor", img: placeholderImg, tag: "", desc: "A soft finishing layer for outdoor living zones." },
+    { id: "garden-vase-collection", name: "Garden Vase Collection", collection: "Decor", category: "decor", img: placeholderImg, tag: "", desc: "Decorative vessels for terraces and garden rooms." },
+    { id: "led-garden-lighting", name: "LED Garden Lighting", collection: "Decor", category: "decor", img: placeholderImg, tag: "New", desc: "Low-profile lighting for evening outdoor atmosphere." },
+    { id: "outdoor-sound-system", name: "Outdoor Sound System", collection: "Leisure", category: "decor", img: placeholderImg, tag: "", desc: "Integrated outdoor sound for leisure and entertaining." },
   ];
 
   function whyStatusImgFallback() {
-    return sicilyCornerImg;
+    return placeholderImg;
   }
 
   const kitchenCollections = kitchenCollectionMeta.map((collection) => ({
