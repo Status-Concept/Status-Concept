@@ -1,32 +1,41 @@
-﻿import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import useNavLinks from "../useNavLinks";
 import FavoriteButton from "../FavoriteButton";
+import { useScrollAnimation } from "../hooks/useScrollAnimation";
+import Layout from "../components/Layout";
+import heroImg from "../assets/images/enhanced/hero-ai.png";
+import showroomQuintaImg from "../assets/images/enhanced/showroom-quinta-ai.png";
+import showroomAlmancilImg from "../assets/images/enhanced/showroom-almancil-ai.png";
+import whyStatusImg from "../assets/images/enhanced/why-status-ai.png";
+import baliImg from "../assets/images/bali-able.jpg";
+import berlinImg from "../assets/images/berlin.jpg";
+import bonaireImg from "../assets/images/bonaire-lounge.jpg";
+import ibizaImg from "../assets/images/ibiza-able.jpg";
+import mayaImg from "../assets/images/maya.jpg";
+import boraBoraImg from "../assets/images/bora-bora.jpg";
+import glatzParasolImg from "../assets/images/enhanced-safe/glatz-parasol-safe.jpg";
+import glatzBioclimaticImg from "../assets/images/enhanced-safe/glatz-bioclimatic-safe.jpg";
+import glatzRetractableImg from "../assets/images/enhanced-safe/glatz-retractable-safe.jpg";
+import neroKitchenImg from "../assets/images/kitchen/blk-6burner-bbq.jpg";
+import teakKitchenImg from "../assets/images/kitchen/teak-setup-1.jpg";
+import carbonKitchenImg from "../assets/images/kitchen/carbon-line-1.jpg";
 
 const STATUS_CONCEPT_HOMEPAGE = () => {
   useNavLinks();
   const navigate = useNavigate();
-  const [menuOpen, setMenuOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("furniture");
-  const [headerSolid, setHeaderSolid] = useState(false);
-  const [visibleSections, setVisibleSections] = useState(new Set());
   const [activeProject, setActiveProject] = useState(0);
-  const [langOpen, setLangOpen] = useState(false);
   const [heroSlide, setHeroSlide] = useState(0);
   const heroRef = useRef(null);
+  const { vis, S } = useScrollAnimation();
 
-  const heroImages = [
-    "/src/assets/images/hero.jpg",
-    "/src/assets/images/showroom-quinta.jpg",
-    "/src/assets/images/why-status.jpg",
-  ];
+  const heroImages = [heroImg, showroomQuintaImg, whyStatusImg];
 
   useEffect(() => {
     const handleScroll = () => {
-      setHeaderSolid(window.scrollY > 80);
       if (heroRef.current) {
-        const y = window.scrollY;
-        heroRef.current.style.backgroundPositionY = `${y * 0.35}px`;
+        heroRef.current.style.backgroundPositionY = `${window.scrollY * 0.35}px`;
       }
     };
     window.addEventListener("scroll", handleScroll, { passive: true });
@@ -40,37 +49,24 @@ const STATUS_CONCEPT_HOMEPAGE = () => {
     return () => clearInterval(interval);
   }, [heroImages.length]);
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => entries.forEach((e) => {
-        if (e.isIntersecting) setVisibleSections((p) => new Set([...p, e.target.id]));
-      }),
-      { threshold: 0.1 }
-    );
-    document.querySelectorAll("[data-animate]").forEach((el) => observer.observe(el));
-    return () => observer.disconnect();
-  }, []);
-
-  const vis = (id) => visibleSections.has(id);
-
   const collections = {
     furniture: [
-      { name: "Bali", desc: "Modular lounge collection", img: "/placeholder.svg" },
-      { name: "Berlin", desc: "Classic sofa & armchairs", img: "/placeholder.svg" },
-      { name: "Bonaire", desc: "Luxury corner lounge set", img: "/placeholder.svg" },
-      { name: "Ibiza", desc: "Contemporary lounge set", img: "/placeholder.svg" },
-      { name: "Maya", desc: "Elegant sofa collection", img: "/placeholder.svg" },
-      { name: "Bora Bora", desc: "Premium outdoor sofa", img: "/placeholder.svg" },
+      { name: "Bali", desc: "Relaxed outdoor seating with deep cushions and a resort-inspired profile.", img: baliImg, route: "/products?cat=lounge" },
+      { name: "Berlin", desc: "Classic outdoor sofa proportions with a clean aluminium frame.", img: berlinImg, route: "/products?cat=lounge" },
+      { name: "Bonaire", desc: "Corner lounge comfort made for long terrace afternoons.", img: bonaireImg, route: "/products?cat=lounge" },
+      { name: "Ibiza", desc: "Contemporary lounge seating with a light visual footprint.", img: ibizaImg, route: "/products?cat=lounge" },
+      { name: "Maya", desc: "Soft outdoor comfort with a tailored silhouette.", img: mayaImg, route: "/products?cat=lounge" },
+      { name: "Bora Bora", desc: "Premium outdoor sofa styling for poolside spaces.", img: boraBoraImg, route: "/products?cat=lounge" },
     ],
     shade: [
-      { name: "Glatz Parasols", desc: "Swiss precision shading", img: "/placeholder.svg" },
-      { name: "Bioclimatic Pergolas", desc: "Intelligent climate control", img: "/placeholder.svg" },
-      { name: "Retractable Pergolas", desc: "Flexible outdoor roofing", img: "/placeholder.svg" },
+      { name: "Glatz Parasols", desc: "Swiss engineered parasol shade for flexible terrace coverage.", img: glatzParasolImg, route: "/products?cat=shade" },
+      { name: "Bioclimatic Pergolas", desc: "Architectural shade with adjustable climate control.", img: glatzBioclimaticImg, route: "/products?cat=shade" },
+      { name: "Retractable Pergolas", desc: "Flexible roof coverage for changing Algarve weather.", img: glatzRetractableImg, route: "/products?cat=shade" },
     ],
     kitchen: [
-      { name: "Outdoor Kitchens", desc: "Complete cooking stations", img: "/placeholder.svg" },
-      { name: "BBQ Systems", desc: "Premium grilling solutions", img: "/placeholder.svg" },
-      { name: "Pizza Ovens", desc: "Artisan wood-fired ovens", img: "/placeholder.svg" },
+      { name: "Nero Range", desc: "Black stainless steel modules with granite tops, BBQs, fridges and sinks.", img: neroKitchenImg, route: "/products?cat=kitchen" },
+      { name: "Teak Range", desc: "Natural reclaimed teak kitchen modules with ceramic tops and practical storage.", img: teakKitchenImg, route: "/products?cat=kitchen" },
+      { name: "Carbon Line", desc: "Black reclaimed teak modules with ceramic tops and premium BBQ cabinets.", img: carbonKitchenImg, route: "/products?cat=kitchen" },
     ],
   };
 
@@ -88,71 +84,8 @@ const STATUS_CONCEPT_HOMEPAGE = () => {
     { name: "Decor", sub: "Carpets & Vases" }, { name: "Leisure", sub: "Sound & Games" },
   ];
 
-  const socialIcons = [
-    {n:"Facebook",url:"https://facebook.com/statusconcept",svg:<svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>},
-    {n:"Instagram",url:"https://instagram.com/statusconcept",svg:<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>},
-    {n:"Pinterest",url:"https://pinterest.com/statusconcept",svg:<svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12c0 4.24 2.65 7.86 6.39 9.29-.09-.78-.17-1.98.03-2.83.18-.77 1.19-5.03 1.19-5.03s-.3-.61-.3-1.51c0-1.41.82-2.46 1.84-2.46.87 0 1.29.65 1.29 1.44 0 .88-.56 2.19-.85 3.4-.24 1.01.5 1.84 1.5 1.84 1.8 0 3.18-1.9 3.18-4.64 0-2.43-1.74-4.13-4.24-4.13-2.88 0-4.58 2.16-4.58 4.4 0 .87.33 1.8.75 2.31.07.09.1.2.07.29l-.28 1.15c-.04.18-.15.22-.34.13C5.61 14.94 5 13.2 5 11.45c0-3.19 2.32-6.13 6.7-6.13 3.52 0 6.25 2.51 6.25 5.86 0 3.49-2.2 6.3-5.26 6.3-1.03 0-1.99-.53-2.32-1.16l-.63 2.41c-.23.88-.85 1.98-1.26 2.66.95.29 1.96.45 3 .45 5.52 0 10-4.48 10-10S17.52 2 12 2z"/></svg>},
-    {n:"LinkedIn",url:"https://linkedin.com/company/statusconcept",svg:<svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>},
-  ];
-
-  const S = {
-    section: (id) => ({
-      opacity: vis(id) ? 1 : 0,
-      transform: vis(id) ? "translateY(0) scale(1)" : "translateY(32px) scale(0.98)",
-      transition: "all 0.8s cubic-bezier(0.16, 1, 0.3, 1)",
-    }),
-  };
-
   return (
-    <div style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", color: "var(--stone)", background: "var(--cream)", minHeight: "100vh", overflowX: "hidden" }}>
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Outfit:wght@200;300;400;500&display=swap');
-      `}</style>
-
-      {/* HEADER */}
-      <header style={{position:"fixed",top:0,left:0,right:0,zIndex:100,background:headerSolid?"rgba(232,240,248,.97)":"transparent",backdropFilter:headerSolid?"blur(16px)":"none",borderBottom:headerSolid?"1px solid rgba(163,180,200,.3)":"1px solid transparent",transition:"all .4s cubic-bezier(0.16, 1, 0.3, 1)"}}>
-        <div className="fs header-top" style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"8px 48px",fontSize:"11px",letterSpacing:"1.5px",color:headerSolid?"var(--sand-d)":"rgba(255,255,255,.7)",borderBottom:headerSolid?"1px solid rgba(163,180,200,.15)":"1px solid rgba(255,255,255,.1)",transition:"all .4s"}}>
-          <div style={{display:"flex",gap:"24px",alignItems:"center"}}><span>+351 289 030 179</span><span style={{opacity:.4}}>|</span><span>info@statusconcept.com</span></div>
-          <div style={{display:"flex",gap:"2px",alignItems:"center"}}>
-            {socialIcons.map(({n,url,svg})=>(<a key={n} href={url} target="_blank" rel="noopener noreferrer" aria-label={n} className="si" style={{opacity:.65}}>{svg}</a>
-            ))}
-          </div>
-        </div>
-        <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"16px 48px"}}>
-          <div style={{cursor:"pointer",lineHeight:1}}>
-            <span className="ff" style={{fontSize:28,fontWeight:400,letterSpacing:8,color:headerSolid?"var(--stone)":"#fff",transition:"color .4s"}}>ST<span style={{color:"var(--gold)"}}>A</span>TVS</span>
-            <div className="fs" style={{fontSize:7,letterSpacing:3,color:headerSolid?"var(--sand-d)":"rgba(255,255,255,.6)",transition:"color .4s",marginTop:2}}>OUTDOOR FURNITURE SPECIALISTS</div>
-          </div>
-          <nav className="fs nav-desktop" style={{display:"flex",gap:"32px",alignItems:"center",fontSize:"12px",letterSpacing:"2px",textTransform:"uppercase",color:headerSolid?"var(--stone-l)":"rgba(255,255,255,.9)",transition:"color .4s"}}>
-            {["Furniture","Shade","Kitchens","Decor","Projects","Showrooms","Contact"].map(i=><a key={i} className="nl" href="#" style={{color:"inherit"}}>{i}</a>)}
-          </nav>
-          <div style={{display:"flex",alignItems:"center",gap:"20px"}}>
-            <div style={{position:"relative"}}>
-              <button className="fs" onClick={()=>setLangOpen(!langOpen)} style={{background:"none",border:"none",cursor:"pointer",fontSize:"11px",letterSpacing:"2px",color:headerSolid?"var(--sand-d)":"rgba(255,255,255,.7)",transition:"color .4s"}}>EN ▾</button>
-              {langOpen&&<div style={{position:"absolute",top:"100%",right:0,marginTop:8,background:"var(--cream)",border:"1px solid var(--sand-l)",padding:"8px 0",minWidth:80,boxShadow:"0 8px 24px rgba(0,0,0,.12)"}}>{["EN","PT"].map(l=><div key={l} className="fs" style={{padding:"6px 16px",fontSize:"11px",letterSpacing:"2px",cursor:"pointer",color:"var(--stone-l)",transition:"color .2s"}} onClick={()=>setLangOpen(false)} onMouseEnter={e=>e.target.style.color="var(--gold)"} onMouseLeave={e=>e.target.style.color="var(--stone-l)"}>{l}</div>)}</div>}
-            </div>
-            <button onClick={()=>setMenuOpen(true)} className="nav-burger" style={{background:"none",border:"none",cursor:"pointer",padding:4,color:headerSolid?"var(--stone)":"#fff",transition:"color .4s",display:"none",flexDirection:"column",gap:"5px"}}>
-              <div style={{width:24,height:1.5,background:"currentColor",transition:"all .3s"}}/><div style={{width:18,height:1.5,background:"currentColor",marginLeft:"auto",transition:"all .3s"}}/>
-            </button>
-          </div>
-        </div>
-      </header>
-
-      {/* MOBILE MENU */}
-      <div className={`moo ${menuOpen?"op":""}`} onClick={()=>setMenuOpen(false)}/>
-      <div className={`mo ${menuOpen?"op":""}`}>
-        <button onClick={()=>setMenuOpen(false)} style={{position:"absolute",top:28,right:28,background:"none",border:"none",fontSize:28,cursor:"pointer",color:"var(--stone)",fontWeight:300}}>×</button>
-        <nav style={{display:"flex",flexDirection:"column"}}>
-          {[{l:"Furniture",s:["Lounge","Dining","Sun Loungers","Day Beds","Coffee Tables","Bar & Patio"]},{l:"Shade Solutions",s:["Parasols","Bioclimatic Pergolas","Retractable Pergolas"]},{l:"Outdoor Kitchens",s:["BBQ Systems","Pizza Ovens","Full Kitchens"]},{l:"Decor",s:["Carpets","Vases & Statues"]},{l:"Leisure",s:["Sound Systems"]},{l:"Projects",s:[]},{l:"Why Us",s:[]},{l:"After Care",s:[]},{l:"Contact",s:[]}].map(item=>(
-            <div key={item.l} style={{borderBottom:"1px solid var(--sand-l)",padding:"16px 0"}}>
-              <span className="ff" style={{fontSize:22,fontWeight:400,color:"var(--stone)",cursor:"pointer"}}>{item.l}</span>
-              {item.s.length>0&&<div className="fs" style={{marginTop:10,display:"flex",flexDirection:"column",gap:6}}>{item.s.map(s=><span key={s} style={{fontSize:12,letterSpacing:1,color:"var(--sand-d)",cursor:"pointer",paddingLeft:12}}>{s}</span>)}</div>}
-            </div>
-          ))}
-        </nav>
-        <div style={{marginTop:32,display:"flex",gap:12}}><span className="mb">Sunbrella®</span><span className="mb">Glatz</span></div>
-      </div>
-
+    <Layout transparent>
       {/* HERO CAROUSEL */}
       <section ref={heroRef} style={{position:"relative",height:"100vh",minHeight:700,display:"flex",alignItems:"flex-end",padding:"0 0 100px 0",overflow:"hidden"}}>
         {heroImages.map((img, i) => (
@@ -160,7 +93,6 @@ const STATUS_CONCEPT_HOMEPAGE = () => {
         ))}
         <div style={{position:"absolute",top:140,left:48,width:60,height:60,borderLeft:"1px solid rgba(255,255,255,.2)",borderTop:"1px solid rgba(255,255,255,.2)",zIndex:2}}/>
         <div style={{position:"absolute",bottom:40,right:48,width:60,height:60,borderRight:"1px solid rgba(255,255,255,.2)",borderBottom:"1px solid rgba(255,255,255,.2)",zIndex:2}}/>
-        {/* Carousel dots */}
         <div style={{position:"absolute",bottom:80,left:"50%",transform:"translateX(-50%)",display:"flex",gap:10,zIndex:3}}>
           {heroImages.map((_, i) => (
             <button key={i} onClick={()=>setHeroSlide(i)} style={{width:heroSlide===i?24:8,height:8,borderRadius:4,border:"none",background:heroSlide===i?"#fff":"rgba(255,255,255,.4)",cursor:"pointer",transition:"all .4s cubic-bezier(0.16, 1, 0.3, 1)"}} />
@@ -179,14 +111,14 @@ const STATUS_CONCEPT_HOMEPAGE = () => {
       </section>
 
       {/* INTRO */}
-      <section id="intro" data-animate style={{padding:"clamp(60px,10vh,120px) 48px",textAlign:"center",...S.section("intro")}}>
+      <section id="intro" data-animate style={{padding:"clamp(60px,10vh,120px) 48px",textAlign:"center",...S("intro")}}>
         <div className="la" style={{margin:"0 auto 28px"}}/>
         <p className="ff" style={{fontSize:"clamp(22px,3vw,32px)",fontWeight:300,lineHeight:1.6,maxWidth:780,margin:"0 auto",color:"var(--stone-l)"}}>Proud of what we represent, understanding our customers' needs, we are committed to providing furniture of the highest quality, partnering with manufacturers where attention to detail is essential.</p>
         <div style={{display:"flex",justifyContent:"center",gap:24,marginTop:36,flexWrap:"wrap"}}><span className="mb">Sunbrella® Fabrics</span><span className="mb">Interpon Coating</span><span className="mb">Premium Aluminium</span></div>
       </section>
 
       {/* COLLECTIONS */}
-      <section id="colls" data-animate style={{padding:"60px 48px clamp(60px,10vh,120px)",...S.section("colls")}}>
+      <section id="colls" data-animate style={{padding:"60px 48px clamp(60px,10vh,120px)",...S("colls")}}>
         <div style={{textAlign:"center",marginBottom:48}}>
           <span className="fs sl">Our world</span>
           <h2 className="ff" style={{fontSize:"clamp(32px,4vw,48px)",fontWeight:300,marginTop:12,letterSpacing:"-0.01em"}}>Collections</h2>
@@ -196,9 +128,9 @@ const STATUS_CONCEPT_HOMEPAGE = () => {
         </div>
         <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:20,maxWidth:1200,margin:"0 auto"}}>
           {collections[activeTab].map((c,i)=>(
-            <div key={c.name} className="cc" onClick={()=>navigate('/collection')} style={{height:i===0||i===3?440:360,animation:vis("colls")?`fu 0.6s ${0.1*i}s both`:"none"}}>
+            <div key={c.name} className="cc" onClick={()=>navigate(c.route)} style={{height:i===0||i===3?440:360,animation:vis("colls")?`fu 0.6s ${0.1*i}s both`:"none"}}>
               <FavoriteButton
-                product={{id:`collection-${c.name.toLowerCase()}`,name:c.name,collection:c.name,img:c.img,route:'/collection'}}
+                product={{id:`collection-${c.name.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'')}`,name:c.name,collection:c.name,img:c.img,route:c.route}}
                 size={16}
                 style={{position:"absolute",top:12,right:12,zIndex:3}}
               />
@@ -215,7 +147,7 @@ const STATUS_CONCEPT_HOMEPAGE = () => {
       </section>
 
       {/* CATEGORIES */}
-      <section id="cats" data-animate style={{padding:"clamp(60px,10vh,100px) 48px",background:"var(--cream-w)",...S.section("cats")}}>
+      <section id="cats" data-animate style={{padding:"clamp(60px,10vh,100px) 48px",background:"var(--cream-w)",...S("cats")}}>
         <div style={{textAlign:"center",marginBottom:40}}>
           <span className="fs sl">Browse by type</span>
           <h2 className="ff" style={{fontSize:"clamp(28px,3.5vw,40px)",fontWeight:300,marginTop:12,letterSpacing:"-0.01em"}}>Product Categories</h2>
@@ -233,8 +165,8 @@ const STATUS_CONCEPT_HOMEPAGE = () => {
       </section>
 
       {/* WHY STATUS */}
-      <section id="why" data-animate style={{display:"grid",gridTemplateColumns:"1fr 1fr",minHeight:600,...S.section("why")}}>
-        <div style={{background:"url('/src/assets/images/why-status.jpg') center/cover"}}/>
+      <section id="why" data-animate style={{display:"grid",gridTemplateColumns:"1fr 1fr",minHeight:600,...S("why")}}>
+        <div style={{background:`url('${whyStatusImg}') center/cover`}}/>
         <div style={{background:"var(--stone)",color:"#fff",padding:"clamp(48px,8vh,100px) 60px",display:"flex",flexDirection:"column",justifyContent:"center"}}>
           <span className="fs sl" style={{color:"var(--gold-l)",marginBottom:20}}>Why Statvs</span>
           <h2 className="ff" style={{fontSize:36,fontWeight:300,marginBottom:28,lineHeight:1.2,letterSpacing:"-0.01em"}}>Over a Decade of<br/>Outdoor Excellence</h2>
@@ -253,7 +185,7 @@ const STATUS_CONCEPT_HOMEPAGE = () => {
       </section>
 
       {/* PROJECTS */}
-      <section id="proj" data-animate style={{padding:"clamp(60px,10vh,120px) 48px",...S.section("proj")}}>
+      <section id="proj" data-animate style={{padding:"clamp(60px,10vh,120px) 48px",...S("proj")}}>
         <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-end",marginBottom:48,flexWrap:"wrap",gap:16}}>
           <div><span className="fs sl">Inspiration</span><h2 className="ff" style={{fontSize:"clamp(32px,4vw,48px)",fontWeight:300,marginTop:12,letterSpacing:"-0.01em"}}>Featured Projects</h2></div>
           <a href="#" className="cb cd" onClick={(e)=>{e.preventDefault();navigate('/projects')}} style={{marginBottom:4}}>View all</a>
@@ -281,7 +213,7 @@ const STATUS_CONCEPT_HOMEPAGE = () => {
       </section>
 
       {/* AFTER CARE BANNER */}
-      <section id="ac" data-animate style={{position:"relative",padding:"clamp(60px,10vh,120px) 48px",background:"linear-gradient(135deg,var(--ocean-d) 0%,var(--ocean) 100%)",textAlign:"center",color:"#fff",...S.section("ac")}}>
+      <section id="ac" data-animate style={{position:"relative",padding:"clamp(60px,10vh,120px) 48px",background:"linear-gradient(135deg,var(--ocean-d) 0%,var(--ocean) 100%)",textAlign:"center",color:"#fff",...S("ac")}}>
         <div style={{position:"absolute",top:40,left:48,width:40,height:40,borderLeft:"1px solid rgba(255,255,255,.15)",borderTop:"1px solid rgba(255,255,255,.15)"}}/>
         <div style={{position:"absolute",bottom:40,right:48,width:40,height:40,borderRight:"1px solid rgba(255,255,255,.15)",borderBottom:"1px solid rgba(255,255,255,.15)"}}/>
         <span className="fs sl" style={{color:"var(--ocean-l)"}}>Exclusive service</span>
@@ -292,11 +224,10 @@ const STATUS_CONCEPT_HOMEPAGE = () => {
       </section>
 
       {/* SHOWROOMS */}
-      <section id="shows" data-animate style={{...S.section("shows")}}>
-        {/* Full-width hero banner */}
+      <section id="shows" data-animate style={{...S("shows")}}>
         <div style={{position:"relative",height:500,overflow:"hidden",background:"linear-gradient(135deg,var(--stone) 0%,var(--stone-l) 100%)"}}>
           <div style={{position:"absolute",inset:0,display:"grid",gridTemplateColumns:"1fr 1fr"}}>
-            {[{name:"Quinta do Lago",img:"/src/assets/images/showroom-quinta.jpg"},{name:"Almancil",img:"/src/assets/images/showroom-almancil.jpg"}].map((s,i)=>(
+            {[{name:"Quinta do Lago",img:showroomQuintaImg},{name:"Almancil",img:showroomAlmancilImg}].map((s,i)=>(
               <div key={s.name} style={{position:"relative",overflow:"hidden",cursor:"pointer"}} onClick={()=>navigate('/contact')}>
                 <img src={s.img} alt={s.name} style={{width:"100%",height:"100%",objectFit:"cover",transition:"transform 1s cubic-bezier(0.16, 1, 0.3, 1),filter .5s",filter:"brightness(.55)"}}
                   onMouseEnter={e=>{e.target.style.transform="scale(1.08)";e.target.style.filter="brightness(.4)"}}
@@ -305,14 +236,11 @@ const STATUS_CONCEPT_HOMEPAGE = () => {
                 <div style={{position:"absolute",bottom:0,left:0,right:0,padding:"40px 48px",background:"linear-gradient(transparent,rgba(0,0,0,.5))"}}>
                   <span className="fs" style={{fontSize:10,letterSpacing:3,textTransform:"uppercase",color:"var(--gold-l)",display:"block",marginBottom:8}}>Showroom {String(i+1).padStart(2,'0')}</span>
                   <h3 className="ff" style={{fontSize:"clamp(28px,3.5vw,40px)",fontWeight:300,color:"#fff",marginBottom:4}}>{s.name}</h3>
-                  <span className="fs" style={{fontSize:11,letterSpacing:2,textTransform:"uppercase",color:"rgba(255,255,255,.5)",display:"flex",alignItems:"center",gap:6}}>
-                    Visit showroom <span style={{display:"inline-block",width:20,height:1,background:"var(--gold)"}}/>
-                  </span>
+                  <span className="fs" style={{fontSize:11,letterSpacing:2,textTransform:"uppercase",color:"rgba(255,255,255,.5)",display:"flex",alignItems:"center",gap:6}}>Visit showroom <span style={{display:"inline-block",width:20,height:1,background:"var(--gold)"}}/></span>
                 </div>
               </div>
             ))}
           </div>
-          {/* Centered title overlay */}
           <div style={{position:"absolute",top:"50%",left:"50%",transform:"translate(-50%,-50%)",textAlign:"center",zIndex:2,pointerEvents:"none"}}>
             <span className="fs" style={{fontSize:11,letterSpacing:5,textTransform:"uppercase",color:"var(--gold-l)",display:"block",marginBottom:12}}>Visit us</span>
             <h2 className="ff" style={{fontSize:"clamp(36px,5vw,56px)",fontWeight:300,color:"#fff",lineHeight:1.1,textShadow:"0 2px 40px rgba(0,0,0,.5)"}}>Our Showrooms</h2>
@@ -321,8 +249,6 @@ const STATUS_CONCEPT_HOMEPAGE = () => {
           <div style={{position:"absolute",top:32,left:48,width:50,height:50,borderLeft:"1px solid rgba(255,255,255,.15)",borderTop:"1px solid rgba(255,255,255,.15)"}} />
           <div style={{position:"absolute",bottom:32,right:48,width:50,height:50,borderRight:"1px solid rgba(255,255,255,.15)",borderBottom:"1px solid rgba(255,255,255,.15)"}} />
         </div>
-
-        {/* Showroom details strip */}
         <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",background:"var(--stone)",borderTop:"1px solid rgba(255,255,255,.06)"}}>
           {[
             {name:"Quinta do Lago",addr:"Estr. Quinta do Lago-Vale do Lobo, 8135-106 Almancil",ph:"+351 289 030 179",mob:"+351 937 573 600",desc:"Our flagship showroom on the road between Quinta do Lago and Vale do Lobo: experience the full collection in person."},
@@ -358,8 +284,6 @@ const STATUS_CONCEPT_HOMEPAGE = () => {
             </div>
           ))}
         </div>
-
-        {/* Hours bar */}
         <div style={{background:"var(--cream-w)",padding:"28px 48px",display:"flex",justifyContent:"center",gap:48,alignItems:"center",borderBottom:"1px solid var(--sand-l)",flexWrap:"wrap"}}>
           {[
             {label:"Mon – Fri",value:"10:00 – 18:30"},
@@ -399,31 +323,7 @@ const STATUS_CONCEPT_HOMEPAGE = () => {
           <button className="fs" style={{padding:"16px 28px",background:"var(--gold)",color:"#fff",border:"none",fontSize:10,letterSpacing:3,textTransform:"uppercase",cursor:"pointer",whiteSpace:"nowrap",borderRadius:"0 3px 3px 0",transition:"background .3s"}} onMouseEnter={e=>e.target.style.background="var(--gold-l)"} onMouseLeave={e=>e.target.style.background="var(--gold)"}>Subscribe</button>
         </div>
       </section>
-
-      {/* FOOTER */}
-      <footer style={{background:"var(--stone)",color:"#fff",padding:"72px 48px 36px"}}>
-        <div className="footer-grid" style={{display:"grid",gridTemplateColumns:"1.5fr 1fr 1fr 1fr 1fr",gap:40,maxWidth:1200,margin:"0 auto",paddingBottom:48,borderBottom:"1px solid rgba(255,255,255,.08)"}}>
-          <div>
-            <div style={{marginBottom:20}}><span className="ff" style={{fontSize:24,fontWeight:400,letterSpacing:8}}>ST<span style={{color:"var(--gold)"}}>A</span>TVS</span><div className="fs" style={{fontSize:7,letterSpacing:3,color:"rgba(255,255,255,.4)",marginTop:2}}>OUTDOOR FURNITURE SPECIALISTS</div></div>
-            <p className="fs" style={{fontSize:13,lineHeight:1.7,color:"rgba(255,255,255,.5)",fontWeight:300}}>High quality lifestyle furniture in the Algarve. Serving Vale do Lobo, Quinta do Lago, Vilamoura, and beyond.</p>
-            <div style={{display:"flex",gap:"2px",marginTop:20}}>
-              {socialIcons.map(({n,url,svg})=>(<a key={n} href={url} target="_blank" rel="noopener noreferrer" aria-label={n} className="si" style={{color:"rgba(255,255,255,.4)"}}>{svg}</a>
-              ))}
-            </div>
-          </div>
-          {[{t:"Furniture",ls:["Lounge","Dining","Sun Loungers","Day Beds","Coffee Tables","Bar & Patio"]},{t:"Solutions",ls:["Parasols","Bioclimatic Pergolas","Outdoor Kitchens","Decor","Leisure"]},{t:"Company",ls:["Why Us","After Care","Projects","Gallery","Catalogue"]},{t:"Contact",ls:["Showroom Quinta do Lago","Showroom Almancil","+351 289 030 179","info@statusconcept.com"]}].map(c=>(
-            <div key={c.t}>
-              <h4 className="fs" style={{fontSize:11,letterSpacing:2.5,textTransform:"uppercase",color:"var(--gold)",marginBottom:16}}>{c.t}</h4>
-              <div style={{display:"flex",flexDirection:"column",gap:8}}>{c.ls.map(l=><a key={l} href="#" className="fs" style={{fontSize:13,color:"rgba(255,255,255,.5)",textDecoration:"none",fontWeight:300,transition:"color .2s"}} onMouseEnter={e=>e.target.style.color="rgba(255,255,255,.8)"} onMouseLeave={e=>e.target.style.color="rgba(255,255,255,.5)"}>{l}</a>)}</div>
-            </div>
-          ))}
-        </div>
-        <div className="fs" style={{display:"flex",justifyContent:"space-between",alignItems:"center",paddingTop:24,fontSize:11,color:"rgba(255,255,255,.25)",letterSpacing:1,flexWrap:"wrap",gap:12}}>
-          <span>© 2026 Statvs. All rights reserved.</span>
-          <div style={{display:"flex",gap:24}}><a href="#" style={{color:"inherit",textDecoration:"none"}}>Privacy Policy</a><a href="#" style={{color:"inherit",textDecoration:"none"}}>Cookie Policy</a><a href="#" style={{color:"inherit",textDecoration:"none"}}>Terms</a></div>
-        </div>
-      </footer>
-    </div>
+    </Layout>
   );
 };
 

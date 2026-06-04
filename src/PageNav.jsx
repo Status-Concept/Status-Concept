@@ -1,6 +1,7 @@
 ﻿import { useState } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { useFavorites } from './FavoritesContext'
+import { useAuth } from './context/AuthContext'
 
 const pages = [
   { path: '/', label: 'Homepage' },
@@ -18,6 +19,11 @@ export default function PageNav() {
   const navigate = useNavigate()
   const { pathname } = useLocation()
   const { favorites } = useFavorites()
+  const { isAuthenticated } = useAuth()
+  const accountPage = isAuthenticated
+    ? { path: '/cliente', label: 'A Minha Conta' }
+    : { path: '/login', label: 'Login' }
+  const menuPages = [...pages, accountPage]
 
   return (
     <div style={{ position: 'fixed', bottom: 24, right: 24, zIndex: 9999, fontFamily: "'Outfit', sans-serif", display: 'flex', gap: 8, alignItems: 'flex-end' }}>
@@ -57,7 +63,7 @@ export default function PageNav() {
             padding: '8px 0', minWidth: 200, boxShadow: '0 8px 32px rgba(0,0,0,.4)',
             borderRadius: 3,
           }}>
-            {pages.map(p => (
+            {menuPages.map(p => (
               <div
                 key={p.path}
                 onClick={() => { navigate(p.path); setOpen(false) }}
