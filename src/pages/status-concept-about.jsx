@@ -1,12 +1,12 @@
-import { useNavigate } from "react-router-dom";
 import useNavLinks from "../useNavLinks";
 import Layout from "../components/Layout";
+import { useLocalizedNavigate } from "../hooks/useLocalizedNavigate";
 import showroomQuintaImg from "../assets/images/enhanced/showroom-quinta-ai.png";
 import whyStatusImg from "../assets/images/why-status.jpg";
 
 const ABOUT_PAGE = () => {
   useNavLinks();
-  const navigate = useNavigate();
+  const navigate = useLocalizedNavigate();
 
   const timeline = [
     { year: "2013", title: "The first outdoor vision", desc: "Statvs begins with a focused idea: bring high-quality outdoor furniture to the Algarve with proper guidance, materials and service." },

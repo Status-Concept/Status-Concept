@@ -25,8 +25,6 @@ import kitchenImg24 from '../assets/images/kitchen/draco/kitchen-teak-carbon-lin
 import kitchenImg25 from '../assets/images/kitchen/draco/kitchen-teak-carbon-line-black-single-fridge-cabinet-with-ceramic-top.jpg'
 import kitchenImg26 from '../assets/images/kitchen/draco/kitchen-teak-carbon-line-solid-stainless-steel-single-fridge-cabinet-with-ceramic-top.jpg'
 import kitchenImg27 from '../assets/images/kitchen/draco/kitchen-teak-carbon-line-stainless-single-fridge-cabinet-with-ceramic-top.jpg'
-import kitchenImg28 from '../assets/images/kitchen/draco/kitchen-teak-carbon-line-cabinet-table-with-kamado-egg-22-70cm.jpg'
-import kitchenImg29 from '../assets/images/kitchen/draco/kitchen-teak-carbon-line-cabinet-table-with-kamado-egg-22-60cm.jpg'
 import kitchenImg30 from '../assets/images/kitchen/draco/kitchen-teak-carbon-line-modular-outdoor-kitchen-double-door-drawer-cabinet-with-ceramic-top.png'
 import kitchenImg31 from '../assets/images/kitchen/draco/kitchen-teak-carbon-line-modular-outdoor-kitchen-sink-cabinet-with-ceramic-top.jpg'
 import kitchenImg32 from '../assets/images/kitchen/draco/kitchen-teak-carbon-line-modular-outdoor-kitchen-3-drawer-unit-with-ceramic-top.jpg'
@@ -36,7 +34,6 @@ import kitchenImg35 from '../assets/images/kitchen/draco/kitchen-teak-carbon-lin
 import kitchenImg36 from '../assets/images/kitchen/draco/kitchen-teak-carbon-line-modular-outdoor-kitchen-single-door-cabinet-with-ceramic-top.jpg'
 import kitchenImg37 from '../assets/images/kitchen/draco/kitchen-teak-carbon-line-outdoor-kitchen-2-door-add-on-cabinet-with-ceramic-top.jpg'
 import kitchenImg38 from '../assets/images/kitchen/draco/kitchen-teak-carbon-line-modular-outdoor-kitchen-60cm-kamado-table-with-ceramic-top.jpg'
-import kitchenImg39 from '../assets/images/kitchen/draco/kitchen-teak-carbon-line-modular-outdoor-kitchen-70cm-kamado-table-with-ceramic-top.jpg'
 import kitchenImg40 from '../assets/images/kitchen/draco/kitchen-teak-carbon-line-modular-outdoor-kitchen-add-on-slatted-shelf-with-hook-on-boxes.png'
 import kitchenImg41 from '../assets/images/kitchen/draco/kitchen-teak-carbon-line-modular-outdoor-kitchen-add-on-double-shelf.jpg'
 import kitchenImg42 from '../assets/images/kitchen/draco/kitchen-teak-modular-outdoor-kitchen-barbecue-unit-with-6-burner-barbecue.jpg'
@@ -559,8 +556,8 @@ export const kitchenProducts = [
     image: kitchenImg34,
     route: '/product/teak-carbon-line-side-burner-cabinet-with-ceramic-top',
     tag: 'New',
-    desc: `Elevate your outdoor cooking space with the Draco Grills Black Teak Carbon Line Side Burner Cabinet with Ceramic Top, a perfect blend of style, practicality, and robust construction.  Crafted entirely from reclaimed Teak, this cabinet highlights the wood\'s rich, natural grain, delivering a contemporary and sophisticated look.`,
-    description: `Elevate your outdoor cooking space with the Draco Grills Black Teak Carbon Line Side Burner Cabinet with Ceramic Top, a perfect blend of style, practicality, and robust construction.  Crafted entirely from reclaimed Teak, this cabinet highlights the wood\'s rich, natural grain, delivering a contemporary and sophisticated look.`,
+    desc: `Elevate your outdoor cooking space with the Draco Grills Black Teak Carbon Line Side Burner Cabinet with Ceramic Top, a perfect blend of style, practicality, and robust construction.  Crafted entirely from reclaimed Teak, this cabinet highlights the wood's rich, natural grain, delivering a contemporary and sophisticated look.`,
+    description: `Elevate your outdoor cooking space with the Draco Grills Black Teak Carbon Line Side Burner Cabinet with Ceramic Top, a perfect blend of style, practicality, and robust construction.  Crafted entirely from reclaimed Teak, this cabinet highlights the wood's rich, natural grain, delivering a contemporary and sophisticated look.`,
     specs: {sku:"DRA5567",type:"Outdoor Kitchen > Module",dimensions:"59cm (W) x 94.7cm(H) x 62.5cm (D)",material:"Black reclaimed teak and ceramic top"},
   },
   {

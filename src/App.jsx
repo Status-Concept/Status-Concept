@@ -4,6 +4,7 @@ import { ToastProvider } from './context/ToastContext'
 import { FavoritesProvider } from './FavoritesContext'
 import ProtectedRoute from './components/ProtectedRoute'
 import CookieBanner from './components/CookieBanner'
+import TranslationLayer from './components/TranslationLayer'
 import Homepage from './pages/status-concept-homepage'
 import Products from './pages/status-concept-products'
 import Collection from './pages/status-concept-collection'
@@ -21,36 +22,45 @@ import ClientFavorites from './pages/client/ClientFavorites'
 import ScrollToTop from './ScrollToTop'
 import PageNav from './PageNav'
 
+const routesFor = (prefix = '') => (
+  <>
+    <Route path={prefix || '/'} element={<Homepage />} />
+    <Route path={`${prefix}/products`} element={<Products />} />
+    <Route path={`${prefix}/collection`} element={<Collection />} />
+    <Route path={`${prefix}/product/:id`} element={<ProductDetail />} />
+    <Route path={`${prefix}/about`} element={<About />} />
+    <Route path={`${prefix}/contact`} element={<Contact />} />
+    <Route path={`${prefix}/projects`} element={<Projects />} />
+    <Route path={`${prefix}/favorites`} element={<Favorites />} />
+    <Route path={`${prefix}/login`} element={<Login />} />
+    <Route path={`${prefix}/registar`} element={<Register />} />
+    <Route
+      path={`${prefix}/cliente`}
+      element={
+        <ProtectedRoute>
+          <ClientLayout />
+        </ProtectedRoute>
+      }
+    >
+      <Route index element={<ClientDashboard />} />
+      <Route path="perfil" element={<ClientProfile />} />
+      <Route path="favoritos" element={<ClientFavorites />} />
+    </Route>
+  </>
+)
+
 function App() {
   return (
     <ToastProvider>
       <AuthProvider>
         <FavoritesProvider>
           <ScrollToTop />
+          <TranslationLayer />
           <PageNav />
           <Routes>
-            <Route path="/" element={<Homepage />} />
-            <Route path="/products" element={<Products />} />
-            <Route path="/collection" element={<Collection />} />
-            <Route path="/product/:id" element={<ProductDetail />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path="/projects" element={<Projects />} />
-            <Route path="/favorites" element={<Favorites />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/registar" element={<Register />} />
-            <Route
-              path="/cliente"
-              element={
-                <ProtectedRoute>
-                  <ClientLayout />
-                </ProtectedRoute>
-              }
-            >
-              <Route index element={<ClientDashboard />} />
-              <Route path="perfil" element={<ClientProfile />} />
-              <Route path="favoritos" element={<ClientFavorites />} />
-            </Route>
+            {routesFor()}
+            {routesFor('/en')}
+            {routesFor('/pt')}
           </Routes>
           <CookieBanner />
         </FavoritesProvider>

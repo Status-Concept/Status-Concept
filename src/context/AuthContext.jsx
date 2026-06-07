@@ -8,7 +8,7 @@ export function AuthProvider({ children }) {
   const [session, setSession] = useState(null)
   const [user, setUser] = useState(null)
   const [profile, setProfile] = useState(null)
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(Boolean(supabase))
 
   const fetchProfile = useCallback(async (userId) => {
     if (!supabase || !userId) {
@@ -22,7 +22,7 @@ export function AuthProvider({ children }) {
       .eq('id', userId)
       .maybeSingle()
 
-    if (error) {
+    if (error || !data) {
       setProfile(null)
       return null
     }
@@ -40,7 +40,6 @@ export function AuthProvider({ children }) {
     let mounted = true
 
     if (!supabase) {
-      setLoading(false)
       return undefined
     }
 
@@ -66,7 +65,7 @@ export function AuthProvider({ children }) {
     }
   }, [fetchProfile])
 
-  const login = async ({ email, password }) => {
+  const login = useCallback(async ({ email, password }) => {
     if (!supabase) throw new Error('Supabase nao esta configurado.')
     const { data, error } = await supabase.auth.signInWithPassword({
       email: sanitizeText(email).toLowerCase(),
@@ -75,9 +74,9 @@ export function AuthProvider({ children }) {
     if (error) throw error
     if (data.user) await fetchProfile(data.user.id)
     return data
-  }
+  }, [fetchProfile])
 
-  const register = async ({ name, email, password, phone }) => {
+  const register = useCallback(async ({ name, email, password, phone }) => {
     if (!supabase) throw new Error('Supabase nao esta configurado.')
     const cleanName = sanitizeText(name)
     const cleanPhone = sanitizePhone(phone)
@@ -103,9 +102,9 @@ export function AuthProvider({ children }) {
     }
 
     return data
-  }
+  }, [])
 
-  const updateProfile = async ({ name, phone }) => {
+  const updateProfile = useCallback(async ({ name, phone }) => {
     if (!supabase || !user) throw new Error('Sessao invalida.')
     const payload = {
       name: sanitizeText(name),
@@ -122,16 +121,16 @@ export function AuthProvider({ children }) {
     if (error) throw error
     setProfile(data)
     return data
-  }
+  }, [user])
 
-  const logout = async () => {
+  const logout = useCallback(async () => {
     if (!supabase) return
     const { error } = await supabase.auth.signOut()
     if (error) throw error
     setSession(null)
     setUser(null)
     setProfile(null)
-  }
+  }, [])
 
   const value = useMemo(() => ({
     session,
@@ -145,7 +144,7 @@ export function AuthProvider({ children }) {
     logout,
     updateProfile,
     refreshProfile: () => fetchProfile(user?.id),
-  }), [session, user, profile, loading, fetchProfile])
+  }), [session, user, profile, loading, login, register, logout, updateProfile, fetchProfile])
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
 }

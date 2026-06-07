@@ -1,8 +1,8 @@
 ﻿import { useState, useEffect, useRef } from "react";
-import { useNavigate } from "react-router-dom";
 import useNavLinks from "../useNavLinks";
 import FavoriteButton from "../FavoriteButton";
 import { useScrollAnimation } from "../hooks/useScrollAnimation";
+import { useLocalizedNavigate } from "../hooks/useLocalizedNavigate";
 import Layout from "../components/Layout";
 import heroImg from "../assets/images/enhanced/hero-ai.png";
 import showroomQuintaImg from "../assets/images/enhanced/showroom-quinta-ai.png";
@@ -15,7 +15,7 @@ import carbonKitchenImg from "../assets/images/kitchen/carbon-line-1.jpg";
 
 const STATUS_CONCEPT_HOMEPAGE = () => {
   useNavLinks();
-  const navigate = useNavigate();
+  const navigate = useLocalizedNavigate();
   const [activeTab, setActiveTab] = useState("furniture");
   const [activeProject, setActiveProject] = useState(0);
   const [heroSlide, setHeroSlide] = useState(0);

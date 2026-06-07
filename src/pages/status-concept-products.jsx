@@ -1,9 +1,10 @@
 ﻿import { useEffect, useMemo, useState } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import useNavLinks from "../useNavLinks";
 import Layout from "../components/Layout";
 import FavoriteButton from "../FavoriteButton";
 import { kitchenCollectionMeta, kitchenProducts } from "../data/kitchenProducts";
+import { getLangFromPath, withLang } from "../utils/language";
 import kitchenHeroImg from "../assets/images/kitchen/kitchen-hero.jpg";
 import shadeRealProductsHeroImg from "../assets/images/enhanced/shade-real-products-hero.png";
 import sicilyCornerImg from "../assets/images/sicily-corner.jpg";
@@ -14,8 +15,10 @@ const slug = (value) => value.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(
 const PRODUCTS_PAGE = () => {
   useNavLinks();
   const navigate = useNavigate();
+  const location = useLocation();
   const [searchParams] = useSearchParams();
   const catParam = searchParams.get("cat");
+  const currentLang = getLangFromPath(location.pathname);
   const [activeCategory, setActiveCategory] = useState(catParam || "all");
   const [activeKitchenCollection, setActiveKitchenCollection] = useState(null);
   const [viewMode, setViewMode] = useState("grid");
@@ -42,7 +45,7 @@ const PRODUCTS_PAGE = () => {
     { key: "decor", label: "Decor", count: 4 },
   ];
 
-  const allProducts = [
+  const allProducts = useMemo(() => [
     { id: "sicily-modular-set", name: "Sicily Modular Set", collection: "Sicily", category: "lounge", img: sicilyCornerImg, tag: "Popular", desc: "A contemporary modular lounge system for generous outdoor living areas." },
     { id: "bali-lounge-set", name: "Bali Lounge Set", collection: "Bali", category: "lounge", img: placeholderImg, tag: "", desc: "Relaxed outdoor seating with deep cushions and a resort-inspired profile." },
     { id: "berlin-sofa-set", name: "Berlin Sofa Set", collection: "Berlin", category: "lounge", img: placeholderImg, tag: "", desc: "Classic outdoor sofa proportions with a clean aluminium frame." },
@@ -79,11 +82,7 @@ const PRODUCTS_PAGE = () => {
     { id: "garden-vase-collection", name: "Garden Vase Collection", collection: "Decor", category: "decor", img: placeholderImg, tag: "", desc: "Decorative vessels for terraces and garden rooms." },
     { id: "led-garden-lighting", name: "LED Garden Lighting", collection: "Decor", category: "decor", img: placeholderImg, tag: "New", desc: "Low-profile lighting for evening outdoor atmosphere." },
     { id: "outdoor-sound-system", name: "Outdoor Sound System", collection: "Leisure", category: "decor", img: placeholderImg, tag: "", desc: "Integrated outdoor sound for leisure and entertaining." },
-  ];
-
-  function whyStatusImgFallback() {
-    return placeholderImg;
-  }
+  ], []);
 
   const kitchenCollections = kitchenCollectionMeta.map((collection) => ({
     ...collection,
@@ -108,9 +107,10 @@ const PRODUCTS_PAGE = () => {
       if (sortBy === "collection") return (a.collectionName || a.collection).localeCompare(b.collectionName || b.collection);
       return (b.tag ? 1 : 0) - (a.tag ? 1 : 0);
     });
-  }, [activeCategory, activeKitchenCollection, isKitchenCategory, sortBy]);
+  }, [activeCategory, activeKitchenCollection, allProducts, isKitchenCategory, sortBy]);
 
   const productRoute = (product) => product.route || `/product/${product.id || slug(product.name)}`;
+  const goTo = (path) => navigate(withLang(path, currentLang));
 
   const selectCategory = (key) => {
     setActiveCategory(key);
@@ -207,7 +207,7 @@ const PRODUCTS_PAGE = () => {
           ) : viewMode === "grid" ? (
             <div className="rd-product-grid">
               {filteredProducts.map((product) => (
-                <article key={product.id || product.name} className="rd-product-card" onClick={() => navigate(productRoute(product))}>
+                <article key={product.id || product.name} className="rd-product-card" onClick={() => goTo(productRoute(product))}>
                   <div className="rd-product-media">
                     {product.tag && <span className={`tag ${product.tag === "New" ? "tag-new" : "tag-popular"}`}>{product.tag}</span>}
                     <FavoriteButton
@@ -235,7 +235,7 @@ const PRODUCTS_PAGE = () => {
           ) : (
             <div className="rd-product-list">
               {filteredProducts.map((product) => (
-                <article key={product.id || product.name} className="rd-product-row" onClick={() => navigate(productRoute(product))}>
+                <article key={product.id || product.name} className="rd-product-row" onClick={() => goTo(productRoute(product))}>
                   <img src={product.img} alt={product.name} />
                   <div>
                     <span className="rd-kicker fs">{product.collectionName || product.collection}</span>

@@ -28,7 +28,7 @@ export function FavoritesProvider({ children }) {
 
   useEffect(() => {
     if (!user) localStorage.setItem(STORAGE_KEY, JSON.stringify(favorites));
-  }, [favorites]);
+  }, [favorites, user]);
 
   useEffect(() => {
     localStorage.setItem(DETAILS_KEY, JSON.stringify(favoriteDetails));

@@ -1,7 +1,7 @@
-import { useNavigate } from "react-router-dom";
 import useNavLinks from "../useNavLinks";
 import Layout from "../components/Layout";
 import FavoriteButton from "../FavoriteButton";
+import { useLocalizedNavigate } from "../hooks/useLocalizedNavigate";
 import collectionBellaImg from "../assets/images/collection-bella.jpg";
 import collectionSicilyImg from "../assets/images/collection-sicily.jpg";
 import collectionLagunaImg from "../assets/images/collection-laguna.jpg";
@@ -17,7 +17,7 @@ import prodArmchairImg from "../assets/images/prod-armchair.jpg";
 
 const COLLECTION_DETAIL = () => {
   useNavLinks();
-  const navigate = useNavigate();
+  const navigate = useLocalizedNavigate();
 
   const collection = {
     name: "Bella",

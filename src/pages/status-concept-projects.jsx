@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import useNavLinks from "../useNavLinks";
 import Layout from "../components/Layout";
+import { useLocalizedNavigate } from "../hooks/useLocalizedNavigate";
 import projectQuintaImg from "../assets/images/project-quinta.jpg";
 import projectValeImg from "../assets/images/project-valedolobo.jpg";
 import projectVilamouraImg from "../assets/images/project-vilamoura.jpg";
@@ -11,7 +11,7 @@ import collectionMiamiImg from "../assets/images/collection-miami.jpg";
 
 const PROJECTS_PAGE = () => {
   useNavLinks();
-  const navigate = useNavigate();
+  const navigate = useLocalizedNavigate();
   const [activeProject, setActiveProject] = useState(null);
   const [filter, setFilter] = useState("all");
 

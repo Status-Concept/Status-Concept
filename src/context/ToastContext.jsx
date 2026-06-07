@@ -1,14 +1,15 @@
-import { createContext, useCallback, useContext, useMemo, useState } from 'react'
+import { createContext, useCallback, useContext, useMemo, useRef, useState } from 'react'
 
 const ToastContext = createContext(null)
 
 export function ToastProvider({ children }) {
   const [toast, setToast] = useState(null)
+  const timerRef = useRef(null)
 
   const showToast = useCallback((message, type = 'success') => {
     setToast({ message, type })
-    window.clearTimeout(showToast.timer)
-    showToast.timer = window.setTimeout(() => setToast(null), 4200)
+    window.clearTimeout(timerRef.current)
+    timerRef.current = window.setTimeout(() => setToast(null), 4200)
   }, [])
 
   const value = useMemo(() => ({ showToast }), [showToast])
@@ -31,4 +32,3 @@ export function useToast() {
   if (!ctx) throw new Error('useToast must be used within ToastProvider')
   return ctx
 }
-

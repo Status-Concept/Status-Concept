@@ -1,17 +1,26 @@
-import { useMemo, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useState } from "react";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import useNavLinks from "../useNavLinks";
 import Layout from "../components/Layout";
 import FavoriteButton from "../FavoriteButton";
 import { kitchenProductDetails, kitchenProducts } from "../data/kitchenProducts";
+import { getLangFromPath, withLang } from "../utils/language";
 import sicilyCornerImg from "../assets/images/sicily-corner.jpg";
 import sicilyCentreImg from "../assets/images/sicily-centre.jpg";
 import sicilyOttomanImg from "../assets/images/sicily-ottoman.jpg";
 
+const titleFromSlug = (value = "product") => value
+  .split("-")
+  .filter(Boolean)
+  .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+  .join(" ");
+
 const PRODUCT_DETAIL = () => {
   useNavLinks();
   const navigate = useNavigate();
+  const location = useLocation();
   const { id } = useParams();
+  const currentLang = getLangFromPath(location.pathname);
   const [activeImg, setActiveImg] = useState(0);
   const [activeTab, setActiveTab] = useState("specs");
   const [lightboxOpen, setLightboxOpen] = useState(false);
@@ -46,10 +55,23 @@ const PRODUCT_DETAIL = () => {
     },
   };
 
-  const product = allProducts[id] || allProducts["sicily-modular-set"];
+  const product = allProducts[id] || {
+    id,
+    name: titleFromSlug(id),
+    collection: "Status Concept",
+    category: "catalog",
+    tagline: "Detailed specifications for this product are being prepared. Contact the showroom team for current availability, finishes and dimensions.",
+    images: [sicilyCornerImg],
+    specs: [
+      { label: "Status", value: "Details available on request" },
+      { label: "Category", value: "Outdoor living" },
+    ],
+    materials: ["Product information available through the showroom team"],
+  };
   const images = product.images?.length ? product.images : [product.image || sicilyCornerImg];
+  const goTo = (path) => navigate(withLang(path, currentLang));
 
-  const relatedProducts = useMemo(() => {
+  const relatedProducts = (() => {
     if (product.category === "kitchen") {
       return kitchenProducts
         .filter((item) => item.id !== product.id && (item.collection === product.collectionSlug || item.collectionName === product.collection))
@@ -60,7 +82,7 @@ const PRODUCT_DETAIL = () => {
       { id: "sicily-centre-module", name: "Sicily Centre Module", collectionName: "Sicily", img: sicilyCentreImg, route: "/product/sicily-modular-set" },
       { id: "sicily-ottoman", name: "Sicily Ottoman", collectionName: "Sicily", img: sicilyOttomanImg, route: "/product/sicily-modular-set" },
     ];
-  }, [product]);
+  })();
 
   const renderTab = () => {
     if (activeTab === "dimensions") {
@@ -134,7 +156,7 @@ const PRODUCT_DETAIL = () => {
         </section>
 
         <aside className="rd-product-panel">
-          <button type="button" className="rd-back-link" onClick={() => navigate("/products")}>Back to products</button>
+          <button type="button" className="rd-back-link" onClick={() => goTo("/products")}>Back to products</button>
           <span className="rd-kicker fs" style={{ marginTop: 28 }}>{product.collection} Collection</span>
           <h1 className="rd-title ff" style={{ color: "var(--stone)", fontSize: "clamp(36px, 4.6vw, 58px)" }}>{product.name}</h1>
           <div className="la" style={{ marginBottom: 20 }} />
@@ -175,8 +197,8 @@ const PRODUCT_DETAIL = () => {
           )}
 
           <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginBottom: 28 }}>
-            <button type="button" className="cb cg" onClick={() => navigate("/contact")}>Request quote</button>
-            <button type="button" className="cb cd" onClick={() => navigate("/contact")}>Book showroom</button>
+            <button type="button" className="cb cg" onClick={() => goTo("/contact")}>Request quote</button>
+            <button type="button" className="cb cd" onClick={() => goTo("/contact")}>Book showroom</button>
           </div>
 
           <div className="rd-tabs">
@@ -200,11 +222,11 @@ const PRODUCT_DETAIL = () => {
             <span className="rd-kicker fs">Same collection</span>
             <h2 className="ff">Pieces that work together</h2>
           </div>
-          <button type="button" className="rd-back-link" onClick={() => navigate("/products")}>View all</button>
+          <button type="button" className="rd-back-link" onClick={() => goTo("/products")}>View all</button>
         </div>
         <div className="rd-horizontal-scroll">
           {relatedProducts.map((item) => (
-            <article key={item.id} className="rd-product-card" onClick={() => navigate(item.route || `/product/${item.id}`)}>
+            <article key={item.id} className="rd-product-card" onClick={() => goTo(item.route || `/product/${item.id}`)}>
               <div className="rd-product-media">
                 <FavoriteButton product={{ id: item.id, name: item.name, collection: item.collectionName || item.collection, img: item.img, route: item.route || `/product/${item.id}` }} size={15} style={{ position: "absolute", top: 12, right: 12 }} />
                 <img src={item.img} alt={item.name} />
@@ -222,7 +244,7 @@ const PRODUCT_DETAIL = () => {
       </section>
 
       <div className="rd-mobile-cta">
-        <button type="button" className="cb cg" style={{ width: "100%", justifyContent: "center" }} onClick={() => navigate("/contact")}>Request quote</button>
+        <button type="button" className="cb cg" style={{ width: "100%", justifyContent: "center" }} onClick={() => goTo("/contact")}>Request quote</button>
       </div>
 
       {lightboxOpen && (

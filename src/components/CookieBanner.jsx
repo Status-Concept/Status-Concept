@@ -1,13 +1,9 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 const CONSENT_KEY = 'cookie_consent'
 
 export default function CookieBanner() {
-  const [visible, setVisible] = useState(false)
-
-  useEffect(() => {
-    setVisible(!localStorage.getItem(CONSENT_KEY))
-  }, [])
+  const [visible, setVisible] = useState(() => !localStorage.getItem(CONSENT_KEY))
 
   const choose = (value) => {
     localStorage.setItem(CONSENT_KEY, value)
@@ -32,4 +28,3 @@ export default function CookieBanner() {
     </div>
   )
 }
-
