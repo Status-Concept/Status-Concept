@@ -10,6 +10,7 @@ import showroomQuintaImg from "../assets/images/enhanced/showroom-quinta-ai.png"
 import hero4Img from "../assets/images/enhanced/hero-4.webp";
 import showroomAlmancilImg from "../assets/images/enhanced/showroom-almancil-ai.png";
 const placeholderImg = "/placeholder.svg";
+import furnitureSeriesImg from "../assets/images/enhanced/furniture-series-hero.png";
 import neroKitchenImg from "../assets/images/kitchen/blk-6burner-bbq.jpg";
 import teakKitchenImg from "../assets/images/kitchen/teak-setup-1.jpg";
 import carbonKitchenImg from "../assets/images/kitchen/carbon-line-1.jpg";
@@ -118,6 +119,16 @@ const STATUS_CONCEPT_HOMEPAGE = () => {
         <div style={{display:"flex",justifyContent:"center",gap:8,marginBottom:48,borderBottom:"1px solid var(--sand-l)"}}>
           {[{k:"furniture",l:"Furniture"},{k:"shade",l:"Shade Solutions"},{k:"kitchen",l:"Outdoor Kitchens"}].map(t=><button key={t.k} className={`tb ${activeTab===t.k?"ac":""}`} onClick={()=>setActiveTab(t.k)}>{t.l}</button>)}
         </div>
+        <div style={{maxWidth:1200,margin:"0 auto 32px",borderRadius:6,overflow:"hidden",position:"relative",height:340}}>
+            <img src={furnitureSeriesImg} alt="Furniture Series" style={{width:"100%",height:"100%",objectFit:"cover",objectPosition:"center 40%",display:"block"}} />
+            <div style={{position:"absolute",inset:0,background:"linear-gradient(90deg,rgba(44,42,37,.55) 0%,rgba(44,42,37,.1) 60%,transparent 100%)"}} />
+            <div style={{position:"absolute",top:"50%",left:48,transform:"translateY(-50%)"}}>
+              <span className="fs sl" style={{color:"rgba(255,255,255,.6)",letterSpacing:3,fontSize:11}}>Curated for the Algarve</span>
+              <h3 className="ff" style={{fontSize:"clamp(28px,3vw,42px)",fontWeight:300,color:"#fff",marginTop:10,marginBottom:0,lineHeight:1.1}}>
+                {activeTab === "furniture" ? "Furniture Series" : activeTab === "shade" ? "Shade Solutions" : "Outdoor Kitchens"}
+              </h3>
+            </div>
+          </div>
         <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:20,maxWidth:1200,margin:"0 auto"}}>
           {collections[activeTab].map((c,i)=>(
             <div key={c.name} className="cc" onClick={()=>navigate(c.route)} style={{height:i===0||i===3?440:360,animation:vis("colls")?`fu 0.6s ${0.1*i}s both`:"none"}}>

@@ -8,6 +8,7 @@ import { getLangFromPath, withLang } from "../utils/language";
 import kitchenHeroImg from "../assets/images/kitchen/kitchen-hero.jpg";
 import shadeRealProductsHeroImg from "../assets/images/enhanced/shade-real-products-hero.png";
 import sicilyCornerImg from "../assets/images/sicily-corner.jpg";
+import furnitureSeriesImg from "../assets/images/enhanced/furniture-series-hero.png";
 const placeholderImg = "/placeholder.svg";
 
 const slug = (value) => value.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
@@ -118,7 +119,7 @@ const PRODUCTS_PAGE = () => {
     setMobileFiltersOpen(false);
   };
 
-  const heroImage = isKitchenCategory ? kitchenHeroImg : activeCategory === "shade" ? shadeRealProductsHeroImg : sicilyCornerImg;
+  const heroImage = isKitchenCategory ? kitchenHeroImg : furnitureSeriesImg;
   const heroTitle = isKitchenCategory ? "Modular Kitchen" : activeCategory === "shade" ? "Shade Solutions" : "Furniture Series";
   const heroCopy = isKitchenCategory
     ? "Explore Draco Grills modular outdoor kitchens across Black Stainless Steel, Carbon Line Teak and Teak collections."
