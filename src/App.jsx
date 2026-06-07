@@ -13,6 +13,7 @@ import About from './pages/status-concept-about'
 import Contact from './pages/status-concept-contact'
 import Projects from './pages/status-concept-projects'
 import Favorites from './pages/status-concept-favorites'
+import Placeholder from './pages/status-concept-placeholder'
 import Login from './pages/Login'
 import Register from './pages/Register'
 import ClientLayout from './pages/client/ClientLayout'
@@ -32,6 +33,9 @@ const routesFor = (prefix = '') => (
     <Route path={`${prefix}/contact`} element={<Contact />} />
     <Route path={`${prefix}/projects`} element={<Projects />} />
     <Route path={`${prefix}/favorites`} element={<Favorites />} />
+    <Route path={`${prefix}/after-care`} element={<Placeholder title="After Care & Valet Service" subtitle="Seasonal care, cleaning and maintenance for your outdoor furniture. Full details coming soon." />} />
+    <Route path={`${prefix}/gallery`} element={<Placeholder title="Gallery" subtitle="A curated collection of completed outdoor spaces across the Algarve. Coming soon." />} />
+    <Route path={`${prefix}/catalogue`} element={<Placeholder title="Catalogue" subtitle="Browse and download our full product catalogue. Coming soon." />} />
     <Route path={`${prefix}/login`} element={<Login />} />
     <Route path={`${prefix}/registar`} element={<Register />} />
     <Route

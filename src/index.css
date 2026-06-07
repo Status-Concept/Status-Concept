@@ -263,7 +263,7 @@
 }
 .rd-product-media {
   position: relative;
-  aspect-ratio: 4 / 5;
+  aspect-ratio: 3 / 4;
   overflow: hidden;
   background: var(--cream-w);
   border: 1px solid var(--sand-l);
@@ -442,8 +442,8 @@
 .rd-horizontal-scroll {
   display: grid;
   grid-auto-flow: column;
-  grid-auto-columns: minmax(280px, 34vw);
-  gap: 20px;
+  grid-auto-columns: minmax(180px, 20vw);
+  gap: 16px;
   overflow-x: auto;
   padding-bottom: 16px;
   scroll-snap-type: x mandatory;

@@ -4,10 +4,11 @@ import FavoriteButton from "../FavoriteButton";
 import { useScrollAnimation } from "../hooks/useScrollAnimation";
 import { useLocalizedNavigate } from "../hooks/useLocalizedNavigate";
 import Layout from "../components/Layout";
-import heroImg from "../assets/images/enhanced/hero-ai.png";
+import hero1Img from "../assets/images/enhanced/hero-1.webp";
+import hero3Img from "../assets/images/enhanced/hero-3.webp";
 import showroomQuintaImg from "../assets/images/enhanced/showroom-quinta-ai.png";
+import hero4Img from "../assets/images/enhanced/hero-4.webp";
 import showroomAlmancilImg from "../assets/images/enhanced/showroom-almancil-ai.png";
-import whyStatusImg from "../assets/images/enhanced/why-status-ai.png";
 const placeholderImg = "/placeholder.svg";
 import neroKitchenImg from "../assets/images/kitchen/blk-6burner-bbq.jpg";
 import teakKitchenImg from "../assets/images/kitchen/teak-setup-1.jpg";
@@ -22,7 +23,7 @@ const STATUS_CONCEPT_HOMEPAGE = () => {
   const heroRef = useRef(null);
   const { vis, S } = useScrollAnimation();
 
-  const heroImages = [heroImg, showroomQuintaImg, whyStatusImg];
+  const heroImages = [hero1Img, hero3Img, hero4Img];
 
   useEffect(() => {
     const handleScroll = () => {
@@ -90,11 +91,10 @@ const STATUS_CONCEPT_HOMEPAGE = () => {
             <button key={i} onClick={()=>setHeroSlide(i)} style={{width:heroSlide===i?24:8,height:8,borderRadius:4,border:"none",background:heroSlide===i?"#fff":"rgba(255,255,255,.4)",cursor:"pointer",transition:"all .4s cubic-bezier(0.16, 1, 0.3, 1)"}} />
           ))}
         </div>
-        <div style={{padding:"0 48px",maxWidth:800,position:"relative",zIndex:2}}>
-          <div className="fs sl" style={{color:"rgba(255,255,255,.6)",marginBottom:20,animation:"hu 0.8s .2s both"}}>Luxury outdoor living · Algarve, Portugal</div>
-          <h1 className="ff" style={{fontSize:"clamp(42px,6vw,72px)",fontWeight:300,color:"#fff",lineHeight:1.05,marginBottom:24,letterSpacing:"-0.01em",animation:"hu 0.8s .4s both"}}>Where Design<br/>Meets the Sun</h1>
-          <p className="fs" style={{fontSize:15,color:"rgba(255,255,255,.7)",lineHeight:1.7,maxWidth:500,marginBottom:36,fontWeight:300,animation:"hu 0.8s .6s both"}}>Curated outdoor furniture of excellence for the most distinguished residences across the Algarve. From Quinta do Lago to Vilamoura: elegance, crafted for your space.</p>
-          <div style={{display:"flex",gap:16,animation:"hu 0.8s .8s both",flexWrap:"wrap"}}><a href="#" className="cb cl" onClick={(e)=>{e.preventDefault();navigate('/products')}}>Explore collections</a><a href="#" className="cb cg" onClick={(e)=>{e.preventDefault();navigate('/contact')}}>Visit showroom</a></div>
+        <div style={{padding:"28px 36px",maxWidth:560,position:"relative",zIndex:2,background:"rgba(0,0,0,0.12)",backdropFilter:"blur(3px)",borderRadius:4}}>
+          <div className="fs sl" style={{color:"rgba(255,255,255,.6)",marginBottom:12,animation:"hu 0.8s .2s both"}}>Luxury outdoor living · Algarve, Portugal</div>
+          <h1 className="ff" style={{fontSize:"clamp(32px,4.5vw,54px)",fontWeight:300,color:"#fff",lineHeight:1.05,marginBottom:24,letterSpacing:"-0.01em",animation:"hu 0.8s .4s both"}}>Where Design<br/>Meets the Sun</h1>
+          <div style={{display:"flex",gap:16,animation:"hu 0.8s .6s both",flexWrap:"wrap"}}><a href="#" className="cb cl" onClick={(e)=>{e.preventDefault();navigate('/products')}}>Explore collections</a><a href="#" className="cb cg" onClick={(e)=>{e.preventDefault();navigate('/contact')}}>Visit showroom</a></div>
         </div>
         <div style={{position:"absolute",bottom:32,left:"50%",transform:"translateX(-50%)",display:"flex",flexDirection:"column",alignItems:"center",gap:8,animation:"scrollHint 2.5s ease infinite"}}>
           <span className="fs" style={{fontSize:10,letterSpacing:3,color:"rgba(255,255,255,.4)",textTransform:"uppercase"}}>Scroll</span>
@@ -158,7 +158,7 @@ const STATUS_CONCEPT_HOMEPAGE = () => {
 
       {/* WHY STATUS */}
       <section id="why" data-animate style={{display:"grid",gridTemplateColumns:"1fr 1fr",minHeight:600,...S("why")}}>
-        <div style={{background:`url('${whyStatusImg}') center/cover`}}/>
+        <div style={{background:`url('${hero1Img}') center/cover`}}/>
         <div style={{background:"var(--stone)",color:"#fff",padding:"clamp(48px,8vh,100px) 60px",display:"flex",flexDirection:"column",justifyContent:"center"}}>
           <span className="fs sl" style={{color:"var(--gold-l)",marginBottom:20}}>Why Statvs</span>
           <h2 className="ff" style={{fontSize:36,fontWeight:300,marginBottom:28,lineHeight:1.2,letterSpacing:"-0.01em"}}>Over a Decade of<br/>Outdoor Excellence</h2>
@@ -212,7 +212,7 @@ const STATUS_CONCEPT_HOMEPAGE = () => {
         <h2 className="ff" style={{fontSize:"clamp(32px,4vw,48px)",fontWeight:300,marginTop:16,marginBottom:20,letterSpacing:"-0.01em"}}>After Care & Valet Service</h2>
         <div className="law" style={{margin:"0 auto 24px"}}/>
         <p className="fs" style={{fontSize:14,lineHeight:1.8,color:"rgba(255,255,255,.7)",maxWidth:600,margin:"0 auto 36px",fontWeight:300}}>Our skilled team handles all cleaning and maintenance to the highest standard. We care for your outdoor furniture seasonally, ensuring it stays as beautiful as the day it arrived.</p>
-        <a href="#" className="cb cl" onClick={(e)=>{e.preventDefault();navigate('/about')}}>Discover after care</a>
+        <a href="#" className="cb cl" onClick={(e)=>{e.preventDefault();navigate('/after-care')}}>Discover after care</a>
       </section>
 
       {/* SHOWROOMS */}

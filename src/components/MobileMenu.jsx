@@ -1,4 +1,36 @@
+import { useNavigate } from 'react-router-dom'
+
+const NAV_ROUTES = {
+  "Furniture": "/products",
+  "Lounge": "/products?cat=lounge",
+  "Dining": "/products?cat=dining",
+  "Sun Loungers": "/products?cat=sun-loungers",
+  "Day Beds": "/products?cat=day-beds",
+  "Coffee Tables": "/products?cat=coffee-tables",
+  "Bar & Patio": "/products?cat=bar-patio",
+  "Shade Solutions": "/products?cat=shade",
+  "Parasols": "/products?cat=shade",
+  "Bioclimatic Pergolas": "/products?cat=shade",
+  "Retractable Pergolas": "/products?cat=shade",
+  "Outdoor Kitchens": "/products?cat=kitchen",
+  "BBQ Systems": "/products?cat=kitchen",
+  "Pizza Ovens": "/products?cat=kitchen",
+  "Full Kitchens": "/products?cat=kitchen",
+  "Decor": "/products?cat=decor",
+  "Carpets": "/products?cat=decor",
+  "Vases & Statues": "/products?cat=decor",
+  "Leisure": "/products?cat=leisure",
+  "Sound Systems": "/products?cat=leisure",
+  "Projects": "/projects",
+  "Why Us": "/about",
+  "After Care": "/after-care",
+  "Contact": "/contact",
+}
+
 export default function MobileMenu({ open, onClose }) {
+  const navigate = useNavigate()
+  const go = (path) => { navigate(path); onClose() }
+
   return (
     <>
       <div className={`moo ${open ? "op" : ""}`} onClick={onClose} />
@@ -17,11 +49,15 @@ export default function MobileMenu({ open, onClose }) {
             {l:"Contact",s:[]},
           ].map(item => (
             <div key={item.l} style={{borderBottom:"1px solid var(--sand-l)",padding:"16px 0"}}>
-              <span className="ff" style={{fontSize:22,fontWeight:400,color:"var(--stone)",cursor:"pointer"}}>{item.l}</span>
+              <span className="ff" style={{fontSize:22,fontWeight:400,color:"var(--stone)",cursor:"pointer"}}
+                onClick={() => NAV_ROUTES[item.l] && go(NAV_ROUTES[item.l])}
+              >{item.l}</span>
               {item.s.length > 0 && (
                 <div className="fs" style={{marginTop:10,display:"flex",flexDirection:"column",gap:6}}>
                   {item.s.map(s => (
-                    <span key={s} style={{fontSize:12,letterSpacing:1,color:"var(--sand-d)",cursor:"pointer",paddingLeft:12}}>{s}</span>
+                    <span key={s} style={{fontSize:12,letterSpacing:1,color:"var(--sand-d)",cursor:"pointer",paddingLeft:12}}
+                      onClick={() => NAV_ROUTES[s] && go(NAV_ROUTES[s])}
+                    >{s}</span>
                   ))}
                 </div>
               )}

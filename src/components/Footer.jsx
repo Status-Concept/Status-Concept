@@ -1,6 +1,29 @@
+import { useNavigate } from 'react-router-dom'
 import SocialLinks from './SocialIcons'
 
+const ROUTES = {
+  "Lounge": "/products?cat=lounge",
+  "Dining": "/products?cat=dining",
+  "Sun Loungers": "/products?cat=sun-loungers",
+  "Day Beds": "/products?cat=day-beds",
+  "Coffee Tables": "/products?cat=coffee-tables",
+  "Bar & Patio": "/products?cat=bar-patio",
+  "Parasols": "/products?cat=shade",
+  "Bioclimatic Pergolas": "/products?cat=shade",
+  "Outdoor Kitchens": "/products?cat=kitchen",
+  "Decor": "/products?cat=decor",
+  "Leisure": "/products?cat=leisure",
+  "Why Us": "/about",
+  "After Care": "/after-care",
+  "Projects": "/projects",
+  "Gallery": "/gallery",
+  "Catalogue": "/catalogue",
+  "Showroom Quinta do Lago": "/contact",
+  "Showroom Almancil": "/contact",
+}
+
 export default function Footer() {
+  const navigate = useNavigate()
   return (
     <footer style={{background:"var(--stone)",color:"#fff",padding:"72px 48px 36px"}}>
       <div className="footer-grid" style={{display:"grid",gridTemplateColumns:"1.5fr 1fr 1fr 1fr 1fr",gap:40,maxWidth:1200,margin:"0 auto",paddingBottom:48,borderBottom:"1px solid rgba(255,255,255,.08)"}}>
@@ -24,7 +47,11 @@ export default function Footer() {
             <h4 className="fs" style={{fontSize:11,letterSpacing:2.5,textTransform:"uppercase",color:"var(--gold)",marginBottom:16}}>{c.t}</h4>
             <div style={{display:"flex",flexDirection:"column",gap:8}}>
               {c.ls.map(l => (
-                <a key={l} href="#" className="fs" style={{fontSize:13,color:"rgba(255,255,255,.5)",textDecoration:"none",fontWeight:300,transition:"color .2s"}}
+                <a key={l}
+                  href={ROUTES[l] || "#"}
+                  className="fs"
+                  style={{fontSize:13,color:"rgba(255,255,255,.5)",textDecoration:"none",fontWeight:300,transition:"color .2s",cursor:"pointer"}}
+                  onClick={e => { if(ROUTES[l]) { e.preventDefault(); navigate(ROUTES[l]) } }}
                   onMouseEnter={e=>e.target.style.color="rgba(255,255,255,.8)"}
                   onMouseLeave={e=>e.target.style.color="rgba(255,255,255,.5)"}
                 >{l}</a>
