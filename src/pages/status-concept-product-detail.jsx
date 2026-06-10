@@ -8,6 +8,10 @@ import { getLangFromPath, withLang } from "../utils/language";
 import sicilyCornerImg from "../assets/images/sicily-corner.jpg";
 import sicilyCentreImg from "../assets/images/sicily-centre.jpg";
 import sicilyOttomanImg from "../assets/images/sicily-ottoman.jpg";
+import baliDivanoImg from "../assets/images/bali-divano.jpg";
+import mayaImg from "../assets/images/maya.jpg";
+import boraBoraImg from "../assets/images/bora-bora.jpg";
+import berlinImg from "../assets/images/berlin.jpg";
 
 const titleFromSlug = (value = "product") => value
   .split("-")
@@ -70,19 +74,30 @@ const PRODUCT_DETAIL = () => {
     materials: ["Product information available through the showroom team"],
   };
   const images = product.images?.length ? product.images : [product.image || sicilyCornerImg];
+  const safeActiveImg = activeImg < images.length ? activeImg : 0;
   const goTo = (path) => navigate(withLang(path, currentLang));
 
+  const isSameCollection = product.category === "kitchen" || product.id === "sicily-modular-set";
   const relatedProducts = (() => {
     if (product.category === "kitchen") {
       return kitchenProducts
         .filter((item) => item.id !== product.id && (item.collection === product.collectionSlug || item.collectionName === product.collection))
         .slice(0, 6);
     }
+    if (product.id === "sicily-modular-set") {
+      return [
+        { id: "sicily-modular-set", name: "Sicily Modular Set", collectionName: "Sicily", img: sicilyCornerImg, route: "/product/sicily-modular-set" },
+        { id: "sicily-centre-module", name: "Sicily Centre Module", collectionName: "Sicily", img: sicilyCentreImg, route: "/product/sicily-modular-set" },
+        { id: "sicily-ottoman", name: "Sicily Ottoman", collectionName: "Sicily", img: sicilyOttomanImg, route: "/product/sicily-modular-set" },
+      ];
+    }
     return [
       { id: "sicily-modular-set", name: "Sicily Modular Set", collectionName: "Sicily", img: sicilyCornerImg, route: "/product/sicily-modular-set" },
-      { id: "sicily-centre-module", name: "Sicily Centre Module", collectionName: "Sicily", img: sicilyCentreImg, route: "/product/sicily-modular-set" },
-      { id: "sicily-ottoman", name: "Sicily Ottoman", collectionName: "Sicily", img: sicilyOttomanImg, route: "/product/sicily-modular-set" },
-    ];
+      { id: "bali-lounge-set", name: "Bali Lounge Set", collectionName: "Bali", img: baliDivanoImg, route: "/product/bali-lounge-set" },
+      { id: "maya-sofa-set", name: "Maya Sofa Set", collectionName: "Maya", img: mayaImg, route: "/product/maya-sofa-set" },
+      { id: "berlin-sofa-set", name: "Berlin Sofa Set", collectionName: "Berlin", img: berlinImg, route: "/product/berlin-sofa-set" },
+      { id: "bora-bora-sofa-set", name: "Bora Bora Sofa Set", collectionName: "Bora Bora", img: boraBoraImg, route: "/product/bora-bora-sofa-set" },
+    ].filter((item) => item.id !== product.id).slice(0, 4);
   })();
 
   const renderTab = () => {
@@ -152,7 +167,7 @@ const PRODUCT_DETAIL = () => {
           <div className="rd-main-photo" onClick={() => setLightboxOpen(true)}>
             {product.tag && <span className={`tag ${product.tag === "New" ? "tag-new" : "tag-popular"}`} style={{ position: "absolute", top: 16, left: 16, zIndex: 3 }}>{product.tag}</span>}
             <FavoriteButton product={{ id: product.id || id, name: product.name, collection: product.collection, img: images[0], route: `/product/${product.id || id}` }} size={18} style={{ position: "absolute", top: 16, right: 16 }} />
-            <img src={images[activeImg]} alt={product.name} />
+            <img src={images[safeActiveImg]} alt={product.name} />
           </div>
         </section>
 
@@ -220,14 +235,14 @@ const PRODUCT_DETAIL = () => {
       <section className="rd-section alt">
         <div className="rd-section-head">
           <div>
-            <span className="rd-kicker fs">Same collection</span>
-            <h2 className="ff">Pieces that work together</h2>
+            <span className="rd-kicker fs">{isSameCollection ? "Same collection" : "From the catalogue"}</span>
+            <h2 className="ff">{isSameCollection ? "Pieces that work together" : "You may also like"}</h2>
           </div>
           <button type="button" className="rd-back-link" onClick={() => goTo("/products")}>View all</button>
         </div>
         <div className="rd-horizontal-scroll">
           {relatedProducts.map((item) => (
-            <article key={item.id} className="rd-product-card" onClick={() => goTo(item.route || `/product/${item.id}`)}>
+            <article key={item.id} className="rd-product-card" onClick={() => navigate(withLang(item.route || `/product/${item.id}`, currentLang), { state: { product: item } })}>
               <div className="rd-product-media">
                 <FavoriteButton product={{ id: item.id, name: item.name, collection: item.collectionName || item.collection, img: item.img, route: item.route || `/product/${item.id}` }} size={15} style={{ position: "absolute", top: 12, right: 12 }} />
                 <img src={item.img} alt={item.name} />
@@ -251,7 +266,7 @@ const PRODUCT_DETAIL = () => {
       {lightboxOpen && (
         <div className="rd-lightbox" onClick={() => setLightboxOpen(false)}>
           <button type="button" onClick={() => setLightboxOpen(false)}>x</button>
-          <img src={images[activeImg]} alt={product.name} />
+          <img src={images[safeActiveImg]} alt={product.name} />
         </div>
       )}
     </Layout>

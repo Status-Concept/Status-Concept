@@ -85,10 +85,10 @@ const STATUS_CONCEPT_HOMEPAGE = () => {
   ];
 
   const cats = [
-    { name: "Lounge", sub: "Sofas & Sets" }, { name: "Dining", sub: "Tables & Chairs" },
-    { name: "Sun Loungers", sub: "Relax & Recline" }, { name: "Day Beds", sub: "Ultimate Comfort" },
-    { name: "Shade", sub: "Parasols & Pergolas" }, { name: "Kitchens", sub: "Outdoor Cooking" },
-    { name: "Decor", sub: "Carpets & Vases" }, { name: "Leisure", sub: "Sound & Games" },
+    { name: "Lounge", sub: "Sofas & Sets", cat: "lounge" }, { name: "Dining", sub: "Tables & Chairs", cat: "dining" },
+    { name: "Sun Loungers", sub: "Relax & Recline", cat: "sunlounger" }, { name: "Day Beds", sub: "Ultimate Comfort", cat: "daybed" },
+    { name: "Shade", sub: "Parasols & Pergolas", cat: "shade" }, { name: "Kitchens", sub: "Outdoor Cooking", cat: "kitchen" },
+    { name: "Decor", sub: "Carpets & Vases", cat: "decor" }, { name: "Leisure", sub: "Sound & Games", cat: "decor" },
   ];
 
   return (
@@ -170,7 +170,7 @@ const STATUS_CONCEPT_HOMEPAGE = () => {
         </div>
         <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",maxWidth:1100,margin:"0 auto",borderTop:"1px solid var(--sand-l)",borderLeft:"1px solid var(--sand-l)"}}>
           {cats.map((c,i)=>(
-            <div key={c.name} className="cat-item" onClick={()=>navigate('/products')} style={{animation:vis("cats")?`fu 0.5s ${0.06*i}s both`:"none"}}>
+            <div key={c.name} className="cat-item" onClick={()=>navigate(`/products?cat=${c.cat}`)} style={{animation:vis("cats")?`fu 0.5s ${0.06*i}s both`:"none"}}>
               <span className="cat-bg">{String(i+1).padStart(2,'0')}</span>
               <span className="cat-n">{c.name}</span>
               <span className="cat-s">{c.sub}</span>

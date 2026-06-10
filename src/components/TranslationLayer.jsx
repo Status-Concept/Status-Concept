@@ -3,6 +3,7 @@ import { useLocation } from 'react-router-dom'
 import { getLangFromPath } from '../utils/language'
 
 const originalText = new WeakMap()
+const lastApplied = new WeakMap()
 
 const translations = {
   en: {
@@ -129,7 +130,12 @@ function translateTextNode(node, lang) {
   if (!node.parentElement) return
   if (node.parentElement.closest('script, style, noscript, svg, textarea, [data-no-translate]')) return
 
-  if (!originalText.has(node)) originalText.set(node, node.nodeValue)
+  // Re-capture the original whenever the node changed outside this layer
+  // (e.g. React re-rendered dynamic text); otherwise the first cached value
+  // would be re-applied forever and dynamic text would freeze.
+  if (!originalText.has(node) || (lastApplied.has(node) && lastApplied.get(node) !== node.nodeValue)) {
+    originalText.set(node, node.nodeValue)
+  }
 
   const original = originalText.get(node)
   const trimmed = original.trim()
@@ -141,6 +147,7 @@ function translateTextNode(node, lang) {
   const nextValue = `${leading}${replacement}${trailing}`
 
   if (node.nodeValue !== nextValue) node.nodeValue = nextValue
+  lastApplied.set(node, nextValue)
 }
 
 function applyTranslations(lang) {

@@ -1,13 +1,13 @@
-import { useNavigate } from 'react-router-dom'
+import { useLocalizedNavigate } from '../hooks/useLocalizedNavigate'
 
 const NAV_ROUTES = {
   "Furniture": "/products",
   "Lounge": "/products?cat=lounge",
   "Dining": "/products?cat=dining",
-  "Sun Loungers": "/products?cat=sun-loungers",
-  "Day Beds": "/products?cat=day-beds",
-  "Coffee Tables": "/products?cat=coffee-tables",
-  "Bar & Patio": "/products?cat=bar-patio",
+  "Sun Loungers": "/products?cat=sunlounger",
+  "Day Beds": "/products?cat=daybed",
+  "Coffee Tables": "/products?cat=coffee",
+  "Bar & Patio": "/products?cat=bar",
   "Shade Solutions": "/products?cat=shade",
   "Parasols": "/products?cat=shade",
   "Bioclimatic Pergolas": "/products?cat=shade",
@@ -19,8 +19,8 @@ const NAV_ROUTES = {
   "Decor": "/products?cat=decor",
   "Carpets": "/products?cat=decor",
   "Vases & Statues": "/products?cat=decor",
-  "Leisure": "/products?cat=leisure",
-  "Sound Systems": "/products?cat=leisure",
+  "Leisure": "/products?cat=decor",
+  "Sound Systems": "/products?cat=decor",
   "Projects": "/projects",
   "Why Us": "/about",
   "After Care": "/after-care",
@@ -28,7 +28,7 @@ const NAV_ROUTES = {
 }
 
 export default function MobileMenu({ open, onClose }) {
-  const navigate = useNavigate()
+  const navigate = useLocalizedNavigate()
   const go = (path) => { navigate(path); onClose() }
 
   return (

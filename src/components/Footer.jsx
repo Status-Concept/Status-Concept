@@ -1,18 +1,18 @@
-import { useNavigate } from 'react-router-dom'
+import { useLocalizedNavigate } from '../hooks/useLocalizedNavigate'
 import SocialLinks from './SocialIcons'
 
 const ROUTES = {
   "Lounge": "/products?cat=lounge",
   "Dining": "/products?cat=dining",
-  "Sun Loungers": "/products?cat=sun-loungers",
-  "Day Beds": "/products?cat=day-beds",
-  "Coffee Tables": "/products?cat=coffee-tables",
-  "Bar & Patio": "/products?cat=bar-patio",
+  "Sun Loungers": "/products?cat=sunlounger",
+  "Day Beds": "/products?cat=daybed",
+  "Coffee Tables": "/products?cat=coffee",
+  "Bar & Patio": "/products?cat=bar",
   "Parasols": "/products?cat=shade",
   "Bioclimatic Pergolas": "/products?cat=shade",
   "Outdoor Kitchens": "/products?cat=kitchen",
   "Decor": "/products?cat=decor",
-  "Leisure": "/products?cat=leisure",
+  "Leisure": "/products?cat=decor",
   "Why Us": "/about",
   "After Care": "/after-care",
   "Projects": "/projects",
@@ -23,7 +23,7 @@ const ROUTES = {
 }
 
 export default function Footer() {
-  const navigate = useNavigate()
+  const navigate = useLocalizedNavigate()
   return (
     <footer style={{background:"var(--stone)",color:"#fff",padding:"72px 48px 36px"}}>
       <div className="footer-grid" style={{display:"grid",gridTemplateColumns:"1.5fr 1fr 1fr 1fr 1fr",gap:40,maxWidth:1200,margin:"0 auto",paddingBottom:48,borderBottom:"1px solid rgba(255,255,255,.08)"}}>
