@@ -241,15 +241,15 @@ const STATUS_CONCEPT_HOMEPAGE = () => {
 
       {/* SHOWROOMS */}
       <section id="shows" data-animate style={{...S("shows")}}>
-        <div style={{position:"relative",height:500,overflow:"hidden",background:"linear-gradient(135deg,var(--stone) 0%,var(--stone-l) 100%)"}}>
+        <div style={{position:"relative",height:420,overflow:"hidden",background:"linear-gradient(135deg,var(--stone) 0%,var(--stone-l) 100%)"}}>
           <div style={{position:"absolute",inset:0,display:"grid",gridTemplateColumns:"1fr 1fr"}}>
-            {[{name:"Quinta do Lago",img:showroomQuintaImg},{name:"Almancil",img:showroomAlmancilImg}].map((s,i)=>(
+            {[{name:"Quinta do Lago",img:showroomQuintaImg,pos:"center 65%"},{name:"Almancil",img:showroomAlmancilImg,pos:"center 30%"}].map((s,i)=>(
               <div key={s.name} style={{position:"relative",overflow:"hidden",cursor:"pointer"}} onClick={()=>navigate('/contact')}>
-                <img src={s.img} alt={s.name} style={{width:"100%",height:"100%",objectFit:"cover",transition:"transform 1s cubic-bezier(0.16, 1, 0.3, 1),filter .5s",filter:"brightness(.55)"}}
-                  onMouseEnter={e=>{e.target.style.transform="scale(1.08)";e.target.style.filter="brightness(.4)"}}
-                  onMouseLeave={e=>{e.target.style.transform="scale(1)";e.target.style.filter="brightness(.55)"}} />
+                <img src={s.img} alt={s.name} style={{width:"100%",height:"100%",objectFit:"cover",objectPosition:s.pos,transition:"transform 1s cubic-bezier(0.16, 1, 0.3, 1),filter .5s",filter:"brightness(.72)"}}
+                  onMouseEnter={e=>{e.target.style.transform="scale(1.06)";e.target.style.filter="brightness(.55)"}}
+                  onMouseLeave={e=>{e.target.style.transform="scale(1)";e.target.style.filter="brightness(.72)"}} />
                 {i===0 && <div style={{position:"absolute",top:0,right:0,bottom:0,width:1,background:"rgba(255,255,255,.15)"}} />}
-                <div style={{position:"absolute",bottom:0,left:0,right:0,padding:"40px 48px",background:"linear-gradient(transparent,rgba(0,0,0,.5))"}}>
+                <div style={{position:"absolute",bottom:0,left:0,right:0,padding:"48px 48px 32px",background:"linear-gradient(transparent,rgba(0,0,0,.72))"}}>
                   <span className="fs" style={{fontSize:10,letterSpacing:3,textTransform:"uppercase",color:"var(--gold-l)",display:"block",marginBottom:8}}>Showroom {String(i+1).padStart(2,'0')}</span>
                   <h3 className="ff" style={{fontSize:"clamp(28px,3.5vw,40px)",fontWeight:300,color:"#fff",marginBottom:4}}>{s.name}</h3>
                   <span className="fs" style={{fontSize:11,letterSpacing:2,textTransform:"uppercase",color:"rgba(255,255,255,.5)",display:"flex",alignItems:"center",gap:6}}>Visit showroom <span style={{display:"inline-block",width:20,height:1,background:"var(--gold)"}}/></span>
