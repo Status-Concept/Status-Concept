@@ -32,6 +32,7 @@ Keep this updated as the project evolves — Claude reads and writes here to sta
 - [products/kitchen/carbon-line-teak.md](products/kitchen/carbon-line-teak.md) — 28 products, full SKUs & prices (Draco Grills)
 - [products/kitchen/teak.md](products/kitchen/teak.md) — 12 products, full SKUs & prices (Draco Grills)
 - [products/data-structure.md](products/data-structure.md) — How product data is structured in code
+- [products/glatz-shade.md](products/glatz-shade.md) — Glatz parasols: full range, model specs (Sombrano S+, Sunwing Casa), fabric classes, selling angles
 
 ### Pages
 - [pages/navigation.md](pages/navigation.md) — Full nav menu, mega menus, footer, cookie banner

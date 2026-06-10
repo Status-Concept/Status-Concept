@@ -4,7 +4,7 @@ Listed on the About page as curated partners.
 
 ## Known Partners
 - **Sunbrella** — Premium outdoor fabric
-- **Glatz** — Parasols / shade solutions
+- **Glatz** — Parasols / shade solutions → full research in `products/glatz-shade.md`
 - **Interpon** — Powder coating / surface finishes
 - *(Additional partners listed in `status-concept-about.jsx`)*
 
