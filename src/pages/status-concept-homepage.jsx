@@ -11,6 +11,19 @@ import hero4Img from "../assets/images/enhanced/hero-4.webp";
 import showroomAlmancilImg from "../assets/images/enhanced/showroom-almancil-ai.png";
 const placeholderImg = "/placeholder.svg";
 import furnitureSeriesImg from "../assets/images/enhanced/furniture-series-hero.png";
+import baliDivanoImg from "../assets/images/bali-divano.jpg";
+import berlinImg from "../assets/images/berlin.jpg";
+import bonaireLoungeImg from "../assets/images/bonaire-lounge.jpg";
+import ibizaImg from "../assets/images/prod-ibiza4.jpg";
+import mayaImg from "../assets/images/maya.jpg";
+import boraBoraImg from "../assets/images/bora-bora.jpg";
+import glatzParasolImg from "../assets/images/glatz-parasol.jpg";
+import glatzBioclimaticImg from "../assets/images/glatz-bioclimatic.jpg";
+import glatzRetractableImg from "../assets/images/glatz-retractable.jpg";
+import projectQuintaImg from "../assets/images/project-quinta.jpg";
+import projectValedoloboImg from "../assets/images/project-valedolobo.jpg";
+import projectVilamouraImg from "../assets/images/project-vilamoura.jpg";
+import projectAlmancilImg from "../assets/images/project-almancil.jpg";
 import neroKitchenImg from "../assets/images/kitchen/blk-6burner-bbq.jpg";
 import teakKitchenImg from "../assets/images/kitchen/teak-setup-1.jpg";
 import carbonKitchenImg from "../assets/images/kitchen/carbon-line-1.jpg";
@@ -45,17 +58,17 @@ const STATUS_CONCEPT_HOMEPAGE = () => {
 
   const collections = {
     furniture: [
-      { name: "Bali", desc: "Relaxed outdoor seating with deep cushions and a resort-inspired profile.", img: placeholderImg, route: "/products?cat=lounge" },
-      { name: "Berlin", desc: "Classic outdoor sofa proportions with a clean aluminium frame.", img: placeholderImg, route: "/products?cat=lounge" },
-      { name: "Bonaire", desc: "Corner lounge comfort made for long terrace afternoons.", img: placeholderImg, route: "/products?cat=lounge" },
-      { name: "Ibiza", desc: "Contemporary lounge seating with a light visual footprint.", img: placeholderImg, route: "/products?cat=lounge" },
-      { name: "Maya", desc: "Soft outdoor comfort with a tailored silhouette.", img: placeholderImg, route: "/products?cat=lounge" },
-      { name: "Bora Bora", desc: "Premium outdoor sofa styling for poolside spaces.", img: placeholderImg, route: "/products?cat=lounge" },
+      { name: "Bali", desc: "Relaxed outdoor seating with deep cushions and a resort-inspired profile.", img: baliDivanoImg, route: "/products?cat=lounge" },
+      { name: "Berlin", desc: "Classic outdoor sofa proportions with a clean aluminium frame.", img: berlinImg, route: "/products?cat=lounge" },
+      { name: "Bonaire", desc: "Corner lounge comfort made for long terrace afternoons.", img: bonaireLoungeImg, route: "/products?cat=lounge" },
+      { name: "Ibiza", desc: "Contemporary lounge seating with a light visual footprint.", img: ibizaImg, route: "/products?cat=lounge" },
+      { name: "Maya", desc: "Soft outdoor comfort with a tailored silhouette.", img: mayaImg, route: "/products?cat=lounge" },
+      { name: "Bora Bora", desc: "Premium outdoor sofa styling for poolside spaces.", img: boraBoraImg, route: "/products?cat=lounge" },
     ],
     shade: [
-      { name: "Glatz Parasols", desc: "Swiss engineered parasol shade for flexible terrace coverage.", img: placeholderImg, route: "/products?cat=shade" },
-      { name: "Bioclimatic Pergolas", desc: "Architectural shade with adjustable climate control.", img: placeholderImg, route: "/products?cat=shade" },
-      { name: "Retractable Pergolas", desc: "Flexible roof coverage for changing Algarve weather.", img: placeholderImg, route: "/products?cat=shade" },
+      { name: "Glatz Parasols", desc: "Swiss engineered parasol shade for flexible terrace coverage.", img: glatzParasolImg, route: "/products?cat=shade" },
+      { name: "Bioclimatic Pergolas", desc: "Architectural shade with adjustable climate control.", img: glatzBioclimaticImg, route: "/products?cat=shade" },
+      { name: "Retractable Pergolas", desc: "Flexible roof coverage for changing Algarve weather.", img: glatzRetractableImg, route: "/products?cat=shade" },
     ],
     kitchen: [
       { name: "Nero Range", desc: "Black stainless steel modules with granite tops, BBQs, fridges and sinks.", img: neroKitchenImg, route: "/products?cat=kitchen" },
@@ -65,10 +78,10 @@ const STATUS_CONCEPT_HOMEPAGE = () => {
   };
 
   const projects = [
-    { name: "Villa Quinta do Lago", location: "Quinta do Lago", img: "/placeholder.svg" },
-    { name: "Residence Vale do Lobo", location: "Vale do Lobo", img: "/placeholder.svg" },
-    { name: "Private Estate Vilamoura", location: "Vilamoura", img: "/placeholder.svg" },
-    { name: "Luxury Home Almancil", location: "Almancil", img: "/placeholder.svg" },
+    { name: "Villa Quinta do Lago", location: "Quinta do Lago", img: projectQuintaImg },
+    { name: "Residence Vale do Lobo", location: "Vale do Lobo", img: projectValedoloboImg },
+    { name: "Private Estate Vilamoura", location: "Vilamoura", img: projectVilamouraImg },
+    { name: "Luxury Home Almancil", location: "Almancil", img: projectAlmancilImg },
   ];
 
   const cats = [
@@ -92,7 +105,7 @@ const STATUS_CONCEPT_HOMEPAGE = () => {
             <button key={i} onClick={()=>setHeroSlide(i)} style={{width:heroSlide===i?24:8,height:8,borderRadius:4,border:"none",background:heroSlide===i?"#fff":"rgba(255,255,255,.4)",cursor:"pointer",transition:"all .4s cubic-bezier(0.16, 1, 0.3, 1)"}} />
           ))}
         </div>
-        <div style={{padding:"28px 36px",maxWidth:560,position:"relative",zIndex:2,background:"rgba(0,0,0,0.12)",backdropFilter:"blur(3px)",borderRadius:4}}>
+        <div style={{padding:"28px 36px",maxWidth:600,position:"relative",zIndex:2,background:"rgba(0,0,0,0.12)",backdropFilter:"blur(3px)",borderRadius:4}}>
           <div className="fs sl" style={{color:"rgba(255,255,255,.6)",marginBottom:12,animation:"hu 0.8s .2s both"}}>Luxury outdoor living · Algarve, Portugal</div>
           <h1 className="ff" style={{fontSize:"clamp(32px,4.5vw,54px)",fontWeight:300,color:"#fff",lineHeight:1.05,marginBottom:24,letterSpacing:"-0.01em",animation:"hu 0.8s .4s both"}}>Where Design<br/>Meets the Sun</h1>
           <div style={{display:"flex",gap:16,animation:"hu 0.8s .6s both",flexWrap:"wrap"}}><a href="#" className="cb cl" onClick={(e)=>{e.preventDefault();navigate('/products')}}>Explore collections</a><a href="#" className="cb cg" onClick={(e)=>{e.preventDefault();navigate('/contact')}}>Visit showroom</a></div>
@@ -289,16 +302,15 @@ const STATUS_CONCEPT_HOMEPAGE = () => {
         </div>
         <div style={{background:"var(--cream-w)",padding:"28px 48px",display:"flex",justifyContent:"center",gap:48,alignItems:"center",borderBottom:"1px solid var(--sand-l)",flexWrap:"wrap"}}>
           {[
-            {label:"Mon – Fri",value:"10:00 – 18:30"},
-            {label:"Saturday",value:"10:00 – 13:00"},
+            {label:"Mon – Sat",value:"09:30 – 18:00"},
             {label:"Sunday",value:"Closed"},
           ].map((h,i)=>(
-            <div key={h.label} style={{display:"flex",alignItems:"center",gap:i<2?48:0}}>
+            <div key={h.label} style={{display:"flex",alignItems:"center",gap:i<1?48:0}}>
               <div style={{textAlign:"center"}}>
                 <span className="fs" style={{fontSize:10,letterSpacing:2.5,textTransform:"uppercase",color:"var(--sand-d)",display:"block",marginBottom:4}}>{h.label}</span>
                 <span className="fs" style={{fontSize:14,fontWeight:400,color:h.value==="Closed"?"var(--sand-d)":"var(--stone)",letterSpacing:.5}}>{h.value}</span>
               </div>
-              {i<2 && <div style={{width:1,height:28,background:"var(--sand-l)"}} />}
+              {i<1 && <div style={{width:1,height:28,background:"var(--sand-l)"}} />}
             </div>
           ))}
         </div>

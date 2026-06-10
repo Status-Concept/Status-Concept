@@ -55,13 +55,14 @@ const PRODUCT_DETAIL = () => {
     },
   };
 
+  const passedProduct = location.state?.product;
   const product = allProducts[id] || {
     id,
-    name: titleFromSlug(id),
-    collection: "Status Concept",
-    category: "catalog",
-    tagline: "Detailed specifications for this product are being prepared. Contact the showroom team for current availability, finishes and dimensions.",
-    images: [sicilyCornerImg],
+    name: passedProduct?.name || titleFromSlug(id),
+    collection: passedProduct?.collectionName || passedProduct?.collection || "Status Concept",
+    category: passedProduct?.category || "catalog",
+    tagline: passedProduct?.desc || "Detailed specifications for this product are being prepared. Contact the showroom team for current availability, finishes and dimensions.",
+    images: passedProduct?.images?.length ? passedProduct.images : [passedProduct?.img || sicilyCornerImg],
     specs: [
       { label: "Status", value: "Details available on request" },
       { label: "Category", value: "Outdoor living" },
