@@ -33,6 +33,7 @@ Keep this updated as the project evolves — Claude reads and writes here to sta
 - [products/kitchen/teak.md](products/kitchen/teak.md) — 12 products, full SKUs & prices (Draco Grills)
 - [products/data-structure.md](products/data-structure.md) — How product data is structured in code
 - [products/glatz-shade.md](products/glatz-shade.md) — Glatz parasols: full range, model specs (Sombrano S+, Sunwing Casa), fabric classes, selling angles
+- [products/glatz-parasols/](products/glatz-parasols/README.md) — One file per Glatz model (21 files): specs, sizes, pricing, image refs, official URLs
 - [products/glatz-images/](products/glatz-images/README.md) — Official product images for all 21 Glatz models (hero cut-outs + lifestyle shots)
 
 ### Pages
