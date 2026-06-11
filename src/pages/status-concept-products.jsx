@@ -4,6 +4,7 @@ import useNavLinks from "../useNavLinks";
 import Layout from "../components/Layout";
 import FavoriteButton from "../FavoriteButton";
 import { kitchenCollectionMeta, kitchenProducts } from "../data/kitchenProducts";
+import { glatzProducts } from "../data/glatzProducts";
 import { getLangFromPath, withLang } from "../utils/language";
 import kitchenHeroImg from "../assets/images/kitchen/kitchen-hero.jpg";
 import shadeRealProductsHeroImg from "../assets/images/enhanced/shade-real-products-hero.png";
@@ -35,8 +36,6 @@ import lagosImg from "../assets/images/lagos.jpg";
 import luandaImg from "../assets/images/luanda.jpg";
 import barcelonaImg from "../assets/images/barcelona.jpg";
 import armchairImg from "../assets/images/prod-armchair.jpg";
-import glatzParasolImg from "../assets/images/glatz-parasol.jpg";
-import shadeParasolsImg from "../assets/images/shade-parasols.jpg";
 import glatzBioclimaticImg from "../assets/images/glatz-bioclimatic.jpg";
 import glatzRetractableImg from "../assets/images/glatz-retractable.jpg";
 import shadeBioclimaticImg from "../assets/images/shade-bioclimatic.jpg";
@@ -95,7 +94,7 @@ const PRODUCTS_PAGE = () => {
   }, [catParam]);
 
   const categories = [
-    { key: "all", label: "All", count: 139 },
+    { key: "all", label: "All", count: 157 },
     { key: "lounge", label: "Lounge", count: 18 },
     { key: "dining", label: "Dining", count: 14 },
     { key: "sunlounger", label: "Sun Loungers", count: 8 },
@@ -104,7 +103,7 @@ const PRODUCTS_PAGE = () => {
     { key: "side", label: "Side Tables", count: 6 },
     { key: "bar", label: "Bar & Patio", count: 8 },
     { key: "puffs", label: "Puffs", count: 8 },
-    { key: "shade", label: "Shade", count: 6 },
+    { key: "shade", label: "Shade", count: 24 },
     { key: "kitchen", label: "Modular Kitchen", count: 53 },
     { key: "decor", label: "Decor", count: 4 },
   ];
@@ -135,11 +134,9 @@ const PRODUCTS_PAGE = () => {
     { id: "luanda-bar-set", name: "Luanda Bar Set", collection: "Luanda", category: "bar", img: luandaImg, tag: "", desc: "A raised outdoor set for informal entertaining." },
     { id: "barcelona-bar-set", name: "Barcelona Bar Set", collection: "Barcelona", category: "bar", img: barcelonaImg, tag: "", desc: "A clean bar-height arrangement for patio hosting." },
     { id: "ibiza-armchair", name: "Ibiza Armchair", collection: "Ibiza", category: "puffs", img: armchairImg, tag: "", desc: "An individual seat with relaxed outdoor proportions." },
-    { id: "glatz-sombrano-parasol", name: "Glatz Sombrano Parasol", collection: "Glatz", category: "shade", img: glatzParasolImg, tag: "", desc: "Swiss engineered parasol shade for flexible terrace coverage." },
-    { id: "glatz-sunwing-parasol", name: "Glatz Sunwing Parasol", collection: "Glatz", category: "shade", img: shadeParasolsImg, tag: "Popular", desc: "A precise, elegant parasol for controlled outdoor shade." },
+    ...glatzProducts,
     { id: "bioclimatic-pergola", name: "Bioclimatic Pergola", collection: "Pergolas", category: "shade", img: glatzBioclimaticImg, tag: "", desc: "Architectural shade with adjustable climate control." },
     { id: "retractable-pergola", name: "Retractable Pergola", collection: "Pergolas", category: "shade", img: glatzRetractableImg, tag: "", desc: "Flexible roof coverage for changing Algarve weather." },
-    { id: "wall-mounted-parasol", name: "Wall-Mounted Parasol", collection: "Glatz", category: "shade", img: shadeParasolsImg, tag: "", desc: "A space-saving shade solution for compact terraces." },
     { id: "free-standing-pergola", name: "Free-Standing Pergola", collection: "Pergolas", category: "shade", img: shadeBioclimaticImg, tag: "New", desc: "A self-supporting pergola for open garden layouts." },
     ...kitchenProducts,
     { id: "outdoor-carpet-algarve", name: "Outdoor Carpet Algarve", collection: "Decor", category: "decor", img: placeholderImg, tag: "", desc: "A soft finishing layer for outdoor living zones." },
@@ -281,7 +278,7 @@ const PRODUCTS_PAGE = () => {
                     />
                     {product.images?.length > 1
                       ? <CardCarousel images={product.images} alt={product.name} imgStyle={product.id==="sicily-modular-set"?{objectFit:"contain",objectPosition:"center",background:"var(--cream-w)",transform:"scale(1.25)",transformOrigin:"center center"}:undefined} />
-                      : <img src={product.img} alt={product.name} />
+                      : <img src={product.img} alt={product.name} style={product.id?.startsWith("glatz-") ? {objectFit:"contain",padding:"16px",background:"var(--cream-w)"} : undefined} />
                     }
                     <div className="rd-product-overlay">
                       <span className="rd-overlay-pill fs">View details</span>

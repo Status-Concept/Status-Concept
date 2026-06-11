@@ -4,6 +4,7 @@ import useNavLinks from "../useNavLinks";
 import Layout from "../components/Layout";
 import FavoriteButton from "../FavoriteButton";
 import { kitchenProductDetails, kitchenProducts } from "../data/kitchenProducts";
+import { glatzProductDetails, glatzProducts } from "../data/glatzProducts";
 import { getLangFromPath, withLang } from "../utils/language";
 import sicilyCornerImg from "../assets/images/sicily-corner.jpg";
 import sicilyCentreImg from "../assets/images/sicily-centre.jpg";
@@ -31,6 +32,7 @@ const PRODUCT_DETAIL = () => {
 
   const allProducts = {
     ...kitchenProductDetails,
+    ...glatzProductDetails,
     "sicily-modular-set": {
       id: "sicily-modular-set",
       name: "Sicily Modular Set",
