@@ -9,7 +9,7 @@ const NAV_ROUTES = {
   "Coffee Tables": "/products?cat=coffee",
   "Bar & Patio": "/products?cat=bar",
   "Shade Solutions": "/products?cat=shade",
-  "Parasols": "/products?cat=shade",
+  "Parasols": "/glatz-parasols",
   "Bioclimatic Pergolas": "/products?cat=shade",
   "Retractable Pergolas": "/products?cat=shade",
   "Outdoor Kitchens": "/products?cat=kitchen",

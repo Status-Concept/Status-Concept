@@ -8,6 +8,7 @@ const ROUTES = {
   "Day Beds": "/products?cat=daybed",
   "Coffee Tables": "/products?cat=coffee",
   "Bar & Patio": "/products?cat=bar",
+  "Glatz Parasols": "/glatz-parasols",
   "Parasols": "/products?cat=shade",
   "Bioclimatic Pergolas": "/products?cat=shade",
   "Outdoor Kitchens": "/products?cat=kitchen",
@@ -39,7 +40,7 @@ export default function Footer() {
         </div>
         {[
           {t:"Furniture",ls:["Lounge","Dining","Sun Loungers","Day Beds","Coffee Tables","Bar & Patio"]},
-          {t:"Solutions",ls:["Parasols","Bioclimatic Pergolas","Outdoor Kitchens","Decor","Leisure"]},
+          {t:"Solutions",ls:["Glatz Parasols","Bioclimatic Pergolas","Outdoor Kitchens","Decor","Leisure"]},
           {t:"Company",ls:["Why Us","After Care","Projects","Gallery","Catalogue"]},
           {t:"Contact",ls:["Showroom Quinta do Lago","Showroom Almancil","+351 289 030 179","info@statusconcept.com"]},
         ].map(c => (
