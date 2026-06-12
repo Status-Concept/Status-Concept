@@ -1,4 +1,4 @@
-import { useState } from 'react'
+﻿import { useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useAuth } from './context/AuthContext'
 import { useFavorites } from './FavoritesContext'
@@ -36,7 +36,7 @@ export default function PageNav() {
         onClick={() => goTo('/favorites')}
         style={{
           width: 44, height: 44, borderRadius: '50%',
-          background: isFavoritesPage ? '#c41e3a' : 'var(--stone, #1a1a2e)',
+          background: isFavoritesPage ? '#c41e3a' : 'var(--stone, #1a1a1a)',
           border: '1px solid rgba(196,30,58,.5)',
           cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
           boxShadow: '0 4px 20px rgba(0,0,0,.3)', transition: 'all .3s cubic-bezier(0.16, 1, 0.3, 1)', position: 'relative',
@@ -53,7 +53,7 @@ export default function PageNav() {
             background: '#c41e3a', color: '#fff', fontSize: 10,
             fontWeight: 500, width: 20, height: 20, borderRadius: '50%',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
-            border: '2px solid #1a1a2e', letterSpacing: 0,
+            border: '2px solid #1a1a1a', letterSpacing: 0,
           }}>{favorites.length}</span>
         )}
       </button>
@@ -62,7 +62,7 @@ export default function PageNav() {
         {open && (
           <div style={{
             position: 'absolute', bottom: '100%', right: 0, marginBottom: 8,
-            background: 'var(--stone, #1a1a2e)', border: '1px solid rgba(163,180,200,.3)',
+            background: '#1a1a1a', border: '1px solid rgba(255,255,255,.15)',
             padding: '8px 0', minWidth: 200, boxShadow: '0 8px 32px rgba(0,0,0,.4)',
             borderRadius: 3,
           }}>
@@ -98,7 +98,7 @@ export default function PageNav() {
         <button
           onClick={() => setOpen(!open)}
           style={{
-            padding: '10px 20px', background: 'var(--stone, #1a1a2e)', color: '#c41e3a',
+            padding: '10px 20px', background: 'var(--stone, #1a1a1a)', color: '#c41e3a',
             border: '1px solid rgba(196,30,58,.5)', fontSize: 11, letterSpacing: 2,
             textTransform: 'uppercase', cursor: 'pointer', fontFamily: "'Outfit', sans-serif",
             display: 'flex', alignItems: 'center', gap: 8, borderRadius: 3,

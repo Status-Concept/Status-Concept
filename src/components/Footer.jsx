@@ -26,16 +26,16 @@ const ROUTES = {
 export default function Footer() {
   const navigate = useLocalizedNavigate()
   return (
-    <footer style={{background:"var(--stone)",color:"#fff",padding:"72px 48px 36px"}}>
-      <div className="footer-grid" style={{display:"grid",gridTemplateColumns:"1.5fr 1fr 1fr 1fr 1fr",gap:40,maxWidth:1200,margin:"0 auto",paddingBottom:48,borderBottom:"1px solid rgba(255,255,255,.08)"}}>
+    <footer style={{background:"var(--black)",color:"#fff",padding:"72px 48px 36px"}}>
+      <div className="footer-grid" style={{display:"grid",gridTemplateColumns:"1.5fr 1fr 1fr 1fr 1fr",gap:40,maxWidth:"var(--max-width)",margin:"0 auto",paddingBottom:48,borderBottom:"1px solid rgba(255,255,255,.1)"}}>
         <div>
           <div style={{marginBottom:20}}>
-            <span className="ff" style={{fontSize:24,fontWeight:400,letterSpacing:8}}>ST<span style={{color:"var(--gold)"}}>A</span>TVS</span>
+            <span className="logo-serif" style={{fontSize:24,fontWeight:400,letterSpacing:8}}>ST<span style={{color:"var(--accent)"}}>A</span>TVS</span>
             <div className="fs" style={{fontSize:7,letterSpacing:3,color:"rgba(255,255,255,.4)",marginTop:2}}>OUTDOOR FURNITURE SPECIALISTS</div>
           </div>
-          <p className="fs" style={{fontSize:13,lineHeight:1.7,color:"rgba(255,255,255,.5)",fontWeight:300}}>High quality lifestyle furniture in the Algarve. Serving Vale do Lobo, Quinta do Lago, Vilamoura, and beyond.</p>
+          <p className="fs" style={{fontSize:13,lineHeight:1.7,color:"rgba(255,255,255,.55)",fontWeight:300}}>High quality lifestyle furniture in the Algarve. Serving Vale do Lobo, Quinta do Lago, Vilamoura, and beyond.</p>
           <div style={{display:"flex",gap:"2px",marginTop:20}}>
-            <SocialLinks linkStyle={{color:"rgba(255,255,255,.4)"}} />
+            <SocialLinks linkStyle={{color:"rgba(255,255,255,.45)"}} />
           </div>
         </div>
         {[
@@ -45,23 +45,23 @@ export default function Footer() {
           {t:"Contact",ls:["Showroom Quinta do Lago","Showroom Almancil","+351 289 030 179","info@statusconcept.com"]},
         ].map(c => (
           <div key={c.t}>
-            <h4 className="fs" style={{fontSize:11,letterSpacing:2.5,textTransform:"uppercase",color:"var(--gold)",marginBottom:16}}>{c.t}</h4>
+            <h4 className="fs" style={{fontSize:11,letterSpacing:2.5,textTransform:"uppercase",color:"#fff",marginBottom:16,fontWeight:400}}>{c.t}</h4>
             <div style={{display:"flex",flexDirection:"column",gap:8}}>
               {c.ls.map(l => (
                 <a key={l}
                   href={ROUTES[l] || "#"}
                   className="fs"
-                  style={{fontSize:13,color:"rgba(255,255,255,.5)",textDecoration:"none",fontWeight:300,transition:"color .2s",cursor:"pointer"}}
+                  style={{fontSize:13,color:"rgba(255,255,255,.55)",textDecoration:"none",fontWeight:300,transition:"color .2s",cursor:"pointer"}}
                   onClick={e => { if(ROUTES[l]) { e.preventDefault(); navigate(ROUTES[l]) } }}
-                  onMouseEnter={e=>e.target.style.color="rgba(255,255,255,.8)"}
-                  onMouseLeave={e=>e.target.style.color="rgba(255,255,255,.5)"}
+                  onMouseEnter={e=>e.target.style.color="#fff"}
+                  onMouseLeave={e=>e.target.style.color="rgba(255,255,255,.55)"}
                 >{l}</a>
               ))}
             </div>
           </div>
         ))}
       </div>
-      <div className="fs" style={{display:"flex",justifyContent:"space-between",alignItems:"center",paddingTop:24,fontSize:11,color:"rgba(255,255,255,.25)",letterSpacing:1,flexWrap:"wrap",gap:12}}>
+      <div className="fs" style={{display:"flex",justifyContent:"space-between",alignItems:"center",maxWidth:"var(--max-width)",margin:"0 auto",paddingTop:24,fontSize:11,color:"rgba(255,255,255,.35)",letterSpacing:1,flexWrap:"wrap",gap:12}}>
         <span>© 2026 Statvs. All rights reserved.</span>
         <div style={{display:"flex",gap:24}}>
           <a href="#" style={{color:"inherit",textDecoration:"none"}}>Privacy Policy</a>

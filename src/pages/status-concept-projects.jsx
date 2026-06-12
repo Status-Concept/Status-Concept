@@ -60,11 +60,13 @@ const PROJECTS_PAGE = () => {
               className={`rd-project-card ${index === 0 || index === 4 ? "wide" : ""} ${index === 1 ? "tall" : ""}`}
               onClick={() => setActiveProject(projects.indexOf(project))}
             >
-              <img src={project.img} alt={project.name} />
-              <span className="rd-location-tag fs">{project.location}</span>
+              <div className="rd-project-media">
+                <img src={project.img} alt={project.name} />
+                <span className="rd-location-tag fs">{project.location}</span>
+              </div>
               <div className="rd-project-info">
-                <span className="fs" style={{ fontSize: 10, letterSpacing: 2, textTransform: "uppercase", color: "rgba(255,255,255,.62)" }}>{project.year}</span>
-                <h3 className="ff" style={{ fontSize: 30, fontWeight: 400, margin: "6px 0" }}>{project.name}</h3>
+                <span className="fs" style={{ fontSize: 10, letterSpacing: 2, textTransform: "uppercase", color: "var(--text-grey)" }}>{project.year}</span>
+                <h3 className="ff" style={{ fontSize: 21, fontWeight: 400, margin: "6px 0" }}>{project.name}</h3>
                 <span className="rd-arrow fs" style={{ fontSize: 11, letterSpacing: 2, textTransform: "uppercase" }}>View project -&gt;</span>
               </div>
             </article>

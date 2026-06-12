@@ -3,16 +3,12 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import useNavLinks from "../useNavLinks";
 import Layout from "../components/Layout";
 import FavoriteButton from "../FavoriteButton";
-import { kitchenProductDetails, kitchenProducts } from "../data/kitchenProducts";
 import { glatzProductDetails, glatzProducts } from "../data/glatzProducts";
+import { kitchenProductDetails, kitchenProducts } from "../data/kitchenProducts";
 import { getLangFromPath, withLang } from "../utils/language";
 import sicilyCornerImg from "../assets/images/sicily-corner.jpg";
 import sicilyCentreImg from "../assets/images/sicily-centre.jpg";
 import sicilyOttomanImg from "../assets/images/sicily-ottoman.jpg";
-import baliDivanoImg from "../assets/images/bali-divano.jpg";
-import mayaImg from "../assets/images/maya.jpg";
-import boraBoraImg from "../assets/images/bora-bora.jpg";
-import berlinImg from "../assets/images/berlin.jpg";
 
 const titleFromSlug = (value = "product") => value
   .split("-")
@@ -79,11 +75,16 @@ const PRODUCT_DETAIL = () => {
   const safeActiveImg = activeImg < images.length ? activeImg : 0;
   const goTo = (path) => navigate(withLang(path, currentLang));
 
-  const isSameCollection = product.category === "kitchen" || product.id === "sicily-modular-set";
+  const isSameCollection = product.category === "kitchen" || product.category === "shade" || product.id === "sicily-modular-set";
   const relatedProducts = (() => {
     if (product.category === "kitchen") {
       return kitchenProducts
         .filter((item) => item.id !== product.id && (item.collection === product.collectionSlug || item.collectionName === product.collection))
+        .slice(0, 6);
+    }
+    if (product.category === "shade") {
+      return glatzProducts
+        .filter((item) => item.id !== product.id)
         .slice(0, 6);
     }
     if (product.id === "sicily-modular-set") {
@@ -95,10 +96,7 @@ const PRODUCT_DETAIL = () => {
     }
     return [
       { id: "sicily-modular-set", name: "Sicily Modular Set", collectionName: "Sicily", img: sicilyCornerImg, route: "/product/sicily-modular-set" },
-      { id: "bali-lounge-set", name: "Bali Lounge Set", collectionName: "Bali", img: baliDivanoImg, route: "/product/bali-lounge-set" },
-      { id: "maya-sofa-set", name: "Maya Sofa Set", collectionName: "Maya", img: mayaImg, route: "/product/maya-sofa-set" },
-      { id: "berlin-sofa-set", name: "Berlin Sofa Set", collectionName: "Berlin", img: berlinImg, route: "/product/berlin-sofa-set" },
-      { id: "bora-bora-sofa-set", name: "Bora Bora Sofa Set", collectionName: "Bora Bora", img: boraBoraImg, route: "/product/bora-bora-sofa-set" },
+      ...glatzProducts.slice(0, 3),
     ].filter((item) => item.id !== product.id).slice(0, 4);
   })();
 
@@ -176,7 +174,7 @@ const PRODUCT_DETAIL = () => {
         <aside className="rd-product-panel">
           <button type="button" className="rd-back-link" onClick={() => goTo("/products")}>Back to products</button>
           <span className="rd-kicker fs" style={{ marginTop: 28 }}>{product.collection} Collection</span>
-          <h1 className="rd-title ff" style={{ color: "var(--stone)", fontSize: "clamp(36px, 4.6vw, 58px)" }}>{product.name}</h1>
+          <h1 className="rd-title ff" style={{ color: "var(--text-dark)", fontSize: "clamp(32px, 4vw, 48px)", fontWeight: 400 }}>{product.name}</h1>
           <div className="la" style={{ marginBottom: 20 }} />
           <p className="rd-lede fs">{product.tagline}</p>
 
@@ -196,18 +194,18 @@ const PRODUCT_DETAIL = () => {
                 {product.sizeOptions.map((opt, i) => (
                   <button key={opt.sku} type="button" className="fs" style={{
                     display: "flex", justifyContent: "space-between", alignItems: "center",
-                    padding: "16px 20px", border: i === 0 ? "2px solid var(--gold)" : "1px solid var(--sand-l)",
-                    background: i === 0 ? "rgba(196,30,58,.06)" : "transparent", borderRadius: 4, cursor: "pointer",
+                    padding: "16px 20px", border: i === 0 ? "2px solid var(--accent)" : "1px solid var(--mid-grey)",
+                    background: i === 0 ? "var(--accent-light)" : "transparent", borderRadius: 2, cursor: "pointer",
                     transition: "all .3s", textAlign: "left",
                   }}
-                  onMouseEnter={e => { e.currentTarget.style.borderColor = "var(--gold)"; e.currentTarget.style.background = "rgba(196,30,58,.06)"; }}
-                  onMouseLeave={e => { if (i !== 0) { e.currentTarget.style.borderColor = "var(--sand-l)"; e.currentTarget.style.background = "transparent"; } }}
+                  onMouseEnter={e => { e.currentTarget.style.borderColor = "var(--accent)"; e.currentTarget.style.background = "var(--accent-light)"; }}
+                  onMouseLeave={e => { if (i !== 0) { e.currentTarget.style.borderColor = "var(--mid-grey)"; e.currentTarget.style.background = "transparent"; } }}
                   >
                     <div>
-                      <span style={{ fontSize: 14, fontWeight: 500, color: "var(--stone)", display: "block" }}>{opt.label}</span>
-                      <span style={{ fontSize: 11, color: "var(--sand-d)", marginTop: 2, display: "block" }}>{opt.dimensions}</span>
+                      <span style={{ fontSize: 14, fontWeight: 500, color: "var(--text-dark)", display: "block" }}>{opt.label}</span>
+                      <span style={{ fontSize: 11, color: "var(--text-grey)", marginTop: 2, display: "block" }}>{opt.dimensions}</span>
                     </div>
-                    <span style={{ fontSize: 10, letterSpacing: 1.5, textTransform: "uppercase", color: "var(--sand-d)", whiteSpace: "nowrap" }}>SKU: {opt.sku}</span>
+                    <span style={{ fontSize: 10, letterSpacing: 1.5, textTransform: "uppercase", color: "var(--text-grey)", whiteSpace: "nowrap" }}>SKU: {opt.sku}</span>
                   </button>
                 ))}
               </div>

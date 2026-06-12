@@ -6,7 +6,7 @@
       "runtimeExecutable": "npx",
       "runtimeArgs": ["vite", "--port", "5188"],
       "port": 5188,
-      "cwd": "C:\\Users\\Santi\\status-concept"
+      "cwd": "C:\\Users\\diogo\\Videos\\second brain\\Status-Concept"
     }
   ]
 }

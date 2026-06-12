@@ -7,7 +7,6 @@ import { kitchenCollectionMeta, kitchenProducts } from "../data/kitchenProducts"
 import { glatzProducts } from "../data/glatzProducts";
 import { getLangFromPath, withLang } from "../utils/language";
 import kitchenHeroImg from "../assets/images/kitchen/kitchen-hero.jpg";
-import shadeRealProductsHeroImg from "../assets/images/enhanced/shade-real-products-hero.png";
 import sicilyCornerImg from "../assets/images/sicily-corner.jpg";
 import sicilyCentreImg from "../assets/images/sicily-centre.jpg";
 import sicilyOttomanImg from "../assets/images/sicily-ottoman.jpg";
@@ -40,6 +39,7 @@ import glatzBioclimaticImg from "../assets/images/glatz-bioclimatic.jpg";
 import glatzRetractableImg from "../assets/images/glatz-retractable.jpg";
 import shadeBioclimaticImg from "../assets/images/shade-bioclimatic.jpg";
 const placeholderImg = "/placeholder.svg";
+const shadeHeroImg = "/product-images/glatz/ambiente-nova/01.jpg";
 
 function CardCarousel({ images, alt, imgStyle }) {
   const [idx, setIdx] = useState(0);
@@ -179,7 +179,7 @@ const PRODUCTS_PAGE = () => {
     setMobileFiltersOpen(false);
   };
 
-  const heroImage = isKitchenCategory ? kitchenHeroImg : furnitureSeriesImg;
+  const heroImage = isKitchenCategory ? kitchenHeroImg : activeCategory === "shade" ? shadeHeroImg : furnitureSeriesImg;
   const heroTitle = isKitchenCategory ? "Modular Kitchen" : activeCategory === "shade" ? "Shade Solutions" : "Furniture Series";
   const heroCopy = isKitchenCategory
     ? "Explore Draco Grills modular outdoor kitchens across Black Stainless Steel, Carbon Line Teak and Teak collections."
