@@ -7,13 +7,18 @@ import { glatzProducts } from "../data/glatzProducts";
 import { kitchenCollectionMeta, kitchenProducts } from "../data/kitchenProducts";
 import { getLangFromPath, withLang } from "../utils/language";
 import kitchenHeroImg from "../assets/images/kitchen/kitchen-hero.jpg";
-import furnitureSeriesImg from "../assets/images/enhanced/furniture-series-hero.png";
+import furnitureSeriesImg from "../assets/images/enhanced/furniture-series-golf-hero.jpg";
 import sicilyCornerImg from "../assets/images/sicily-corner.jpg";
 import sicilyCentreImg from "../assets/images/sicily-centre.jpg";
 import sicilyOttomanImg from "../assets/images/sicily-ottoman.jpg";
 
 const shadeHeroImg = "/product-images/glatz/ambiente-nova/01.jpg";
 const shadeChipImg = "/product-images/glatz/sombrano-s-plus/05.jpg";
+const sicilyCardImageStyle = {
+  objectFit: "contain",
+  objectPosition: "center",
+  background: "var(--light-grey)",
+};
 
 function CardCarousel({ images, alt, imgStyle }) {
   const [idx, setIdx] = useState(0);
@@ -205,7 +210,7 @@ const PRODUCTS_PAGE = () => {
                       style={{ position: "absolute", top: 12, right: 12 }}
                     />
                     {product.images?.length > 1
-                      ? <CardCarousel images={product.images} alt={product.name} imgStyle={product.id==="sicily-modular-set"?{objectFit:"contain",objectPosition:"center",background:"var(--light-grey)",transform:"scale(1.25)",transformOrigin:"center center"}:undefined} />
+                      ? <CardCarousel images={product.images} alt={product.name} imgStyle={product.id === "sicily-modular-set" ? sicilyCardImageStyle : undefined} />
                       : <img src={product.img} alt={product.name} />
                     }
                   </div>

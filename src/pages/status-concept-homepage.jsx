@@ -9,7 +9,7 @@ import hero3Img from "../assets/images/enhanced/hero-3.webp";
 import showroomQuintaImg from "../assets/images/enhanced/showroom-quinta-ai.png";
 import hero4Img from "../assets/images/enhanced/hero-4.webp";
 import showroomAlmancilImg from "../assets/images/enhanced/showroom-almancil-ai.png";
-import furnitureSeriesImg from "../assets/images/enhanced/furniture-series-hero.png";
+import furnitureSeriesImg from "../assets/images/enhanced/furniture-series-golf-hero.jpg";
 import sicilyCornerImg from "../assets/images/sicily-corner.jpg";
 import glatzParasolImg from "../assets/images/glatz-parasol.jpg";
 import shadeParasolsImg from "../assets/images/shade-parasols.jpg";
