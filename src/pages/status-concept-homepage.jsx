@@ -75,21 +75,23 @@ const STATUS_CONCEPT_HOMEPAGE = () => {
   return (
     <Layout>
       {/* HERO CAROUSEL */}
-      <section style={{position:"relative",height:"calc(100vh - var(--header-h))",minHeight:560,display:"flex",alignItems:"flex-end",overflow:"hidden"}}>
+      <section style={{position:"relative",height:"calc(78vh - var(--header-h))",minHeight:480,overflow:"hidden"}}>
         {heroImages.map((img, i) => (
-          <div key={i} style={{position:"absolute",inset:0,backgroundImage:`linear-gradient(180deg,rgba(17,17,17,.1) 0%,rgba(17,17,17,.05) 50%,rgba(17,17,17,.5) 100%),url('${img}')`,backgroundSize:"cover",backgroundPosition:"center",opacity:heroSlide===i?1:0,transition:"opacity 1s ease-in-out",willChange:"opacity"}} />
+          <div key={i} style={{position:"absolute",inset:0,backgroundImage:`url('${img}')`,backgroundSize:"cover",backgroundPosition:"center",opacity:heroSlide===i?1:0,transition:"opacity 1s ease-in-out",willChange:"opacity"}} />
         ))}
         <div style={{position:"absolute",bottom:36,right:48,display:"flex",gap:10,zIndex:3}}>
           {heroImages.map((_, i) => (
             <button key={i} onClick={()=>setHeroSlide(i)} style={{width:heroSlide===i?24:8,height:8,borderRadius:4,border:"none",background:heroSlide===i?"#fff":"rgba(255,255,255,.4)",cursor:"pointer",transition:"all .3s ease"}} />
           ))}
         </div>
-        <div style={{padding:"0 48px 90px",maxWidth:"var(--max-width)",margin:"0 auto",width:"100%",position:"relative",zIndex:2}}>
-          <div className="fs" style={{fontSize:11,letterSpacing:4,textTransform:"uppercase",color:"rgba(255,255,255,.75)",marginBottom:16}}>Luxury outdoor living · Algarve, Portugal</div>
-          <h1 className="ff" style={{fontSize:"clamp(36px,5vw,60px)",fontWeight:500,color:"#fff",lineHeight:1.08,marginBottom:28,letterSpacing:"-0.01em"}}>Where Design<br/>Meets the Sun</h1>
+      </section>
+      <section style={{background:"var(--light-grey)",padding:"44px 48px 28px"}}>
+        <div style={{maxWidth:"var(--max-width)",margin:"0 auto"}}>
+          <div className="fs" style={{fontSize:11,letterSpacing:4,textTransform:"uppercase",color:"var(--text-grey)",marginBottom:14}}>Luxury outdoor living · Algarve, Portugal</div>
+          <h1 className="ff" style={{fontSize:"clamp(36px,5vw,60px)",fontWeight:500,color:"var(--text-dark)",lineHeight:1.08,marginBottom:26,letterSpacing:"-0.01em"}}>Where Design<br/>Meets the Sun</h1>
           <div style={{display:"flex",gap:16,flexWrap:"wrap"}}>
             <a href="#" className="cb cg" onClick={(e)=>{e.preventDefault();navigate('/products')}}>Explore collections</a>
-            <a href="#" className="cb cl" onClick={(e)=>{e.preventDefault();navigate('/contact')}}>Visit showroom</a>
+            <a href="#" className="cb" style={{border:"1px solid var(--mid-grey)",color:"var(--text-dark)",background:"transparent"}} onClick={(e)=>{e.preventDefault();navigate('/contact')}}>Visit showroom</a>
           </div>
         </div>
       </section>

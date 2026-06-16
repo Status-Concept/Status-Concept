@@ -6,6 +6,7 @@ import FavoriteButton from "../FavoriteButton";
 import { glatzProductDetails, glatzProducts } from "../data/glatzProducts";
 import { kitchenProductDetails, kitchenProducts } from "../data/kitchenProducts";
 import { getLangFromPath, withLang } from "../utils/language";
+import sicilyModularSetFullImg from "../assets/images/sicily-modular-set-full.jpg";
 import sicilyCornerImg from "../assets/images/sicily-corner.jpg";
 import sicilyCentreImg from "../assets/images/sicily-centre.jpg";
 import sicilyOttomanImg from "../assets/images/sicily-ottoman.jpg";
@@ -37,7 +38,7 @@ const PRODUCT_DETAIL = () => {
       category: "lounge",
       tag: "Popular",
       tagline: "A contemporary modular outdoor sofa with generous proportions and flexible configurations.",
-      images: [sicilyCornerImg, sicilyCentreImg, sicilyOttomanImg],
+      images: [sicilyModularSetFullImg, sicilyCornerImg, sicilyCentreImg, sicilyOttomanImg],
       specs: [
         { label: "Type", value: "Modular Sofa Set" },
         { label: "Frame", value: "Premium Aluminium" },

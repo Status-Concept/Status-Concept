@@ -8,6 +8,7 @@ import { kitchenCollectionMeta, kitchenProducts } from "../data/kitchenProducts"
 import { getLangFromPath, withLang } from "../utils/language";
 import kitchenHeroImg from "../assets/images/kitchen/kitchen-hero.jpg";
 import furnitureSeriesImg from "../assets/images/enhanced/furniture-series-golf-hero.jpg";
+import sicilyModularSetFullImg from "../assets/images/sicily-modular-set-full.jpg";
 import sicilyCornerImg from "../assets/images/sicily-corner.jpg";
 import sicilyCentreImg from "../assets/images/sicily-centre.jpg";
 import sicilyOttomanImg from "../assets/images/sicily-ottoman.jpg";
@@ -76,13 +77,13 @@ const PRODUCTS_PAGE = () => {
 
   const categories = [
     { key: "all", label: "All", chip: furnitureSeriesImg, banner: furnitureSeriesImg, title: "All Products", copy: "Browse luxury outdoor furniture, shade and kitchen pieces selected for the Algarve lifestyle." },
-    { key: "lounge", label: "Lounge", chip: sicilyCornerImg, banner: sicilyCornerImg, title: "Lounge", copy: "Modular lounge seating made for long Algarve afternoons." },
+    { key: "lounge", label: "Lounge", chip: sicilyCornerImg, banner: sicilyModularSetFullImg, title: "Lounge", copy: "Modular lounge seating made for long Algarve afternoons." },
     { key: "shade", label: "Shade", chip: shadeChipImg, banner: shadeHeroImg, bannerPosition: "center 28%", title: "Shade Solutions", copy: "Swiss engineered Glatz parasols for green Algarve gardens, terraces and outdoor rooms." },
     { key: "kitchen", label: "Modular Kitchen", chip: kitchenHeroImg, banner: kitchenHeroImg, title: "Modular Kitchen", copy: "Explore Draco Grills modular outdoor kitchens across Black Stainless Steel, Carbon Line Teak and Teak collections." },
   ];
 
   const allProducts = useMemo(() => [
-    { id: "sicily-modular-set", name: "Sicily Modular Set", collection: "Sicily", category: "lounge", img: sicilyCornerImg, images: [sicilyCornerImg, sicilyCentreImg, sicilyOttomanImg], tag: "Popular", desc: "A contemporary modular lounge system for generous outdoor living areas." },
+    { id: "sicily-modular-set", name: "Sicily Modular Set", collection: "Sicily", category: "lounge", img: sicilyModularSetFullImg, images: [sicilyModularSetFullImg, sicilyCornerImg, sicilyCentreImg, sicilyOttomanImg], tag: "Popular", desc: "A contemporary modular lounge system for generous outdoor living areas." },
     ...glatzProducts,
     ...kitchenProducts,
   ], []);
@@ -201,7 +202,7 @@ const PRODUCTS_PAGE = () => {
           ) : viewMode === "grid" ? (
             <div className="rd-product-grid editorial">
               {filteredProducts.map((product, index) => (
-                <article key={product.id || product.name} className={`rd-product-card ${index === 0 && filteredProducts.length >= 5 ? "featured" : ""}`} onClick={() => goTo(productRoute(product), { product })}>
+                <article key={product.id || product.name} className={`rd-product-card ${product.category === "kitchen" ? "kitchen-product" : ""} ${product.category !== "kitchen" && index === 0 && filteredProducts.length >= 5 ? "featured" : ""}`} onClick={() => goTo(productRoute(product), { product })}>
                   <div className="rd-product-media">
                     {product.tag && <span className={`tag ${product.tag === "New" ? "tag-new" : "tag-popular"}`}>{product.tag}</span>}
                     <FavoriteButton
@@ -228,7 +229,7 @@ const PRODUCTS_PAGE = () => {
           ) : (
             <div className="rd-product-list">
               {filteredProducts.map((product) => (
-                <article key={product.id || product.name} className="rd-product-row" onClick={() => goTo(productRoute(product), { product })}>
+                <article key={product.id || product.name} className={`rd-product-row ${product.category === "kitchen" ? "kitchen-product" : ""}`} onClick={() => goTo(productRoute(product), { product })}>
                   <img src={product.img} alt={product.name} />
                   <div>
                     <span className="rd-kicker fs">{product.collectionName || product.collection}</span>
