@@ -1137,6 +1137,7 @@
 }
 .editorial .rd-product-media { aspect-ratio: 3 / 4; }
 .editorial .rd-product-card.kitchen-product .rd-product-media { aspect-ratio: 1 / 1; }
+.editorial .rd-product-card.shade-product .rd-product-media { aspect-ratio: 4 / 3; }
 .editorial .rd-product-card.featured {
   grid-column: span 2;
   grid-row: span 2;
