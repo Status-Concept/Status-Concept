@@ -54,7 +54,7 @@ const ABOUT_PAGE = () => {
           <p className="rd-lede fs">
             Proud of what we represent and attentive to our customers' needs, Statvs is committed to outdoor furniture of the highest quality. The work is built through chosen manufacturers, thoughtful materials and a service culture that continues after delivery.
           </p>
-          <img src={whyStatusImg} alt="Status Concept outdoor setting" style={{ width: "100%", borderRadius: 2 }} />
+          <img src={whyStatusImg} alt="Statvs outdoor lounge furniture on an Algarve terrace" style={{ width: "100%", borderRadius: 2 }} />
         </div>
       </section>
 
