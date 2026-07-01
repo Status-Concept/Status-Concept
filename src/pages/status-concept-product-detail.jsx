@@ -6,7 +6,7 @@ import FavoriteButton from "../FavoriteButton";
 import { glatzProductDetails, glatzProducts } from "../data/glatzProducts";
 import { kitchenProductDetails, kitchenProducts, kitchenCollectionHeroes } from "../data/kitchenProducts";
 import { getLangFromPath, withLang } from "../utils/language";
-import sicilyModularSetFullImg from "../assets/images/sicily-modular-set-full.jpg";
+import sicilyModularSetFullImg from "../assets/images/sicily-modular-set-full.webp";
 import sicilyCornerImg from "../assets/images/sicily-corner.jpg";
 import sicilyCentreImg from "../assets/images/sicily-centre.jpg";
 import sicilyOttomanImg from "../assets/images/sicily-ottoman.jpg";

@@ -4,7 +4,7 @@ import { useLocalizedNavigate } from "../hooks/useLocalizedNavigate";
 import { useScrollAnimation } from "../hooks/useScrollAnimation";
 import Layout from "../components/Layout";
 import { glatzProducts } from "../data/glatzProducts";
-import heroImg from "../assets/images/glatz/sunwing-casa-1.jpg";
+import heroImg from "../assets/images/glatz/sunwing-casa-1.webp";
 import catWoodImg from "../assets/images/glatz/cat-wood.jpg";
 import catCentreImg from "../assets/images/glatz/cat-centre.png";
 import catSidemastImg from "../assets/images/glatz/cat-sidemast.jpg";

@@ -5,9 +5,9 @@ import { useLocalizedNavigate } from "../hooks/useLocalizedNavigate";
 import Layout from "../components/Layout";
 import hero1Img from "../assets/images/enhanced/hero-1.webp";
 import hero3Img from "../assets/images/enhanced/hero-3.webp";
-import showroomQuintaImg from "../assets/images/enhanced/showroom-quinta-ai.png";
+import showroomQuintaImg from "../assets/images/enhanced/showroom-quinta-ai.webp";
 import hero4Img from "../assets/images/enhanced/hero-4.webp";
-import showroomAlmancilImg from "../assets/images/enhanced/showroom-almancil-ai.png";
+import showroomAlmancilImg from "../assets/images/enhanced/showroom-almancil-ai.webp";
 
 const STATUS_CONCEPT_HOMEPAGE = () => {
   useNavLinks();

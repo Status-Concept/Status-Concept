@@ -1,7 +1,7 @@
 import useNavLinks from "../useNavLinks";
 import Layout from "../components/Layout";
 import { useLocalizedNavigate } from "../hooks/useLocalizedNavigate";
-import showroomQuintaImg from "../assets/images/enhanced/showroom-quinta-ai.png";
+import showroomQuintaImg from "../assets/images/enhanced/showroom-quinta-ai.webp";
 import whyStatusImg from "../assets/images/why-status.jpg";
 
 const ABOUT_PAGE = () => {

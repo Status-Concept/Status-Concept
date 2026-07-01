@@ -4,16 +4,16 @@ import FavoriteButton from "../FavoriteButton";
 import { useLocalizedNavigate } from "../hooks/useLocalizedNavigate";
 import collectionBellaImg from "../assets/images/collection-bella.jpg";
 import collectionSicilyImg from "../assets/images/collection-sicily.jpg";
-import collectionLagunaImg from "../assets/images/collection-laguna.jpg";
-import collectionCairoImg from "../assets/images/collection-cairo.jpg";
+import collectionLagunaImg from "../assets/images/collection-laguna.webp";
+import collectionCairoImg from "../assets/images/collection-cairo.webp";
 import collectionMiamiImg from "../assets/images/collection-miami.jpg";
-import collectionOxfordImg from "../assets/images/collection-oxford.jpg";
+import collectionOxfordImg from "../assets/images/collection-oxford.webp";
 import sicilyCornerImg from "../assets/images/sicily-corner.jpg";
 import sicilyCentreImg from "../assets/images/sicily-centre.jpg";
 import sicilyOttomanImg from "../assets/images/sicily-ottoman.jpg";
-import prodLoungeImg from "../assets/images/prod-lounge-set.jpg";
-import prodCoffeeImg from "../assets/images/prod-coffee-table.jpg";
-import prodArmchairImg from "../assets/images/prod-armchair.jpg";
+import prodLoungeImg from "../assets/images/prod-lounge-set.webp";
+import prodCoffeeImg from "../assets/images/prod-coffee-table.webp";
+import prodArmchairImg from "../assets/images/prod-armchair.webp";
 
 const COLLECTION_DETAIL = () => {
   useNavLinks();

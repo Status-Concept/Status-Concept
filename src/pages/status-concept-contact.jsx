@@ -1,8 +1,8 @@
 import { useState } from "react";
 import useNavLinks from "../useNavLinks";
 import Layout from "../components/Layout";
-import showroomQuintaImg from "../assets/images/enhanced/showroom-quinta-ai.png";
-import showroomAlmancilImg from "../assets/images/enhanced/showroom-almancil-ai.png";
+import showroomQuintaImg from "../assets/images/enhanced/showroom-quinta-ai.webp";
+import showroomAlmancilImg from "../assets/images/enhanced/showroom-almancil-ai.webp";
 
 const CONTACT_PAGE = () => {
   useNavLinks();

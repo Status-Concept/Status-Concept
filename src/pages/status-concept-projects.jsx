@@ -3,7 +3,7 @@ import useNavLinks from "../useNavLinks";
 import Layout from "../components/Layout";
 import { useLocalizedNavigate } from "../hooks/useLocalizedNavigate";
 import projectQuintaImg from "../assets/images/project-quinta.jpg";
-import projectValeImg from "../assets/images/project-valedolobo.jpg";
+import projectValeImg from "../assets/images/project-valedolobo.webp";
 import projectVilamouraImg from "../assets/images/project-vilamoura.jpg";
 import projectAlmancilImg from "../assets/images/project-almancil.jpg";
 import collectionSicilyImg from "../assets/images/collection-sicily.jpg";
