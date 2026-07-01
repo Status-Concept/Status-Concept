@@ -1,6 +1,4 @@
-﻿@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Outfit:wght@200;300;400;500;600&display=swap');
-
-/* ========================================
+﻿/* ========================================
    STATVS — DESIGN SYSTEM (Glatz-inspired)
    White, clean, Swiss — crimson accent
    ======================================== */
@@ -22,21 +20,22 @@
   --font-body: 'Outfit', 'Helvetica Neue', sans-serif;
   --font-serif: 'Cormorant Garamond', Georgia, serif; /* logo STATVS apenas */
   --max-width: 1240px;
+  --max-width-wide: 1800px;
   --section-padding: clamp(60px, 10vw, 120px);
   --header-h: 104px;
 
   /* Legacy aliases (paleta original) */
-  --stone: #1a1a2e;
-  --stone-l: #2d2d44;
-  --cream: #e8f0f8;
-  --cream-w: #dce7f2;
+  --stone: var(--text-dark);
+  --stone-l: var(--text-body);
+  --cream: var(--white);
+  --cream-w: var(--light-grey);
   --sand: #a3b4c8;
-  --sand-l: #c5d3e3;
-  --sand-d: #56677d;
+  --sand-l: var(--mid-grey);
+  --sand-d: var(--text-grey);
   --ocean: #2b4c7e;
   --ocean-d: #1a3355;
   --ocean-l: #8badc9;
-  --gold: #c41e3a;
+  --gold: var(--accent);
   --gold-l: #d64058;
   --sage: #2b4c7e;
   --sage-l: #6b8db5;
@@ -129,67 +128,10 @@
   grid-template-columns: 1fr;
   gap: 44px;
   align-items: start;
-  max-width: 1800px;
+  max-width: var(--max-width-wide);
   margin: 0 auto;
   padding: 48px clamp(48px, 5vw, 96px) 100px;
 }
-.rd-filter-title {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 18px;
-  color: var(--text-dark);
-}
-.rd-filter-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-bottom: 40px;
-}
-.rd-filter-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 10px 20px;
-  background: var(--light-grey);
-  border: 1px solid transparent;
-  border-radius: 2px;
-  color: var(--text-body);
-  cursor: pointer;
-  font-family: var(--font-body);
-  transition: background .3s, color .3s;
-}
-.rd-filter-btn:hover { background: var(--mid-grey); }
-.rd-filter-btn.active { background: var(--black); color: #fff; }
-.rd-filter-btn span:first-child {
-  font-size: 11px;
-  letter-spacing: 1.6px;
-  text-transform: uppercase;
-}
-.rd-filter-btn span:last-child { font-size: 11px; opacity: .55; }
-.rd-mobile-filter-trigger { display: none; }
-.rd-mobile-sheet {
-  position: fixed;
-  inset: auto 0 0;
-  z-index: 180;
-  transform: translateY(105%);
-  transition: transform .35s ease;
-  padding: 24px;
-  background: var(--white);
-  border-top: 1px solid var(--mid-grey);
-  box-shadow: 0 -12px 40px rgba(0,0,0,.12);
-}
-.rd-mobile-sheet.open { transform: translateY(0); }
-.rd-sheet-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 170;
-  background: rgba(17,17,17,.35);
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity .3s;
-}
-.rd-sheet-overlay.open { opacity: 1; pointer-events: auto; }
 .rd-products-toolbar {
   display: flex;
   justify-content: space-between;
@@ -312,6 +254,11 @@
   background: var(--light-grey);
 }
 .rd-product-card.kitchen-product:hover .rd-product-media img { transform: none; }
+.rd-product-card.contain-media .rd-product-media img {
+  object-fit: contain;
+  object-position: center;
+  background: var(--light-grey);
+}
 .rd-product-overlay { display: none; }
 .rd-overlay-pill { display: none; }
 .rd-product-info { padding: 18px 0 0; }
@@ -1056,7 +1003,7 @@
 
 .cat-strip {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 16px;
   scrollbar-width: none;
 }
@@ -1157,8 +1104,6 @@
 
 @media (max-width: 1100px) {
   .rd-products-layout { grid-template-columns: 1fr; }
-  .rd-filter-sidebar { display: none; }
-  .rd-mobile-filter-trigger { display: inline-flex; }
   .rd-product-grid,
   .rd-product-grid.editorial { grid-template-columns: repeat(2, 1fr); }
   .editorial .rd-product-card.featured { grid-column: span 2; grid-row: auto; }
@@ -1191,6 +1136,8 @@
   .rd-section-head { align-items: flex-start; flex-direction: column; }
   .rd-story-grid { grid-template-columns: 1fr; }
   .rd-products-toolbar { align-items: flex-start; flex-direction: column; }
+  .rd-view-toggle button { min-width: 44px; min-height: 44px; }
+  .rd-select { min-height: 44px; }
   .prod-banner { min-height: 240px; height: 34vh; }
   .prod-banner-inner { padding: 0 24px 32px; }
   .cat-strip { grid-template-columns: 1fr; }

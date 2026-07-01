@@ -19,7 +19,7 @@ const ABOUT_PAGE = () => {
   const stats = [
     { value: "10+", label: "Years of outdoor experience" },
     { value: "2", label: "Algarve showrooms" },
-    { value: "76+", label: "Furniture pieces curated" },
+    { value: "76+", label: "Furniture pieces" },
     { value: "5", label: "Core service areas" },
   ];
 
