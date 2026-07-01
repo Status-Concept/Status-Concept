@@ -4,7 +4,7 @@ import useNavLinks from "../useNavLinks";
 import Layout from "../components/Layout";
 import FavoriteButton from "../FavoriteButton";
 import { glatzProductDetails, glatzProducts } from "../data/glatzProducts";
-import { kitchenProductDetails, kitchenProducts } from "../data/kitchenProducts";
+import { kitchenProductDetails, kitchenProducts, kitchenCollectionHeroes } from "../data/kitchenProducts";
 import { getLangFromPath, withLang } from "../utils/language";
 import sicilyModularSetFullImg from "../assets/images/sicily-modular-set-full.jpg";
 import sicilyCornerImg from "../assets/images/sicily-corner.jpg";
@@ -75,6 +75,10 @@ const PRODUCT_DETAIL = () => {
   const images = product.images?.length ? product.images : [product.image || sicilyCornerImg];
   const safeActiveImg = activeImg < images.length ? activeImg : 0;
   const goTo = (path) => navigate(withLang(path, currentLang));
+
+  const kitchenHero = product.category === "kitchen"
+    ? kitchenCollectionHeroes[product.collectionSlug || passedProduct?.collection]
+    : null;
 
   const isSameCollection = product.category === "kitchen" || product.category === "shade" || product.id === "sicily-modular-set";
   const relatedProducts = (() => {
@@ -152,6 +156,17 @@ const PRODUCT_DETAIL = () => {
 
   return (
     <Layout>
+      {kitchenHero && (
+        <section className="rd-kitchen-hero" aria-label={`${product.collection} complete outdoor kitchen`}>
+          <img src={kitchenHero} alt={`${product.collection} modular outdoor kitchen, fully assembled`} />
+          <div className="rd-kitchen-hero-content">
+            <span className="rd-kicker fs">{product.collection} · Modular Outdoor Kitchen</span>
+            <h2 className="ff">The complete {product.collection} kitchen</h2>
+            <p className="rd-lede fs">Every module in the {product.collection} range is engineered to lock together into a single outdoor kitchen. The {product.name} is one piece of it.</p>
+          </div>
+        </section>
+      )}
+
       <main className="rd-detail-layout">
         <section className="rd-gallery-sticky" aria-label="Product gallery">
           <div className="rd-thumbs">
@@ -243,7 +258,7 @@ const PRODUCT_DETAIL = () => {
         </div>
         <div className="rd-horizontal-scroll">
           {relatedProducts.map((item) => (
-            <article key={item.id} className="rd-product-card" onClick={() => navigate(withLang(item.route || `/product/${item.id}`, currentLang), { state: { product: item } })}>
+            <article key={item.id} className={`rd-product-card ${item.category === "kitchen" ? "kitchen-product" : ""}`} onClick={() => navigate(withLang(item.route || `/product/${item.id}`, currentLang), { state: { product: item } })}>
               <div className="rd-product-media">
                 <FavoriteButton product={{ id: item.id, name: item.name, collection: item.collectionName || item.collection, img: item.img, route: item.route || `/product/${item.id}` }} size={15} style={{ position: "absolute", top: 12, right: 12 }} />
                 <img src={item.img} alt={item.name} />
@@ -266,7 +281,7 @@ const PRODUCT_DETAIL = () => {
 
       {lightboxOpen && (
         <div className="rd-lightbox" onClick={() => setLightboxOpen(false)}>
-          <button type="button" onClick={() => setLightboxOpen(false)}>x</button>
+          <button type="button" aria-label="Close" onClick={() => setLightboxOpen(false)}>×</button>
           <img src={images[safeActiveImg]} alt={product.name} />
         </div>
       )}

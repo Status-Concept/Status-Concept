@@ -48,6 +48,14 @@ import kitchenImg50 from '../assets/images/kitchen/draco/kitchen-teak-modular-ou
 import kitchenImg51 from '../assets/images/kitchen/draco/kitchen-teak-modular-outdoor-kitchen-90-degree-corner-cabinet-with-ceramic-top.jpg'
 import kitchenImg52 from '../assets/images/kitchen/draco/kitchen-teak-modular-outdoor-kitchen-3-drawer-cabinet-with-ceramic-top.png'
 import kitchenImg53 from '../assets/images/kitchen/draco/kitchen-teak-modular-outdoor-kitchen-single-door-cabinet-with-ceramic-top.png'
+import kitchenHeroImg from '../assets/images/kitchen/kitchen-hero.jpg'
+
+// Assembled "full kitchen" lifestyle scene shown as a hero on each module's detail page,
+// keyed by collection slug. Only collections with a genuine assembled-scene photo are listed;
+// a module whose collection is missing here simply renders without the hero band.
+export const kitchenCollectionHeroes = {
+  teak: kitchenHeroImg,
+}
 
 export const kitchenCollectionMeta = [
   {
