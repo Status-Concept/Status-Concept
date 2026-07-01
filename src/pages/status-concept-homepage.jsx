@@ -56,7 +56,7 @@ const STATUS_CONCEPT_HOMEPAGE = () => {
       {/* INTRO */}
       <section id="intro" data-animate style={{padding:"var(--section-padding) 48px",textAlign:"center",background:"var(--white)",...S("intro")}}>
         <div className="la" style={{margin:"0 auto 28px"}}/>
-        <p className="ff" style={{fontSize:"clamp(20px,2.6vw,28px)",fontWeight:300,lineHeight:1.65,maxWidth:780,margin:"0 auto",color:"var(--text-body)"}}>Proud of what we represent, understanding our customers' needs, we are committed to providing furniture of the highest quality, partnering with manufacturers where attention to detail is essential.</p>
+        <p className="ff" style={{fontSize:"clamp(20px,2.6vw,28px)",fontWeight:300,lineHeight:1.65,maxWidth:780,margin:"0 auto",color:"var(--text-body)"}}>We are committed to outdoor furniture of the highest quality, working only with manufacturers for whom attention to detail is everything.</p>
         <div style={{display:"flex",justifyContent:"center",gap:24,marginTop:36,flexWrap:"wrap"}}><span className="mb">Sunbrella® Fabrics</span><span className="mb">Interpon Coating</span><span className="mb">Premium Aluminium</span></div>
       </section>
 
@@ -70,9 +70,9 @@ const STATUS_CONCEPT_HOMEPAGE = () => {
           <div className="la" style={{marginBottom:28}}/>
           <p className="fs" style={{fontSize:14,lineHeight:1.85,color:"var(--text-body)",fontWeight:300,marginBottom:32}}>We provide outdoor furniture to the most prestigious addresses in the Algarve: Vale do Lobo, Quinta do Lago, Vilamoura, Almancil, Tavira, and beyond. Our success is built on a passion and vast experience acquired over more than a decade of furnishing elegant residences across Europe.</p>
           <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:24,marginBottom:36}}>
-            {[{n:"10+",l:"Years of excellence"},{n:"2",l:"Showrooms"},{n:"76+",l:"Furniture pieces"},{n:"5★",l:"Service rating"}].map(s=>(
+            {[{n:"10+",l:"Years of excellence"},{n:"2",l:"Showrooms"}].map(s=>(
               <div key={s.l} style={{padding:"16px 0",borderBottom:"1px solid var(--light-grey)"}}>
-                <div className="ff" style={{fontSize:32,fontWeight:300,color:"var(--accent)"}}>{s.n}</div>
+                <div className="ff" style={{fontSize:32,fontWeight:300,color:"var(--text-dark)"}}>{s.n}</div>
                 <div className="fs" style={{fontSize:11,letterSpacing:1.5,color:"var(--text-grey)",textTransform:"uppercase",marginTop:4}}>{s.l}</div>
               </div>
             ))}
@@ -88,7 +88,7 @@ const STATUS_CONCEPT_HOMEPAGE = () => {
         <h2 className="ff" style={{fontSize:"clamp(30px,3.6vw,44px)",fontWeight:400,marginTop:16,marginBottom:20,letterSpacing:"-0.01em"}}>After Care & Valet Service</h2>
         <div className="la" style={{margin:"0 auto 24px"}}/>
         <p className="fs" style={{fontSize:14,lineHeight:1.85,color:"var(--text-body)",maxWidth:600,margin:"0 auto 36px",fontWeight:300}}>Our skilled team handles all cleaning and maintenance to the highest standard. We care for your outdoor furniture seasonally, ensuring it stays as beautiful as the day it arrived.</p>
-        <a href="#" className="cb cg" onClick={(e)=>{e.preventDefault();navigate('/after-care')}}>Discover after care</a>
+        <a href="#" className="cb cg" onClick={(e)=>{e.preventDefault();navigate('/after-care')}}>Discover After Care</a>
       </section>
 
       {/* SHOWROOMS */}
@@ -100,7 +100,7 @@ const STATUS_CONCEPT_HOMEPAGE = () => {
           </div>
           <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:24}}>
             {showrooms.map((s,i)=>(
-              <div key={s.name} className="pc" onClick={()=>navigate('/contact')} style={{borderRadius:2,overflow:"hidden",cursor:"pointer"}}>
+              <div key={s.name} className="pc" role="button" tabIndex={0} aria-label={`Get directions to ${s.name} showroom`} onClick={()=>navigate('/contact')} onKeyDown={(e)=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();navigate('/contact')}}} style={{borderRadius:2,overflow:"hidden",cursor:"pointer"}}>
                 <div style={{position:"relative",overflow:"hidden",height:300,background:"var(--light-grey)"}}>
                   <img src={s.img} alt={s.name} style={{width:"100%",height:"100%",objectFit:"cover",objectPosition:s.pos}}/>
                 </div>
@@ -133,7 +133,7 @@ const STATUS_CONCEPT_HOMEPAGE = () => {
       </section>
 
       {/* MARQUEE */}
-      <div className="marquee-wrap">
+      <div className="marquee-wrap" aria-hidden="true">
         <div className="marquee-track">
           {[...Array(2)].map((_,r)=>(
             ["Sunbrella® Fabrics","Premium Aluminium","Glatz Parasols","Bioclimatic Pergolas","Quinta do Lago","Vale do Lobo","Vilamoura","Custom Upholstery","10+ Years Experience","Outdoor Living"].map((t,i)=>(
@@ -148,10 +148,10 @@ const STATUS_CONCEPT_HOMEPAGE = () => {
         <span className="fs sl">Stay inspired</span>
         <h2 className="ff" style={{fontSize:"clamp(24px,2.8vw,34px)",fontWeight:400,marginTop:12,marginBottom:12,letterSpacing:"-0.01em"}}>Join Our World</h2>
         <p className="fs" style={{fontSize:14,color:"var(--text-grey)",lineHeight:1.75,maxWidth:400,margin:"0 auto 32px",fontWeight:300}}>Receive our latest collections, project features, and seasonal care guides.</p>
-        <div style={{display:"flex",maxWidth:480,margin:"0 auto"}}>
-          <input type="email" placeholder="Your email address" className="fs" style={{flex:1,padding:"15px 20px",border:"1px solid var(--mid-grey)",borderRight:"none",background:"#fff",fontSize:13,letterSpacing:.5,outline:"none",color:"var(--text-dark)",borderRadius:"2px 0 0 2px"}}/>
-          <button className="fs" style={{padding:"15px 28px",background:"var(--black)",color:"#fff",border:"none",fontSize:10,letterSpacing:3,textTransform:"uppercase",cursor:"pointer",whiteSpace:"nowrap",borderRadius:"0 2px 2px 0",transition:"background .3s"}} onMouseEnter={e=>e.target.style.background="var(--accent)"} onMouseLeave={e=>e.target.style.background="var(--black)"}>Subscribe</button>
-        </div>
+        <form onSubmit={(e)=>e.preventDefault()} style={{display:"flex",maxWidth:480,margin:"0 auto"}}>
+          <input type="email" aria-label="Email address" placeholder="Your email address" className="fs" style={{flex:1,padding:"15px 20px",border:"1px solid var(--mid-grey)",borderRight:"none",background:"#fff",fontSize:13,letterSpacing:.5,outline:"none",color:"var(--text-dark)",borderRadius:"2px 0 0 2px"}}/>
+          <button type="submit" className="fs" style={{padding:"15px 28px",background:"var(--black)",color:"#fff",border:"none",fontSize:10,letterSpacing:3,textTransform:"uppercase",cursor:"pointer",whiteSpace:"nowrap",borderRadius:"0 2px 2px 0",transition:"background .3s"}} onMouseEnter={e=>e.target.style.background="var(--accent)"} onMouseLeave={e=>e.target.style.background="var(--black)"}>Subscribe</button>
+        </form>
       </section>
     </Layout>
   );

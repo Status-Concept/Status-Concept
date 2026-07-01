@@ -27,7 +27,7 @@ function CardCarousel({ images, alt, imgStyle }) {
   return (
     <div style={{position:"relative",width:"100%",height:"100%"}}>
       {images.map((src, i) => (
-        <img key={i} src={src} alt={`${alt} ${i+1}`}
+        <img key={i} src={src} alt={`${alt} ${i+1}`} loading="lazy" decoding="async"
           style={{...imgStyle, position:"absolute",inset:0,width:"100%",height:"100%",opacity:idx===i?1:0,transition:"opacity 0.5s ease"}} />
       ))}
       {total > 1 && (
@@ -76,7 +76,7 @@ const PRODUCTS_PAGE = () => {
   }, [catParam]);
 
   const categories = [
-    { key: "all", label: "All", chip: furnitureSeriesImg, banner: furnitureSeriesImg, title: "All Products", copy: "Browse luxury outdoor furniture, shade and kitchen pieces selected for the Algarve lifestyle." },
+    { key: "all", label: "All", chip: furnitureSeriesImg, banner: furnitureSeriesImg, bannerPosition: "center 40%", title: "All Products", copy: "Browse luxury outdoor furniture, shade and kitchen pieces selected for the Algarve lifestyle." },
     { key: "lounge", label: "Lounge", chip: sicilyCornerImg, banner: sicilyModularSetFullImg, title: "Lounge", copy: "Modular lounge seating made for long Algarve afternoons." },
     { key: "shade", label: "Shade", chip: shadeChipImg, banner: shadeHeroImg, bannerPosition: "center 28%", title: "Shade Solutions", copy: "Swiss engineered Glatz parasols for green Algarve gardens, terraces and outdoor rooms." },
     { key: "kitchen", label: "Modular Kitchen", chip: kitchenHeroImg, banner: kitchenHeroImg, title: "Modular Kitchen", copy: "Explore Draco Grills modular outdoor kitchens across Black Stainless Steel, Carbon Line Teak and Teak collections." },
@@ -136,9 +136,9 @@ const PRODUCTS_PAGE = () => {
   };
 
   const filterMarkup = (
-    <div className="cat-strip" role="tablist" aria-label="Product categories">
+    <div className="cat-strip">
       {categories.map((category) => (
-        <button key={category.key} type="button" className={`cat-chip ${activeCategory === category.key ? "active" : ""}`} onClick={() => selectCategory(category.key)}>
+        <button key={category.key} type="button" className={`cat-chip ${activeCategory === category.key ? "active" : ""}`} aria-pressed={activeCategory === category.key} onClick={() => selectCategory(category.key)}>
           <span className="cat-chip-img">
             <img src={category.chip} alt={category.label} loading="lazy" />
           </span>
@@ -184,9 +184,9 @@ const PRODUCTS_PAGE = () => {
                 <option value="name">Name</option>
                 <option value="collection">Collection</option>
               </select>
-              <div className="rd-view-toggle" aria-label="View mode">
-                <button type="button" className={viewMode === "grid" ? "active" : ""} onClick={() => setViewMode("grid")} aria-label="Grid view">▦</button>
-                <button type="button" className={viewMode === "list" ? "active" : ""} onClick={() => setViewMode("list")} aria-label="List view">☰</button>
+              <div className="rd-view-toggle" role="group" aria-label="View mode">
+                <button type="button" className={viewMode === "grid" ? "active" : ""} onClick={() => setViewMode("grid")} aria-label="Grid view" aria-pressed={viewMode === "grid"}>▦</button>
+                <button type="button" className={viewMode === "list" ? "active" : ""} onClick={() => setViewMode("list")} aria-label="List view" aria-pressed={viewMode === "list"}>☰</button>
               </div>
             </div>
           </div>
@@ -204,10 +204,14 @@ const PRODUCTS_PAGE = () => {
                 </button>
               ))}
             </div>
+          ) : filteredProducts.length === 0 ? (
+            <div className="rd-empty-state fs" style={{ textAlign: "center", padding: "64px 24px", color: "var(--text-grey)" }}>
+              No pieces in this collection yet. Browse all products or contact the showroom.
+            </div>
           ) : viewMode === "grid" ? (
             <div className="rd-product-grid editorial">
               {filteredProducts.map((product, index) => (
-                <article key={product.id || product.name} className={`rd-product-card ${product.category === "kitchen" ? "kitchen-product" : ""} ${product.category !== "kitchen" && index === 0 && filteredProducts.length >= 5 ? "featured" : ""}`} onClick={() => goTo(productRoute(product), { product })}>
+                <article key={product.id || product.name} className={`rd-product-card ${product.category === "kitchen" ? "kitchen-product" : ""} ${product.category !== "kitchen" && index === 0 && filteredProducts.length >= 5 ? "featured" : ""}`} role="link" tabIndex={0} aria-label={`View ${product.name}`} onClick={() => goTo(productRoute(product), { product })} onKeyDown={(e) => { if (e.target !== e.currentTarget) return; if (e.key === "Enter" || e.key === " ") { if (e.key === " ") e.preventDefault(); goTo(productRoute(product), { product }); } }}>
                   <div className="rd-product-media">
                     {product.tag && <span className={`tag ${product.tag === "New" ? "tag-new" : "tag-popular"}`}>{product.tag}</span>}
                     <FavoriteButton
@@ -217,7 +221,7 @@ const PRODUCTS_PAGE = () => {
                     />
                     {product.images?.length > 1
                       ? <CardCarousel images={product.images} alt={product.name} imgStyle={product.id === "sicily-modular-set" ? sicilyCardImageStyle : undefined} />
-                      : <img src={product.img} alt={product.name} />
+                      : <img src={product.img} alt={product.name} loading="lazy" decoding="async" />
                     }
                   </div>
                   <div className="rd-product-info">
@@ -234,8 +238,8 @@ const PRODUCTS_PAGE = () => {
           ) : (
             <div className="rd-product-list">
               {filteredProducts.map((product) => (
-                <article key={product.id || product.name} className={`rd-product-row ${product.category === "kitchen" ? "kitchen-product" : ""}`} onClick={() => goTo(productRoute(product), { product })}>
-                  <img src={product.img} alt={product.name} />
+                <article key={product.id || product.name} className={`rd-product-row ${product.category === "kitchen" ? "kitchen-product" : ""}`} role="link" tabIndex={0} aria-label={`View ${product.name}`} onClick={() => goTo(productRoute(product), { product })} onKeyDown={(e) => { if (e.target !== e.currentTarget) return; if (e.key === "Enter" || e.key === " ") { if (e.key === " ") e.preventDefault(); goTo(productRoute(product), { product }); } }}>
+                  <img src={product.img} alt={product.name} loading="lazy" decoding="async" />
                   <div>
                     <span className="rd-kicker fs">{product.collectionName || product.collection}</span>
                     <h3 className="ff">{product.name}</h3>

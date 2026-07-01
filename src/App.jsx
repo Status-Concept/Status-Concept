@@ -36,7 +36,7 @@ const routesFor = (prefix = '') => (
     <Route path={`${prefix}/projects`} element={<Projects />} />
     <Route path={`${prefix}/favorites`} element={<Favorites />} />
     <Route path={`${prefix}/after-care`} element={<Placeholder title="After Care & Valet Service" subtitle="Seasonal care, cleaning and maintenance for your outdoor furniture. Full details coming soon." />} />
-    <Route path={`${prefix}/gallery`} element={<Placeholder title="Gallery" subtitle="A curated collection of completed outdoor spaces across the Algarve. Coming soon." />} />
+    <Route path={`${prefix}/gallery`} element={<Placeholder title="Gallery" subtitle="Completed outdoor spaces from across the Algarve." />} />
     <Route path={`${prefix}/catalogue`} element={<Placeholder title="Catalogue" subtitle="Browse and download our full product catalogue. Coming soon." />} />
     <Route path={`${prefix}/login`} element={<Login />} />
     <Route path={`${prefix}/registar`} element={<Register />} />

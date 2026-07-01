@@ -8,9 +8,10 @@ export default function Layout({ children }) {
 
   return (
     <div style={{ fontFamily: "var(--font-body)", color: "var(--text-dark)", background: "var(--white)", minHeight: "100vh", overflowX: "clip", paddingTop: "var(--header-h)" }}>
+      <a href="#main" className="skip-link">Skip to content</a>
       <Header onOpenMenu={() => setMenuOpen(true)} />
       <MobileMenu open={menuOpen} onClose={() => setMenuOpen(false)} />
-      {children}
+      <div id="main">{children}</div>
       <Footer />
     </div>
   )

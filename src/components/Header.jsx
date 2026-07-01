@@ -68,7 +68,7 @@ export default function Header({ onOpenMenu }) {
             {isAuthenticated ? "A Minha Conta" : "Login"}
           </button>
           <div style={{ display: "flex", gap: "2px", alignItems: "center" }}>
-            <SocialLinks linkStyle={{ opacity: .65, color: "var(--text-grey)" }} />
+            <SocialLinks linkStyle={{ color: "var(--text-dark)" }} />
           </div>
         </div>
       </div>
@@ -77,7 +77,7 @@ export default function Header({ onOpenMenu }) {
           <span className="logo-serif" style={{ fontSize: 28, fontWeight: 400, letterSpacing: 8, color: "var(--text-dark)" }}>
             ST<span style={{ color: "var(--accent)" }}>A</span>TVS
           </span>
-          <div className="fs" style={{ fontSize: 7, letterSpacing: 3, color: "var(--text-grey)", marginTop: 2 }}>
+          <div className="fs" style={{ fontSize: 9, letterSpacing: 2, color: "var(--text-grey)", marginTop: 2 }}>
             OUTDOOR FURNITURE SPECIALISTS
           </div>
         </div>
@@ -93,8 +93,8 @@ export default function Header({ onOpenMenu }) {
         <div style={{ display: "flex", alignItems: "center", gap: "20px" }}>
           <div data-no-translate style={{ position: "relative" }}>
             <button className="fs" onClick={() => setLangOpen(!langOpen)} style={{
-              background: "none", border: "none", cursor: "pointer", fontSize: "11px",
-              letterSpacing: "2px", color: "var(--text-grey)",
+              background: "none", border: "none", cursor: "pointer", fontSize: "12px",
+              letterSpacing: "2px", color: "var(--text-grey)", padding: "10px 12px",
             }}>
               {currentLang.toUpperCase()} v
             </button>
@@ -111,12 +111,13 @@ export default function Header({ onOpenMenu }) {
             )}
           </div>
           <button onClick={onOpenMenu} className="nav-burger" style={{
-            background: "none", border: "none", cursor: "pointer", padding: 4,
+            background: "none", border: "none", cursor: "pointer", padding: 0,
+            width: 44, height: 44,
             color: "var(--text-dark)",
-            display: "none", flexDirection: "column", gap: "5px",
+            display: "none", flexDirection: "column", justifyContent: "center", alignItems: "flex-end", gap: "5px",
           }}>
             <div style={{ width: 24, height: 1.5, background: "currentColor" }} />
-            <div style={{ width: 18, height: 1.5, background: "currentColor", marginLeft: "auto" }} />
+            <div style={{ width: 18, height: 1.5, background: "currentColor" }} />
           </button>
         </div>
       </div>

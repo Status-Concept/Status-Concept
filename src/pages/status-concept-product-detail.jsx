@@ -171,19 +171,30 @@ const PRODUCT_DETAIL = () => {
         <section className="rd-gallery-sticky" aria-label="Product gallery">
           <div className="rd-thumbs">
             {images.map((image, index) => (
-              <img
+              <button
                 key={image + index}
-                src={image}
-                alt={`${product.name} view ${index + 1}`}
-                className={`rd-thumb ${activeImg === index ? "active" : ""}`}
+                type="button"
+                aria-label={`View image ${index + 1}`}
+                aria-pressed={activeImg === index}
                 onClick={() => setActiveImg(index)}
-              />
+                style={{ padding: 0, border: "none", background: "none", cursor: "pointer", display: "block" }}
+              >
+                <img
+                  src={image}
+                  alt={`${product.name} view ${index + 1}`}
+                  className={`rd-thumb ${activeImg === index ? "active" : ""}`}
+                  loading="lazy"
+                  decoding="async"
+                />
+              </button>
             ))}
           </div>
-          <div className="rd-main-photo" onClick={() => setLightboxOpen(true)}>
+          <div className="rd-main-photo">
             {product.tag && <span className={`tag ${product.tag === "New" ? "tag-new" : "tag-popular"}`} style={{ position: "absolute", top: 16, left: 16, zIndex: 3 }}>{product.tag}</span>}
             <FavoriteButton product={{ id: product.id || id, name: product.name, collection: product.collection, img: images[0], route: `/product/${product.id || id}` }} size={18} style={{ position: "absolute", top: 16, right: 16 }} />
-            <img src={images[safeActiveImg]} alt={product.name} />
+            <button type="button" aria-label="Open full-size image" onClick={() => setLightboxOpen(true)} style={{ padding: 0, border: "none", background: "none", cursor: "zoom-in", display: "block", width: "100%" }}>
+              <img src={images[safeActiveImg]} alt={product.name} />
+            </button>
           </div>
         </section>
 
@@ -257,11 +268,21 @@ const PRODUCT_DETAIL = () => {
           <button type="button" className="rd-back-link" onClick={() => goTo("/products")}>View all</button>
         </div>
         <div className="rd-horizontal-scroll">
-          {relatedProducts.map((item) => (
-            <article key={item.id} className={`rd-product-card ${item.category === "kitchen" ? "kitchen-product" : ""}`} onClick={() => navigate(withLang(item.route || `/product/${item.id}`, currentLang), { state: { product: item } })}>
+          {relatedProducts.map((item) => {
+            const openItem = () => navigate(withLang(item.route || `/product/${item.id}`, currentLang), { state: { product: item } });
+            return (
+            <article
+              key={item.id}
+              className={`rd-product-card ${item.category === "kitchen" ? "kitchen-product" : ""}`}
+              role="link"
+              tabIndex={0}
+              aria-label={`View ${item.name}`}
+              onClick={openItem}
+              onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openItem(); } }}
+            >
               <div className="rd-product-media">
                 <FavoriteButton product={{ id: item.id, name: item.name, collection: item.collectionName || item.collection, img: item.img, route: item.route || `/product/${item.id}` }} size={15} style={{ position: "absolute", top: 12, right: 12 }} />
-                <img src={item.img} alt={item.name} />
+                <img src={item.img} alt={item.name} loading="lazy" decoding="async" />
               </div>
               <div className="rd-product-info">
                 <h3 className="ff">{item.name}</h3>
@@ -271,7 +292,8 @@ const PRODUCT_DETAIL = () => {
                 </div>
               </div>
             </article>
-          ))}
+            );
+          })}
         </div>
       </section>
 

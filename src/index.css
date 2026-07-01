@@ -2,7 +2,7 @@
 
 /* ========================================
    STATVS — DESIGN SYSTEM (Glatz-inspired)
-   White, clean, Swiss — gold accent
+   White, clean, Swiss — crimson accent
    ======================================== */
 
 :root {
@@ -388,6 +388,27 @@
   outline: 2px solid var(--accent);
   outline-offset: 3px;
 }
+:where(a,button,input,select,textarea,[tabindex]):focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: auto;
+  overflow: hidden;
+}
+.skip-link:focus {
+  position: fixed;
+  left: 8px;
+  top: 8px;
+  z-index: 2000;
+  padding: 10px 16px;
+  background: var(--white);
+  color: var(--text-dark);
+  outline: 2px solid var(--accent);
+  text-decoration: none;
+}
 .rd-full-hero {
   position: relative;
   min-height: 72vh;
@@ -561,7 +582,7 @@
   padding: 56px 48px 80px;
   align-items: start;
 }
-.rd-gallery-sticky { position: sticky; top: 115px; display: grid; grid-template-columns: 84px minmax(0,1fr); gap: 14px; }
+.rd-gallery-sticky { position: sticky; top: calc(var(--header-h) + 11px); display: grid; grid-template-columns: 84px minmax(0,1fr); gap: 14px; }
 .rd-thumbs { display: grid; gap: 10px; align-content: start; }
 .rd-thumb {
   width: 84px;
@@ -588,7 +609,7 @@
   object-fit: contain;
   display: block;
 }
-.rd-product-panel { position: sticky; top: 115px; }
+.rd-product-panel { position: sticky; top: calc(var(--header-h) + 11px); }
 .rd-tabs { display: flex; gap: 6px; border-bottom: 1px solid var(--mid-grey); margin-top: 28px; }
 .rd-tab-btn {
   border: 0;
@@ -799,7 +820,7 @@
   padding: 14px;
   text-align: left;
 }
-.rd-showroom-tab.active { border-color: var(--gold-l); background: rgba(184,150,12,.25); }
+.rd-showroom-tab.active { border-color: var(--accent); background: rgba(196,30,58,.18); }
 .rd-form-panel { padding: 64px 48px; background: var(--off-white); }
 .rd-floating-grid { display: grid; gap: 22px; }
 .rd-field { position: relative; }
@@ -812,7 +833,6 @@
   border-bottom: 1px solid var(--mid-grey);
   background: transparent;
   color: var(--text-dark);
-  outline: none;
   font-family: var(--font-body);
   font-size: 14px;
   transition: border-color .3s;
@@ -1047,7 +1067,6 @@
   align-items: center;
   gap: 6px;
   background: none;
-  border: 1px solid var(--border);
   padding: 8px 18px;
   font-family: var(--font-body);
   font-size: 11px;
@@ -1354,7 +1373,7 @@ button {
 .cd:hover { background: var(--black); color: #fff; border-color: var(--black); }
 
 .cg { color: #fff; border-color: var(--accent); background: var(--accent); }
-.cg:hover { background: var(--gold-l); border-color: var(--gold-l); }
+.cg:hover { background: var(--accent-hover); border-color: var(--accent-hover); }
 
 /* Material badge */
 .mb {
@@ -1726,7 +1745,7 @@ button {
 .form-field input:focus {
   border-color: var(--accent);
   background: #fff;
-  box-shadow: 0 0 0 3px rgba(184,150,12,.1);
+  box-shadow: 0 0 0 3px rgba(196,30,58,.12);
 }
 
 .form-field input.invalid { border-color: #c0392b; }

@@ -31,7 +31,7 @@ export default function Footer() {
         <div>
           <div style={{marginBottom:20}}>
             <span className="logo-serif" style={{fontSize:24,fontWeight:400,letterSpacing:8}}>ST<span style={{color:"var(--accent)"}}>A</span>TVS</span>
-            <div className="fs" style={{fontSize:7,letterSpacing:3,color:"rgba(255,255,255,.4)",marginTop:2}}>OUTDOOR FURNITURE SPECIALISTS</div>
+            <div className="fs" style={{fontSize:10,letterSpacing:3,color:"rgba(255,255,255,.4)",marginTop:2}}>OUTDOOR FURNITURE SPECIALISTS</div>
           </div>
           <p className="fs" style={{fontSize:13,lineHeight:1.7,color:"rgba(255,255,255,.55)",fontWeight:300}}>High quality lifestyle furniture in the Algarve. Serving Vale do Lobo, Quinta do Lago, Vilamoura, and beyond.</p>
           <div style={{display:"flex",gap:"2px",marginTop:20}}>
@@ -51,7 +51,7 @@ export default function Footer() {
                 <a key={l}
                   href={ROUTES[l] || "#"}
                   className="fs"
-                  style={{fontSize:13,color:"rgba(255,255,255,.55)",textDecoration:"none",fontWeight:300,transition:"color .2s",cursor:"pointer"}}
+                  style={{fontSize:13,color:"rgba(255,255,255,.55)",textDecoration:"none",fontWeight:300,transition:"color .2s",cursor:"pointer",padding:"6px 0"}}
                   onClick={e => { if(ROUTES[l]) { e.preventDefault(); navigate(ROUTES[l]) } }}
                   onMouseEnter={e=>e.target.style.color="#fff"}
                   onMouseLeave={e=>e.target.style.color="rgba(255,255,255,.55)"}
@@ -61,7 +61,7 @@ export default function Footer() {
           </div>
         ))}
       </div>
-      <div className="fs" style={{display:"flex",justifyContent:"space-between",alignItems:"center",maxWidth:"var(--max-width)",margin:"0 auto",paddingTop:24,fontSize:11,color:"rgba(255,255,255,.35)",letterSpacing:1,flexWrap:"wrap",gap:12}}>
+      <div className="fs" style={{display:"flex",justifyContent:"space-between",alignItems:"center",maxWidth:"var(--max-width)",margin:"0 auto",paddingTop:24,fontSize:11,color:"rgba(255,255,255,.62)",letterSpacing:1,flexWrap:"wrap",gap:12}}>
         <span>© 2026 Statvs. All rights reserved.</span>
         <div style={{display:"flex",gap:24}}>
           <a href="#" style={{color:"inherit",textDecoration:"none"}}>Privacy Policy</a>

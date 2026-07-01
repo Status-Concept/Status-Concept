@@ -16,16 +16,16 @@ const byId = Object.fromEntries(glatzProducts.map((p) => [p.id, p]));
 
 const CATEGORIES = [
   { key: "sidemast", label: "Side-Mast Parasols", sub: "Garden parasols", img: catSidemastImg,
-    blurb: "Cantilever shade that floats above the furniture — move freely beneath the canopy.",
+    blurb: "Cantilever shade that floats above the furniture: move freely beneath the canopy.",
     models: ["glatz-sunwing-casa", "glatz-sombrano-s-plus", "glatz-pendalex-p-plus", "glatz-ambiente-nova", "glatz-fortano", "glatz-vita-sfera"] },
   { key: "centre", label: "Aluminium Centre-Pole", sub: "Garden parasols", img: catCentreImg,
-    blurb: "The everyday classics — precise, convenient and made for dining tables and terraces.",
+    blurb: "The everyday classics: precise, convenient and made for dining tables and terraces.",
     models: ["glatz-alu-twist", "glatz-alu-smart", "glatz-vita-torna", "glatz-vita-piana"] },
   { key: "wood", label: "Wood & Wood Look", sub: "Garden parasols", img: catWoodImg,
-    blurb: "Warm, natural elegance — from precious timber to wind-resistant wood-look frames.",
+    blurb: "Warm, natural elegance: from precious timber to wind-resistant wood-look frames.",
     models: ["glatz-piazza", "glatz-teakwood", "glatz-alexo"] },
   { key: "vita", label: "VITA® Collection", sub: "Design line", img: catVitaImg,
-    blurb: "Glatz's design collection — minimalist forms with fully resolved ergonomics.",
+    blurb: "Glatz's design collection: minimalist forms with fully resolved ergonomics.",
     models: ["glatz-vita-torna", "glatz-vita-piana", "glatz-vita-sfera"] },
   { key: "windproof", label: "Windproof Parasols", sub: "Contract line", img: catWindproofImg,
     blurb: "Engineered for exposed coastal terraces, restaurants and beach clubs.",
@@ -37,9 +37,9 @@ const CATEGORIES = [
 
 const WHY = [
   { n: "1895", l: "Swiss made in Frauenfeld since" },
-  { n: "19", l: "Models — the world's largest range" },
+  { n: "19", l: "Models: the world's largest range" },
   { n: "20,000+", l: "Possible combinations" },
-  { n: ">98%", l: "UV filtered — SPF 50 equivalent" },
+  { n: ">98%", l: "UV filtered: SPF 50 equivalent" },
 ];
 
 const FABRICS = [
@@ -63,15 +63,15 @@ const STATUS_CONCEPT_GLATZ = () => {
         <div className="rd-hero-inner">
           <span className="rd-kicker fs">Official Glatz partner · Swiss made since 1895</span>
           <h1 className="rd-title ff">Glatz Parasols</h1>
-          <p className="rd-lede fs">The world's largest parasol range — wind-tunnel tested Swiss shade engineering, supplied and cared for in the Algarve by Status Concept.</p>
+          <p className="rd-lede fs">The world's largest parasol range. Wind-tunnel tested Swiss shade engineering, supplied and cared for in the Algarve by Status Concept.</p>
         </div>
       </section>
 
       {/* INTRO STATEMENT */}
-      <section id="glatz-intro" data-animate style={{ padding: "clamp(56px,9vh,100px) 48px", textAlign: "center", ...S("glatz-intro") }}>
+      <section id="glatz-intro" data-animate style={{ padding: "var(--section-padding) 48px", textAlign: "center", ...S("glatz-intro") }}>
         <div className="la" style={{ margin: "0 auto 28px" }} />
         <p className="ff" style={{ fontSize: "clamp(20px,2.6vw,30px)", fontWeight: 300, lineHeight: 1.6, maxWidth: 760, margin: "0 auto", color: "var(--stone-l)" }}>
-          Every Glatz parasol is designed and engineered in Switzerland — production and assembly under one roof, every detail optimised for ergonomics, every model proven in the wind tunnel.
+          Every Glatz parasol is designed and engineered in Switzerland. Production and assembly under one roof, every detail optimised for ergonomics, every model proven in the wind tunnel.
         </p>
         <div style={{ display: "flex", justifyContent: "center", gap: 24, marginTop: 36, flexWrap: "wrap" }}>
           <span className="mb">SWISSMADE</span><span className="mb">Wind-Tunnel Tested</span><span className="mb">UV Protection SPF 50</span><span className="mb">PFAS-Free Fabrics</span>
@@ -79,7 +79,7 @@ const STATUS_CONCEPT_GLATZ = () => {
       </section>
 
       {/* CATEGORY TILES — Glatz's flyout method */}
-      <section id="glatz-cats" data-animate style={{ padding: "0 48px clamp(48px,7vh,80px)", ...S("glatz-cats") }}>
+      <section id="glatz-cats" data-animate style={{ padding: "0 48px var(--section-padding)", ...S("glatz-cats") }}>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(170px, 1fr))", gap: 14, maxWidth: 1240, margin: "0 auto" }}>
           {CATEGORIES.map((c) => (
             <div key={c.key} onClick={() => setActiveCat(c.key)}
@@ -100,7 +100,7 @@ const STATUS_CONCEPT_GLATZ = () => {
       </section>
 
       {/* ACTIVE CATEGORY — MODEL SHOWCASE */}
-      <section style={{ padding: "clamp(48px,7vh,80px) 48px", background: "var(--cream-w)", borderTop: "1px solid var(--sand-l)", borderBottom: "1px solid var(--sand-l)" }}>
+      <section style={{ padding: "var(--section-padding) 48px", background: "var(--cream-w)", borderTop: "1px solid var(--sand-l)", borderBottom: "1px solid var(--sand-l)" }}>
         <div style={{ maxWidth: 1240, margin: "0 auto" }}>
           <div style={{ textAlign: "center", marginBottom: 44 }}>
             <span className="fs sl">{current.sub}</span>
@@ -132,7 +132,7 @@ const STATUS_CONCEPT_GLATZ = () => {
       </section>
 
       {/* WHY GLATZ */}
-      <section id="glatz-why" data-animate style={{ padding: "clamp(56px,9vh,100px) 48px", textAlign: "center", ...S("glatz-why") }}>
+      <section id="glatz-why" data-animate style={{ padding: "var(--section-padding) 48px", textAlign: "center", ...S("glatz-why") }}>
         <span className="fs sl">Why Glatz</span>
         <h2 className="ff" style={{ fontSize: "clamp(28px,3.6vw,44px)", fontWeight: 300, marginTop: 12, marginBottom: 48, letterSpacing: "-0.01em" }}>Swiss shade engineering</h2>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 32, maxWidth: 1100, margin: "0 auto" }}>
@@ -146,12 +146,12 @@ const STATUS_CONCEPT_GLATZ = () => {
       </section>
 
       {/* FABRICS */}
-      <section id="glatz-fabrics" data-animate style={{ padding: "clamp(56px,9vh,100px) 48px", background: "var(--stone)", color: "#fff", ...S("glatz-fabrics") }}>
+      <section id="glatz-fabrics" data-animate style={{ padding: "var(--section-padding) 48px", background: "var(--stone)", color: "#fff", ...S("glatz-fabrics") }}>
         <div style={{ maxWidth: 1000, margin: "0 auto", textAlign: "center" }}>
           <span className="fs sl" style={{ color: "var(--gold-l)" }}>Made to measure</span>
           <h2 className="ff" style={{ fontSize: "clamp(28px,3.6vw,44px)", fontWeight: 300, marginTop: 12, marginBottom: 18, letterSpacing: "-0.01em" }}>70 colours. Three fabric qualities.</h2>
           <p className="fs" style={{ fontSize: 14, color: "rgba(255,255,255,.65)", maxWidth: 620, margin: "0 auto 44px", lineHeight: 1.8, fontWeight: 300 }}>
-            From the "Morning Light" and "Sunset Glow" collections — every canopy filters more than 98% of UV rays, whatever the class. Choose your size, shape, frame finish and colour: over 20,000 combinations, configured with our team in the showroom.
+            From the "Morning Light" and "Sunset Glow" collections. Every canopy filters more than 98% of UV rays, in every class. Choose your size, shape, frame finish and colour: over 20,000 combinations, configured with our team in the showroom.
           </p>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 16 }}>
             {FABRICS.map((f) => (
@@ -170,11 +170,11 @@ const STATUS_CONCEPT_GLATZ = () => {
       </section>
 
       {/* CTA */}
-      <section style={{ padding: "clamp(56px,9vh,100px) 48px", textAlign: "center" }}>
+      <section style={{ padding: "var(--section-padding) 48px", textAlign: "center" }}>
         <span className="fs sl">See them in the Algarve sun</span>
         <h2 className="ff" style={{ fontSize: "clamp(28px,3.6vw,44px)", fontWeight: 300, marginTop: 12, marginBottom: 20, letterSpacing: "-0.01em" }}>Configure your Glatz with us</h2>
         <p className="fs" style={{ fontSize: 14, color: "var(--sand-d)", maxWidth: 520, margin: "0 auto 36px", lineHeight: 1.7, fontWeight: 300 }}>
-          As a direct Glatz supplier we configure, deliver and install your parasol — and keep it beautiful with seasonal after care.
+          As a direct Glatz supplier we configure, deliver and install your parasol, and keep it beautiful with seasonal after care.
         </p>
         <div style={{ display: "flex", gap: 16, justifyContent: "center", flexWrap: "wrap" }}>
           <button className="cb cg" onClick={() => navigate("/contact")}>Request quote</button>
