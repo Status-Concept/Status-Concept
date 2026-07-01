@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import useNavLinks from "../useNavLinks";
-import FavoriteButton from "../FavoriteButton";
 import { useScrollAnimation } from "../hooks/useScrollAnimation";
 import { useLocalizedNavigate } from "../hooks/useLocalizedNavigate";
 import Layout from "../components/Layout";
@@ -9,23 +8,10 @@ import hero3Img from "../assets/images/enhanced/hero-3.webp";
 import showroomQuintaImg from "../assets/images/enhanced/showroom-quinta-ai.png";
 import hero4Img from "../assets/images/enhanced/hero-4.webp";
 import showroomAlmancilImg from "../assets/images/enhanced/showroom-almancil-ai.png";
-import furnitureSeriesImg from "../assets/images/enhanced/furniture-series-golf-hero.jpg";
-import sicilyCornerImg from "../assets/images/sicily-corner.jpg";
-import glatzParasolImg from "../assets/images/glatz-parasol.jpg";
-import shadeParasolsImg from "../assets/images/shade-parasols.jpg";
-import projectQuintaImg from "../assets/images/project-quinta.jpg";
-import projectValedoloboImg from "../assets/images/project-valedolobo.jpg";
-import projectVilamouraImg from "../assets/images/project-vilamoura.jpg";
-import projectAlmancilImg from "../assets/images/project-almancil.jpg";
-import neroKitchenImg from "../assets/images/kitchen/blk-6burner-bbq.jpg";
-import teakKitchenImg from "../assets/images/kitchen/teak-setup-1.jpg";
-import carbonKitchenImg from "../assets/images/kitchen/carbon-line-1.jpg";
 
 const STATUS_CONCEPT_HOMEPAGE = () => {
   useNavLinks();
   const navigate = useLocalizedNavigate();
-  const [activeTab, setActiveTab] = useState("furniture");
-  const [activeProject, setActiveProject] = useState(0);
   const [heroSlide, setHeroSlide] = useState(0);
   const { vis, S } = useScrollAnimation();
 
@@ -37,35 +23,6 @@ const STATUS_CONCEPT_HOMEPAGE = () => {
     }, 5000);
     return () => clearInterval(interval);
   }, [heroImages.length]);
-
-  const collections = {
-    furniture: [
-      { name: "Sicily", desc: "A contemporary modular lounge system for generous outdoor living areas.", img: sicilyCornerImg, route: "/products?cat=lounge" },
-    ],
-    shade: [
-      { name: "Glatz Sombrano", desc: "Swiss engineered parasol shade for flexible terrace coverage.", img: glatzParasolImg, route: "/products?cat=shade" },
-      { name: "Glatz Sunwing", desc: "A precise, elegant parasol for controlled outdoor shade.", img: shadeParasolsImg, route: "/products?cat=shade" },
-      { name: "Wall-Mounted Parasols", desc: "A space-saving shade solution for compact terraces.", img: shadeParasolsImg, route: "/products?cat=shade" },
-    ],
-    kitchen: [
-      { name: "Nero Range", desc: "Black stainless steel modules with granite tops, BBQs, fridges and sinks.", img: neroKitchenImg, route: "/products?cat=kitchen" },
-      { name: "Teak Range", desc: "Natural reclaimed teak kitchen modules with ceramic tops and practical storage.", img: teakKitchenImg, route: "/products?cat=kitchen" },
-      { name: "Carbon Line", desc: "Black reclaimed teak modules with ceramic tops and premium BBQ cabinets.", img: carbonKitchenImg, route: "/products?cat=kitchen" },
-    ],
-  };
-
-  const projects = [
-    { name: "Villa Quinta do Lago", location: "Quinta do Lago", img: projectQuintaImg },
-    { name: "Residence Vale do Lobo", location: "Vale do Lobo", img: projectValedoloboImg },
-    { name: "Private Estate Vilamoura", location: "Vilamoura", img: projectVilamouraImg },
-    { name: "Luxury Home Almancil", location: "Almancil", img: projectAlmancilImg },
-  ];
-
-  const cats = [
-    { name: "Lounge", sub: "Modular Sets", cat: "lounge" },
-    { name: "Shade", sub: "Glatz Parasols", cat: "shade" },
-    { name: "Kitchens", sub: "Outdoor Cooking", cat: "kitchen" },
-  ];
 
   const showrooms = [
     { name: "Quinta do Lago", img: showroomQuintaImg, pos: "center 65%", addr: "Estr. Quinta do Lago-Vale do Lobo, 8135-106 Almancil", ph: "+351 289 030 179", desc: "Our flagship showroom on the road between Quinta do Lago and Vale do Lobo: experience the full collection in person." },
@@ -103,64 +60,6 @@ const STATUS_CONCEPT_HOMEPAGE = () => {
         <div style={{display:"flex",justifyContent:"center",gap:24,marginTop:36,flexWrap:"wrap"}}><span className="mb">Sunbrella® Fabrics</span><span className="mb">Interpon Coating</span><span className="mb">Premium Aluminium</span></div>
       </section>
 
-      {/* COLLECTIONS */}
-      <section id="colls" data-animate style={{padding:"0 48px var(--section-padding)",background:"var(--white)",...S("colls")}}>
-        <div style={{textAlign:"center",marginBottom:48}}>
-          <span className="fs sl">Our world</span>
-          <h2 className="ff" style={{fontSize:"clamp(30px,3.6vw,44px)",fontWeight:400,marginTop:12,letterSpacing:"-0.01em"}}>Collections</h2>
-        </div>
-        <div style={{display:"flex",justifyContent:"center",gap:8,marginBottom:48,borderBottom:"1px solid var(--mid-grey)",maxWidth:"var(--max-width)",margin:"0 auto 48px"}}>
-          {[{k:"furniture",l:"Furniture"},{k:"shade",l:"Shade Solutions"},{k:"kitchen",l:"Outdoor Kitchens"}].map(t=><button key={t.k} className={`tb ${activeTab===t.k?"ac":""}`} onClick={()=>setActiveTab(t.k)}>{t.l}</button>)}
-        </div>
-        <div style={{maxWidth:"var(--max-width)",margin:"0 auto 32px",borderRadius:2,overflow:"hidden",position:"relative",height:340}}>
-            <img src={furnitureSeriesImg} alt="Furniture Series" style={{width:"100%",height:"100%",objectFit:"cover",objectPosition:"center 40%",display:"block"}} />
-            <div style={{position:"absolute",inset:0,background:"linear-gradient(90deg,rgba(17,17,17,.5) 0%,rgba(17,17,17,.1) 60%,transparent 100%)"}} />
-            <div style={{position:"absolute",top:"50%",left:48,transform:"translateY(-50%)"}}>
-              <span className="fs" style={{fontSize:11,letterSpacing:3,textTransform:"uppercase",color:"rgba(255,255,255,.7)"}}>Curated for the Algarve</span>
-              <h3 className="ff" style={{fontSize:"clamp(26px,2.8vw,38px)",fontWeight:400,color:"#fff",marginTop:10,marginBottom:0,lineHeight:1.1}}>
-                {activeTab === "furniture" ? "Furniture Series" : activeTab === "shade" ? "Shade Solutions" : "Outdoor Kitchens"}
-              </h3>
-            </div>
-          </div>
-        <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:24,maxWidth:"var(--max-width)",margin:"0 auto"}}>
-          {collections[activeTab].map((c,i)=>(
-            <div key={c.name} className="rd-product-card" onClick={()=>navigate(c.route)} style={{animation:vis("colls")?`fi 0.5s ${0.08*i}s both`:"none"}}>
-              <div className="rd-product-media" style={{aspectRatio:"4 / 3"}}>
-                <FavoriteButton
-                  product={{id:`collection-${c.name.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'')}`,name:c.name,collection:c.name,img:c.img,route:c.route}}
-                  size={16}
-                  style={{position:"absolute",top:12,right:12,zIndex:3}}
-                />
-                <img src={c.img} alt={c.name}/>
-              </div>
-              <div className="rd-product-info">
-                <h3 className="ff" style={{fontSize:18,fontWeight:400,marginBottom:6}}>{c.name}</h3>
-                <p className="fs" style={{fontSize:12,color:"var(--text-grey)",lineHeight:1.6}}>{c.desc}</p>
-                <span className="fs" style={{display:"inline-block",marginTop:10,fontSize:10,letterSpacing:2,textTransform:"uppercase",color:"var(--accent)"}}>Discover →</span>
-              </div>
-            </div>
-          ))}
-        </div>
-        <div style={{textAlign:"center",marginTop:56}}><a href="#" className="cb cd" onClick={(e)=>{e.preventDefault();navigate('/products')}}>View all products</a></div>
-      </section>
-
-      {/* CATEGORIES */}
-      <section id="cats" data-animate style={{padding:"var(--section-padding) 48px",background:"var(--light-grey)",...S("cats")}}>
-        <div style={{textAlign:"center",marginBottom:40}}>
-          <span className="fs sl">Browse by type</span>
-          <h2 className="ff" style={{fontSize:"clamp(28px,3.2vw,38px)",fontWeight:400,marginTop:12,letterSpacing:"-0.01em"}}>Product Categories</h2>
-        </div>
-        <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",maxWidth:1100,margin:"0 auto",borderTop:"1px solid var(--mid-grey)",borderLeft:"1px solid var(--mid-grey)"}}>
-          {cats.map((c,i)=>(
-            <div key={c.name} className="cat-item" onClick={()=>navigate(`/products?cat=${c.cat}`)} style={{animation:vis("cats")?`fi 0.4s ${0.05*i}s both`:"none"}}>
-              <span className="cat-bg">{String(i+1).padStart(2,'0')}</span>
-              <span className="cat-n">{c.name}</span>
-              <span className="cat-s">{c.sub}</span>
-              <span className="cat-arrow">→</span>
-            </div>
-          ))}
-        </div>
-      </section>
 
       {/* WHY STATUS */}
       <section id="why" data-animate style={{display:"grid",gridTemplateColumns:"1fr 1fr",minHeight:560,background:"var(--white)",...S("why")}}>
@@ -182,39 +81,6 @@ const STATUS_CONCEPT_HOMEPAGE = () => {
         </div>
       </section>
 
-      {/* PROJECTS */}
-      <section id="proj" data-animate style={{padding:"var(--section-padding) 48px",background:"var(--white)",...S("proj")}}>
-        <div style={{maxWidth:"var(--max-width)",margin:"0 auto"}}>
-          <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-end",marginBottom:48,flexWrap:"wrap",gap:16}}>
-            <div><span className="fs sl">Inspiration</span><h2 className="ff" style={{fontSize:"clamp(30px,3.6vw,44px)",fontWeight:400,marginTop:12,letterSpacing:"-0.01em"}}>Featured Projects</h2></div>
-            <a href="#" className="cb cd" onClick={(e)=>{e.preventDefault();navigate('/projects')}} style={{marginBottom:4}}>View all</a>
-          </div>
-          <div style={{display:"grid",gridTemplateColumns:"1.4fr 1fr",gap:24}}>
-            <div className="pc" onClick={()=>navigate('/projects')} style={{borderRadius:2,overflow:"hidden"}}>
-              <div style={{position:"relative",overflow:"hidden",height:440,background:"var(--light-grey)"}}>
-                <img src={projects[activeProject].img} alt={projects[activeProject].name} style={{width:"100%",height:"100%",objectFit:"cover"}}/>
-              </div>
-              <div style={{padding:"18px 2px 0"}}>
-                <h3 className="ff" style={{fontSize:20,fontWeight:400}}>{projects[activeProject].name}</h3>
-                <p className="fs" style={{fontSize:11,letterSpacing:1.5,color:"var(--text-grey)",textTransform:"uppercase",marginTop:4}}>{projects[activeProject].location}</p>
-              </div>
-            </div>
-            <div style={{display:"grid",gridTemplateRows:"1fr 1fr",gap:24}}>
-              {projects.filter((_,i)=>i!==activeProject).slice(0,2).map(p=>(
-                <div key={p.name} className="pc" onClick={()=>setActiveProject(projects.indexOf(p))} style={{borderRadius:2,overflow:"hidden"}}>
-                  <div style={{position:"relative",overflow:"hidden",height:160,background:"var(--light-grey)"}}>
-                    <img src={p.img} alt={p.name} style={{width:"100%",height:"100%",objectFit:"cover"}}/>
-                  </div>
-                  <div style={{padding:"14px 2px 0"}}>
-                    <h4 className="ff" style={{fontSize:16,fontWeight:400}}>{p.name}</h4>
-                    <p className="fs" style={{fontSize:10,letterSpacing:1.5,color:"var(--text-grey)",textTransform:"uppercase",marginTop:2}}>{p.location}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* AFTER CARE BANNER */}
       <section id="ac" data-animate style={{padding:"var(--section-padding) 48px",background:"var(--light-grey)",textAlign:"center",...S("ac")}}>

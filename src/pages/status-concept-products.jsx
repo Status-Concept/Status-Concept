@@ -160,9 +160,14 @@ const PRODUCTS_PAGE = () => {
       </section>
 
       <main className="rd-products-layout">
-        {filterMarkup}
+        {activeCategory === "all" && filterMarkup}
 
         <section>
+          {activeCategory !== "all" && (
+            <button type="button" className="rd-back-to-cats" onClick={() => selectCategory("all")}>
+              ← All Categories
+            </button>
+          )}
           <div className="rd-products-toolbar">
             <div>
               <span className="rd-kicker fs">{selectedKitchenCollection ? selectedKitchenCollection.label : selectedCategory.label}</span>
