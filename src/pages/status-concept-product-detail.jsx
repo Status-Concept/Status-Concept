@@ -5,6 +5,7 @@ import Layout from "../components/Layout";
 import FavoriteButton from "../FavoriteButton";
 import { glatzProductDetails, glatzProducts } from "../data/glatzProducts";
 import { kitchenProductDetails, kitchenProducts, kitchenCollectionHeroes } from "../data/kitchenProducts";
+import { catalogProducts } from "../data/catalogProducts";
 import { getLangFromPath, withLang } from "../utils/language";
 import sicilyModularSetFullImg from "../assets/images/sicily-modular-set-full.webp";
 import sicilyCornerImg from "../assets/images/sicily-corner.jpg";
@@ -27,7 +28,27 @@ const PRODUCT_DETAIL = () => {
   const [activeTab, setActiveTab] = useState("specs");
   const [lightboxOpen, setLightboxOpen] = useState(false);
 
+  const catalogProductDetails = Object.fromEntries(catalogProducts.map((product) => [product.id, {
+    id: product.id,
+    name: product.name,
+    collection: product.collectionName,
+    collectionSlug: product.collection,
+    category: product.category,
+    tag: product.tag,
+    tagline: product.tagline,
+    images: product.images,
+    specs: [
+      { label: "Category", value: product.categoryLabel },
+      { label: "Collection", value: product.collectionName },
+      product.supplier ? { label: "Supplier", value: product.supplier } : null,
+      product.sku ? { label: "SKU", value: product.sku } : null,
+      { label: "Availability", value: "Through the showroom team" },
+    ].filter(Boolean),
+    materials: ["Full specifications available through the showroom team"],
+  }]));
+
   const allProducts = {
+    ...catalogProductDetails,
     ...kitchenProductDetails,
     ...glatzProductDetails,
     "sicily-modular-set": {
@@ -82,6 +103,11 @@ const PRODUCT_DETAIL = () => {
 
   const isSameCollection = product.category === "kitchen" || product.category === "shade" || product.id === "sicily-modular-set";
   const relatedProducts = (() => {
+    if (catalogProductDetails[product.id]) {
+      return catalogProducts
+        .filter((item) => item.id !== product.id && item.category === product.category)
+        .slice(0, 6);
+    }
     if (product.category === "kitchen") {
       return kitchenProducts
         .filter((item) => item.id !== product.id && (item.collection === product.collectionSlug || item.collectionName === product.collection))
