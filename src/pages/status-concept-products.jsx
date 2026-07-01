@@ -13,22 +13,17 @@ import sicilyCornerImg from "../assets/images/sicily-corner.jpg";
 import sicilyCentreImg from "../assets/images/sicily-centre.jpg";
 import sicilyOttomanImg from "../assets/images/sicily-ottoman.jpg";
 
-const shadeHeroImg = "/product-images/glatz/ambiente-nova/01.jpg";
-const shadeChipImg = "/product-images/glatz/sombrano-s-plus/05.jpg";
-const sicilyCardImageStyle = {
-  objectFit: "contain",
-  objectPosition: "center",
-  background: "var(--light-grey)",
-};
+const shadeHeroImg = "/product-images/glatz/ambiente-nova/01.webp";
+const shadeChipImg = "/product-images/glatz/sombrano-s-plus/05.webp";
 
-function CardCarousel({ images, alt, imgStyle }) {
+function CardCarousel({ images, alt }) {
   const [idx, setIdx] = useState(0);
   const total = images.length;
   return (
     <div style={{position:"relative",width:"100%",height:"100%"}}>
       {images.map((src, i) => (
-        <img key={i} src={src} alt={`${alt} ${i+1}`} loading="lazy" decoding="async"
-          style={{...imgStyle, position:"absolute",inset:0,width:"100%",height:"100%",opacity:idx===i?1:0,transition:"opacity 0.5s ease"}} />
+        <img key={i} src={src} alt={i === 0 ? alt : ""} loading="lazy" decoding="async"
+          style={{position:"absolute",inset:0,width:"100%",height:"100%",opacity:idx===i?1:0,transition:"opacity 0.5s ease"}} />
       ))}
       {total > 1 && (
         <div style={{position:"absolute",bottom:10,left:"50%",transform:"translateX(-50%)",display:"flex",gap:6,zIndex:4}}
@@ -114,6 +109,7 @@ const PRODUCTS_PAGE = () => {
   }, [activeCategory, activeKitchenCollection, allProducts, isKitchenCategory, sortBy]);
 
   const productRoute = (product) => product.route || `/product/${product.id || slug(product.name)}`;
+  const favPayload = (product) => ({ id: product.id || slug(product.name), name: product.name, collection: product.collectionName || product.collection, img: product.img, category: product.category, route: productRoute(product) });
   const goTo = (path, state) => navigate(withLang(path, currentLang), state ? { state } : undefined);
 
   const scrollToProducts = () => {
@@ -140,7 +136,7 @@ const PRODUCTS_PAGE = () => {
       {categories.map((category) => (
         <button key={category.key} type="button" className={`cat-chip ${activeCategory === category.key ? "active" : ""}`} aria-pressed={activeCategory === category.key} onClick={() => selectCategory(category.key)}>
           <span className="cat-chip-img">
-            <img src={category.chip} alt={category.label} loading="lazy" />
+            <img src={category.chip} alt="" loading="lazy" />
           </span>
           <span className="lbl">{category.label}</span>
         </button>
@@ -151,7 +147,7 @@ const PRODUCTS_PAGE = () => {
   return (
     <Layout>
       <section className="prod-banner">
-        <img src={selectedCategory.banner} alt={selectedCategory.title} style={{ objectPosition: selectedCategory.bannerPosition || "center" }} />
+        <img src={selectedCategory.banner} alt="" style={{ objectPosition: selectedCategory.bannerPosition || "center" }} />
         <div className="prod-banner-inner">
           <span className="rd-kicker fs">Products / {selectedCategory.label}</span>
           <h1 className="ff">{selectedCategory.title}</h1>
@@ -211,16 +207,16 @@ const PRODUCTS_PAGE = () => {
           ) : viewMode === "grid" ? (
             <div className="rd-product-grid editorial">
               {filteredProducts.map((product, index) => (
-                <article key={product.id || product.name} className={`rd-product-card ${product.category === "kitchen" ? "kitchen-product" : ""} ${product.category === "shade" ? "shade-product" : ""} ${product.category !== "kitchen" && product.category !== "shade" && index === 0 && filteredProducts.length >= 5 ? "featured" : ""}`} role="link" tabIndex={0} aria-label={`View ${product.name}`} onClick={() => goTo(productRoute(product), { product })} onKeyDown={(e) => { if (e.target !== e.currentTarget) return; if (e.key === "Enter" || e.key === " ") { if (e.key === " ") e.preventDefault(); goTo(productRoute(product), { product }); } }}>
+                <article key={product.id || product.name} className={`rd-product-card ${product.category === "kitchen" ? "kitchen-product" : ""} ${product.category === "shade" ? "shade-product" : ""} ${product.id === "sicily-modular-set" ? "contain-media" : ""} ${product.category !== "kitchen" && product.category !== "shade" && index === 0 && filteredProducts.length >= 5 ? "featured" : ""}`} role="link" tabIndex={0} aria-label={`View ${product.name}`} onClick={() => goTo(productRoute(product), { product })} onKeyDown={(e) => { if (e.target !== e.currentTarget) return; if (e.key === "Enter" || e.key === " ") { if (e.key === " ") e.preventDefault(); goTo(productRoute(product), { product }); } }}>
                   <div className="rd-product-media">
                     {product.tag && <span className={`tag ${product.tag === "New" ? "tag-new" : "tag-popular"}`}>{product.tag}</span>}
                     <FavoriteButton
-                      product={{ id: product.id || slug(product.name), name: product.name, collection: product.collectionName || product.collection, img: product.img, category: product.category, route: productRoute(product) }}
+                      product={favPayload(product)}
                       size={16}
                       style={{ position: "absolute", top: 12, right: 12 }}
                     />
                     {product.images?.length > 1
-                      ? <CardCarousel images={product.images} alt={product.name} imgStyle={product.id === "sicily-modular-set" ? sicilyCardImageStyle : undefined} />
+                      ? <CardCarousel images={product.images} alt={product.name} />
                       : <img src={product.img} alt={product.name} loading="lazy" decoding="async" />
                     }
                   </div>
@@ -246,7 +242,7 @@ const PRODUCTS_PAGE = () => {
                     {product.desc && <p className="rd-lede fs">{product.desc}</p>}
                   </div>
                   <FavoriteButton
-                    product={{ id: product.id || slug(product.name), name: product.name, collection: product.collectionName || product.collection, img: product.img, category: product.category, route: productRoute(product) }}
+                    product={favPayload(product)}
                     size={16}
                   />
                 </article>
