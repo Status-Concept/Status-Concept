@@ -28,7 +28,6 @@ const translations = {
     Furniture: 'Mobiliario',
     Shade: 'Sombra',
     Kitchens: 'Cozinhas',
-    Decor: 'Decoracao',
     Showrooms: 'Showrooms',
     'My Account': 'A Minha Conta',
     'OUTDOOR FURNITURE SPECIALISTS': 'ESPECIALISTAS EM MOBILIARIO EXTERIOR',

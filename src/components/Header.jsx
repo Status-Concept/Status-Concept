@@ -86,7 +86,7 @@ export default function Header({ onOpenMenu }) {
           letterSpacing: "2px", textTransform: "uppercase",
           color: "var(--text-dark)",
         }}>
-          {["Furniture", "Shade", "Kitchens", "Decor", "Projects", "Showrooms", "Contact"].map(i => (
+          {["Furniture", "Shade", "Kitchens", "Projects", "Showrooms", "Contact"].map(i => (
             <a key={i} className="nl" href="#" style={{ color: "inherit" }}>{i}</a>
           ))}
         </nav>

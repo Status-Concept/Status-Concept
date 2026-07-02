@@ -63,7 +63,7 @@ const PRODUCTS_PAGE = () => {
   const [viewMode, setViewMode] = useState("grid");
   const [sortBy, setSortBy] = useState("featured");
 
-  const validCategories = ["all", "lounge", "dining", "sunlounger", "shade", "kitchen", "decor"];
+  const validCategories = ["all", "lounge", "dining", "sunlounger", "shade", "kitchen"];
   const categoryAliases = { daybed: "sunlounger", coffee: "dining", side: "dining", bar: "lounge", puffs: "lounge" };
 
   useEffect(() => {
@@ -82,7 +82,6 @@ const PRODUCTS_PAGE = () => {
     { key: "sunlounger", label: "Sun Loungers", chip: catalogImg("sunlounger"), banner: catalogImg("sunlounger"), title: "Sun Loungers & Day Beds", copy: "Poolside loungers and day beds built for Algarve summers." },
     { key: "shade", label: "Shade", chip: shadeChipImg, banner: shadeHeroImg, bannerPosition: "center 28%", title: "Shade Solutions", copy: "Glatz parasols, bioclimatic pergolas and retractable systems for gardens, terraces and outdoor rooms." },
     { key: "kitchen", label: "Modular Kitchen", chip: kitchenHeroImg, banner: kitchenHeroImg, title: "Modular Kitchen", copy: "Explore Draco Grills and Bull modular outdoor kitchens, from full islands to single components." },
-    { key: "decor", label: "Decor", chip: catalogImg("decor"), banner: catalogImg("decor"), title: "Decor", copy: "Carpets, vases, statues and accessories that finish an outdoor space." },
   ];
 
   const allProducts = useMemo(() => [
