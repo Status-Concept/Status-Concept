@@ -230,7 +230,7 @@ const PRODUCTS_PAGE = () => {
           ) : viewMode === "grid" ? (
             <div className="rd-product-grid editorial">
               {filteredProducts.map((product, index) => (
-                <article key={product.id || product.name} className={`rd-product-card ${product.category === "kitchen" ? "kitchen-product" : ""} ${product.category === "shade" ? "shade-product" : ""} ${product.id === "sicily-modular-set" ? "contain-media" : ""} ${product.category !== "kitchen" && product.category !== "shade" && index === 0 && filteredProducts.length >= 5 ? "featured" : ""}`} role="link" tabIndex={0} aria-label={`View ${product.name}`} onClick={() => goTo(productRoute(product), { product })} onKeyDown={(e) => { if (e.target !== e.currentTarget) return; if (e.key === "Enter" || e.key === " ") { if (e.key === " ") e.preventDefault(); goTo(productRoute(product), { product }); } }}>
+                <article key={product.id || product.name} className={`rd-product-card ${product.category === "kitchen" && !product.fit ? "kitchen-product" : ""} ${product.category === "shade" && !product.fit ? "shade-product" : ""} ${product.fit === "contain" ? "studio-product" : ""} ${product.fit === "wide" ? "wide-product" : ""} ${product.id === "sicily-modular-set" ? "contain-media" : ""} ${product.category !== "kitchen" && product.category !== "shade" && product.fit !== "contain" && index === 0 && filteredProducts.length >= 5 ? "featured" : ""}`} role="link" tabIndex={0} aria-label={`View ${product.name}`} onClick={() => goTo(productRoute(product), { product })} onKeyDown={(e) => { if (e.target !== e.currentTarget) return; if (e.key === "Enter" || e.key === " ") { if (e.key === " ") e.preventDefault(); goTo(productRoute(product), { product }); } }}>
                   <div className="rd-product-media">
                     {product.tag && <span className={`tag ${product.tag === "New" ? "tag-new" : "tag-popular"}`}>{product.tag}</span>}
                     <FavoriteButton
@@ -257,7 +257,7 @@ const PRODUCTS_PAGE = () => {
           ) : (
             <div className="rd-product-list">
               {filteredProducts.map((product) => (
-                <article key={product.id || product.name} className={`rd-product-row ${product.category === "kitchen" ? "kitchen-product" : ""}`} role="link" tabIndex={0} aria-label={`View ${product.name}`} onClick={() => goTo(productRoute(product), { product })} onKeyDown={(e) => { if (e.target !== e.currentTarget) return; if (e.key === "Enter" || e.key === " ") { if (e.key === " ") e.preventDefault(); goTo(productRoute(product), { product }); } }}>
+                <article key={product.id || product.name} className={`rd-product-row ${product.category === "kitchen" && !product.fit ? "kitchen-product" : ""} ${product.fit === "contain" ? "studio-product" : ""}`} role="link" tabIndex={0} aria-label={`View ${product.name}`} onClick={() => goTo(productRoute(product), { product })} onKeyDown={(e) => { if (e.target !== e.currentTarget) return; if (e.key === "Enter" || e.key === " ") { if (e.key === " ") e.preventDefault(); goTo(productRoute(product), { product }); } }}>
                   <img src={product.img} alt={product.name} loading="lazy" decoding="async" />
                   <div>
                     <span className="rd-kicker fs">{product.collectionName || product.collection}</span>

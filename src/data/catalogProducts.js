@@ -4,6 +4,7 @@
 export const catalogProducts = [
   {
     "id": "apple",
+    "fit": "contain",
     "name": "Apple",
     "collection": "apple",
     "collectionName": "Apple",
@@ -49,6 +50,7 @@ export const catalogProducts = [
   },
   {
     "id": "ballerina-statue",
+    "fit": "contain",
     "name": "Ballerina Statue",
     "collection": "ballerina-statue",
     "collectionName": "Ballerina Statue",
@@ -67,6 +69,7 @@ export const catalogProducts = [
   },
   {
     "id": "brighton",
+    "fit": "contain",
     "name": "Brighton",
     "collection": "brighton",
     "collectionName": "Brighton",
@@ -85,6 +88,7 @@ export const catalogProducts = [
   },
   {
     "id": "buddha-antique-brown",
+    "fit": "contain",
     "name": "Buddha Antique Brown",
     "collection": "buddha-antique",
     "collectionName": "Buddha Antique",
@@ -103,6 +107,7 @@ export const catalogProducts = [
   },
   {
     "id": "buddha-antique-green",
+    "fit": "contain",
     "name": "Buddha Antique Green",
     "collection": "buddha-antique",
     "collectionName": "Buddha Antique",
@@ -121,6 +126,7 @@ export const catalogProducts = [
   },
   {
     "id": "buddha-head",
+    "fit": "contain",
     "name": "Buddha Head Brown",
     "collection": "buddha-head",
     "collectionName": "Buddha Head",
@@ -139,6 +145,7 @@ export const catalogProducts = [
   },
   {
     "id": "buddha-head-2",
+    "fit": "contain",
     "name": "Buddha Head Grey",
     "collection": "buddha-head",
     "collectionName": "Buddha Head",
@@ -157,6 +164,7 @@ export const catalogProducts = [
   },
   {
     "id": "buddha-statue-large",
+    "fit": "contain",
     "name": "Buddha Statue (Large)",
     "collection": "buddha-statue",
     "collectionName": "Buddha Statue",
@@ -175,6 +183,7 @@ export const catalogProducts = [
   },
   {
     "id": "buddha-statue-medium",
+    "fit": "contain",
     "name": "Buddha Statue (Medium)",
     "collection": "buddha-statue",
     "collectionName": "Buddha Statue",
@@ -193,6 +202,7 @@ export const catalogProducts = [
   },
   {
     "id": "buddha-statue-small",
+    "fit": "contain",
     "name": "Buddha Statue (Small)",
     "collection": "buddha-statue",
     "collectionName": "Buddha Statue",
@@ -211,6 +221,7 @@ export const catalogProducts = [
   },
   {
     "id": "bull-statue",
+    "fit": "wide",
     "name": "Bull Statue",
     "collection": "bull-statue",
     "collectionName": "Bull Statue",
@@ -229,6 +240,7 @@ export const catalogProducts = [
   },
   {
     "id": "cherry",
+    "fit": "contain",
     "name": "Cherry",
     "collection": "cherry",
     "collectionName": "Cherry",
@@ -248,6 +260,7 @@ export const catalogProducts = [
   },
   {
     "id": "complements-able",
+    "fit": "contain",
     "name": "COMPLEMENTS (Able)",
     "collection": "complements",
     "collectionName": "COMPLEMENTS",
@@ -266,6 +279,7 @@ export const catalogProducts = [
   },
   {
     "id": "complements-divano",
+    "fit": "contain",
     "name": "COMPLEMENTS (Divano)",
     "collection": "complements",
     "collectionName": "COMPLEMENTS",
@@ -286,6 +300,7 @@ export const catalogProducts = [
   },
   {
     "id": "delschen",
+    "fit": "contain",
     "name": "DELSCHEN",
     "collection": "delschen",
     "collectionName": "DELSCHEN",
@@ -311,6 +326,7 @@ export const catalogProducts = [
   },
   {
     "id": "diving-statue",
+    "fit": "wide",
     "name": "Diving Statue",
     "collection": "diving-statue",
     "collectionName": "Diving Statue",
@@ -329,6 +345,7 @@ export const catalogProducts = [
   },
   {
     "id": "dotty-long-chair",
+    "fit": "contain",
     "name": "DOTTY Long Chair",
     "collection": "dotty-long",
     "collectionName": "DOTTY Long",
@@ -347,6 +364,7 @@ export const catalogProducts = [
   },
   {
     "id": "dotty-love-seat",
+    "fit": "contain",
     "name": "DOTTY Love Seat",
     "collection": "dotty-love",
     "collectionName": "DOTTY Love",
@@ -365,6 +383,7 @@ export const catalogProducts = [
   },
   {
     "id": "dotty-medium",
+    "fit": "contain",
     "name": "DOTTY Medium",
     "collection": "dotty-medium",
     "collectionName": "DOTTY Medium",
@@ -383,6 +402,7 @@ export const catalogProducts = [
   },
   {
     "id": "dotty-round",
+    "fit": "contain",
     "name": "DOTTY Round",
     "collection": "dotty-round",
     "collectionName": "DOTTY Round",
@@ -401,6 +421,7 @@ export const catalogProducts = [
   },
   {
     "id": "dotty-small",
+    "fit": "contain",
     "name": "DOTTY Small",
     "collection": "dotty-small",
     "collectionName": "DOTTY Small",
@@ -419,6 +440,7 @@ export const catalogProducts = [
   },
   {
     "id": "dotty-sunbed",
+    "fit": "contain",
     "name": "DOTTY Sunbed",
     "collection": "dotty-sunbed",
     "collectionName": "DOTTY Sunbed",
@@ -437,6 +459,7 @@ export const catalogProducts = [
   },
   {
     "id": "dotty-xl",
+    "fit": "contain",
     "name": "DOTTY XL",
     "collection": "dotty-xl",
     "collectionName": "DOTTY XL",
@@ -455,6 +478,7 @@ export const catalogProducts = [
   },
   {
     "id": "double-cherry",
+    "fit": "contain",
     "name": "Double Cherry",
     "collection": "double-cherry",
     "collectionName": "Double Cherry",
@@ -474,6 +498,7 @@ export const catalogProducts = [
   },
   {
     "id": "ds-sphere-360",
+    "fit": "contain",
     "name": "DS Sphere 360",
     "collection": "ds-sphere",
     "collectionName": "DS Sphere",
@@ -493,6 +518,7 @@ export const catalogProducts = [
   },
   {
     "id": "ds-tall-cylinder",
+    "fit": "contain",
     "name": "DS Tall Cylinder",
     "collection": "ds-tall",
     "collectionName": "DS Tall",
@@ -530,6 +556,7 @@ export const catalogProducts = [
   },
   {
     "id": "georgetown",
+    "fit": "contain",
     "name": "Georgetown",
     "collection": "georgetown",
     "collectionName": "Georgetown",
@@ -548,6 +575,7 @@ export const catalogProducts = [
   },
   {
     "id": "harper",
+    "fit": "contain",
     "name": "Harper",
     "collection": "harper",
     "collectionName": "Harper",
@@ -566,6 +594,7 @@ export const catalogProducts = [
   },
   {
     "id": "hudson",
+    "fit": "contain",
     "name": "Hudson",
     "collection": "hudson",
     "collectionName": "Hudson",
@@ -584,6 +613,7 @@ export const catalogProducts = [
   },
   {
     "id": "laguna",
+    "fit": "contain",
     "name": "Laguna",
     "collection": "laguna",
     "collectionName": "Laguna",
@@ -602,6 +632,7 @@ export const catalogProducts = [
   },
   {
     "id": "marbella",
+    "fit": "contain",
     "name": "Marbella",
     "collection": "marbella",
     "collectionName": "Marbella",
@@ -620,6 +651,7 @@ export const catalogProducts = [
   },
   {
     "id": "meridian-turquoise",
+    "fit": "contain",
     "name": "Meridian",
     "collection": "meridian",
     "collectionName": "Meridian",
@@ -638,6 +670,7 @@ export const catalogProducts = [
   },
   {
     "id": "moai",
+    "fit": "contain",
     "name": "Moai Head",
     "collection": "moai-head",
     "collectionName": "Moai Head",
@@ -656,6 +689,7 @@ export const catalogProducts = [
   },
   {
     "id": "mushroom",
+    "fit": "contain",
     "name": "Mushroom",
     "collection": "mushroom",
     "collectionName": "Mushroom",
@@ -674,6 +708,7 @@ export const catalogProducts = [
   },
   {
     "id": "mustang-horse-statue",
+    "fit": "contain",
     "name": "Mustang Horse Statue",
     "collection": "mustang-horse",
     "collectionName": "Mustang Horse",
@@ -692,6 +727,7 @@ export const catalogProducts = [
   },
   {
     "id": "ora",
+    "fit": "contain",
     "name": "Ora",
     "collection": "ora",
     "collectionName": "Ora",
@@ -710,6 +746,7 @@ export const catalogProducts = [
   },
   {
     "id": "pedestal-square",
+    "fit": "contain",
     "name": "Pedestal Square",
     "collection": "pedestal-square",
     "collectionName": "Pedestal Square",
@@ -729,6 +766,7 @@ export const catalogProducts = [
   },
   {
     "id": "pig",
+    "fit": "contain",
     "name": "Pig",
     "collection": "pig",
     "collectionName": "Pig",
@@ -747,6 +785,7 @@ export const catalogProducts = [
   },
   {
     "id": "pot-oval",
+    "fit": "contain",
     "name": "Pot Oval",
     "collection": "pot-oval",
     "collectionName": "Pot Oval",
@@ -765,6 +804,7 @@ export const catalogProducts = [
   },
   {
     "id": "pot-prisma",
+    "fit": "contain",
     "name": "POT PRISMA",
     "collection": "pot-prisma",
     "collectionName": "POT PRISMA",
@@ -783,6 +823,7 @@ export const catalogProducts = [
   },
   {
     "id": "pot-rectangular",
+    "fit": "contain",
     "name": "POT RECTANGULAR",
     "collection": "pot-rectangular",
     "collectionName": "POT RECTANGULAR",
@@ -801,6 +842,7 @@ export const catalogProducts = [
   },
   {
     "id": "pot-round",
+    "fit": "wide",
     "name": "POT ROUND",
     "collection": "pot-round",
     "collectionName": "POT ROUND",
@@ -819,6 +861,7 @@ export const catalogProducts = [
   },
   {
     "id": "pot-round-2",
+    "fit": "contain",
     "name": "POT ROUND",
     "collection": "pot-round",
     "collectionName": "POT ROUND",
@@ -841,6 +884,7 @@ export const catalogProducts = [
   },
   {
     "id": "pot-round-3",
+    "fit": "contain",
     "name": "POT ROUND",
     "collection": "pot-round",
     "collectionName": "POT ROUND",
@@ -859,6 +903,7 @@ export const catalogProducts = [
   },
   {
     "id": "pot-round-4",
+    "fit": "contain",
     "name": "POT ROUND",
     "collection": "pot-round",
     "collectionName": "POT ROUND",
@@ -877,6 +922,7 @@ export const catalogProducts = [
   },
   {
     "id": "pot-round-low",
+    "fit": "contain",
     "name": "POT ROUND LOW",
     "collection": "pot-round",
     "collectionName": "POT ROUND",
@@ -896,6 +942,7 @@ export const catalogProducts = [
   },
   {
     "id": "pot-round-vertical-stripes",
+    "fit": "contain",
     "name": "POT ROUND VERTICAL STRIPES",
     "collection": "pot-round",
     "collectionName": "POT ROUND",
@@ -914,6 +961,7 @@ export const catalogProducts = [
   },
   {
     "id": "pot-square",
+    "fit": "contain",
     "name": "POT SQUARE",
     "collection": "pot-square",
     "collectionName": "POT SQUARE",
@@ -932,6 +980,7 @@ export const catalogProducts = [
   },
   {
     "id": "rylander",
+    "fit": "contain",
     "name": "Rylander",
     "collection": "rylander",
     "collectionName": "Rylander",
@@ -950,6 +999,7 @@ export const catalogProducts = [
   },
   {
     "id": "scorpion-pose-statue",
+    "fit": "contain",
     "name": "Scorpion Pose Statue",
     "collection": "scorpion-pose",
     "collectionName": "Scorpion Pose",
@@ -968,6 +1018,7 @@ export const catalogProducts = [
   },
   {
     "id": "squat-statue",
+    "fit": "contain",
     "name": "Squat Statue",
     "collection": "squat-statue",
     "collectionName": "Squat Statue",
@@ -986,6 +1037,7 @@ export const catalogProducts = [
   },
   {
     "id": "summer-quai-grey",
+    "fit": "contain",
     "name": "Summer Quai",
     "collection": "summer-quai",
     "collectionName": "Summer Quai",
@@ -1022,6 +1074,7 @@ export const catalogProducts = [
   },
   {
     "id": "walking-horse-statue",
+    "fit": "contain",
     "name": "Walking Horse Statue",
     "collection": "walking-horse",
     "collectionName": "Walking Horse",
@@ -1040,6 +1093,7 @@ export const catalogProducts = [
   },
   {
     "id": "zig-zag",
+    "fit": "contain",
     "name": "Zig Zag",
     "collection": "zig-zag",
     "collectionName": "Zig Zag",
@@ -1058,6 +1112,7 @@ export const catalogProducts = [
   },
   {
     "id": "antalya-dining-armchair",
+    "fit": "wide",
     "name": "Antalya Dining Armchair",
     "collection": "antalya-dining",
     "collectionName": "Antalya Dining",
@@ -1081,6 +1136,7 @@ export const catalogProducts = [
   },
   {
     "id": "bella-reclining-dining-set",
+    "fit": "wide",
     "name": "Bella Reclining Dining Set",
     "collection": "bella-reclining",
     "collectionName": "Bella Reclining",
@@ -1099,6 +1155,7 @@ export const catalogProducts = [
   },
   {
     "id": "bern",
+    "fit": "wide",
     "name": "Bern",
     "collection": "bern",
     "collectionName": "Bern",
@@ -1117,6 +1174,7 @@ export const catalogProducts = [
   },
   {
     "id": "bern-dining-armchair",
+    "fit": "wide",
     "name": "Bern Dining Armchair",
     "collection": "bern-dining",
     "collectionName": "Bern Dining",
@@ -1140,6 +1198,7 @@ export const catalogProducts = [
   },
   {
     "id": "conrad-side-table",
+    "fit": "wide",
     "name": "Conrad Side Table",
     "collection": "conrad-side",
     "collectionName": "Conrad Side",
@@ -1159,6 +1218,7 @@ export const catalogProducts = [
   },
   {
     "id": "cuba-able",
+    "fit": "contain",
     "name": "CUBA (Able)",
     "collection": "cuba",
     "collectionName": "CUBA",
@@ -1177,6 +1237,7 @@ export const catalogProducts = [
   },
   {
     "id": "cuba-deka",
+    "fit": "wide",
     "name": "CUBA (Deka)",
     "collection": "cuba",
     "collectionName": "CUBA",
@@ -1196,6 +1257,7 @@ export const catalogProducts = [
   },
   {
     "id": "dining-chair-pietra",
+    "fit": "wide",
     "name": "Dining + Chair Pietra",
     "collection": "dining",
     "collectionName": "Dining +",
@@ -1216,6 +1278,7 @@ export const catalogProducts = [
   },
   {
     "id": "dining-pietra",
+    "fit": "wide",
     "name": "Dining Pietra",
     "collection": "dining-pietra",
     "collectionName": "Dining Pietra",
@@ -1235,6 +1298,7 @@ export const catalogProducts = [
   },
   {
     "id": "florence-able",
+    "fit": "contain",
     "name": "FLORENCE (Able)",
     "collection": "florence",
     "collectionName": "FLORENCE",
@@ -1253,6 +1317,7 @@ export const catalogProducts = [
   },
   {
     "id": "florida-dining",
+    "fit": "contain",
     "name": "Florida Dining",
     "collection": "florida-dining",
     "collectionName": "Florida Dining",
@@ -1271,6 +1336,7 @@ export const catalogProducts = [
   },
   {
     "id": "florida-dining-armchair",
+    "fit": "contain",
     "name": "Florida Dining Armchair",
     "collection": "florida-dining",
     "collectionName": "Florida Dining",
@@ -1289,6 +1355,7 @@ export const catalogProducts = [
   },
   {
     "id": "florida-dining-set",
+    "fit": "wide",
     "name": "Florida Dining Set",
     "collection": "florida-dining",
     "collectionName": "Florida Dining",
@@ -1307,6 +1374,7 @@ export const catalogProducts = [
   },
   {
     "id": "florida-dining-table-with-miami-dining-armchairs",
+    "fit": "wide",
     "name": "Florida Dining Table with Miami Dining Armchairs",
     "collection": "florida-dining",
     "collectionName": "Florida Dining",
@@ -1326,6 +1394,7 @@ export const catalogProducts = [
   },
   {
     "id": "florida-dining-table-with-orlando-dining-armchairs",
+    "fit": "wide",
     "name": "Florida Dining Table with Orlando Dining Armchairs",
     "collection": "florida-dining",
     "collectionName": "Florida Dining",
@@ -1344,6 +1413,7 @@ export const catalogProducts = [
   },
   {
     "id": "jamaica-slim-able",
+    "fit": "contain",
     "name": "JAMAICA SLIM (Able)",
     "collection": "jamaica-slim",
     "collectionName": "JAMAICA SLIM",
@@ -1363,6 +1433,7 @@ export const catalogProducts = [
   },
   {
     "id": "lagos-able",
+    "fit": "contain",
     "name": "LAGOS (Able)",
     "collection": "lagos",
     "collectionName": "LAGOS",
@@ -1386,6 +1457,7 @@ export const catalogProducts = [
   },
   {
     "id": "laguna-dining",
+    "fit": "contain",
     "name": "Laguna Dining",
     "collection": "laguna-dining",
     "collectionName": "Laguna Dining",
@@ -1404,6 +1476,7 @@ export const catalogProducts = [
   },
   {
     "id": "laguna-dining-reno-armchair",
+    "fit": "wide",
     "name": "Laguna Dining + Reno Armchair",
     "collection": "laguna-dining",
     "collectionName": "Laguna Dining",
@@ -1422,6 +1495,7 @@ export const catalogProducts = [
   },
   {
     "id": "laguna-dining-chair",
+    "fit": "contain",
     "name": "Laguna Dining Chair",
     "collection": "laguna-dining",
     "collectionName": "Laguna Dining",
@@ -1440,6 +1514,7 @@ export const catalogProducts = [
   },
   {
     "id": "laguna-dining-set",
+    "fit": "wide",
     "name": "Laguna Dining Set",
     "collection": "laguna-dining",
     "collectionName": "Laguna Dining",
@@ -1458,6 +1533,7 @@ export const catalogProducts = [
   },
   {
     "id": "laguna-dining-table-with-miami-dining-armchairs",
+    "fit": "wide",
     "name": "Laguna Dining Table with Miami Dining Armchairs",
     "collection": "laguna-dining",
     "collectionName": "Laguna Dining",
@@ -1476,6 +1552,7 @@ export const catalogProducts = [
   },
   {
     "id": "lisbon-dining-armchair",
+    "fit": "wide",
     "name": "Lisbon Dining Armchair",
     "collection": "lisbon-dining",
     "collectionName": "Lisbon Dining",
@@ -1501,6 +1578,7 @@ export const catalogProducts = [
   },
   {
     "id": "lisbon-dining",
+    "fit": "wide",
     "name": "Lisbon Dining Table",
     "collection": "lisbon-dining",
     "collectionName": "Lisbon Dining",
@@ -1526,6 +1604,7 @@ export const catalogProducts = [
   },
   {
     "id": "lisbon-dining-table-lisbon-armchair",
+    "fit": "wide",
     "name": "Lisbon Dining Table + Lisbon Armchair",
     "collection": "lisbon-dining",
     "collectionName": "Lisbon Dining",
@@ -1544,6 +1623,7 @@ export const catalogProducts = [
   },
   {
     "id": "lyon-dining-armchair",
+    "fit": "wide",
     "name": "Lyon Dining Armchair",
     "collection": "lyon-dining",
     "collectionName": "Lyon Dining",
@@ -1569,6 +1649,7 @@ export const catalogProducts = [
   },
   {
     "id": "madrid-dining-armchair",
+    "fit": "wide",
     "name": "Madrid Dining Armchair",
     "collection": "madrid-dining",
     "collectionName": "Madrid Dining",
@@ -1594,6 +1675,7 @@ export const catalogProducts = [
   },
   {
     "id": "miami-dining-chair",
+    "fit": "contain",
     "name": "Miami Dining Chair",
     "collection": "miami-dining",
     "collectionName": "Miami Dining",
@@ -1613,6 +1695,7 @@ export const catalogProducts = [
   },
   {
     "id": "monaco-side-table",
+    "fit": "wide",
     "name": "Monaco Side Table",
     "collection": "monaco-side",
     "collectionName": "Monaco Side",
@@ -1631,6 +1714,7 @@ export const catalogProducts = [
   },
   {
     "id": "monza-able",
+    "fit": "contain",
     "name": "MONZA (Able)",
     "collection": "monza",
     "collectionName": "MONZA",
@@ -1650,6 +1734,7 @@ export const catalogProducts = [
   },
   {
     "id": "munich-table",
+    "fit": "contain",
     "name": "Munich Dining Table",
     "collection": "munich-dining",
     "collectionName": "Munich Dining",
@@ -1671,6 +1756,7 @@ export const catalogProducts = [
   },
   {
     "id": "munich-dining-table-with-reno-dining-armchairs",
+    "fit": "wide",
     "name": "Munich Dining Table with Reno Dining Armchairs",
     "collection": "munich-dining",
     "collectionName": "Munich Dining",
@@ -1689,6 +1775,7 @@ export const catalogProducts = [
   },
   {
     "id": "naples",
+    "fit": "wide",
     "name": "Naples",
     "collection": "naples",
     "collectionName": "Naples",
@@ -1707,6 +1794,7 @@ export const catalogProducts = [
   },
   {
     "id": "oporto-dining-armchair",
+    "fit": "wide",
     "name": "Oporto Dining Armchair",
     "collection": "oporto-dining",
     "collectionName": "Oporto Dining",
@@ -1732,6 +1820,7 @@ export const catalogProducts = [
   },
   {
     "id": "orland-dining-set",
+    "fit": "wide",
     "name": "Orland Dining Set",
     "collection": "orland-dining",
     "collectionName": "Orland Dining",
@@ -1750,6 +1839,7 @@ export const catalogProducts = [
   },
   {
     "id": "orlando-dining-armchair",
+    "fit": "contain",
     "name": "Orlando Dining Armchair",
     "collection": "orlando-dining",
     "collectionName": "Orlando Dining",
@@ -1773,6 +1863,7 @@ export const catalogProducts = [
   },
   {
     "id": "pietra-dining-armchair",
+    "fit": "wide",
     "name": "Pietra Dining Armchair",
     "collection": "pietra-dining",
     "collectionName": "Pietra Dining",
@@ -1798,6 +1889,7 @@ export const catalogProducts = [
   },
   {
     "id": "pietra-dining-chair",
+    "fit": "wide",
     "name": "Pietra Dining Chair",
     "collection": "pietra-dining",
     "collectionName": "Pietra Dining",
@@ -1823,6 +1915,7 @@ export const catalogProducts = [
   },
   {
     "id": "reno-dining-chair",
+    "fit": "contain",
     "name": "Reno Dining Chair",
     "collection": "reno-dining",
     "collectionName": "Reno Dining",
@@ -1842,6 +1935,7 @@ export const catalogProducts = [
   },
   {
     "id": "saint-john-able",
+    "fit": "contain",
     "name": "SAINT JOHN (Able)",
     "collection": "saint-john",
     "collectionName": "SAINT JOHN",
@@ -1861,6 +1955,7 @@ export const catalogProducts = [
   },
   {
     "id": "san-remo-able",
+    "fit": "contain",
     "name": "SAN REMO (Able)",
     "collection": "san-remo",
     "collectionName": "SAN REMO",
@@ -1880,6 +1975,7 @@ export const catalogProducts = [
   },
   {
     "id": "side-table-tray",
+    "fit": "wide",
     "name": "Side Table Tray",
     "collection": "side-table",
     "collectionName": "Side Table",
@@ -1905,6 +2001,7 @@ export const catalogProducts = [
   },
   {
     "id": "st-martin-able",
+    "fit": "contain",
     "name": "ST MARTIN (Able)",
     "collection": "st-martin",
     "collectionName": "ST MARTIN",
@@ -1928,6 +2025,7 @@ export const catalogProducts = [
   },
   {
     "id": "st-tropez-high-side-table",
+    "fit": "wide",
     "name": "ST Tropez High Side Table",
     "collection": "st-tropez",
     "collectionName": "ST Tropez",
@@ -1947,6 +2045,7 @@ export const catalogProducts = [
   },
   {
     "id": "st-tropez-low-side-table",
+    "fit": "wide",
     "name": "ST Tropez Low Side Table",
     "collection": "st-tropez",
     "collectionName": "ST Tropez",
@@ -1965,6 +2064,7 @@ export const catalogProducts = [
   },
   {
     "id": "torino-able",
+    "fit": "contain",
     "name": "TORINO (Able)",
     "collection": "torino",
     "collectionName": "TORINO",
@@ -1985,6 +2085,7 @@ export const catalogProducts = [
   },
   {
     "id": "u-shaped-side-table",
+    "fit": "wide",
     "name": "U-Shaped Side Table",
     "collection": "u-shaped-side",
     "collectionName": "U-Shaped Side",
@@ -2004,6 +2105,7 @@ export const catalogProducts = [
   },
   {
     "id": "venice-able",
+    "fit": "contain",
     "name": "VENICE (Able)",
     "collection": "venice",
     "collectionName": "VENICE",
@@ -2028,6 +2130,7 @@ export const catalogProducts = [
   },
   {
     "id": "vicenza-able",
+    "fit": "contain",
     "name": "VICENZA (Able)",
     "collection": "vicenza",
     "collectionName": "VICENZA",
@@ -2050,6 +2153,7 @@ export const catalogProducts = [
   },
   {
     "id": "zanzibar-2",
+    "fit": "contain",
     "name": "Zanzibar",
     "collection": "zanzibar",
     "collectionName": "Zanzibar",
@@ -2068,6 +2172,7 @@ export const catalogProducts = [
   },
   {
     "id": "zanzibar-dining-armchair",
+    "fit": "wide",
     "name": "Zanzibar Dining Armchair",
     "collection": "zanzibar-dining",
     "collectionName": "Zanzibar Dining",
@@ -2093,6 +2198,7 @@ export const catalogProducts = [
   },
   {
     "id": "zanzibar-dinning",
+    "fit": "wide",
     "name": "Zanzibar Dinning",
     "collection": "zanzibar-dinning",
     "collectionName": "Zanzibar Dinning",
@@ -2113,6 +2219,7 @@ export const catalogProducts = [
   },
   {
     "id": "46cm-bar-caddy",
+    "fit": "contain",
     "name": "46cm Bar Caddy",
     "collection": "bull",
     "collectionName": "Bull",
@@ -2131,6 +2238,7 @@ export const catalogProducts = [
   },
   {
     "id": "bull-bison-charcoal-barbecue-cart",
+    "fit": "contain",
     "name": "Bull Bison Charcoal Barbecue Cart",
     "collection": "bull",
     "collectionName": "Bull",
@@ -2151,6 +2259,7 @@ export const catalogProducts = [
   },
   {
     "id": "bull-extra-large-pizza-oven-cart",
+    "fit": "contain",
     "name": "BULL Extra Large Pizza Oven & Cart",
     "collection": "bull",
     "collectionName": "Bull",
@@ -2169,6 +2278,7 @@ export const catalogProducts = [
   },
   {
     "id": "bull-large-gas-pizza-oven-cart",
+    "fit": "contain",
     "name": "BULL Large Gas Pizza Oven & Cart",
     "collection": "bull",
     "collectionName": "Bull",
@@ -2187,6 +2297,7 @@ export const catalogProducts = [
   },
   {
     "id": "bull-large-pizza-oven-cart",
+    "fit": "contain",
     "name": "BULL Large Pizza Oven & Cart",
     "collection": "bull",
     "collectionName": "Bull",
@@ -2205,6 +2316,7 @@ export const catalogProducts = [
   },
   {
     "id": "bull-master-q-outdoor-kitchen-island",
+    "fit": "contain",
     "name": "Bull Master - Q Outdoor Kitchen Island",
     "collection": "bull",
     "collectionName": "Bull",
@@ -2230,6 +2342,7 @@ export const catalogProducts = [
   },
   {
     "id": "bull-outdoor-kitchen-island",
+    "fit": "contain",
     "name": "Bull Outdoor Kitchen Island",
     "collection": "bull",
     "collectionName": "Bull",
@@ -2255,6 +2368,7 @@ export const catalogProducts = [
   },
   {
     "id": "bull-plancha-commercial-griddle-gas-barbecue-cart",
+    "fit": "contain",
     "name": "Bull Plancha Commercial Griddle Gas Barbecue Cart",
     "collection": "bull",
     "collectionName": "Bull",
@@ -2274,6 +2388,7 @@ export const catalogProducts = [
   },
   {
     "id": "bull-power-q-outdoor-kitchen-island",
+    "fit": "contain",
     "name": "Bull Power - Q Outdoor Kitchen Island",
     "collection": "bull",
     "collectionName": "Bull",
@@ -2299,6 +2414,7 @@ export const catalogProducts = [
   },
   {
     "id": "bull-power-bbq-outdoor-kitchen-island",
+    "fit": "contain",
     "name": "Bull Power BBQ Outdoor Kitchen Island",
     "collection": "bull",
     "collectionName": "Bull",
@@ -2324,6 +2440,7 @@ export const catalogProducts = [
   },
   {
     "id": "bull-power-q-raised-bar",
+    "fit": "contain",
     "name": "Bull Power-Q Raised Bar",
     "collection": "bull",
     "collectionName": "Bull",
@@ -2349,6 +2466,7 @@ export const catalogProducts = [
   },
   {
     "id": "bull-rodeo-q-outdoor-kitchen-island",
+    "fit": "contain",
     "name": "Bull Rodeo - Q Outdoor Kitchen Island",
     "collection": "bull",
     "collectionName": "Bull",
@@ -2374,6 +2492,7 @@ export const catalogProducts = [
   },
   {
     "id": "bull-steer-3-burner-gas-barbecue-cart",
+    "fit": "contain",
     "name": "Bull Steer 3 Burner Gas Barbecue Cart",
     "collection": "bull",
     "collectionName": "Bull",
@@ -2396,6 +2515,7 @@ export const catalogProducts = [
   },
   {
     "id": "drop-in-stainless-steel-side-burner",
+    "fit": "contain",
     "name": "Drop-In Stainless Steel Side Burner",
     "collection": "bull",
     "collectionName": "Bull",
@@ -2415,6 +2535,7 @@ export const catalogProducts = [
   },
   {
     "id": "power-burner",
+    "fit": "contain",
     "name": "Power Burner",
     "collection": "bull",
     "collectionName": "Bull",
@@ -2433,6 +2554,7 @@ export const catalogProducts = [
   },
   {
     "id": "refrigerator-stainless-steel-front-panel",
+    "fit": "contain",
     "name": "Refrigerator - Stainless Steel Front Panel",
     "collection": "bull",
     "collectionName": "Bull",
@@ -2452,6 +2574,7 @@ export const catalogProducts = [
   },
   {
     "id": "searing-station-slide-in-design",
+    "fit": "contain",
     "name": "Searing Station: Slide in Design",
     "collection": "bull",
     "collectionName": "Bull",
@@ -2470,6 +2593,7 @@ export const catalogProducts = [
   },
   {
     "id": "slide-in-double-side-burner",
+    "fit": "contain",
     "name": "Slide-In Double Side Burner",
     "collection": "bull",
     "collectionName": "Bull",
@@ -2488,6 +2612,7 @@ export const catalogProducts = [
   },
   {
     "id": "antigua-xl-lounge",
+    "fit": "wide",
     "name": "Antigua Corner Sofa",
     "collection": "antigua-corner",
     "collectionName": "Antigua Corner",
@@ -2513,6 +2638,7 @@ export const catalogProducts = [
   },
   {
     "id": "antigua-lounge",
+    "fit": "wide",
     "name": "Antigua Sofa Set",
     "collection": "antigua-sofa",
     "collectionName": "Antigua Sofa",
@@ -2538,6 +2664,7 @@ export const catalogProducts = [
   },
   {
     "id": "armona-lounge",
+    "fit": "wide",
     "name": "Armona Lounge",
     "collection": "armona-lounge",
     "collectionName": "Armona Lounge",
@@ -2562,6 +2689,7 @@ export const catalogProducts = [
   },
   {
     "id": "aruba-s-lounge",
+    "fit": "wide",
     "name": "Aruba S Lounge",
     "collection": "aruba-s",
     "collectionName": "Aruba S",
@@ -2582,6 +2710,7 @@ export const catalogProducts = [
   },
   {
     "id": "bali-lounge-2",
+    "fit": "wide",
     "name": "Bali Lounge Armchair & Footstool",
     "collection": "bali-lounge",
     "collectionName": "Bali Lounge",
@@ -2607,6 +2736,7 @@ export const catalogProducts = [
   },
   {
     "id": "barcelona-able",
+    "fit": "contain",
     "name": "BARCELONA (Able)",
     "collection": "barcelona",
     "collectionName": "BARCELONA",
@@ -2627,6 +2757,7 @@ export const catalogProducts = [
   },
   {
     "id": "bella-reclining-sofa-set",
+    "fit": "wide",
     "name": "Bella Reclining Sofa Set",
     "collection": "bella-reclining",
     "collectionName": "Bella Reclining",
@@ -2645,6 +2776,7 @@ export const catalogProducts = [
   },
   {
     "id": "bella-reclining-sofa-set-dining-set",
+    "fit": "wide",
     "name": "Bella Reclining Sofa Set with Ajustable Coffee Table",
     "collection": "bella-reclining",
     "collectionName": "Bella Reclining",
@@ -2663,6 +2795,7 @@ export const catalogProducts = [
   },
   {
     "id": "berlin",
+    "fit": "wide",
     "name": "Berlin",
     "collection": "berlin",
     "collectionName": "Berlin",
@@ -2688,6 +2821,7 @@ export const catalogProducts = [
   },
   {
     "id": "berlin-modular-sofa",
+    "fit": "wide",
     "name": "Berlin Modular Sofa",
     "collection": "berlin-modular",
     "collectionName": "Berlin Modular",
@@ -2709,6 +2843,7 @@ export const catalogProducts = [
   },
   {
     "id": "bermuda-divano",
+    "fit": "wide",
     "name": "BERMUDA (Divano)",
     "collection": "bermuda",
     "collectionName": "BERMUDA",
@@ -2733,6 +2868,7 @@ export const catalogProducts = [
   },
   {
     "id": "bonaire-able",
+    "fit": "contain",
     "name": "BONAIRE (Able)",
     "collection": "bonaire",
     "collectionName": "BONAIRE",
@@ -2758,6 +2894,7 @@ export const catalogProducts = [
   },
   {
     "id": "bora-bora-divano",
+    "fit": "wide",
     "name": "BORA BORA (Divano)",
     "collection": "bora-bora",
     "collectionName": "BORA BORA",
@@ -2780,6 +2917,7 @@ export const catalogProducts = [
   },
   {
     "id": "bora-bora-bar-set",
+    "fit": "wide",
     "name": "Bora Bora Bar Set",
     "collection": "bora-bora",
     "collectionName": "Bora Bora",
@@ -2801,6 +2939,7 @@ export const catalogProducts = [
   },
   {
     "id": "bora-bora-slim",
+    "fit": "wide",
     "name": "Bora Bora Slim Bar",
     "collection": "bora-bora",
     "collectionName": "Bora Bora",
@@ -2824,6 +2963,7 @@ export const catalogProducts = [
   },
   {
     "id": "cairo-sofa-set",
+    "fit": "contain",
     "name": "Cairo Sofa Set",
     "collection": "cairo-sofa",
     "collectionName": "Cairo Sofa",
@@ -2842,6 +2982,7 @@ export const catalogProducts = [
   },
   {
     "id": "dakkar",
+    "fit": "wide",
     "name": "Dakkar",
     "collection": "dakkar",
     "collectionName": "Dakkar",
@@ -2860,6 +3001,7 @@ export const catalogProducts = [
   },
   {
     "id": "dijon",
+    "fit": "contain",
     "name": "Dijon",
     "collection": "dijon",
     "collectionName": "Dijon",
@@ -2878,6 +3020,7 @@ export const catalogProducts = [
   },
   {
     "id": "dunbar-lounge",
+    "fit": "wide",
     "name": "Dunbar Lounge",
     "collection": "dunbar-lounge",
     "collectionName": "Dunbar Lounge",
@@ -2900,6 +3043,7 @@ export const catalogProducts = [
   },
   {
     "id": "fiji-divano",
+    "fit": "wide",
     "name": "FIJI (Divano)",
     "collection": "fiji",
     "collectionName": "FIJI",
@@ -2923,6 +3067,7 @@ export const catalogProducts = [
   },
   {
     "id": "hawaii-able",
+    "fit": "contain",
     "name": "HAWAII (Able)",
     "collection": "hawaii",
     "collectionName": "HAWAII",
@@ -2942,6 +3087,7 @@ export const catalogProducts = [
   },
   {
     "id": "ibiza-able",
+    "fit": "contain",
     "name": "IBIZA (Able)",
     "collection": "ibiza",
     "collectionName": "IBIZA",
@@ -2963,6 +3109,7 @@ export const catalogProducts = [
   },
   {
     "id": "ibiza-divano",
+    "fit": "wide",
     "name": "IBIZA (Divano)",
     "collection": "ibiza",
     "collectionName": "IBIZA",
@@ -2987,6 +3134,7 @@ export const catalogProducts = [
   },
   {
     "id": "imperia-divano",
+    "fit": "wide",
     "name": "IMPERIA (Divano)",
     "collection": "imperia",
     "collectionName": "IMPERIA",
@@ -3010,6 +3158,7 @@ export const catalogProducts = [
   },
   {
     "id": "la-spezia-able",
+    "fit": "contain",
     "name": "LA SPEZIA (Able)",
     "collection": "la-spezia",
     "collectionName": "LA SPEZIA",
@@ -3028,6 +3177,7 @@ export const catalogProducts = [
   },
   {
     "id": "luanda-2",
+    "fit": "wide",
     "name": "Luanda",
     "collection": "luanda",
     "collectionName": "Luanda",
@@ -3046,6 +3196,7 @@ export const catalogProducts = [
   },
   {
     "id": "luanda",
+    "fit": "wide",
     "name": "Luanda Lounge",
     "collection": "luanda-lounge",
     "collectionName": "Luanda Lounge",
@@ -3070,6 +3221,7 @@ export const catalogProducts = [
   },
   {
     "id": "macau-lounge",
+    "fit": "wide",
     "name": "Macau Lounge",
     "collection": "macau-lounge",
     "collectionName": "Macau Lounge",
@@ -3095,6 +3247,7 @@ export const catalogProducts = [
   },
   {
     "id": "manila",
+    "fit": "contain",
     "name": "Manila",
     "collection": "manila",
     "collectionName": "Manila",
@@ -3113,6 +3266,7 @@ export const catalogProducts = [
   },
   {
     "id": "maya-divano",
+    "fit": "wide",
     "name": "MAYA (Divano)",
     "collection": "maya",
     "collectionName": "MAYA",
@@ -3135,6 +3289,7 @@ export const catalogProducts = [
   },
   {
     "id": "miami-sofa-set",
+    "fit": "wide",
     "name": "Miami Sofa Set",
     "collection": "miami-sofa",
     "collectionName": "Miami Sofa",
@@ -3153,6 +3308,7 @@ export const catalogProducts = [
   },
   {
     "id": "monaco-able",
+    "fit": "contain",
     "name": "MONACO (Able)",
     "collection": "monaco",
     "collectionName": "MONACO",
@@ -3176,6 +3332,7 @@ export const catalogProducts = [
   },
   {
     "id": "newport",
+    "fit": "wide",
     "name": "Newport",
     "collection": "newport",
     "collectionName": "Newport",
@@ -3194,6 +3351,7 @@ export const catalogProducts = [
   },
   {
     "id": "oporto-bar",
+    "fit": "wide",
     "name": "Oporto Bar",
     "collection": "oporto-bar",
     "collectionName": "Oporto Bar",
@@ -3219,6 +3377,7 @@ export const catalogProducts = [
   },
   {
     "id": "oporto-bar-armchair",
+    "fit": "wide",
     "name": "Oporto Bar Armchair",
     "collection": "oporto-bar",
     "collectionName": "Oporto Bar",
@@ -3241,6 +3400,7 @@ export const catalogProducts = [
   },
   {
     "id": "oxford-2",
+    "fit": "wide",
     "name": "Oxford",
     "collection": "oxford",
     "collectionName": "Oxford",
@@ -3259,6 +3419,7 @@ export const catalogProducts = [
   },
   {
     "id": "oxford-modular-sofa",
+    "fit": "contain",
     "name": "Oxford Modular Sofa",
     "collection": "oxford-modular",
     "collectionName": "Oxford Modular",
@@ -3277,6 +3438,7 @@ export const catalogProducts = [
   },
   {
     "id": "palma-divano",
+    "fit": "wide",
     "name": "PALMA (Divano)",
     "collection": "palma",
     "collectionName": "PALMA",
@@ -3296,6 +3458,7 @@ export const catalogProducts = [
   },
   {
     "id": "reno-2",
+    "fit": "wide",
     "name": "Reno",
     "collection": "reno",
     "collectionName": "Reno",
@@ -3314,6 +3477,7 @@ export const catalogProducts = [
   },
   {
     "id": "reno-balcony-set",
+    "fit": "wide",
     "name": "Reno Balcony Set",
     "collection": "reno-balcony",
     "collectionName": "Reno Balcony",
@@ -3334,6 +3498,7 @@ export const catalogProducts = [
   },
   {
     "id": "reno-sofa-set",
+    "fit": "wide",
     "name": "Reno Sofa Set",
     "collection": "reno-sofa",
     "collectionName": "Reno Sofa",
@@ -3356,6 +3521,7 @@ export const catalogProducts = [
   },
   {
     "id": "riviera-able",
+    "fit": "contain",
     "name": "RIVIERA (Able)",
     "collection": "riviera",
     "collectionName": "RIVIERA",
@@ -3374,6 +3540,7 @@ export const catalogProducts = [
   },
   {
     "id": "saint-tropez-balcony-set",
+    "fit": "wide",
     "name": "Saint Tropez Balcony Set",
     "collection": "saint-tropez",
     "collectionName": "Saint Tropez",
@@ -3393,6 +3560,7 @@ export const catalogProducts = [
   },
   {
     "id": "santorini-lounge",
+    "fit": "wide",
     "name": "Santorini Lounge",
     "collection": "santorini-lounge",
     "collectionName": "Santorini Lounge",
@@ -3418,6 +3586,7 @@ export const catalogProducts = [
   },
   {
     "id": "seville",
+    "fit": "wide",
     "name": "Seville Lounge Armchair & Footstool",
     "collection": "seville-lounge",
     "collectionName": "Seville Lounge",
@@ -3441,6 +3610,7 @@ export const catalogProducts = [
   },
   {
     "id": "sophia-able",
+    "fit": "contain",
     "name": "SOPHIA (Able)",
     "collection": "sophia",
     "collectionName": "SOPHIA",
@@ -3459,6 +3629,7 @@ export const catalogProducts = [
   },
   {
     "id": "tahiti-2",
+    "fit": "wide",
     "name": "Tahiti",
     "collection": "tahiti",
     "collectionName": "Tahiti",
@@ -3477,6 +3648,7 @@ export const catalogProducts = [
   },
   {
     "id": "tokyo-lounge",
+    "fit": "wide",
     "name": "Tokyo Lounge",
     "collection": "tokyo-lounge",
     "collectionName": "Tokyo Lounge",
@@ -3502,6 +3674,7 @@ export const catalogProducts = [
   },
   {
     "id": "versailles-lounge",
+    "fit": "wide",
     "name": "Versailles Lounge",
     "collection": "versailles-lounge",
     "collectionName": "Versailles Lounge",
@@ -3524,6 +3697,7 @@ export const catalogProducts = [
   },
   {
     "id": "zagreb",
+    "fit": "wide",
     "name": "Zagreb",
     "collection": "zagreb",
     "collectionName": "Zagreb",
@@ -3547,6 +3721,7 @@ export const catalogProducts = [
   },
   {
     "id": "aura-by-glatz",
+    "fit": "wide",
     "name": "AURA® by GLATZ",
     "collection": "aura-by",
     "collectionName": "AURA® by",
@@ -3565,6 +3740,7 @@ export const catalogProducts = [
   },
   {
     "id": "b-cube-classic",
+    "fit": "wide",
     "name": "B CUBE CLASSIC",
     "collection": "b-cube",
     "collectionName": "B CUBE",
@@ -3585,6 +3761,7 @@ export const catalogProducts = [
   },
   {
     "id": "b-cube-freedom",
+    "fit": "wide",
     "name": "B CUBE FREEDOM",
     "collection": "b-cube",
     "collectionName": "B CUBE",
@@ -3605,6 +3782,7 @@ export const catalogProducts = [
   },
   {
     "id": "b-cube-infinity",
+    "fit": "wide",
     "name": "B CUBE INFINITY",
     "collection": "b-cube",
     "collectionName": "B CUBE",
@@ -3625,6 +3803,7 @@ export const catalogProducts = [
   },
   {
     "id": "b-cube-urban",
+    "fit": "wide",
     "name": "B CUBE URBAN",
     "collection": "b-cube",
     "collectionName": "B CUBE",
@@ -3645,6 +3824,7 @@ export const catalogProducts = [
   },
   {
     "id": "falcate-quercus-minima",
+    "fit": "wide",
     "name": "FALCATE QUERCUS MINIMA",
     "collection": "falcate-quercus",
     "collectionName": "FALCATE QUERCUS",
@@ -3665,6 +3845,7 @@ export const catalogProducts = [
   },
   {
     "id": "falcate-r1",
+    "fit": "wide",
     "name": "FALCATE R1",
     "collection": "falcate-r1",
     "collectionName": "FALCATE R1",
@@ -3685,6 +3866,7 @@ export const catalogProducts = [
   },
   {
     "id": "falcate-r2",
+    "fit": "wide",
     "name": "FALCATE R2",
     "collection": "falcate-r2",
     "collectionName": "FALCATE R2",
@@ -3705,6 +3887,7 @@ export const catalogProducts = [
   },
   {
     "id": "falcate-r3",
+    "fit": "wide",
     "name": "FALCATE R3",
     "collection": "falcate-r3",
     "collectionName": "FALCATE R3",
@@ -3725,6 +3908,7 @@ export const catalogProducts = [
   },
   {
     "id": "falcate-r4",
+    "fit": "wide",
     "name": "FALCATE R4",
     "collection": "falcate-r4",
     "collectionName": "FALCATE R4",
@@ -3745,6 +3929,7 @@ export const catalogProducts = [
   },
   {
     "id": "falcate-r5",
+    "fit": "wide",
     "name": "FALCATE R5",
     "collection": "falcate-r5",
     "collectionName": "FALCATE R5",
@@ -3765,6 +3950,7 @@ export const catalogProducts = [
   },
   {
     "id": "falcate-r6",
+    "fit": "wide",
     "name": "FALCATE R6",
     "collection": "falcate-r6",
     "collectionName": "FALCATE R6",
@@ -3785,6 +3971,7 @@ export const catalogProducts = [
   },
   {
     "id": "falcate-tectona",
+    "fit": "wide",
     "name": "FALCATE TECTONA",
     "collection": "falcate-tectona",
     "collectionName": "FALCATE TECTONA",
@@ -3805,6 +3992,7 @@ export const catalogProducts = [
   },
   {
     "id": "subulate-quercus-minima-2",
+    "fit": "wide",
     "name": "SUBULATE QUERCUS MINIMA",
     "collection": "subulate-quercus",
     "collectionName": "SUBULATE QUERCUS",
@@ -3825,6 +4013,7 @@ export const catalogProducts = [
   },
   {
     "id": "subulate-r1",
+    "fit": "wide",
     "name": "SUBULATE R1",
     "collection": "subulate-r1",
     "collectionName": "SUBULATE R1",
@@ -3845,6 +4034,7 @@ export const catalogProducts = [
   },
   {
     "id": "subulate-r2",
+    "fit": "wide",
     "name": "SUBULATE R2",
     "collection": "subulate-r2",
     "collectionName": "SUBULATE R2",
@@ -3865,6 +4055,7 @@ export const catalogProducts = [
   },
   {
     "id": "subulate-r3",
+    "fit": "wide",
     "name": "SUBULATE R3",
     "collection": "subulate-r3",
     "collectionName": "SUBULATE R3",
@@ -3885,6 +4076,7 @@ export const catalogProducts = [
   },
   {
     "id": "subulate-r4",
+    "fit": "wide",
     "name": "SUBULATE R4",
     "collection": "subulate-r4",
     "collectionName": "SUBULATE R4",
@@ -3905,6 +4097,7 @@ export const catalogProducts = [
   },
   {
     "id": "subulate-r5",
+    "fit": "wide",
     "name": "SUBULATE R5",
     "collection": "subulate-r5",
     "collectionName": "SUBULATE R5",
@@ -3925,6 +4118,7 @@ export const catalogProducts = [
   },
   {
     "id": "subulate-r6",
+    "fit": "wide",
     "name": "SUBULATE R6",
     "collection": "subulate-r6",
     "collectionName": "SUBULATE R6",
@@ -3945,6 +4139,7 @@ export const catalogProducts = [
   },
   {
     "id": "subulate-ulmus",
+    "fit": "wide",
     "name": "SUBULATE ULMUS",
     "collection": "subulate-ulmus",
     "collectionName": "SUBULATE ULMUS",
@@ -3965,6 +4160,7 @@ export const catalogProducts = [
   },
   {
     "id": "unifoliate-quercus-minima",
+    "fit": "wide",
     "name": "UNIFOLIATE QUERCUS MINIMA",
     "collection": "unifoliate-quercus",
     "collectionName": "UNIFOLIATE QUERCUS",
@@ -3985,6 +4181,7 @@ export const catalogProducts = [
   },
   {
     "id": "unifoliate-tectona",
+    "fit": "wide",
     "name": "UNIFOLIATE TECTONA",
     "collection": "unifoliate-tectona",
     "collectionName": "UNIFOLIATE TECTONA",
@@ -4005,6 +4202,7 @@ export const catalogProducts = [
   },
   {
     "id": "antalya-daybed",
+    "fit": "wide",
     "name": "Antalya Daybed",
     "collection": "antalya-daybed",
     "collectionName": "Antalya Daybed",
@@ -4025,6 +4223,7 @@ export const catalogProducts = [
   },
   {
     "id": "athens",
+    "fit": "wide",
     "name": "Athens Sun Lounger",
     "collection": "athens-sun",
     "collectionName": "Athens Sun",
@@ -4049,6 +4248,7 @@ export const catalogProducts = [
   },
   {
     "id": "bali-double-sun-lounger",
+    "fit": "contain",
     "name": "Bali Double Sun Lounger",
     "collection": "bali-double",
     "collectionName": "Bali Double",
@@ -4068,6 +4268,7 @@ export const catalogProducts = [
   },
   {
     "id": "bali",
+    "fit": "wide",
     "name": "Bali Sun Lounger",
     "collection": "bali-sun",
     "collectionName": "Bali Sun",
@@ -4093,6 +4294,7 @@ export const catalogProducts = [
   },
   {
     "id": "conrad",
+    "fit": "wide",
     "name": "Conrad Sun Lounger",
     "collection": "conrad-sun",
     "collectionName": "Conrad Sun",
@@ -4118,6 +4320,7 @@ export const catalogProducts = [
   },
   {
     "id": "corsica",
+    "fit": "wide",
     "name": "Corsica Sun Lounger",
     "collection": "corsica-sun",
     "collectionName": "Corsica Sun",
@@ -4143,6 +4346,7 @@ export const catalogProducts = [
   },
   {
     "id": "crete-lounger",
+    "fit": "wide",
     "name": "Crete Day Bed",
     "collection": "crete-day",
     "collectionName": "Crete Day",
@@ -4163,6 +4367,7 @@ export const catalogProducts = [
   },
   {
     "id": "crete-sun-lounger",
+    "fit": "wide",
     "name": "Crete Sun Lounger",
     "collection": "crete-sun",
     "collectionName": "Crete Sun",
@@ -4185,6 +4390,7 @@ export const catalogProducts = [
   },
   {
     "id": "gibraltar",
+    "fit": "wide",
     "name": "Gibraltar Double Sun Lounger",
     "collection": "gibraltar-double",
     "collectionName": "Gibraltar Double",
@@ -4206,6 +4412,7 @@ export const catalogProducts = [
   },
   {
     "id": "havana-deka",
+    "fit": "contain",
     "name": "HAVANA (Deka)",
     "collection": "havana",
     "collectionName": "HAVANA",
@@ -4224,6 +4431,7 @@ export const catalogProducts = [
   },
   {
     "id": "jamaica-deka",
+    "fit": "contain",
     "name": "JAMAICA (Deka)",
     "collection": "jamaica",
     "collectionName": "JAMAICA",
@@ -4242,6 +4450,7 @@ export const catalogProducts = [
   },
   {
     "id": "maui",
+    "fit": "wide",
     "name": "Maui",
     "collection": "maui",
     "collectionName": "Maui",
@@ -4260,6 +4469,7 @@ export const catalogProducts = [
   },
   {
     "id": "milan-able",
+    "fit": "contain",
     "name": "MILAN (Able)",
     "collection": "milan",
     "collectionName": "MILAN",
@@ -4285,6 +4495,7 @@ export const catalogProducts = [
   },
   {
     "id": "oxford",
+    "fit": "contain",
     "name": "Oxford",
     "collection": "oxford",
     "collectionName": "Oxford",
@@ -4303,6 +4514,7 @@ export const catalogProducts = [
   },
   {
     "id": "panamera-sun-lounger",
+    "fit": "wide",
     "name": "Panamera Sun Lounger",
     "collection": "panamera-sun",
     "collectionName": "Panamera Sun",
@@ -4328,6 +4540,7 @@ export const catalogProducts = [
   },
   {
     "id": "saint-tropez-sun-lounger",
+    "fit": "wide",
     "name": "Saint Tropez Sun Lounger",
     "collection": "saint-tropez",
     "collectionName": "Saint Tropez",
@@ -4349,6 +4562,7 @@ export const catalogProducts = [
   },
   {
     "id": "snooze-emu",
+    "fit": "contain",
     "name": "SNOOZE (Emu)",
     "collection": "snooze",
     "collectionName": "SNOOZE",
@@ -4374,6 +4588,7 @@ export const catalogProducts = [
   },
   {
     "id": "st-john-deka",
+    "fit": "contain",
     "name": "ST JOHN (Deka)",
     "collection": "st-john",
     "collectionName": "ST JOHN",
@@ -4393,6 +4608,7 @@ export const catalogProducts = [
   },
   {
     "id": "st-malo-swivel-daybed",
+    "fit": "contain",
     "name": "ST Malo Swivel Daybed",
     "collection": "st-malo",
     "collectionName": "ST Malo",
@@ -4411,6 +4627,7 @@ export const catalogProducts = [
   },
   {
     "id": "st-malo-yacht-daybed",
+    "fit": "contain",
     "name": "ST Malo Yacht Daybed",
     "collection": "st-malo",
     "collectionName": "ST Malo",
@@ -4429,6 +4646,7 @@ export const catalogProducts = [
   },
   {
     "id": "tahiti",
+    "fit": "wide",
     "name": "Tahiti",
     "collection": "tahiti",
     "collectionName": "Tahiti",
