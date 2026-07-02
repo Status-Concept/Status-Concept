@@ -33,7 +33,7 @@ export function CompareProvider({ children }) {
       return;
     }
     if (compareItems.length >= COMPARE_LIMIT) {
-      showToast(`O comparador aceita no maximo ${COMPARE_LIMIT} produtos.`, "error");
+      showToast("So podes comparar 3 produtos no comparador.", "error");
       return;
     }
     if (compareItems.length > 0 && compareItems[0].category !== product.category) {
@@ -41,7 +41,7 @@ export function CompareProvider({ children }) {
       return;
     }
     setCompareItems((prev) => [...prev, product]);
-    showToast(`Adicionado ao comparador (${compareItems.length + 1}/${COMPARE_LIMIT}).`);
+    showToast("Adicionado ao comparador.");
   };
 
   const removeCompare = (id) => setCompareItems((prev) => prev.filter((item) => item.id !== id));

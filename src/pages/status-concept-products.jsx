@@ -185,14 +185,14 @@ const PRODUCTS_PAGE = () => {
         <section>
           {activeCategory !== "all" && (
             <button type="button" className="rd-back-to-cats" onClick={() => selectCategory("all")}>
-              ← All Categories
+              <span aria-hidden="true">←</span> All Categories
             </button>
           )}
           <div className="rd-products-toolbar">
             <div>
               <span className="rd-kicker fs">{selectedKitchenCollection ? selectedKitchenCollection.label : selectedCategory.label}</span>
               <p className="rd-count fs">
-                {isKitchenCategory && !activeKitchenCollection ? "Choose a kitchen collection" : `${filteredProducts.length} products shown`}
+                {isKitchenCategory && !activeKitchenCollection ? "Choose a kitchen collection" : <>{filteredProducts.length} products shown</>}
               </p>
             </div>
             <div className="rd-toolbar-actions">
