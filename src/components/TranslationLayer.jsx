@@ -209,12 +209,11 @@ const translations = {
     'Outdoor dining sets, tables and chairs for terrace meals from breakfast to late dinner.': 'Conjuntos de refeicao, mesas e cadeiras para refeicoes no terraco, do pequeno-almoco ao jantar.',
     'Poolside loungers and day beds built for Algarve summers.': 'Espreguicadeiras e daybeds junto a piscina, para os veroes algarvios.',
     'Glatz parasols, bioclimatic pergolas and retractable systems for gardens, terraces and outdoor rooms.': 'Chapeus de sol Glatz, pergolas bioclimaticas e sistemas retrateis para jardins, terracos e salas exteriores.',
-    'Explore Draco Grills and Bull modular outdoor kitchens, from full islands to single components.': 'Explore cozinhas modulares Draco Grills e Bull, de ilhas completas a componentes individuais.',
+    'Draco Grills modular outdoor kitchens in Black Stainless Steel, Carbon Line Teak and natural Teak.': 'Cozinhas modulares Draco Grills em aco inox preto, Carbon Line Teak e teca natural.',
     // Kitchen collection descriptions
     'Nero black stainless steel modules with granite tops, high-output BBQs, fridges, sinks, storage and corner units.': 'Modulos em aco inox preto Nero com tampos de granito, BBQs de alta potencia, frigorificos, lava-loicas, arrumacao e modulos de canto.',
     'Black-finish reclaimed teak kitchen modules with ceramic tops, premium BBQ cabinets, fridges and modular add-ons.': 'Modulos de cozinha em teca recuperada de acabamento preto, tampos ceramicos, armarios de BBQ premium, frigorificos e extras modulares.',
     'Natural reclaimed teak outdoor kitchen modules with ceramic tops, stainless steel BBQs and practical storage units.': 'Modulos de cozinha exterior em teca natural recuperada, tampos ceramicos, BBQs em aco inox e arrumacao pratica.',
-    'American-built Bull outdoor kitchen islands, BBQ carts, components and pizza ovens.': 'Ilhas de cozinha exterior Bull de fabrico americano, carrinhos de BBQ, componentes e fornos de pizza.',
   },
 }
 

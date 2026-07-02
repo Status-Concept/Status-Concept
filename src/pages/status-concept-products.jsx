@@ -82,7 +82,7 @@ const PRODUCTS_PAGE = () => {
     { key: "dining", label: "Dining", chip: catalogImg("dining"), banner: catalogImg("dining"), title: "Dining", copy: "Outdoor dining sets, tables and chairs for terrace meals from breakfast to late dinner." },
     { key: "sunlounger", label: "Sun Loungers", chip: catalogImg("sunlounger"), banner: catalogImg("sunlounger"), title: "Sun Loungers & Day Beds", copy: "Poolside loungers and day beds built for Algarve summers." },
     { key: "shade", label: "Shade", chip: shadeChipImg, banner: shadeHeroImg, bannerPosition: "center 28%", title: "Shade Solutions", copy: "Glatz parasols, bioclimatic pergolas and retractable systems for gardens, terraces and outdoor rooms." },
-    { key: "kitchen", label: "Modular Kitchen", chip: kitchenHeroImg, banner: kitchenHeroImg, title: "Modular Kitchen", copy: "Explore Draco Grills and Bull modular outdoor kitchens, from full islands to single components." },
+    { key: "kitchen", label: "Modular Kitchen", chip: kitchenHeroImg, banner: kitchenHeroImg, title: "Modular Kitchen", copy: "Draco Grills modular outdoor kitchens in Black Stainless Steel, Carbon Line Teak and natural Teak." },
   ];
 
   const allProducts = useMemo(() => [
@@ -92,22 +92,10 @@ const PRODUCTS_PAGE = () => {
     ...catalogProducts.filter((product) => product.category !== "kitchen"),
   ], []);
 
-  const bullKitchenProducts = useMemo(() => catalogProducts.filter((product) => product.category === "kitchen"), []);
-
-  const kitchenCollections = [
-    ...kitchenCollectionMeta.map((collection) => ({
-      ...collection,
-      count: kitchenProducts.filter((product) => product.collection === collection.key).length,
-    })),
-    {
-      key: "bull",
-      label: "Bull",
-      sourceCollection: "Bull",
-      image: bullKitchenProducts.find((product) => product.images.length >= 4)?.img || bullKitchenProducts[0]?.img,
-      description: "American-built Bull outdoor kitchen islands, BBQ carts, components and pizza ovens.",
-      count: bullKitchenProducts.length,
-    },
-  ];
+  const kitchenCollections = kitchenCollectionMeta.map((collection) => ({
+    ...collection,
+    count: kitchenProducts.filter((product) => product.collection === collection.key).length,
+  }));
 
   const selectedCategory = categories.find((category) => category.key === activeCategory) || categories[0];
   const selectedKitchenCollection = kitchenCollections.find((collection) => collection.key === activeKitchenCollection);
@@ -116,9 +104,7 @@ const PRODUCTS_PAGE = () => {
   const filteredProducts = useMemo(() => {
     const base = isKitchenCategory
       ? activeKitchenCollection
-        ? activeKitchenCollection === "bull"
-          ? bullKitchenProducts
-          : kitchenProducts.filter((product) => product.collection === activeKitchenCollection)
+        ? kitchenProducts.filter((product) => product.collection === activeKitchenCollection)
         : []
       : activeCategory === "all"
         ? allProducts
@@ -129,7 +115,7 @@ const PRODUCTS_PAGE = () => {
       if (sortBy === "collection") return (a.collectionName || a.collection).localeCompare(b.collectionName || b.collection);
       return (b.tag ? 1 : 0) - (a.tag ? 1 : 0);
     });
-  }, [activeCategory, activeKitchenCollection, allProducts, bullKitchenProducts, isKitchenCategory, sortBy]);
+  }, [activeCategory, activeKitchenCollection, allProducts, isKitchenCategory, sortBy]);
 
   const productRoute = (product) => product.route || `/product/${product.id || slug(product.name)}`;
   const favPayload = (product) => ({ id: product.id || slug(product.name), name: product.name, collection: product.collectionName || product.collection, img: product.img, category: product.category, route: productRoute(product) });
