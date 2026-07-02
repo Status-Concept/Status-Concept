@@ -3,6 +3,7 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import useNavLinks from "../useNavLinks";
 import Layout from "../components/Layout";
 import FavoriteButton from "../FavoriteButton";
+import CompareButton from "../CompareButton";
 import { glatzProductDetails, glatzProducts } from "../data/glatzProducts";
 import { kitchenProductDetails, kitchenProducts, kitchenCollectionHeroes } from "../data/kitchenProducts";
 import { catalogProducts } from "../data/catalogProducts";
@@ -218,6 +219,7 @@ const PRODUCT_DETAIL = () => {
           <div className="rd-main-photo">
             {product.tag && <span className={`tag ${product.tag === "New" ? "tag-new" : "tag-popular"}`} style={{ position: "absolute", top: 16, left: 16, zIndex: 3 }}>{product.tag}</span>}
             <FavoriteButton product={{ id: product.id || id, name: product.name, collection: product.collection, img: images[0], route: `/product/${product.id || id}` }} size={18} style={{ position: "absolute", top: 16, right: 16 }} />
+            <CompareButton product={{ id: product.id || id, name: product.name, img: images[0], category: product.category, collectionName: product.collection, supplier: product.specs?.find?.((s) => s.label === "Supplier")?.value, sku: product.specs?.find?.((s) => s.label === "SKU" || s.label === "Sku")?.value, desc: product.tagline, route: `/product/${product.id || id}` }} size={18} style={{ position: "absolute", top: 62, right: 16 }} />
             <button type="button" aria-label="Open full-size image" onClick={() => setLightboxOpen(true)} style={{ padding: 0, border: "none", background: "none", cursor: "zoom-in", display: "block", width: "100%" }}>
               <img src={images[safeActiveImg]} alt={product.name} />
             </button>

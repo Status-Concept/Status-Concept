@@ -3,6 +3,7 @@ import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import useNavLinks from "../useNavLinks";
 import Layout from "../components/Layout";
 import FavoriteButton from "../FavoriteButton";
+import CompareButton from "../CompareButton";
 import { glatzProducts } from "../data/glatzProducts";
 import { kitchenCollectionMeta, kitchenProducts } from "../data/kitchenProducts";
 import { catalogProducts } from "../data/catalogProducts";
@@ -132,6 +133,7 @@ const PRODUCTS_PAGE = () => {
 
   const productRoute = (product) => product.route || `/product/${product.id || slug(product.name)}`;
   const favPayload = (product) => ({ id: product.id || slug(product.name), name: product.name, collection: product.collectionName || product.collection, img: product.img, category: product.category, route: productRoute(product) });
+  const comparePayload = (product) => ({ id: product.id || slug(product.name), name: product.name, img: product.img, category: product.category, categoryLabel: product.categoryLabel, collection: product.collection, collectionName: product.collectionName || product.collection, supplier: product.supplier, sku: product.sku || product.specs?.sku, desc: product.desc || product.tagline, route: productRoute(product) });
   const goTo = (path, state) => navigate(withLang(path, currentLang), state ? { state } : undefined);
 
   const scrollToProducts = () => {
@@ -236,6 +238,11 @@ const PRODUCTS_PAGE = () => {
                       product={favPayload(product)}
                       size={16}
                       style={{ position: "absolute", top: 12, right: 12 }}
+                    />
+                    <CompareButton
+                      product={comparePayload(product)}
+                      size={16}
+                      style={{ position: "absolute", top: 52, right: 12 }}
                     />
                     {product.images?.length > 1
                       ? <CardCarousel images={product.images} alt={product.name} />

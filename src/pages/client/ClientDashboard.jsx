@@ -1,10 +1,12 @@
 import { Link } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
 import { useFavorites } from '../../FavoritesContext'
+import { useCompare } from '../../CompareContext'
 
 export default function ClientDashboard() {
   const { profile, user } = useAuth()
   const { favorites } = useFavorites()
+  const { compareItems } = useCompare()
 
   return (
     <div className="account-panel">
@@ -19,9 +21,9 @@ export default function ClientDashboard() {
           <Link to="/cliente/favoritos">Ver favoritos</Link>
         </article>
         <article>
-          <span className="fs">Orcamentos</span>
-          <strong className="ff">0</strong>
-          <small className="fs">Modulo em preparacao</small>
+          <span className="fs">Comparador</span>
+          <strong className="ff">{compareItems.length}</strong>
+          <Link to="/cliente/comparador">Abrir comparador</Link>
         </article>
         <article>
           <span className="fs">Perfil</span>

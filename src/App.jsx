@@ -2,6 +2,9 @@ import { Routes, Route } from 'react-router-dom'
 import { AuthProvider } from './context/AuthContext'
 import { ToastProvider } from './context/ToastContext'
 import { FavoritesProvider } from './FavoritesContext'
+import { CompareProvider } from './CompareContext'
+import ComparePill from './ComparePill'
+import ClientCompare from './pages/client/ClientCompare'
 import ProtectedRoute from './components/ProtectedRoute'
 import ConsentNotice from './components/ConsentNotice'
 import TranslationLayer from './components/TranslationLayer'
@@ -51,6 +54,7 @@ const routesFor = (prefix = '') => (
       <Route index element={<ClientDashboard />} />
       <Route path="perfil" element={<ClientProfile />} />
       <Route path="favoritos" element={<ClientFavorites />} />
+      <Route path="comparador" element={<ClientCompare />} />
     </Route>
   </>
 )
@@ -60,15 +64,18 @@ function App() {
     <ToastProvider>
       <AuthProvider>
         <FavoritesProvider>
-          <ScrollToTop />
-          <TranslationLayer />
-          <PageNav />
-          <Routes>
-            {routesFor()}
-            {routesFor('/en')}
-            {routesFor('/pt')}
-          </Routes>
-          <ConsentNotice />
+          <CompareProvider>
+            <ScrollToTop />
+            <TranslationLayer />
+            <PageNav />
+            <Routes>
+              {routesFor()}
+              {routesFor('/en')}
+              {routesFor('/pt')}
+            </Routes>
+            <ComparePill />
+            <ConsentNotice />
+          </CompareProvider>
         </FavoritesProvider>
       </AuthProvider>
     </ToastProvider>
