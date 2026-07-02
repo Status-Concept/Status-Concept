@@ -217,7 +217,7 @@ const PRODUCTS_PAGE = () => {
                 <button key={collection.key} type="button" className="rd-collection-choice-card" onClick={() => selectKitchenCollection(collection.key)}>
                   <img src={collection.image} alt={collection.label} />
                   <div>
-                    <span className="rd-kicker fs" style={{ color: "var(--gold-l)" }}>Collection</span>
+                    <span className="rd-kicker fs">Collection</span>
                     <h3 className="ff">{collection.label}</h3>
                     <p className="fs">{collection.description}</p>
                   </div>
