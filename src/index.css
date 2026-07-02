@@ -1912,10 +1912,10 @@ button {
 @keyframes spin { to { transform: rotate(360deg); } }
 
 .account-sidebar {
-  min-height: calc(100vh - 144px);
+  min-height: calc(100vh - var(--header-h) - 144px);
   padding: 32px;
   position: sticky;
-  top: 32px;
+  top: calc(var(--header-h) + 24px);
 }
 
 .account-content { min-width: 0; }

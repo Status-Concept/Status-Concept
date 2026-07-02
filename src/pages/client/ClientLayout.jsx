@@ -1,4 +1,5 @@
-import { Link, NavLink, Outlet, useNavigate } from 'react-router-dom'
+import { NavLink, Outlet, useNavigate } from 'react-router-dom'
+import Layout from '../../components/Layout'
 import { useAuth } from '../../context/AuthContext'
 import { useToast } from '../../context/ToastContext'
 
@@ -18,9 +19,9 @@ export default function ClientLayout() {
   }
 
   return (
+    <Layout>
     <main className="account-shell">
       <aside className="account-sidebar">
-        <Link to="/" className="auth-logo ff">ST<span>A</span>TVS</Link>
         <div>
           <span className="fs sl">Area de cliente</span>
           <h1 className="ff">{profile?.name || user?.email}</h1>
@@ -37,6 +38,7 @@ export default function ClientLayout() {
         <Outlet />
       </section>
     </main>
+    </Layout>
   )
 }
 

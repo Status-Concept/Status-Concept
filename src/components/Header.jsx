@@ -7,7 +7,8 @@ import SocialLinks from './SocialIcons'
 export default function Header({ onOpenMenu }) {
   const navigate = useNavigate()
   const location = useLocation()
-  const { isAuthenticated } = useAuth()
+  const { isAuthenticated, profile, user } = useAuth()
+  const firstName = (profile?.name || user?.email || "").split(/[\s@]/)[0]
   const [scrolled, setScrolled] = useState(false)
   const [langOpen, setLangOpen] = useState(false)
   const currentLang = getLangFromPath(location.pathname)
@@ -47,13 +48,14 @@ export default function Header({ onOpenMenu }) {
         <div style={{ display: "flex", gap: "12px", alignItems: "center" }}>
           <button
             className="fs"
+            data-no-translate={isAuthenticated ? true : undefined}
             onClick={() => goTo(isAuthenticated ? "/cliente" : "/login")}
             style={{
-              padding: "4px 12px",
+              padding: "6px 16px",
               border: "1px solid var(--mid-grey)",
               background: "transparent",
-              color: "var(--text-grey)",
-              borderRadius: 2, cursor: "pointer", fontSize: 10, letterSpacing: 2,
+              color: "var(--text-dark)",
+              borderRadius: 2, cursor: "pointer", fontSize: 12, letterSpacing: 1.5,
               textTransform: "uppercase", transition: "color .3s, border-color .3s",
             }}
             onMouseEnter={e => {
@@ -65,7 +67,7 @@ export default function Header({ onOpenMenu }) {
               e.currentTarget.style.color = "var(--text-grey)"
             }}
           >
-            {isAuthenticated ? "A Minha Conta" : "Login"}
+            {isAuthenticated ? (firstName || "A Minha Conta") : "Login"}
           </button>
           <div style={{ display: "flex", gap: "2px", alignItems: "center" }}>
             <SocialLinks linkStyle={{ color: "var(--text-dark)" }} />
