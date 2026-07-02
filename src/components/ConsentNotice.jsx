@@ -2,7 +2,7 @@ import { useState } from 'react'
 
 const CONSENT_KEY = 'cookie_consent'
 
-export default function CookieBanner() {
+export default function ConsentNotice() {
   const [visible, setVisible] = useState(() => !localStorage.getItem(CONSENT_KEY))
 
   const choose = (value) => {

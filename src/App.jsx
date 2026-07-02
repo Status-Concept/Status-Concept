@@ -3,7 +3,7 @@ import { AuthProvider } from './context/AuthContext'
 import { ToastProvider } from './context/ToastContext'
 import { FavoritesProvider } from './FavoritesContext'
 import ProtectedRoute from './components/ProtectedRoute'
-import CookieBanner from './components/CookieBanner'
+import ConsentNotice from './components/ConsentNotice'
 import TranslationLayer from './components/TranslationLayer'
 import Homepage from './pages/status-concept-homepage'
 import Products from './pages/status-concept-products'
@@ -68,7 +68,7 @@ function App() {
             {routesFor('/en')}
             {routesFor('/pt')}
           </Routes>
-          <CookieBanner />
+          <ConsentNotice />
         </FavoritesProvider>
       </AuthProvider>
     </ToastProvider>
