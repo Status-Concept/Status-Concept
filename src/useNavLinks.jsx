@@ -3,12 +3,16 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import { getLangFromPath, withLang } from './utils/language'
 
 const navMap = {
+  Products: '/products',
+  Produtos: '/products',
   Furniture: '/products',
   Shade: '/products?cat=shade',
   Kitchens: '/products?cat=kitchen',
   Projects: '/projects',
+  Projetos: '/projects',
   Showrooms: '/contact',
   Contact: '/contact',
+  Contacto: '/contact',
 }
 
 export default function useNavLinks() {

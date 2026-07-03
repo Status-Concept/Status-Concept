@@ -1,12 +1,17 @@
 import { useState } from "react";
 import useNavLinks from "../useNavLinks";
 import Layout from "../components/Layout";
+import { supabase } from "../lib/supabase";
 import showroomQuintaImg from "../assets/images/enhanced/showroom-quinta-ai.webp";
 import showroomAlmancilImg from "../assets/images/enhanced/showroom-almancil-ai.webp";
+
+const mapsUrl = (query) => "https://www.google.com/maps/dir/?api=1&destination=" + encodeURIComponent(query);
+const telHref = (n) => "tel:" + n.replace(/[^\d+]/g, "");
 
 const CONTACT_PAGE = () => {
   useNavLinks();
   const [formData, setFormData] = useState({ name: "", email: "", phone: "", interest: "", message: "" });
+  const [status, setStatus] = useState("idle"); // idle | sending | sent | error
   const [activeShowroom, setActiveShowroom] = useState(0);
 
   const showrooms = [
@@ -16,6 +21,7 @@ const CONTACT_PAGE = () => {
       phone: "+351 289 030 179",
       mobile: "+351 937 573 600",
       gps: "37.062229, -8.038336",
+      maps: mapsUrl("Status Concept, Estr. Quinta do Lago-Vale do Lobo, 8135-106 Almancil"),
       img: showroomQuintaImg,
       desc: "Our flagship showroom between Quinta do Lago and Vale do Lobo, created for seeing complete outdoor settings in person.",
     },
@@ -25,6 +31,7 @@ const CONTACT_PAGE = () => {
       phone: "+351 289 092 890",
       mobile: "+351 937 573 600",
       gps: "37.0927, -8.0400",
+      maps: mapsUrl("Status Concept, Avenida 5 de Outubro 298, 8135-103 Almancil"),
       img: showroomAlmancilImg,
       desc: "A central showroom on the main avenue, with outdoor furniture, shade systems and kitchen displays.",
     },
@@ -33,30 +40,71 @@ const CONTACT_PAGE = () => {
   const active = showrooms[activeShowroom];
   const interests = ["Outdoor Furniture", "Shade Solutions", "Outdoor Kitchens", "Decor & Leisure", "After Care Service", "General Enquiry"];
 
+  const canSubmit = formData.name.trim() && formData.email.trim() && formData.message.trim();
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    if (!canSubmit || status === "sending") return;
+    setStatus("sending");
+
+    const payload = {
+      name: formData.name.trim(),
+      email: formData.email.trim(),
+      phone: formData.phone.trim(),
+      interest: formData.interest,
+      message: formData.message.trim(),
+      source: "contact_page",
+    };
+
+    try {
+      if (supabase) {
+        const { error } = await supabase.from("enquiries").insert(payload);
+        if (error) throw error;
+      } else {
+        throw new Error("no-backend");
+      }
+      setStatus("sent");
+      setFormData({ name: "", email: "", phone: "", interest: "", message: "" });
+    } catch {
+      // Backend not available or insert failed — fall back to the mail client so no enquiry is lost.
+      const body = `Name: ${payload.name}\nEmail: ${payload.email}\nPhone: ${payload.phone}\nInterest: ${payload.interest || "—"}\n\n${payload.message}`;
+      window.location.href = `mailto:info@statusconcept.com?subject=${encodeURIComponent("Website enquiry — " + (payload.interest || "General"))}&body=${encodeURIComponent(body)}`;
+      setStatus("sent");
+      setFormData({ name: "", email: "", phone: "", interest: "", message: "" });
+    }
+  };
+
   return (
     <Layout>
       <section className="rd-page-hero">
         <img className="rd-hero-img" src={showroomQuintaImg} alt="" />
-        <div className="rd-hero-inner">
-          <span className="rd-kicker fs">Contact</span>
-          <h1 className="rd-title ff">Visit, call or start a proposal</h1>
-          <p className="rd-lede fs">Choose a showroom, send an enquiry or speak with the team about your outdoor space.</p>
-        </div>
       </section>
+      <div className="rd-page-head">
+        <span className="rd-kicker fs">Contact</span>
+        <h1 className="rd-title ff">Visit, call or start a proposal</h1>
+        <p className="rd-lede fs">Choose a showroom, send an enquiry or speak with the team about your outdoor space.</p>
+      </div>
 
       <section className="rd-section">
         <div className="rd-quick-grid">
           {[
-            { label: "Call", value: "+351 289 030 179", sub: "Quinta do Lago" },
-            { label: "WhatsApp", value: "+351 937 573 600", sub: "Direct message" },
-            { label: "Email", value: "info@statusconcept.com", sub: "Replies within 24h" },
-            { label: "Showrooms", value: "2 locations", sub: "Almancil and Quinta do Lago" },
+            { label: "Call", value: "+351 289 030 179", sub: "Quinta do Lago", href: "tel:+351289030179" },
+            { label: "WhatsApp", value: "+351 937 573 600", sub: "Direct message", href: "https://wa.me/351937573600?text=" + encodeURIComponent("Hello STATVS, I'd like to enquire about"), external: true },
+            { label: "Email", value: "info@statusconcept.com", sub: "Replies within 24h", href: "mailto:info@statusconcept.com" },
+            { label: "Showrooms", value: "2 locations", sub: "Almancil and Quinta do Lago", href: showrooms[0].maps, external: true },
           ].map((item) => (
-            <article key={item.label} className="rd-quick-card">
+            <a
+              key={item.label}
+              className="rd-quick-card"
+              href={item.href}
+              data-no-translate
+              {...(item.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+              style={{ display: "block", textDecoration: "none", color: "inherit" }}
+            >
               <span className="rd-kicker fs">{item.label}</span>
               <h3 className="ff" style={{ fontSize: 24, fontWeight: 400, margin: "8px 0" }}>{item.value}</h3>
               <p className="fs rd-count">{item.sub}</p>
-            </article>
+            </a>
           ))}
         </div>
       </section>
@@ -77,9 +125,10 @@ const CONTACT_PAGE = () => {
             ))}
           </div>
 
-          <div className="rd-map-card fs">
-            Map placeholder / GPS {active.gps}
-          </div>
+          <a className="rd-map-card fs" href={active.maps} target="_blank" rel="noopener noreferrer" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16, textDecoration: "none", color: "inherit" }}>
+            <span>{active.address}</span>
+            <span style={{ whiteSpace: "nowrap", letterSpacing: 1.5, textTransform: "uppercase", fontSize: 11 }}>Get directions →</span>
+          </a>
         </aside>
 
         <div className="rd-form-panel">
@@ -87,32 +136,45 @@ const CONTACT_PAGE = () => {
           <h2 className="ff" style={{ fontSize: "clamp(32px, 4vw, 46px)", fontWeight: 300, marginBottom: 14 }}>Tell us what you need</h2>
           <p className="rd-lede fs" style={{ marginBottom: 34 }}>Share the type of space, the product family you are interested in and the best way to contact you.</p>
 
-          <form className="rd-floating-grid">
-            <div className="rd-field">
-              <label>Name</label>
-              <input value={formData.name} onChange={(event) => setFormData({ ...formData, name: event.target.value })} autoComplete="name" />
+          {status === "sent" ? (
+            <div className="rd-form-success" style={{ padding: "32px 0" }}>
+              <h3 className="ff" style={{ fontSize: 26, fontWeight: 400, marginBottom: 12 }}>Thank you — your enquiry is on its way.</h3>
+              <p className="fs rd-lede" style={{ marginBottom: 24 }}>The showroom team replies within one business day. For anything urgent, call <a href="tel:+351289030179" data-no-translate style={{ color: "var(--accent)" }}>+351 289 030 179</a> or message us on <a href="https://wa.me/351937573600" target="_blank" rel="noopener noreferrer" data-no-translate style={{ color: "var(--accent)" }}>WhatsApp</a>.</p>
+              <button type="button" className="cb cd" style={{ alignSelf: "start" }} onClick={() => setStatus("idle")}>Send another enquiry</button>
             </div>
-            <div className="rd-field">
-              <label>Email</label>
-              <input type="email" value={formData.email} onChange={(event) => setFormData({ ...formData, email: event.target.value })} autoComplete="email" />
-            </div>
-            <div className="rd-field">
-              <label>Phone</label>
-              <input value={formData.phone} onChange={(event) => setFormData({ ...formData, phone: event.target.value })} autoComplete="tel" />
-            </div>
-            <div className="rd-field">
-              <label>Interest</label>
-              <select value={formData.interest} onChange={(event) => setFormData({ ...formData, interest: event.target.value })}>
-                <option value="">Choose an option</option>
-                {interests.map((interest) => <option key={interest} value={interest}>{interest}</option>)}
-              </select>
-            </div>
-            <div className="rd-field">
-              <label>Message</label>
-              <textarea value={formData.message} onChange={(event) => setFormData({ ...formData, message: event.target.value })} />
-            </div>
-            <button type="button" className="cb cg" style={{ alignSelf: "start" }}>Send enquiry</button>
-          </form>
+          ) : (
+            <form className="rd-floating-grid" onSubmit={handleSubmit}>
+              <div className="rd-field">
+                <label>Name</label>
+                <input value={formData.name} onChange={(event) => setFormData({ ...formData, name: event.target.value })} autoComplete="name" required />
+              </div>
+              <div className="rd-field">
+                <label>Email</label>
+                <input type="email" value={formData.email} onChange={(event) => setFormData({ ...formData, email: event.target.value })} autoComplete="email" required />
+              </div>
+              <div className="rd-field">
+                <label>Phone</label>
+                <input value={formData.phone} onChange={(event) => setFormData({ ...formData, phone: event.target.value })} autoComplete="tel" />
+              </div>
+              <div className="rd-field">
+                <label>Interest</label>
+                <select value={formData.interest} onChange={(event) => setFormData({ ...formData, interest: event.target.value })}>
+                  <option value="">Choose an option</option>
+                  {interests.map((interest) => <option key={interest} value={interest}>{interest}</option>)}
+                </select>
+              </div>
+              <div className="rd-field">
+                <label>Message</label>
+                <textarea value={formData.message} onChange={(event) => setFormData({ ...formData, message: event.target.value })} required />
+              </div>
+              <button type="submit" className="cb cg" style={{ alignSelf: "start", opacity: canSubmit && status !== "sending" ? 1 : 0.6 }} disabled={!canSubmit || status === "sending"}>
+                {status === "sending" ? "Sending…" : "Send enquiry"}
+              </button>
+              <p className="fs" style={{ fontSize: 12, color: "var(--text-grey)", marginTop: 4, lineHeight: 1.6 }}>
+                The showroom team replies within one business day. Your details are only used to respond to this enquiry.
+              </p>
+            </form>
+          )}
         </div>
       </section>
 
@@ -125,15 +187,15 @@ const CONTACT_PAGE = () => {
         </div>
         <div className="rd-material-grid">
           {[
-            { label: "Address", value: active.address },
-            { label: "Phone", value: active.phone },
-            { label: "Mobile", value: active.mobile },
-            { label: "GPS", value: active.gps },
+            { label: "Address", value: active.address, href: active.maps, external: true },
+            { label: "Phone", value: active.phone, href: telHref(active.phone) },
+            { label: "Mobile", value: active.mobile, href: telHref(active.mobile) },
+            { label: "GPS", value: active.gps, href: active.maps, external: true },
           ].map((item) => (
-            <article key={item.label} className="rd-material-card">
+            <a key={item.label} className="rd-material-card" href={item.href} data-no-translate {...(item.external ? { target: "_blank", rel: "noopener noreferrer" } : {})} style={{ display: "block", textDecoration: "none", color: "inherit" }}>
               <span className="rd-kicker fs">{item.label}</span>
               <p className="fs rd-lede" style={{ fontSize: 14, marginTop: 10 }}>{item.value}</p>
-            </article>
+            </a>
           ))}
         </div>
       </section>

@@ -43,7 +43,7 @@ export default function CompareButton({ product, size = 20, style = {} }) {
         height={size}
         viewBox="0 0 24 24"
         fill="none"
-        stroke={active ? "#c41e3a" : "rgba(255,255,255,.9)"}
+        stroke={active ? "#8a7658" : "rgba(255,255,255,.9)"}
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"

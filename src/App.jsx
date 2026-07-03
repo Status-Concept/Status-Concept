@@ -11,7 +11,6 @@ import TranslationLayer from './components/TranslationLayer'
 import Homepage from './pages/status-concept-homepage'
 import Products from './pages/status-concept-products'
 import GlatzParasols from './pages/status-concept-glatz'
-import Collection from './pages/status-concept-collection'
 import ProductDetail from './pages/status-concept-product-detail'
 import About from './pages/status-concept-about'
 import Contact from './pages/status-concept-contact'
@@ -32,7 +31,6 @@ const routesFor = (prefix = '') => (
     <Route path={prefix || '/'} element={<Homepage />} />
     <Route path={`${prefix}/products`} element={<Products />} />
     <Route path={`${prefix}/glatz-parasols`} element={<GlatzParasols />} />
-    <Route path={`${prefix}/collection`} element={<Collection />} />
     <Route path={`${prefix}/product/:id`} element={<ProductDetail />} />
     <Route path={`${prefix}/about`} element={<About />} />
     <Route path={`${prefix}/contact`} element={<Contact />} />

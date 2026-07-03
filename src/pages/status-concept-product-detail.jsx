@@ -290,7 +290,7 @@ const PRODUCT_DETAIL = () => {
       <section className="rd-section alt">
         <div className="rd-section-head">
           <div>
-            <span className="rd-kicker fs">{isSameCollection ? "Same collection" : "From the catalogue"}</span>
+            <span className="rd-kicker fs">{isSameCollection ? "Related products" : "From the catalogue"}</span>
             <h2 className="ff">{isSameCollection ? "Pieces that work together" : "You may also like"}</h2>
           </div>
           <button type="button" className="rd-back-link" onClick={() => goTo("/products")}>View all</button>

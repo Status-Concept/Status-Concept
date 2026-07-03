@@ -36,21 +36,21 @@ export default function PageNav() {
         onClick={() => goTo('/favorites')}
         style={{
           width: 44, height: 44, borderRadius: '50%',
-          background: isFavoritesPage ? '#c41e3a' : 'var(--stone, #1a1a1a)',
-          border: '1px solid rgba(196,30,58,.5)',
+          background: isFavoritesPage ? '#8a7658' : 'var(--stone, #1a1a1a)',
+          border: '1px solid rgba(138,118,88,.5)',
           cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
           boxShadow: '0 4px 20px rgba(0,0,0,.3)', transition: 'all .3s cubic-bezier(0.16, 1, 0.3, 1)', position: 'relative',
         }}
         onMouseEnter={e => { e.currentTarget.style.transform = 'scale(1.08)' }}
         onMouseLeave={e => { e.currentTarget.style.transform = 'scale(1)' }}
       >
-        <svg width="18" height="18" viewBox="0 0 24 24" fill={isFavoritesPage ? '#fff' : '#c41e3a'} stroke={isFavoritesPage ? '#fff' : '#c41e3a'} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill={isFavoritesPage ? '#fff' : '#8a7658'} stroke={isFavoritesPage ? '#fff' : '#8a7658'} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
           <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
         </svg>
         {favorites.length > 0 && (
           <span style={{
             position: 'absolute', top: -4, right: -4,
-            background: '#c41e3a', color: '#fff', fontSize: 10,
+            background: '#8a7658', color: '#fff', fontSize: 10,
             fontWeight: 500, width: 20, height: 20, borderRadius: '50%',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
             border: '2px solid #1a1a1a', letterSpacing: 0,
@@ -75,16 +75,16 @@ export default function PageNav() {
                   style={{
                     padding: '10px 20px', fontSize: 12, letterSpacing: 1.5,
                     textTransform: 'uppercase', cursor: 'pointer',
-                    color: active ? '#c41e3a' : 'rgba(255,255,255,.7)',
-                    background: active ? 'rgba(196,30,58,.1)' : 'transparent',
+                    color: active ? '#8a7658' : 'rgba(255,255,255,.7)',
+                    background: active ? 'rgba(138,118,88,.1)' : 'transparent',
                     transition: 'all .2s',
                     display: 'flex', alignItems: 'center', gap: 8,
                   }}
-                  onMouseEnter={e => { if (!active) { e.currentTarget.style.color = '#c41e3a'; e.currentTarget.style.background = 'rgba(196,30,58,.05)' } }}
+                  onMouseEnter={e => { if (!active) { e.currentTarget.style.color = '#8a7658'; e.currentTarget.style.background = 'rgba(138,118,88,.05)' } }}
                   onMouseLeave={e => { if (!active) { e.currentTarget.style.color = 'rgba(255,255,255,.7)'; e.currentTarget.style.background = 'transparent' } }}
                 >
                   {p.label === 'Favorites' && (
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="#c41e3a" stroke="#c41e3a" strokeWidth="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" /></svg>
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="#8a7658" stroke="#8a7658" strokeWidth="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" /></svg>
                   )}
                   {p.label}
                   {p.label === 'Favorites' && favorites.length > 0 && (
@@ -98,8 +98,8 @@ export default function PageNav() {
         <button
           onClick={() => setOpen(!open)}
           style={{
-            padding: '10px 20px', background: 'var(--stone, #1a1a1a)', color: '#c41e3a',
-            border: '1px solid rgba(196,30,58,.5)', fontSize: 11, letterSpacing: 2,
+            padding: '10px 20px', background: 'var(--stone, #1a1a1a)', color: '#8a7658',
+            border: '1px solid rgba(138,118,88,.5)', fontSize: 11, letterSpacing: 2,
             textTransform: 'uppercase', cursor: 'pointer', fontFamily: "'Outfit', sans-serif",
             display: 'flex', alignItems: 'center', gap: 8, borderRadius: 3,
             boxShadow: '0 4px 20px rgba(0,0,0,.3)', transition: 'all .3s cubic-bezier(0.16, 1, 0.3, 1)',

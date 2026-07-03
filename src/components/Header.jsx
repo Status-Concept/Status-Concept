@@ -4,6 +4,15 @@ import { useAuth } from '../context/AuthContext'
 import { getLangFromPath, stripLangFromPath, withLang } from '../utils/language'
 import SocialLinks from './SocialIcons'
 
+const PRODUCT_LINKS = [
+  ["Lounge", "/products?cat=lounge"],
+  ["Dining", "/products?cat=dining"],
+  ["Sun Loungers & Day Beds", "/products?cat=sunlounger"],
+  ["Shade Solutions", "/products?cat=shade"],
+  ["Glatz Parasols", "/glatz-parasols"],
+  ["Outdoor Kitchens", "/products?cat=kitchen"],
+]
+
 export default function Header({ onOpenMenu }) {
   const navigate = useNavigate()
   const location = useLocation()
@@ -11,6 +20,7 @@ export default function Header({ onOpenMenu }) {
   const firstName = (profile?.name || user?.email || "").split(/[\s@]/)[0]
   const [scrolled, setScrolled] = useState(false)
   const [langOpen, setLangOpen] = useState(false)
+  const [productsOpen, setProductsOpen] = useState(false)
   const currentLang = getLangFromPath(location.pathname)
 
   useEffect(() => {
@@ -41,9 +51,9 @@ export default function Header({ onOpenMenu }) {
         background: "var(--light-grey)",
       }}>
         <div style={{ display: "flex", gap: "24px", alignItems: "center" }}>
-          <span>+351 289 030 179</span>
+          <a href="tel:+351289030179" data-no-translate style={{ color: "inherit", textDecoration: "none" }}>+351 289 030 179</a>
           <span style={{ opacity: .4 }}>|</span>
-          <span>info@statusconcept.com</span>
+          <a href="mailto:info@statusconcept.com" data-no-translate style={{ color: "inherit", textDecoration: "none" }}>info@statusconcept.com</a>
         </div>
         <div style={{ display: "flex", gap: "12px", alignItems: "center" }}>
           <button
@@ -88,7 +98,44 @@ export default function Header({ onOpenMenu }) {
           letterSpacing: "2px", textTransform: "uppercase",
           color: "var(--text-dark)",
         }}>
-          {["Furniture", "Projects", "Showrooms", "Contact"].map(i => (
+          <div
+            style={{ position: "relative" }}
+            onMouseEnter={() => setProductsOpen(true)}
+            onMouseLeave={() => setProductsOpen(false)}
+            onFocus={() => setProductsOpen(true)}
+            onBlur={(e) => { if (!e.currentTarget.contains(e.relatedTarget)) setProductsOpen(false) }}
+            onKeyDown={(e) => { if (e.key === "Escape") setProductsOpen(false) }}
+          >
+            <button
+              type="button"
+              className="nl"
+              aria-haspopup="true"
+              aria-expanded={productsOpen}
+              onClick={() => { setProductsOpen(false); goTo('/products') }}
+              style={{ color: "inherit", background: "none", border: "none", font: "inherit", letterSpacing: "inherit", textTransform: "inherit", cursor: "pointer", padding: "8px 0", display: "inline-flex", alignItems: "center", gap: 6 }}
+            >
+              Products
+              <span aria-hidden="true" style={{ fontSize: 8, opacity: .6, transform: productsOpen ? "rotate(180deg)" : "none", transition: "transform .2s" }}>▾</span>
+            </button>
+            {productsOpen && (
+              <div role="menu" aria-label="Products" style={{ position: "absolute", top: "100%", left: 0, paddingTop: 8, minWidth: 240, zIndex: 120 }}>
+                <div style={{ background: "var(--white)", border: "1px solid var(--mid-grey)", boxShadow: "var(--shadow-md)", borderRadius: 2, padding: "10px 0" }}>
+                  {PRODUCT_LINKS.map(([label, path]) => (
+                    <button
+                      key={label}
+                      type="button"
+                      role="menuitem"
+                      onClick={() => { setProductsOpen(false); goTo(path) }}
+                      style={{ display: "block", width: "100%", textAlign: "left", background: "none", border: "none", font: "inherit", fontSize: 11, letterSpacing: "2px", textTransform: "uppercase", color: "var(--text-body)", padding: "11px 22px", cursor: "pointer", transition: "color .2s, background .2s" }}
+                      onMouseEnter={e => { e.currentTarget.style.color = "var(--accent)"; e.currentTarget.style.background = "var(--light-grey)" }}
+                      onMouseLeave={e => { e.currentTarget.style.color = "var(--text-body)"; e.currentTarget.style.background = "none" }}
+                    >{label}</button>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+          {["Projects", "Showrooms", "Contact"].map(i => (
             <a key={i} className="nl" href="#" style={{ color: "inherit" }}>{i}</a>
           ))}
         </nav>

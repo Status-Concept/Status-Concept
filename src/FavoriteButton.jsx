@@ -41,8 +41,8 @@ export default function FavoriteButton({ product, size = 20, style = {} }) {
         width={size}
         height={size}
         viewBox="0 0 24 24"
-        fill={active ? "#c41e3a" : "none"}
-        stroke={active ? "#c41e3a" : "rgba(255,255,255,.9)"}
+        fill={active ? "#8a7658" : "none"}
+        stroke={active ? "#8a7658" : "rgba(255,255,255,.9)"}
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"

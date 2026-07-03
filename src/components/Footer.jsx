@@ -19,7 +19,11 @@ const ROUTES = {
   "Catalogue": "/catalogue",
   "Showroom Quinta do Lago": "/contact",
   "Showroom Almancil": "/contact",
+  "+351 289 030 179": "tel:+351289030179",
+  "info@statusconcept.com": "mailto:info@statusconcept.com",
 }
+
+const isExternal = (href) => href?.startsWith("tel:") || href?.startsWith("mailto:")
 
 export default function Footer() {
   const navigate = useLocalizedNavigate()
@@ -31,13 +35,13 @@ export default function Footer() {
             <span className="logo-serif" style={{fontSize:24,fontWeight:400,letterSpacing:8}}>ST<span style={{color:"var(--accent)"}}>A</span>TVS</span>
             <div className="fs" style={{fontSize:10,letterSpacing:3,color:"rgba(255,255,255,.4)",marginTop:2}}>OUTDOOR FURNITURE SPECIALISTS</div>
           </div>
-          <p className="fs" style={{fontSize:13,lineHeight:1.7,color:"rgba(255,255,255,.55)",fontWeight:300}}>High quality lifestyle furniture in the Algarve. Serving Vale do Lobo, Quinta do Lago, Vilamoura, and beyond.</p>
+          <p className="fs" style={{fontSize:13,lineHeight:1.7,color:"rgba(255,255,255,.55)",fontWeight:300}}>Outdoor furniture specialists since 2013. Two Algarve showrooms, European makers, and After Care that continues long after delivery.</p>
           <div style={{display:"flex",gap:"2px",marginTop:20}}>
             <SocialLinks linkStyle={{color:"rgba(255,255,255,.45)"}} />
           </div>
         </div>
         {[
-          {t:"Furniture",ls:["Lounge","Dining","Sun Loungers","Day Beds","Coffee Tables","Bar & Patio"]},
+          {t:"Products",ls:["Lounge","Dining","Sun Loungers","Day Beds","Coffee Tables","Bar & Patio"]},
           {t:"Solutions",ls:["Glatz Parasols","Bioclimatic Pergolas","Outdoor Kitchens"]},
           {t:"Company",ls:["Why Us","After Care","Projects","Gallery","Catalogue"]},
           {t:"Contact",ls:["Showroom Quinta do Lago","Showroom Almancil","+351 289 030 179","info@statusconcept.com"]},
@@ -49,8 +53,9 @@ export default function Footer() {
                 <a key={l}
                   href={ROUTES[l] || "#"}
                   className="fs"
+                  data-no-translate={isExternal(ROUTES[l]) ? true : undefined}
                   style={{fontSize:13,color:"rgba(255,255,255,.55)",textDecoration:"none",fontWeight:300,transition:"color .2s",cursor:"pointer",padding:"6px 0"}}
-                  onClick={e => { if(ROUTES[l]) { e.preventDefault(); navigate(ROUTES[l]) } }}
+                  onClick={e => { if(ROUTES[l] && !isExternal(ROUTES[l])) { e.preventDefault(); navigate(ROUTES[l]) } }}
                   onMouseEnter={e=>e.target.style.color="#fff"}
                   onMouseLeave={e=>e.target.style.color="rgba(255,255,255,.55)"}
                 >{l}</a>

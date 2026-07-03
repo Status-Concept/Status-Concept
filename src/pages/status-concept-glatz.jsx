@@ -24,8 +24,8 @@ const CATEGORIES = [
   { key: "wood", label: "Wood & Wood Look", sub: "Garden parasols", img: catWoodImg,
     blurb: "Warm, natural elegance: from precious timber to wind-resistant wood-look frames.",
     models: ["glatz-piazza", "glatz-teakwood", "glatz-alexo"] },
-  { key: "vita", label: "VITA® Collection", sub: "Design line", img: catVitaImg,
-    blurb: "Glatz's design collection: minimalist forms with fully resolved ergonomics.",
+  { key: "vita", label: "VITA® Line", sub: "Design line", img: catVitaImg,
+    blurb: "Glatz's design line: minimalist forms with fully resolved ergonomics.",
     models: ["glatz-vita-torna", "glatz-vita-piana", "glatz-vita-sfera"] },
   { key: "windproof", label: "Windproof Parasols", sub: "Contract line", img: catWindproofImg,
     blurb: "Engineered for exposed coastal terraces, restaurants and beach clubs.",
@@ -58,14 +58,14 @@ const STATUS_CONCEPT_GLATZ = () => {
   return (
     <Layout>
       {/* HERO */}
-      <section className="rd-page-hero" style={{ minHeight: "62vh" }}>
+      <section className="rd-page-hero">
         <img className="rd-hero-img" src={heroImg} alt="Glatz parasol on a terrace" />
-        <div className="rd-hero-inner">
-          <span className="rd-kicker fs">Official Glatz partner · Swiss made since 1895</span>
-          <h1 className="rd-title ff">Glatz Parasols</h1>
-          <p className="rd-lede fs">The world's largest parasol range. Wind-tunnel tested Swiss shade engineering, supplied and cared for in the Algarve by Status Concept.</p>
-        </div>
       </section>
+      <div className="rd-page-head">
+        <span className="rd-kicker fs">Official Glatz partner · Swiss made since 1895</span>
+        <h1 className="rd-title ff">Glatz Parasols</h1>
+        <p className="rd-lede fs">The world's largest parasol range. Wind-tunnel tested Swiss shade engineering, supplied and cared for in the Algarve by Status Concept.</p>
+      </div>
 
       {/* INTRO STATEMENT */}
       <section id="glatz-intro" data-animate style={{ padding: "var(--section-padding) 48px", textAlign: "center", ...S("glatz-intro") }}>
@@ -151,7 +151,7 @@ const STATUS_CONCEPT_GLATZ = () => {
           <span className="fs sl" style={{ color: "var(--gold-l)" }}>Made to measure</span>
           <h2 className="ff" style={{ fontSize: "clamp(28px,3.6vw,44px)", fontWeight: 300, marginTop: 12, marginBottom: 18, letterSpacing: "-0.01em" }}>70 colours. Three fabric qualities.</h2>
           <p className="fs" style={{ fontSize: 14, color: "rgba(255,255,255,.65)", maxWidth: 620, margin: "0 auto 44px", lineHeight: 1.8, fontWeight: 300 }}>
-            From the "Morning Light" and "Sunset Glow" collections. Every canopy filters more than 98% of UV rays, in every class. Choose your size, shape, frame finish and colour: over 20,000 combinations, configured with our team in the showroom.
+            From the "Morning Light" and "Sunset Glow" ranges. Every canopy filters more than 98% of UV rays, in every class. Choose your size, shape, frame finish and colour: over 20,000 combinations, configured with our team in the showroom.
           </p>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 16 }}>
             {FABRICS.map((f) => (

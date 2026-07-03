@@ -36,12 +36,12 @@ const ABOUT_PAGE = () => {
     <Layout>
       <section className="rd-page-hero">
         <img className="rd-hero-img" src={showroomQuintaImg} alt="" />
-        <div className="rd-hero-inner">
-          <span className="rd-kicker fs">About Statvs</span>
-          <h1 className="rd-title ff">Outdoor excellence since 2013</h1>
-          <p className="rd-lede fs">A decade of furnishing terraces, gardens and poolside spaces for the Algarve lifestyle.</p>
-        </div>
       </section>
+      <div className="rd-page-head">
+        <span className="rd-kicker fs">About Statvs</span>
+        <h1 className="rd-title ff">Outdoor excellence since 2013</h1>
+        <p className="rd-lede fs">A decade of furnishing terraces, gardens and poolside spaces for the Algarve lifestyle.</p>
+      </div>
 
       <section className="rd-section">
         <div className="rd-section-head">

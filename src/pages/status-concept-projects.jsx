@@ -31,12 +31,12 @@ const PROJECTS_PAGE = () => {
     <Layout>
       <section className="rd-page-hero">
         <img className="rd-hero-img" src={projectQuintaImg} alt="" />
-        <div className="rd-hero-inner">
-          <span className="rd-kicker fs">Portfolio</span>
-          <h1 className="rd-title ff">Featured outdoor projects</h1>
-          <p className="rd-lede fs">Private villas, terraces and poolside spaces furnished across the Algarve.</p>
-        </div>
       </section>
+      <div className="rd-page-head">
+        <span className="rd-kicker fs">Portfolio</span>
+        <h1 className="rd-title ff">Featured outdoor projects</h1>
+        <p className="rd-lede fs">Private villas, terraces and poolside spaces furnished across the Algarve.</p>
+      </div>
 
       <section className="rd-section">
         <div className="rd-section-head">

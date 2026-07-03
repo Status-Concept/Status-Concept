@@ -2,7 +2,9 @@ import { useEffect, useRef } from 'react'
 import { useLocalizedNavigate } from '../hooks/useLocalizedNavigate'
 
 const NAV_ROUTES = {
+  "Products": "/products",
   "Furniture": "/products",
+  "Glatz Parasols": "/glatz-parasols",
   "Lounge": "/products?cat=lounge",
   "Dining": "/products?cat=dining",
   "Sun Loungers": "/products?cat=sunlounger",
@@ -46,8 +48,8 @@ export default function MobileMenu({ open, onClose }) {
         <button ref={closeRef} onClick={onClose} style={{position:"absolute",top:28,right:28,background:"none",border:"none",fontSize:28,cursor:"pointer",color:"var(--stone)",fontWeight:300}}>×</button>
         <nav style={{display:"flex",flexDirection:"column"}}>
           {[
-            {l:"Furniture",s:["Lounge","Dining","Sun Loungers","Day Beds","Coffee Tables","Bar & Patio"]},
-            {l:"Shade Solutions",s:["Parasols","Bioclimatic Pergolas","Retractable Pergolas"]},
+            {l:"Products",s:["Lounge","Dining","Sun Loungers","Day Beds","Coffee Tables","Bar & Patio"]},
+            {l:"Shade Solutions",s:["Glatz Parasols","Parasols","Bioclimatic Pergolas","Retractable Pergolas"]},
             {l:"Outdoor Kitchens",s:["BBQ Systems","Pizza Ovens","Full Kitchens"]},
             {l:"Leisure",s:["Sound Systems"]},
             {l:"Projects",s:[]},
