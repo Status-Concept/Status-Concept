@@ -30,7 +30,6 @@ export default function ClientLayout() {
           <NavLink to="/cliente" end>Resumo</NavLink>
           <NavLink to="/cliente/perfil">Perfil</NavLink>
           <NavLink to="/cliente/favoritos">Favoritos</NavLink>
-          <NavLink to="/cliente/comparador">Comparador</NavLink>
         </nav>
         <button type="button" className="account-logout fs" onClick={handleLogout}>Terminar sessao</button>
       </aside>

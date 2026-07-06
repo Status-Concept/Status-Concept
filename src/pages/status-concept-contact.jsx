@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useLocation, useSearchParams } from "react-router-dom";
 import useNavLinks from "../useNavLinks";
 import Layout from "../components/Layout";
 import { supabase } from "../lib/supabase";
@@ -10,9 +11,32 @@ const telHref = (n) => "tel:" + n.replace(/[^\d+]/g, "");
 
 const CONTACT_PAGE = () => {
   useNavLinks();
+  const [searchParams] = useSearchParams();
+  const location = useLocation();
+  // A product enquiry can arrive via ?product= or router state (from a product page).
+  const enquiryProduct = searchParams.get("product") || location.state?.product || "";
+  const enquiryInterest = searchParams.get("interest") || location.state?.interest || "";
+  const shortlist = location.state?.shortlist || [];
   const [formData, setFormData] = useState({ name: "", email: "", phone: "", interest: "", message: "" });
   const [status, setStatus] = useState("idle"); // idle | sending | sent | error
   const [activeShowroom, setActiveShowroom] = useState(0);
+
+  useEffect(() => {
+    if (shortlist.length) {
+      setFormData((prev) => ({
+        ...prev,
+        message: prev.message || `I'd like a proposal for these pieces:\n${shortlist.map((n) => `• ${n}`).join("\n")}`,
+      }));
+      return;
+    }
+    if (!enquiryProduct && !enquiryInterest) return;
+    setFormData((prev) => ({
+      ...prev,
+      interest: prev.interest || enquiryInterest,
+      message: prev.message || (enquiryProduct ? `I'd like a proposal for the ${enquiryProduct}.` : prev.message),
+    }));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [enquiryProduct, enquiryInterest, shortlist.length]);
 
   const showrooms = [
     {
@@ -53,26 +77,24 @@ const CONTACT_PAGE = () => {
       phone: formData.phone.trim(),
       interest: formData.interest,
       message: formData.message.trim(),
-      source: "contact_page",
+      source: shortlist.length ? "favorites_shortlist" : enquiryProduct ? "product_enquiry" : "contact_page",
     };
 
     try {
-      if (supabase) {
-        const { error } = await supabase.from("enquiries").insert(payload);
-        if (error) throw error;
-      } else {
-        throw new Error("no-backend");
-      }
+      if (!supabase) throw new Error("no-backend");
+      const { error } = await supabase.from("enquiries").insert(payload);
+      if (error) throw error;
       setStatus("sent");
       setFormData({ name: "", email: "", phone: "", interest: "", message: "" });
     } catch {
-      // Backend not available or insert failed — fall back to the mail client so no enquiry is lost.
-      const body = `Name: ${payload.name}\nEmail: ${payload.email}\nPhone: ${payload.phone}\nInterest: ${payload.interest || "—"}\n\n${payload.message}`;
-      window.location.href = `mailto:info@statusconcept.com?subject=${encodeURIComponent("Website enquiry — " + (payload.interest || "General"))}&body=${encodeURIComponent(body)}`;
-      setStatus("sent");
-      setFormData({ name: "", email: "", phone: "", interest: "", message: "" });
+      // Do NOT claim success on failure — surface an honest error with direct
+      // contact routes, keeping the user's input so they can retry.
+      setStatus("error");
     }
   };
+
+  // Pre-composed mailto so a failed submit still has a one-click manual route.
+  const mailtoFallback = `mailto:info@statusconcept.com?subject=${encodeURIComponent("Website enquiry — " + (formData.interest || enquiryProduct || "General"))}&body=${encodeURIComponent(`Name: ${formData.name}\nEmail: ${formData.email}\nPhone: ${formData.phone}\nInterest: ${formData.interest || "—"}\n\n${formData.message}`)}`;
 
   return (
     <Layout>
@@ -133,7 +155,7 @@ const CONTACT_PAGE = () => {
 
         <div className="rd-form-panel">
           <span className="rd-kicker fs">Enquiry</span>
-          <h2 className="ff" style={{ fontSize: "clamp(32px, 4vw, 46px)", fontWeight: 300, marginBottom: 14 }}>Tell us what you need</h2>
+          <h2 className="ff" style={{ fontSize: "clamp(32px, 4vw, 46px)", fontWeight: 300, marginBottom: 14 }}>{shortlist.length ? "Enquire about your shortlist" : enquiryProduct ? `Enquire about ${enquiryProduct}` : "Tell us what you need"}</h2>
           <p className="rd-lede fs" style={{ marginBottom: 34 }}>Share the type of space, the product family you are interested in and the best way to contact you.</p>
 
           {status === "sent" ? (
@@ -144,6 +166,14 @@ const CONTACT_PAGE = () => {
             </div>
           ) : (
             <form className="rd-floating-grid" onSubmit={handleSubmit}>
+              {status === "error" && (
+                <div className="rd-form-error" role="alert" style={{ padding: "14px 16px", border: "1px solid var(--mid-grey)", borderRadius: 2, background: "var(--off-white)", fontSize: 13, lineHeight: 1.6, color: "var(--text-dark)" }}>
+                  We couldn't send your enquiry just now. Please try again — or reach us directly:{" "}
+                  <a href="tel:+351289030179" data-no-translate style={{ color: "var(--accent-hover)" }}>call</a>,{" "}
+                  <a href="https://wa.me/351937573600" target="_blank" rel="noopener noreferrer" data-no-translate style={{ color: "var(--accent-hover)" }}>WhatsApp</a>{" "}or{" "}
+                  <a href={mailtoFallback} data-no-translate style={{ color: "var(--accent-hover)" }}>email</a>.
+                </div>
+              )}
               <div className="rd-field">
                 <label>Name</label>
                 <input value={formData.name} onChange={(event) => setFormData({ ...formData, name: event.target.value })} autoComplete="name" required />

@@ -159,7 +159,7 @@ export default function Header({ onOpenMenu }) {
               </div>
             )}
           </div>
-          <button onClick={onOpenMenu} className="nav-burger" style={{
+          <button onClick={onOpenMenu} className="nav-burger" aria-label="Open menu" aria-haspopup="dialog" style={{
             background: "none", border: "none", cursor: "pointer", padding: 0,
             width: 44, height: 44,
             color: "var(--text-dark)",

@@ -98,7 +98,7 @@ const FAVORITES_PAGE = () => {
               <span className="rd-kicker fs" style={{ marginBottom: 0 }}>Ready to quote</span>
               <p className="fs rd-count">{favorites.length} selected {favorites.length === 1 ? "item" : "items"}</p>
             </div>
-            <button type="button" className="cb cg" onClick={() => navigate("/contact")}>Request quote for all</button>
+            <button type="button" className="cb cg" onClick={() => navigate("/contact", { state: { shortlist: favorites.map((f) => f.name || f.id) } })}>Request a proposal for these</button>
           </div>
         </>
       )}

@@ -3,7 +3,6 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import useNavLinks from "../useNavLinks";
 import Layout from "../components/Layout";
 import FavoriteButton from "../FavoriteButton";
-import CompareButton from "../CompareButton";
 import { glatzProductDetails, glatzProducts } from "../data/glatzProducts";
 import { kitchenProductDetails, kitchenProducts, kitchenCollectionHeroes } from "../data/kitchenProducts";
 import { catalogProducts } from "../data/catalogProducts";
@@ -97,6 +96,10 @@ const PRODUCT_DETAIL = () => {
   const images = product.images?.length ? product.images : [product.image || sicilyCornerImg];
   const safeActiveImg = activeImg < images.length ? activeImg : 0;
   const goTo = (path) => navigate(withLang(path, currentLang));
+
+  // Carry the product (and a sensible interest) into the enquiry form.
+  const INTEREST_BY_CATEGORY = { shade: "Shade Solutions", kitchen: "Outdoor Kitchens", lounge: "Outdoor Furniture", dining: "Outdoor Furniture", sunlounger: "Outdoor Furniture", decor: "Decor & Leisure", leisure: "Decor & Leisure" };
+  const goEnquire = () => navigate(withLang("/contact", currentLang), { state: { product: product.name, interest: INTEREST_BY_CATEGORY[product.category] || "" } });
 
   const kitchenHero = product.category === "kitchen"
     ? kitchenCollectionHeroes[product.collectionSlug || passedProduct?.collection]
@@ -219,7 +222,6 @@ const PRODUCT_DETAIL = () => {
           <div className="rd-main-photo">
             {product.tag && <span className={`tag ${product.tag === "New" ? "tag-new" : "tag-popular"}`} style={{ position: "absolute", top: 16, left: 16, zIndex: 3 }}>{product.tag}</span>}
             <FavoriteButton product={{ id: product.id || id, name: product.name, collection: product.collection, img: images[0], route: `/product/${product.id || id}` }} size={18} style={{ position: "absolute", top: 16, right: 16 }} />
-            <CompareButton product={{ id: product.id || id, name: product.name, img: images[0], category: product.category, collectionName: product.collection, supplier: product.specs?.find?.((s) => s.label === "Supplier")?.value, sku: product.specs?.find?.((s) => s.label === "SKU" || s.label === "Sku")?.value, desc: product.tagline, route: `/product/${product.id || id}` }} size={18} style={{ position: "absolute", top: 62, right: 16 }} />
             <button type="button" aria-label="Open full-size image" onClick={() => setLightboxOpen(true)} style={{ padding: 0, border: "none", background: "none", cursor: "zoom-in", display: "block", width: "100%" }}>
               <img src={images[safeActiveImg]} alt={product.name} />
             </button>
@@ -268,8 +270,8 @@ const PRODUCT_DETAIL = () => {
           )}
 
           <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginBottom: 28 }}>
-            <button type="button" className="cb cg" onClick={() => goTo("/contact")}>Request quote</button>
-            <button type="button" className="cb cd" onClick={() => goTo("/contact")}>Book showroom</button>
+            <button type="button" className="cb cg" onClick={goEnquire}>Request a proposal</button>
+            <button type="button" className="cb cd" onClick={goEnquire}>Book a showroom visit</button>
           </div>
 
           <div className="rd-tabs">
@@ -326,7 +328,7 @@ const PRODUCT_DETAIL = () => {
       </section>
 
       <div className="rd-mobile-cta">
-        <button type="button" className="cb cg" style={{ width: "100%", justifyContent: "center" }} onClick={() => goTo("/contact")}>Request quote</button>
+        <button type="button" className="cb cg" style={{ width: "100%", justifyContent: "center" }} onClick={goEnquire}>Request a proposal</button>
       </div>
 
       {lightboxOpen && (

@@ -3,10 +3,10 @@ import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import useNavLinks from "../useNavLinks";
 import Layout from "../components/Layout";
 import FavoriteButton from "../FavoriteButton";
-import CompareButton from "../CompareButton";
 import { glatzProducts } from "../data/glatzProducts";
 import { kitchenCollectionMeta, kitchenProducts } from "../data/kitchenProducts";
 import { catalogProducts } from "../data/catalogProducts";
+import { noImageProducts } from "../data/productImageStatus";
 import { getLangFromPath, withLang } from "../utils/language";
 import kitchenHeroImg from "../assets/images/kitchen/kitchen-hero.webp";
 import furnitureSeriesImg from "../assets/images/enhanced/furniture-series-golf-hero.webp";
@@ -19,6 +19,88 @@ const shadeHeroImg = "/product-images/glatz/ambiente-nova/01.webp";
 const shadeChipImg = "/product-images/glatz/sombrano-s-plus/05.webp";
 
 const slug = (value) => value.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+
+// Kitchen products always keep their image (exception); everything else falls
+// back to a "No image" placeholder when it has no clean white-background shot.
+const productHasImage = (product) => product.category === "kitchen" || !noImageProducts.has(product.id);
+
+// Auto-advancing category carousel — slides right-to-left one tile every 5s, looping.
+// Fully responsive via CSS container-query units: tile width is a fraction of the
+// carousel (4/3/2/1 tiles by size), so nothing is ever cut off and the page never
+// overflows. Each tile is exactly 1/items of the track, so one step = a fixed %.
+function CategoryCarousel({ categories, onOpen }) {
+  const [idx, setIdx] = useState(0);
+  const [animate, setAnimate] = useState(true);
+  const [paused, setPaused] = useState(false); // explicit pause (WCAG 2.2.2)
+  const [hovered, setHovered] = useState(false); // pause while the pointer is over it
+  const items = [...categories, ...categories]; // duplicated for a seamless loop
+  const stepPct = 100 / items.length; // one tile as a percentage of the whole track
+
+  useEffect(() => {
+    if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    // At the duplicate seam: let the slide finish, then jump back to the start instantly.
+    if (idx === categories.length) {
+      const t = setTimeout(() => { setAnimate(false); setIdx(0); }, 700);
+      return () => clearTimeout(t);
+    }
+    // Just after the instant jump: re-enable the sliding transition.
+    if (!animate) {
+      const t = setTimeout(() => setAnimate(true), 20);
+      return () => clearTimeout(t);
+    }
+    // Don't schedule the next advance while paused or hovered.
+    if (paused || hovered) return;
+    // Normal cadence: advance one tile every 5s.
+    const t = setTimeout(() => setIdx((i) => i + 1), 5000);
+    return () => clearTimeout(t);
+  }, [idx, animate, categories.length, paused, hovered]);
+
+  return (
+    <div
+      className="cat-carousel"
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      onFocusCapture={() => setHovered(true)}
+      onBlurCapture={(e) => { if (!e.currentTarget.contains(e.relatedTarget)) setHovered(false); }}
+    >
+      <div
+        className="cat-carousel-track"
+        style={{
+          transform: `translateX(-${idx * stepPct}%)`,
+          transition: animate ? "transform .7s cubic-bezier(0.16, 1, 0.3, 1)" : "none",
+        }}
+      >
+        {items.map((category, i) => (
+          <button key={`${category.key}-${i}`} type="button" className="cat-chip" aria-label={category.title} onClick={() => onOpen(category.key)}>
+            <span className="cat-chip-img">
+              <img src={category.chip} alt="" loading="lazy" />
+            </span>
+            <span className="lbl">{category.label}</span>
+          </button>
+        ))}
+      </div>
+      <button
+        type="button"
+        className="cat-carousel-toggle fs"
+        aria-label={paused ? "Play category slideshow" : "Pause category slideshow"}
+        aria-pressed={paused}
+        onClick={() => setPaused((p) => !p)}
+      >
+        {paused ? "▶" : "❚❚"}
+      </button>
+    </div>
+  );
+}
+
+// "No image" placeholder — a quiet brand panel (serif monogram) rather than an apology.
+function NoImagePlaceholder({ list }) {
+  return (
+    <div className={`rd-no-image${list ? " list" : ""}`}>
+      <span className="rd-no-image-mark" aria-hidden="true">S</span>
+      <span className="rd-no-image-label">See it in the showroom</span>
+    </div>
+  );
+}
 
 const PRODUCTS_PAGE = () => {
   useNavLinks();
@@ -76,6 +158,10 @@ const PRODUCTS_PAGE = () => {
       : allProducts.filter((product) => product.category === activeCategory);
 
     return [...base].sort((a, b) => {
+      // Products without a clean white-bg image always sink to the bottom.
+      const ai = productHasImage(a) ? 0 : 1;
+      const bi = productHasImage(b) ? 0 : 1;
+      if (ai !== bi) return ai - bi;
       if (sortBy === "name") return a.name.localeCompare(b.name);
       return (b.tag ? 1 : 0) - (a.tag ? 1 : 0);
     });
@@ -83,7 +169,6 @@ const PRODUCTS_PAGE = () => {
 
   const productRoute = (product) => product.route || `/product/${product.id || slug(product.name)}`;
   const favPayload = (product) => ({ id: product.id || slug(product.name), name: product.name, collection: product.collectionName || product.collection, img: product.img, category: product.category, route: productRoute(product) });
-  const comparePayload = (product) => ({ id: product.id || slug(product.name), name: product.name, img: product.img, category: product.category, categoryLabel: product.categoryLabel, collection: product.collection, collectionName: product.collectionName || product.collection, supplier: product.supplier, sku: product.sku || product.specs?.sku, desc: product.desc || product.tagline, route: productRoute(product) });
   const goTo = (path, state) => navigate(withLang(path, currentLang), state ? { state } : undefined);
 
   const scrollToProducts = () => {
@@ -99,6 +184,7 @@ const PRODUCTS_PAGE = () => {
   const selectKitchenCollection = (key) => { setActiveKitchenCollection(key); scrollToProducts(); };
 
   const categoryLabelOf = (product) => product.categoryLabel || categories.find((category) => category.key === product.category)?.label || "Outdoor living";
+  const hasImage = productHasImage;
   const activeRange = kitchenCollections.find((collection) => collection.key === activeKitchenCollection);
 
   return (
@@ -114,16 +200,7 @@ const PRODUCTS_PAGE = () => {
             <p className="rd-lede fs">Explore each outdoor category — furniture, shade and kitchens — selected for the Algarve lifestyle.</p>
           </div>
           <main className="rd-products-layout">
-            <div className="cat-strip landing">
-              {categories.map((category) => (
-                <button key={category.key} type="button" className="cat-chip" aria-label={category.title} onClick={() => openCategory(category.key)}>
-                  <span className="cat-chip-img">
-                    <img src={category.chip} alt="" loading="lazy" />
-                  </span>
-                  <span className="lbl">{category.label}</span>
-                </button>
-              ))}
-            </div>
+            <CategoryCarousel categories={categories} onOpen={openCategory} />
           </main>
         </>
       ) : (
@@ -183,12 +260,9 @@ const PRODUCTS_PAGE = () => {
                           size={16}
                           style={{ position: "absolute", top: 12, right: 12 }}
                         />
-                        <CompareButton
-                          product={comparePayload(product)}
-                          size={16}
-                          style={{ position: "absolute", top: 52, right: 12 }}
-                        />
-                        <img src={product.img} alt={product.name} loading="lazy" decoding="async" />
+                        {hasImage(product)
+                          ? <img src={product.img} alt={product.name} loading="lazy" decoding="async" />
+                          : <NoImagePlaceholder />}
                       </div>
                       <div className="rd-product-info">
                         <span className="rd-product-cat fs">{categoryLabelOf(product)}</span>
@@ -201,7 +275,9 @@ const PRODUCTS_PAGE = () => {
                 <div className="rd-product-list">
                   {filteredProducts.map((product) => (
                     <article key={product.id || product.name} className={`rd-product-row ${product.category === "kitchen" && !product.fit ? "kitchen-product" : ""} ${product.fit === "contain" ? "studio-product" : ""}`} role="link" tabIndex={0} aria-label={`View ${product.name}`} onClick={() => goTo(productRoute(product), { product })} onKeyDown={(e) => { if (e.target !== e.currentTarget) return; if (e.key === "Enter" || e.key === " ") { if (e.key === " ") e.preventDefault(); goTo(productRoute(product), { product }); } }}>
-                      <img src={product.img} alt={product.name} loading="lazy" decoding="async" />
+                      {hasImage(product)
+                        ? <img src={product.img} alt={product.name} loading="lazy" decoding="async" />
+                        : <NoImagePlaceholder list />}
                       <div>
                         <span className="rd-kicker fs">{categoryLabelOf(product)}</span>
                         <h3 className="ff">{product.name}</h3>

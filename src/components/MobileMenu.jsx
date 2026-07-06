@@ -43,9 +43,9 @@ export default function MobileMenu({ open, onClose }) {
 
   return (
     <>
-      <div className={`moo ${open ? "op" : ""}`} onClick={onClose} />
-      <div className={`mo ${open ? "op" : ""}`} role="dialog" aria-modal="true" aria-label="Menu">
-        <button ref={closeRef} onClick={onClose} style={{position:"absolute",top:28,right:28,background:"none",border:"none",fontSize:28,cursor:"pointer",color:"var(--stone)",fontWeight:300}}>×</button>
+      <div className={`moo ${open ? "op" : ""}`} onClick={onClose} aria-hidden="true" />
+      <div className={`mo ${open ? "op" : ""}`} role="dialog" aria-modal="true" aria-label="Menu" inert={!open}>
+        <button ref={closeRef} onClick={onClose} aria-label="Close menu" style={{position:"absolute",top:28,right:28,background:"none",border:"none",fontSize:28,cursor:"pointer",color:"var(--stone)",fontWeight:300}}>×</button>
         <nav style={{display:"flex",flexDirection:"column"}}>
           {[
             {l:"Products",s:["Lounge","Dining","Sun Loungers","Day Beds","Coffee Tables","Bar & Patio"]},
