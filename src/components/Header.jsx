@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import { getLangFromPath, stripLangFromPath, withLang } from '../utils/language'
+import LocalizedLink from './LocalizedLink'
 import SocialLinks from './SocialIcons'
 
 const PRODUCT_LINKS = [
@@ -29,7 +30,6 @@ export default function Header({ onOpenMenu }) {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
-  const goTo = (path) => navigate(withLang(path, currentLang))
   const changeLanguage = (lang) => {
     const currentPath = `${stripLangFromPath(location.pathname)}${location.search}`
     navigate(withLang(currentPath, lang))
@@ -56,15 +56,16 @@ export default function Header({ onOpenMenu }) {
           <a href="mailto:info@statusconcept.com" data-no-translate style={{ color: "inherit", textDecoration: "none" }}>info@statusconcept.com</a>
         </div>
         <div style={{ display: "flex", gap: "12px", alignItems: "center" }}>
-          <button
+          <LocalizedLink
             className="fs"
             data-no-translate={isAuthenticated ? true : undefined}
-            onClick={() => goTo(isAuthenticated ? "/cliente" : "/login")}
+            to={isAuthenticated ? "/cliente" : "/login"}
             style={{
               padding: "6px 16px",
               border: "1px solid var(--mid-grey)",
               background: "transparent",
               color: "var(--text-dark)",
+              textDecoration: "none",
               borderRadius: 2, cursor: "pointer", fontSize: 12, letterSpacing: 1.5,
               textTransform: "uppercase", transition: "color .3s, border-color .3s",
             }}
@@ -78,21 +79,21 @@ export default function Header({ onOpenMenu }) {
             }}
           >
             {isAuthenticated ? (firstName || "A Minha Conta") : "Login"}
-          </button>
+          </LocalizedLink>
           <div style={{ display: "flex", gap: "2px", alignItems: "center" }}>
             <SocialLinks linkStyle={{ color: "var(--text-dark)" }} />
           </div>
         </div>
       </div>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "18px 48px", maxWidth: "var(--max-width)", margin: "0 auto" }}>
-        <div style={{ cursor: "pointer", lineHeight: 1 }} onClick={() => goTo('/')}>
+        <LocalizedLink to="/" aria-label="STATVS — home" style={{ display: "block", lineHeight: 1, textDecoration: "none" }}>
           <span className="logo-serif" style={{ fontSize: 28, fontWeight: 400, letterSpacing: 8, color: "var(--text-dark)" }}>
             ST<span style={{ color: "var(--accent)" }}>A</span>TVS
           </span>
           <div className="fs" style={{ fontSize: 9, letterSpacing: 2, color: "var(--text-grey)", marginTop: 2 }}>
             OUTDOOR FURNITURE SPECIALISTS
           </div>
-        </div>
+        </LocalizedLink>
         <nav className="fs nav-desktop" style={{
           display: "flex", gap: "32px", alignItems: "center", fontSize: "12px",
           letterSpacing: "2px", textTransform: "uppercase",
@@ -106,37 +107,37 @@ export default function Header({ onOpenMenu }) {
             onBlur={(e) => { if (!e.currentTarget.contains(e.relatedTarget)) setProductsOpen(false) }}
             onKeyDown={(e) => { if (e.key === "Escape") setProductsOpen(false) }}
           >
-            <button
-              type="button"
+            <LocalizedLink
               className="nl"
               aria-haspopup="true"
               aria-expanded={productsOpen}
-              onClick={() => { setProductsOpen(false); goTo('/products') }}
-              style={{ color: "inherit", background: "none", border: "none", font: "inherit", letterSpacing: "inherit", textTransform: "inherit", cursor: "pointer", padding: "8px 0", display: "inline-flex", alignItems: "center", gap: 6 }}
+              to="/products"
+              onClick={() => setProductsOpen(false)}
+              style={{ color: "inherit", font: "inherit", letterSpacing: "inherit", textTransform: "inherit", cursor: "pointer", padding: "8px 0", display: "inline-flex", alignItems: "center", gap: 6 }}
             >
               Products
               <span aria-hidden="true" style={{ fontSize: 8, opacity: .6, transform: productsOpen ? "rotate(180deg)" : "none", transition: "transform .2s" }}>▾</span>
-            </button>
+            </LocalizedLink>
             {productsOpen && (
               <div role="menu" aria-label="Products" style={{ position: "absolute", top: "100%", left: 0, paddingTop: 8, minWidth: 240, zIndex: 120 }}>
                 <div style={{ background: "var(--white)", border: "1px solid var(--mid-grey)", boxShadow: "var(--shadow-md)", borderRadius: 2, padding: "10px 0" }}>
                   {PRODUCT_LINKS.map(([label, path]) => (
-                    <button
+                    <LocalizedLink
                       key={label}
-                      type="button"
                       role="menuitem"
-                      onClick={() => { setProductsOpen(false); goTo(path) }}
-                      style={{ display: "block", width: "100%", textAlign: "left", background: "none", border: "none", font: "inherit", fontSize: 11, letterSpacing: "2px", textTransform: "uppercase", color: "var(--text-body)", padding: "11px 22px", cursor: "pointer", transition: "color .2s, background .2s" }}
+                      to={path}
+                      onClick={() => setProductsOpen(false)}
+                      style={{ display: "block", textAlign: "left", font: "inherit", fontSize: 11, letterSpacing: "2px", textTransform: "uppercase", textDecoration: "none", color: "var(--text-body)", padding: "11px 22px", cursor: "pointer", transition: "color .2s, background .2s" }}
                       onMouseEnter={e => { e.currentTarget.style.color = "var(--accent)"; e.currentTarget.style.background = "var(--light-grey)" }}
                       onMouseLeave={e => { e.currentTarget.style.color = "var(--text-body)"; e.currentTarget.style.background = "none" }}
-                    >{label}</button>
+                    >{label}</LocalizedLink>
                   ))}
                 </div>
               </div>
             )}
           </div>
-          {["Projects", "Showrooms", "Contact"].map(i => (
-            <a key={i} className="nl" href="#" style={{ color: "inherit" }}>{i}</a>
+          {[["Projects", "/projects"], ["Showrooms", "/about"], ["Contact", "/contact"]].map(([label, path]) => (
+            <LocalizedLink key={label} className="nl" to={path} style={{ color: "inherit" }}>{label}</LocalizedLink>
           ))}
         </nav>
         <div style={{ display: "flex", alignItems: "center", gap: "20px" }}>

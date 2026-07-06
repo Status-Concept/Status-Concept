@@ -1,9 +1,8 @@
-import { useNavigate } from 'react-router-dom'
+import LocalizedLink from '../../components/LocalizedLink'
 import FavoriteButton from '../../FavoriteButton'
 import { useFavorites } from '../../FavoritesContext'
 
 export default function ClientFavorites() {
-  const navigate = useNavigate()
   const { favorites, clearFavorites } = useFavorites()
 
   return (
@@ -23,17 +22,17 @@ export default function ClientFavorites() {
         <div className="account-empty">
           <h3 className="ff">Ainda nao guardaste favoritos</h3>
           <p className="fs">Explora produtos e toca no coracao para os guardar aqui.</p>
-          <button type="button" className="cb cd" onClick={() => navigate('/products')}>Ver produtos</button>
+          <LocalizedLink className="cb cd" to="/products">Ver produtos</LocalizedLink>
         </div>
       ) : (
         <div className="account-favorites-grid">
           {favorites.map((item) => (
-            <article key={item.id} className="account-favorite-card" onClick={() => navigate(item.route || `/product/${item.id}`)}>
+            <article key={item.id} className="account-favorite-card">
               <div>
                 <img src={item.img || '/placeholder.svg'} alt={item.name || item.id} />
                 <FavoriteButton product={item} size={16} style={{ position: 'absolute', top: 12, right: 12 }} />
               </div>
-              <h3 className="ff">{item.name || item.id}</h3>
+              <h3 className="ff"><LocalizedLink className="rd-card-link" to={item.route || `/product/${item.id}`}>{item.name || item.id}</LocalizedLink></h3>
               <p className="fs">{item.collection || 'Statvs'} Collection</p>
             </article>
           ))}

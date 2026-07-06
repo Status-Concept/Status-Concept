@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import useNavLinks from "../useNavLinks";
 import Layout from "../components/Layout";
+import LocalizedLink from "../components/LocalizedLink";
 import FavoriteButton from "../FavoriteButton";
 import { glatzProductDetails, glatzProducts } from "../data/glatzProducts";
 import { kitchenProductDetails, kitchenProducts, kitchenCollectionHeroes } from "../data/kitchenProducts";
@@ -99,7 +100,7 @@ const PRODUCT_DETAIL = () => {
 
   // Carry the product (and a sensible interest) into the enquiry form.
   const INTEREST_BY_CATEGORY = { shade: "Shade Solutions", kitchen: "Outdoor Kitchens", lounge: "Outdoor Furniture", dining: "Outdoor Furniture", sunlounger: "Outdoor Furniture", decor: "Decor & Leisure", leisure: "Decor & Leisure" };
-  const goEnquire = () => navigate(withLang("/contact", currentLang), { state: { product: product.name, interest: INTEREST_BY_CATEGORY[product.category] || "" } });
+  const enquireState = { product: product.name, interest: INTEREST_BY_CATEGORY[product.category] || "" };
 
   const kitchenHero = product.category === "kitchen"
     ? kitchenCollectionHeroes[product.collectionSlug || passedProduct?.collection]
@@ -270,8 +271,8 @@ const PRODUCT_DETAIL = () => {
           )}
 
           <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginBottom: 28 }}>
-            <button type="button" className="cb cg" onClick={goEnquire}>Request a proposal</button>
-            <button type="button" className="cb cd" onClick={goEnquire}>Book a showroom visit</button>
+            <LocalizedLink className="cb cg" to="/contact" state={enquireState}>Request a proposal</LocalizedLink>
+            <LocalizedLink className="cb cd" to="/contact" state={enquireState}>Book a showroom visit</LocalizedLink>
           </div>
 
           <div className="rd-tabs">
@@ -328,7 +329,7 @@ const PRODUCT_DETAIL = () => {
       </section>
 
       <div className="rd-mobile-cta">
-        <button type="button" className="cb cg" style={{ width: "100%", justifyContent: "center" }} onClick={goEnquire}>Request a proposal</button>
+        <LocalizedLink className="cb cg" style={{ width: "100%", justifyContent: "center" }} to="/contact" state={enquireState}>Request a proposal</LocalizedLink>
       </div>
 
       {lightboxOpen && (

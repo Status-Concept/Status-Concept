@@ -1,4 +1,4 @@
-import { useLocalizedNavigate } from '../hooks/useLocalizedNavigate'
+import LocalizedLink from './LocalizedLink'
 import SocialLinks from './SocialIcons'
 
 const ROUTES = {
@@ -26,7 +26,6 @@ const ROUTES = {
 const isExternal = (href) => href?.startsWith("tel:") || href?.startsWith("mailto:")
 
 export default function Footer() {
-  const navigate = useLocalizedNavigate()
   return (
     <footer style={{background:"var(--black)",color:"#fff",padding:"72px 48px 36px"}}>
       <div className="footer-grid" style={{display:"grid",gridTemplateColumns:"1.5fr 1fr 1fr 1fr 1fr",gap:40,maxWidth:"var(--max-width)",margin:"0 auto",paddingBottom:48,borderBottom:"1px solid rgba(255,255,255,.1)"}}>
@@ -49,17 +48,20 @@ export default function Footer() {
           <div key={c.t}>
             <h4 className="fs" style={{fontSize:11,letterSpacing:2.5,textTransform:"uppercase",color:"#fff",marginBottom:16,fontWeight:400}}>{c.t}</h4>
             <div style={{display:"flex",flexDirection:"column",gap:8}}>
-              {c.ls.map(l => (
-                <a key={l}
-                  href={ROUTES[l] || "#"}
-                  className="fs"
-                  data-no-translate={isExternal(ROUTES[l]) ? true : undefined}
-                  style={{fontSize:13,color:"rgba(255,255,255,.55)",textDecoration:"none",fontWeight:300,transition:"color .2s",cursor:"pointer",padding:"6px 0"}}
-                  onClick={e => { if(ROUTES[l] && !isExternal(ROUTES[l])) { e.preventDefault(); navigate(ROUTES[l]) } }}
-                  onMouseEnter={e=>e.target.style.color="#fff"}
-                  onMouseLeave={e=>e.target.style.color="rgba(255,255,255,.55)"}
-                >{l}</a>
-              ))}
+              {c.ls.map(l => {
+                const linkStyle = {fontSize:13,color:"rgba(255,255,255,.55)",textDecoration:"none",fontWeight:300,transition:"color .2s",cursor:"pointer",padding:"6px 0"}
+                const hover = {
+                  onMouseEnter: e=>e.target.style.color="#fff",
+                  onMouseLeave: e=>e.target.style.color="rgba(255,255,255,.55)",
+                }
+                if (isExternal(ROUTES[l])) return (
+                  <a key={l} href={ROUTES[l]} className="fs" data-no-translate style={linkStyle} {...hover}>{l}</a>
+                )
+                if (ROUTES[l]) return (
+                  <LocalizedLink key={l} to={ROUTES[l]} className="fs" style={linkStyle} {...hover}>{l}</LocalizedLink>
+                )
+                return <span key={l} className="fs" style={linkStyle} {...hover}>{l}</span>
+              })}
             </div>
           </div>
         ))}

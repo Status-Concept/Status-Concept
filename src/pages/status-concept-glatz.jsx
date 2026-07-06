@@ -3,6 +3,7 @@ import useNavLinks from "../useNavLinks";
 import { useLocalizedNavigate } from "../hooks/useLocalizedNavigate";
 import { useScrollAnimation } from "../hooks/useScrollAnimation";
 import Layout from "../components/Layout";
+import LocalizedLink from "../components/LocalizedLink";
 import { glatzProducts } from "../data/glatzProducts";
 import heroImg from "../assets/images/glatz/sunwing-casa-1.webp";
 import catWoodImg from "../assets/images/glatz/cat-wood.jpg";
@@ -112,13 +113,13 @@ const STATUS_CONCEPT_GLATZ = () => {
               const p = byId[id];
               if (!p) return null;
               return (
-                <article key={id} className="rd-product-card" onClick={() => navigate(`/product/${id}`)} style={{ background: "#fff", borderRadius: 4, overflow: "hidden", border: "1px solid var(--sand-l)" }}>
+                <article key={id} className="rd-product-card" style={{ background: "#fff", borderRadius: 4, overflow: "hidden", border: "1px solid var(--sand-l)" }}>
                   <div style={{ height: 240, padding: 20, display: "flex", alignItems: "center", justifyContent: "center", background: "#fff", position: "relative" }}>
                     {p.tag && <span className={`tag ${p.tag === "New" ? "tag-new" : "tag-popular"}`} style={{ position: "absolute", top: 12, left: 12 }}>{p.tag}</span>}
                     <img src={p.img} alt={p.name} style={{ maxWidth: "100%", maxHeight: "100%", objectFit: "contain" }} />
                   </div>
                   <div style={{ padding: "18px 20px 20px", borderTop: "1px solid var(--sand-l)" }}>
-                    <h3 className="ff" style={{ fontSize: 19, fontWeight: 400, marginBottom: 6 }}>{p.name}</h3>
+                    <h3 className="ff" style={{ fontSize: 19, fontWeight: 400, marginBottom: 6 }}><LocalizedLink className="rd-card-link" to={`/product/${id}`}>{p.name}</LocalizedLink></h3>
                     <p className="fs" style={{ fontSize: 12.5, color: "var(--sand-d)", lineHeight: 1.6, fontWeight: 300, marginBottom: 12 }}>{p.desc}</p>
                     <span className="fs" style={{ fontSize: 10, letterSpacing: 2.5, textTransform: "uppercase", color: "var(--gold)", display: "inline-flex", alignItems: "center", gap: 8 }}>
                       Discover <span style={{ display: "inline-block", width: 18, height: 1, background: "var(--gold)" }} />
@@ -177,8 +178,8 @@ const STATUS_CONCEPT_GLATZ = () => {
           As a direct Glatz supplier we configure, deliver and install your parasol, and keep it beautiful with seasonal after care.
         </p>
         <div style={{ display: "flex", gap: 16, justifyContent: "center", flexWrap: "wrap" }}>
-          <button className="cb cg" onClick={() => navigate("/contact")}>Request quote</button>
-          <button className="cb cd" onClick={() => navigate("/products?cat=shade")}>Browse all shade</button>
+          <LocalizedLink className="cb cg" to="/contact">Request quote</LocalizedLink>
+          <LocalizedLink className="cb cd" to="/products?cat=shade">Browse all shade</LocalizedLink>
         </div>
       </section>
     </Layout>

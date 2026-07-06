@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import useNavLinks from "../useNavLinks";
 import Layout from "../components/Layout";
+import LocalizedLink from "../components/LocalizedLink";
 import FavoriteButton from "../FavoriteButton";
 import { glatzProducts } from "../data/glatzProducts";
 import { kitchenCollectionMeta, kitchenProducts } from "../data/kitchenProducts";
@@ -253,7 +254,7 @@ const PRODUCTS_PAGE = () => {
               ) : viewMode === "grid" ? (
                 <div className="rd-product-grid editorial">
                   {filteredProducts.map((product) => (
-                    <article key={product.id || product.name} className={`rd-product-card ${product.category === "kitchen" && !product.fit ? "kitchen-product" : ""} ${product.category === "shade" && !product.fit ? "shade-product" : ""} ${product.fit === "contain" ? "studio-product" : ""} ${product.fit === "wide" ? "wide-product" : ""} ${product.id === "sicily-modular-set" ? "contain-media" : ""}`} role="link" tabIndex={0} aria-label={`View ${product.name}`} onClick={() => goTo(productRoute(product), { product })} onKeyDown={(e) => { if (e.target !== e.currentTarget) return; if (e.key === "Enter" || e.key === " ") { if (e.key === " ") e.preventDefault(); goTo(productRoute(product), { product }); } }}>
+                    <article key={product.id || product.name} className={`rd-product-card ${product.category === "kitchen" && !product.fit ? "kitchen-product" : ""} ${product.category === "shade" && !product.fit ? "shade-product" : ""} ${product.fit === "contain" ? "studio-product" : ""} ${product.fit === "wide" ? "wide-product" : ""} ${product.id === "sicily-modular-set" ? "contain-media" : ""}`}>
                       <div className="rd-product-media">
                         <FavoriteButton
                           product={favPayload(product)}
@@ -266,7 +267,7 @@ const PRODUCTS_PAGE = () => {
                       </div>
                       <div className="rd-product-info">
                         <span className="rd-product-cat fs">{categoryLabelOf(product)}</span>
-                        <h3 className="ff">{product.name}</h3>
+                        <h3 className="ff"><LocalizedLink className="rd-card-link" to={productRoute(product)} state={{ product }}>{product.name}</LocalizedLink></h3>
                       </div>
                     </article>
                   ))}
@@ -274,18 +275,19 @@ const PRODUCTS_PAGE = () => {
               ) : (
                 <div className="rd-product-list">
                   {filteredProducts.map((product) => (
-                    <article key={product.id || product.name} className={`rd-product-row ${product.category === "kitchen" && !product.fit ? "kitchen-product" : ""} ${product.fit === "contain" ? "studio-product" : ""}`} role="link" tabIndex={0} aria-label={`View ${product.name}`} onClick={() => goTo(productRoute(product), { product })} onKeyDown={(e) => { if (e.target !== e.currentTarget) return; if (e.key === "Enter" || e.key === " ") { if (e.key === " ") e.preventDefault(); goTo(productRoute(product), { product }); } }}>
+                    <article key={product.id || product.name} className={`rd-product-row ${product.category === "kitchen" && !product.fit ? "kitchen-product" : ""} ${product.fit === "contain" ? "studio-product" : ""}`}>
                       {hasImage(product)
                         ? <img src={product.img} alt={product.name} loading="lazy" decoding="async" />
                         : <NoImagePlaceholder list />}
                       <div>
                         <span className="rd-kicker fs">{categoryLabelOf(product)}</span>
-                        <h3 className="ff">{product.name}</h3>
+                        <h3 className="ff"><LocalizedLink className="rd-card-link" to={productRoute(product)} state={{ product }}>{product.name}</LocalizedLink></h3>
                         {product.desc && <p className="rd-lede fs">{product.desc}</p>}
                       </div>
                       <FavoriteButton
                         product={favPayload(product)}
                         size={16}
+                        style={{ position: "relative" }}
                       />
                     </article>
                   ))}

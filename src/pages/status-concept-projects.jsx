@@ -1,7 +1,7 @@
 import { useState } from "react";
 import useNavLinks from "../useNavLinks";
 import Layout from "../components/Layout";
-import { useLocalizedNavigate } from "../hooks/useLocalizedNavigate";
+import LocalizedLink from "../components/LocalizedLink";
 import projectQuintaImg from "../assets/images/project-quinta.jpg";
 import projectValeImg from "../assets/images/project-valedolobo.webp";
 import projectVilamouraImg from "../assets/images/project-vilamoura.jpg";
@@ -11,7 +11,6 @@ import collectionMiamiImg from "../assets/images/collection-miami.jpg";
 
 const PROJECTS_PAGE = () => {
   useNavLinks();
-  const navigate = useLocalizedNavigate();
   const [activeProject, setActiveProject] = useState(null);
   const [filter, setFilter] = useState("all");
 
@@ -94,7 +93,7 @@ const PROJECTS_PAGE = () => {
               <div className="rd-pill-row" style={{ marginTop: 12, marginBottom: 30 }}>
                 {selected.products.map((product) => <span key={product} className="mb">{product}</span>)}
               </div>
-              <button type="button" className="cb cg" onClick={() => navigate("/contact")}>Request similar project</button>
+              <LocalizedLink className="cb cg" to="/contact">Request similar project</LocalizedLink>
             </div>
           </div>
         </div>
@@ -104,7 +103,7 @@ const PROJECTS_PAGE = () => {
         <span className="rd-kicker fs">Your project next</span>
         <h2 className="ff" style={{ fontSize: "clamp(30px, 4vw, 44px)", fontWeight: 300, margin: "10px 0 18px" }}>Let us furnish the full outdoor setting</h2>
         <p className="rd-lede fs" style={{ margin: "0 auto 30px" }}>From one terrace to a complete villa, the team can prepare a proposal around your plan, mood and timeline.</p>
-        <button type="button" className="cb cd" onClick={() => navigate("/contact")}>Start a project</button>
+        <LocalizedLink className="cb cd" to="/contact">Start a project</LocalizedLink>
       </section>
     </Layout>
   );

@@ -1,12 +1,11 @@
 import useNavLinks from "../useNavLinks";
 import Layout from "../components/Layout";
-import { useLocalizedNavigate } from "../hooks/useLocalizedNavigate";
+import LocalizedLink from "../components/LocalizedLink";
 import showroomQuintaImg from "../assets/images/enhanced/showroom-quinta-ai.webp";
 import whyStatusImg from "../assets/images/why-status.jpg";
 
 const ABOUT_PAGE = () => {
   useNavLinks();
-  const navigate = useLocalizedNavigate();
 
   const timeline = [
     { year: "2013", title: "The first outdoor vision", desc: "Statvs begins with a focused idea: bring high-quality outdoor furniture to the Algarve with proper guidance, materials and service." },
@@ -121,7 +120,7 @@ const ABOUT_PAGE = () => {
         <span className="rd-kicker fs">Visit us</span>
         <h2 className="ff" style={{ fontSize: "clamp(30px, 4vw, 44px)", fontWeight: 300, margin: "10px 0 18px" }}>Experience the materials in person</h2>
         <p className="rd-lede fs" style={{ margin: "0 auto 30px" }}>The easiest way to choose outdoor furniture well is to sit in it, touch the materials and see the scale beside real settings.</p>
-        <button type="button" className="cb cg" onClick={() => navigate("/contact")}>Plan showroom visit</button>
+        <LocalizedLink className="cb cg" to="/contact">Plan showroom visit</LocalizedLink>
       </section>
     </Layout>
   );

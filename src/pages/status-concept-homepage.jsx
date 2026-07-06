@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import useNavLinks from "../useNavLinks";
 import { useScrollAnimation } from "../hooks/useScrollAnimation";
-import { useLocalizedNavigate } from "../hooks/useLocalizedNavigate";
 import Layout from "../components/Layout";
+import LocalizedLink from "../components/LocalizedLink";
 import hero1Img from "../assets/images/enhanced/hero-1.webp";
 import hero3Img from "../assets/images/enhanced/hero-3.webp";
 import showroomQuintaImg from "../assets/images/enhanced/showroom-quinta-ai.webp";
@@ -11,7 +11,6 @@ import showroomAlmancilImg from "../assets/images/enhanced/showroom-almancil-ai.
 
 const STATUS_CONCEPT_HOMEPAGE = () => {
   useNavLinks();
-  const navigate = useLocalizedNavigate();
   const [heroSlide, setHeroSlide] = useState(0);
   const { vis, S } = useScrollAnimation();
 
@@ -54,8 +53,8 @@ const STATUS_CONCEPT_HOMEPAGE = () => {
           <h1 className="ff" style={{fontSize:"clamp(36px,5vw,60px)",fontWeight:500,color:"var(--text-dark)",lineHeight:1.08,marginBottom:22,letterSpacing:"-0.01em"}}>The Algarve's outdoor rooms,<br/>furnished and cared for.</h1>
           <p className="fs" style={{fontSize:15,lineHeight:1.75,color:"var(--text-body)",fontWeight:300,maxWidth:620,marginBottom:26}}>Lounge, dining, shade and outdoor kitchens from Europe's finest makers — with seasonal After Care that keeps every piece as it arrived.</p>
           <div style={{display:"flex",gap:16,flexWrap:"wrap"}}>
-            <a href="#" className="cb cg" onClick={(e)=>{e.preventDefault();navigate('/contact')}}>Book a showroom visit</a>
-            <a href="#" className="cb" style={{border:"1px solid var(--mid-grey)",color:"var(--text-dark)",background:"transparent"}} onClick={(e)=>{e.preventDefault();navigate('/products')}}>Explore products</a>
+            <LocalizedLink className="cb cg" to="/contact">Book a showroom visit</LocalizedLink>
+            <LocalizedLink className="cb" style={{border:"1px solid var(--mid-grey)",color:"var(--text-dark)",background:"transparent"}} to="/products">Explore products</LocalizedLink>
           </div>
         </div>
       </section>
@@ -84,7 +83,7 @@ const STATUS_CONCEPT_HOMEPAGE = () => {
               </div>
             ))}
           </div>
-          <a href="#" className="cb cd" onClick={(e)=>{e.preventDefault();navigate('/about')}} style={{alignSelf:"flex-start"}}>Our story</a>
+          <LocalizedLink className="cb cd" to="/about" style={{alignSelf:"flex-start"}}>Our story</LocalizedLink>
         </div>
       </section>
 
@@ -95,7 +94,7 @@ const STATUS_CONCEPT_HOMEPAGE = () => {
         <h2 className="ff" style={{fontSize:"clamp(30px,3.6vw,44px)",fontWeight:400,marginTop:16,marginBottom:20,letterSpacing:"-0.01em"}}>Delivered. Then looked after.</h2>
         <div className="la" style={{margin:"0 auto 24px"}}/>
         <p className="fs" style={{fontSize:14,lineHeight:1.85,color:"var(--text-body)",maxWidth:600,margin:"0 auto 36px",fontWeight:300}}>Seasonal cleaning, maintenance and winter care by our own team — so the terrace is ready the day you arrive, not a project when you do.</p>
-        <a href="#" className="cb cg" onClick={(e)=>{e.preventDefault();navigate('/after-care')}}>See the After Care plans</a>
+        <LocalizedLink className="cb cg" to="/after-care">See the After Care plans</LocalizedLink>
       </section>
 
       {/* SHOWROOMS */}

@@ -1,13 +1,12 @@
 import { useState } from "react";
 import useNavLinks from "../useNavLinks";
 import Layout from "../components/Layout";
+import LocalizedLink from "../components/LocalizedLink";
 import { useFavorites } from "../FavoritesContext";
-import { useLocalizedNavigate } from "../hooks/useLocalizedNavigate";
 import sicilyCornerImg from "../assets/images/sicily-corner.jpg";
 
 const FAVORITES_PAGE = () => {
   useNavLinks();
-  const navigate = useLocalizedNavigate();
   const { favorites, removeFavorite, clearFavorites } = useFavorites();
   const [removingId, setRemovingId] = useState(null);
   const [confirmClear, setConfirmClear] = useState(false);
@@ -54,7 +53,7 @@ const FAVORITES_PAGE = () => {
           <span className="rd-kicker fs">Nothing saved yet</span>
           <h2 className="ff" style={{ fontSize: "clamp(32px, 4vw, 46px)", fontWeight: 300, margin: "8px 0 16px" }}>Start a shortlist</h2>
           <p className="rd-lede fs" style={{ margin: "0 auto 32px" }}>Tap the heart on any product or collection and it will appear here for easy comparison.</p>
-          <button type="button" className="cb cd" onClick={() => navigate("/products")}>Browse products</button>
+          <LocalizedLink className="cb cd" to="/products">Browse products</LocalizedLink>
         </section>
       ) : (
         <>
@@ -72,7 +71,6 @@ const FAVORITES_PAGE = () => {
                 <article
                   key={item.id}
                   className={`rd-fav-card rd-product-card ${removingId === item.id ? "removing" : ""}`}
-                  onClick={() => navigate(item.route || `/product/${item.id}`)}
                 >
                   <button type="button" className="rd-remove-x" onClick={(event) => removeWithMotion(event, item.id)}>x</button>
                   <div className="rd-product-media">
@@ -82,7 +80,7 @@ const FAVORITES_PAGE = () => {
                     </div>
                   </div>
                   <div className="rd-product-info">
-                    <h3 className="ff">{item.name || item.id}</h3>
+                    <h3 className="ff"><LocalizedLink className="rd-card-link" to={item.route || `/product/${item.id}`}>{item.name || item.id}</LocalizedLink></h3>
                     <div className="rd-product-meta fs">
                       <span>{item.collection || "Statvs"}</span>
                       <span>Saved</span>
@@ -98,7 +96,7 @@ const FAVORITES_PAGE = () => {
               <span className="rd-kicker fs" style={{ marginBottom: 0 }}>Ready to quote</span>
               <p className="fs rd-count">{favorites.length} selected {favorites.length === 1 ? "item" : "items"}</p>
             </div>
-            <button type="button" className="cb cg" onClick={() => navigate("/contact", { state: { shortlist: favorites.map((f) => f.name || f.id) } })}>Request a proposal for these</button>
+            <LocalizedLink className="cb cg" to="/contact" state={{ shortlist: favorites.map((f) => f.name || f.id) }}>Request a proposal for these</LocalizedLink>
           </div>
         </>
       )}

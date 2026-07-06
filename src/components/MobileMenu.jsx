@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react'
-import { useLocalizedNavigate } from '../hooks/useLocalizedNavigate'
+import LocalizedLink from './LocalizedLink'
 
 const NAV_ROUTES = {
   "Products": "/products",
@@ -26,8 +26,6 @@ const NAV_ROUTES = {
 }
 
 export default function MobileMenu({ open, onClose }) {
-  const navigate = useLocalizedNavigate()
-  const go = (path) => { navigate(path); onClose() }
   const closeRef = useRef(null)
 
   useEffect(() => {
@@ -58,15 +56,21 @@ export default function MobileMenu({ open, onClose }) {
             {l:"Contact",s:[]},
           ].map(item => (
             <div key={item.l} style={{borderBottom:"1px solid var(--sand-l)",padding:"16px 0"}}>
-              <button type="button" className="ff" style={{font:"inherit",fontSize:22,fontWeight:400,color:"var(--stone)",cursor:"pointer",border:"none",background:"transparent",textAlign:"left",padding:0}}
-                onClick={() => NAV_ROUTES[item.l] && go(NAV_ROUTES[item.l])}
-              >{item.l}</button>
+              {NAV_ROUTES[item.l] ? (
+                <LocalizedLink className="ff" to={NAV_ROUTES[item.l]} onClick={onClose}
+                  style={{font:"inherit",fontSize:22,fontWeight:400,color:"var(--stone)",cursor:"pointer",textDecoration:"none",display:"inline-block"}}
+                >{item.l}</LocalizedLink>
+              ) : (
+                <span className="ff" style={{font:"inherit",fontSize:22,fontWeight:400,color:"var(--stone)"}}>{item.l}</span>
+              )}
               {item.s.length > 0 && (
                 <div className="fs" style={{marginTop:10,display:"flex",flexDirection:"column",gap:6}}>
-                  {item.s.map(s => (
-                    <button type="button" key={s} style={{font:"inherit",fontSize:12,letterSpacing:1,color:"var(--sand-d)",cursor:"pointer",border:"none",background:"transparent",textAlign:"left",padding:"8px 0 12px 12px"}}
-                      onClick={() => NAV_ROUTES[s] && go(NAV_ROUTES[s])}
-                    >{s}</button>
+                  {item.s.map(s => NAV_ROUTES[s] ? (
+                    <LocalizedLink key={s} to={NAV_ROUTES[s]} onClick={onClose}
+                      style={{font:"inherit",fontSize:12,letterSpacing:1,color:"var(--sand-d)",cursor:"pointer",textDecoration:"none",padding:"8px 0 12px 12px"}}
+                    >{s}</LocalizedLink>
+                  ) : (
+                    <span key={s} style={{font:"inherit",fontSize:12,letterSpacing:1,color:"var(--sand-d)",padding:"8px 0 12px 12px"}}>{s}</span>
                   ))}
                 </div>
               )}

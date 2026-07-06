@@ -229,6 +229,20 @@
   transition: transform .5s var(--ease-out-expo);
 }
 .rd-product-card:hover { transform: translateY(-5px); }
+/* Stretched link: the title anchor's ::after covers the whole card so the
+   card stays fully clickable while the DOM keeps a single valid <a>. */
+.rd-card-link { color: inherit; text-decoration: none; }
+.rd-card-link::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+.rd-product-card:has(.rd-card-link:focus-visible),
+.rd-product-row:has(.rd-card-link:focus-visible) {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
 .rd-product-media {
   position: relative;
   aspect-ratio: 1 / 1;
@@ -292,6 +306,7 @@
 }
 .rd-product-list { display: grid; gap: 18px; }
 .rd-product-row {
+  position: relative;
   display: grid;
   grid-template-columns: 220px minmax(0, 1fr) auto;
   gap: 24px;
@@ -2155,6 +2170,7 @@ button {
 }
 
 .account-favorite-card {
+  position: relative;
   cursor: pointer;
   transition: transform .35s cubic-bezier(0.16, 1, 0.3, 1);
 }
