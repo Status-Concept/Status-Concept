@@ -1,3 +1,4 @@
+import { lazy, Suspense } from 'react'
 import { Routes, Route } from 'react-router-dom'
 import { AuthProvider } from './context/AuthContext'
 import { ToastProvider } from './context/ToastContext'
@@ -6,22 +7,24 @@ import ProtectedRoute from './components/ProtectedRoute'
 import ConsentNotice from './components/ConsentNotice'
 import TranslationLayer from './components/TranslationLayer'
 import Homepage from './pages/status-concept-homepage'
-import Products from './pages/status-concept-products'
-import GlatzParasols from './pages/status-concept-glatz'
-import ProductDetail from './pages/status-concept-product-detail'
-import About from './pages/status-concept-about'
-import Contact from './pages/status-concept-contact'
-import Projects from './pages/status-concept-projects'
-import Favorites from './pages/status-concept-favorites'
-import Placeholder from './pages/status-concept-placeholder'
-import Login from './pages/Login'
-import Register from './pages/Register'
-import ClientLayout from './pages/client/ClientLayout'
-import ClientDashboard from './pages/client/ClientDashboard'
-import ClientProfile from './pages/client/ClientProfile'
-import ClientFavorites from './pages/client/ClientFavorites'
 import ScrollToTop from './ScrollToTop'
 import PageNav from './PageNav'
+
+// Route-level code splitting: only the homepage ships in the entry chunk.
+const Products = lazy(() => import('./pages/status-concept-products'))
+const GlatzParasols = lazy(() => import('./pages/status-concept-glatz'))
+const ProductDetail = lazy(() => import('./pages/status-concept-product-detail'))
+const About = lazy(() => import('./pages/status-concept-about'))
+const Contact = lazy(() => import('./pages/status-concept-contact'))
+const Projects = lazy(() => import('./pages/status-concept-projects'))
+const Favorites = lazy(() => import('./pages/status-concept-favorites'))
+const Placeholder = lazy(() => import('./pages/status-concept-placeholder'))
+const Login = lazy(() => import('./pages/Login'))
+const Register = lazy(() => import('./pages/Register'))
+const ClientLayout = lazy(() => import('./pages/client/ClientLayout'))
+const ClientDashboard = lazy(() => import('./pages/client/ClientDashboard'))
+const ClientProfile = lazy(() => import('./pages/client/ClientProfile'))
+const ClientFavorites = lazy(() => import('./pages/client/ClientFavorites'))
 
 const routesFor = (prefix = '') => (
   <>
@@ -61,11 +64,13 @@ function App() {
           <ScrollToTop />
           <TranslationLayer />
           <PageNav />
-          <Routes>
-            {routesFor()}
-            {routesFor('/en')}
-            {routesFor('/pt')}
-          </Routes>
+          <Suspense fallback={<div style={{ minHeight: '100vh', background: 'var(--cream)' }} aria-busy="true" />}>
+            <Routes>
+              {routesFor()}
+              {routesFor('/en')}
+              {routesFor('/pt')}
+            </Routes>
+          </Suspense>
           <ConsentNotice />
         </FavoritesProvider>
       </AuthProvider>
