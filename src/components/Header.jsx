@@ -4,6 +4,7 @@ import { useAuth } from '../context/AuthContext'
 import { getLangFromPath, stripLangFromPath, withLang } from '../utils/language'
 import LocalizedLink from './LocalizedLink'
 import SocialLinks from './SocialIcons'
+import { CONTACT } from '../data/showrooms'
 
 const PRODUCT_LINKS = [
   ["Lounge", "/products?cat=lounge"],
@@ -51,9 +52,9 @@ export default function Header({ onOpenMenu }) {
         background: "var(--light-grey)",
       }}>
         <div style={{ display: "flex", gap: "24px", alignItems: "center" }}>
-          <a href="tel:+351289030179" data-no-translate style={{ color: "inherit", textDecoration: "none" }}>+351 289 030 179</a>
+          <a href={CONTACT.phoneHref} data-no-translate style={{ color: "inherit", textDecoration: "none" }}>{CONTACT.phone}</a>
           <span style={{ opacity: .4 }}>|</span>
-          <a href="mailto:info@statusconcept.com" data-no-translate style={{ color: "inherit", textDecoration: "none" }}>info@statusconcept.com</a>
+          <a href={CONTACT.emailHref} data-no-translate style={{ color: "inherit", textDecoration: "none" }}>{CONTACT.email}</a>
         </div>
         <div style={{ display: "flex", gap: "12px", alignItems: "center" }}>
           <LocalizedLink

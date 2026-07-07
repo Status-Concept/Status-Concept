@@ -3,6 +3,7 @@ import { useScrollAnimation } from "../hooks/useScrollAnimation";
 import Layout from "../components/Layout";
 import LocalizedLink from "../components/LocalizedLink";
 import { getSupabase } from "../lib/supabase";
+import { SHOWROOMS, HOURS } from "../data/showrooms";
 import hero1Img from "../assets/images/enhanced/hero-1.webp";
 import hero3Img from "../assets/images/enhanced/hero-3.webp";
 import showroomQuintaImg from "../assets/images/enhanced/showroom-quinta-ai.webp";
@@ -45,10 +46,13 @@ const STATUS_CONCEPT_HOMEPAGE = () => {
     return () => clearInterval(interval);
   }, [heroImages.length]);
 
-  const showrooms = [
-    { name: "Quinta do Lago", img: showroomQuintaImg, pos: "center 65%", addr: "Estr. Quinta do Lago-Vale do Lobo, 8135-106 Almancil", ph: "+351 289 030 179", maps: "https://www.google.com/maps/dir/?api=1&destination=" + encodeURIComponent("Status Concept, Estr. Quinta do Lago-Vale do Lobo, 8135-106 Almancil"), desc: "Our flagship showroom on the road between Quinta do Lago and Vale do Lobo: experience the full collection in person." },
-    { name: "Almancil", img: showroomAlmancilImg, pos: "center 30%", addr: "Avenida 5 de Outubro 298, 8135-103 Almancil", ph: "+351 289 092 890", maps: "https://www.google.com/maps/dir/?api=1&destination=" + encodeURIComponent("Status Concept, Avenida 5 de Outubro 298, 8135-103 Almancil"), desc: "Our Almancil location on the main avenue: easily accessible, featuring outdoor furniture, shade solutions, and kitchen displays." },
-  ];
+  // Shared address/phone/maps come from the single-source data module; the
+  // per-page image, focal point and marketing description stay local.
+  const showroomMeta = {
+    "quinta-do-lago": { img: showroomQuintaImg, pos: "center 65%", desc: "Our flagship showroom on the road between Quinta do Lago and Vale do Lobo: experience the full collection in person." },
+    "almancil": { img: showroomAlmancilImg, pos: "center 30%", desc: "Our Almancil location on the main avenue: easily accessible, featuring outdoor furniture, shade solutions, and kitchen displays." },
+  };
+  const showrooms = SHOWROOMS.map((s) => ({ name: s.name, addr: s.address, ph: s.phone, maps: s.maps, ...showroomMeta[s.key] }));
 
   return (
     <Layout>
@@ -143,10 +147,7 @@ const STATUS_CONCEPT_HOMEPAGE = () => {
             ))}
           </div>
           <div style={{marginTop:48,padding:"24px 0",borderTop:"1px solid var(--light-grey)",display:"flex",justifyContent:"center",gap:48,alignItems:"center",flexWrap:"wrap"}}>
-            {[
-              {label:"Mon – Sat",value:"09:30 – 18:00"},
-              {label:"Sunday",value:"Closed"},
-            ].map((h,i)=>(
+            {HOURS.map((h,i)=>(
               <div key={h.label} style={{display:"flex",alignItems:"center",gap:i<1?48:0}}>
                 <div style={{textAlign:"center"}}>
                   <span className="fs" style={{fontSize:10,letterSpacing:2.5,textTransform:"uppercase",color:"var(--text-grey)",display:"block",marginBottom:4}}>{h.label}</span>

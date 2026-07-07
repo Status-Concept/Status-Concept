@@ -1,5 +1,6 @@
 import LocalizedLink from './LocalizedLink'
 import SocialLinks from './SocialIcons'
+import { CONTACT } from '../data/showrooms'
 
 const ROUTES = {
   "Lounge": "/products?cat=lounge",
@@ -19,8 +20,8 @@ const ROUTES = {
   "Catalogue": "/catalogue",
   "Showroom Quinta do Lago": "/contact",
   "Showroom Almancil": "/contact",
-  "+351 289 030 179": "tel:+351289030179",
-  "info@statusconcept.com": "mailto:info@statusconcept.com",
+  [CONTACT.phone]: CONTACT.phoneHref,
+  [CONTACT.email]: CONTACT.emailHref,
 }
 
 const isExternal = (href) => href?.startsWith("tel:") || href?.startsWith("mailto:")
@@ -43,7 +44,7 @@ export default function Footer() {
           {t:"Products",ls:["Lounge","Dining","Sun Loungers","Day Beds","Coffee Tables","Bar & Patio"]},
           {t:"Solutions",ls:["Glatz Parasols","Bioclimatic Pergolas","Outdoor Kitchens"]},
           {t:"Company",ls:["Why Us","After Care","Projects","Gallery","Catalogue"]},
-          {t:"Contact",ls:["Showroom Quinta do Lago","Showroom Almancil","+351 289 030 179","info@statusconcept.com"]},
+          {t:"Contact",ls:["Showroom Quinta do Lago","Showroom Almancil",CONTACT.phone,CONTACT.email]},
         ].map(c => (
           <div key={c.t}>
             <h4 className="fs" style={{fontSize:11,letterSpacing:2.5,textTransform:"uppercase",color:"#fff",marginBottom:16,fontWeight:400}}>{c.t}</h4>

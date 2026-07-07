@@ -1,7 +1,7 @@
-const WHATSAPP_NUMBER = '351937573600'
+import { CONTACT } from '../data/showrooms'
 
 export function whatsappUrl(message) {
-  return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`
+  return `https://wa.me/${CONTACT.whatsapp}?text=${encodeURIComponent(message)}`
 }
 
 // Build a shortlist enquiry message, capping the joined product list so the

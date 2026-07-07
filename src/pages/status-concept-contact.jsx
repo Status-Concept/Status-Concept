@@ -3,10 +3,11 @@ import { useLocation, useSearchParams } from "react-router-dom";
 import Layout from "../components/Layout";
 import { getSupabase } from "../lib/supabase";
 import { sanitizePhone, sanitizeText } from "../utils/sanitize";
+import { SHOWROOMS, CONTACT } from "../data/showrooms";
+import { whatsappUrl } from "../utils/whatsapp";
 import showroomQuintaImg from "../assets/images/enhanced/showroom-quinta-ai.webp";
 import showroomAlmancilImg from "../assets/images/enhanced/showroom-almancil-ai.webp";
 
-const mapsUrl = (query) => "https://www.google.com/maps/dir/?api=1&destination=" + encodeURIComponent(query);
 const telHref = (n) => "tel:" + n.replace(/[^\d+]/g, "");
 
 const CONTACT_PAGE = () => {
@@ -37,28 +38,13 @@ const CONTACT_PAGE = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [enquiryProduct, enquiryInterest, shortlist.length]);
 
-  const showrooms = [
-    {
-      name: "Quinta do Lago",
-      address: "Estr. Quinta do Lago-Vale do Lobo, 8135-106 Almancil",
-      phone: "+351 289 030 179",
-      mobile: "+351 937 573 600",
-      gps: "37.062229, -8.038336",
-      maps: mapsUrl("Status Concept, Estr. Quinta do Lago-Vale do Lobo, 8135-106 Almancil"),
-      img: showroomQuintaImg,
-      desc: "Our flagship showroom between Quinta do Lago and Vale do Lobo, created for seeing complete outdoor settings in person.",
-    },
-    {
-      name: "Almancil",
-      address: "Avenida 5 de Outubro 298, 8135-103 Almancil",
-      phone: "+351 289 092 890",
-      mobile: "+351 937 573 600",
-      gps: "37.0927, -8.0400",
-      maps: mapsUrl("Status Concept, Avenida 5 de Outubro 298, 8135-103 Almancil"),
-      img: showroomAlmancilImg,
-      desc: "A central showroom on the main avenue, with outdoor furniture, shade systems and kitchen displays.",
-    },
-  ];
+  // Shared name/address/phone/maps come from the single-source data module;
+  // the contact-page-specific fields (mobile, gps, image, description) stay here.
+  const showroomExtra = {
+    "quinta-do-lago": { mobile: "+351 937 573 600", gps: "37.062229, -8.038336", img: showroomQuintaImg, desc: "Our flagship showroom between Quinta do Lago and Vale do Lobo, created for seeing complete outdoor settings in person." },
+    "almancil": { mobile: "+351 937 573 600", gps: "37.0927, -8.0400", img: showroomAlmancilImg, desc: "A central showroom on the main avenue, with outdoor furniture, shade systems and kitchen displays." },
+  };
+  const showrooms = SHOWROOMS.map((s) => ({ name: s.name, address: s.address, phone: s.phone, maps: s.maps, ...showroomExtra[s.key] }));
 
   const active = showrooms[activeShowroom];
   const interests = ["Outdoor Furniture", "Shade Solutions", "Outdoor Kitchens", "Decor & Leisure", "After Care Service", "General Enquiry"];
@@ -110,9 +96,9 @@ const CONTACT_PAGE = () => {
       <section className="rd-section">
         <div className="rd-quick-grid">
           {[
-            { label: "Call", value: "+351 289 030 179", sub: "Quinta do Lago", href: "tel:+351289030179" },
-            { label: "WhatsApp", value: "+351 937 573 600", sub: "Direct message", href: "https://wa.me/351937573600?text=" + encodeURIComponent("Hello STATVS, I'd like to enquire about"), external: true },
-            { label: "Email", value: "info@statusconcept.com", sub: "Replies within 24h", href: "mailto:info@statusconcept.com" },
+            { label: "Call", value: CONTACT.phone, sub: "Quinta do Lago", href: CONTACT.phoneHref },
+            { label: "WhatsApp", value: "+351 937 573 600", sub: "Direct message", href: whatsappUrl("Hello STATVS, I'd like to enquire about"), external: true },
+            { label: "Email", value: CONTACT.email, sub: "Replies within 24h", href: CONTACT.emailHref },
             { label: "Showrooms", value: "2 locations", sub: "Almancil and Quinta do Lago", href: showrooms[0].maps, external: true },
           ].map((item) => (
             <a
