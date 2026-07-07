@@ -1,6 +1,5 @@
 import { useState } from "react";
 import useNavLinks from "../useNavLinks";
-import { useLocalizedNavigate } from "../hooks/useLocalizedNavigate";
 import { useScrollAnimation } from "../hooks/useScrollAnimation";
 import Layout from "../components/Layout";
 import LocalizedLink from "../components/LocalizedLink";
@@ -51,7 +50,6 @@ const FABRICS = [
 
 const STATUS_CONCEPT_GLATZ = () => {
   useNavLinks();
-  const navigate = useLocalizedNavigate();
   const { S } = useScrollAnimation();
   const [activeCat, setActiveCat] = useState("sidemast");
   const current = CATEGORIES.find((c) => c.key === activeCat);

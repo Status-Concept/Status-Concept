@@ -12,7 +12,7 @@ import showroomAlmancilImg from "../assets/images/enhanced/showroom-almancil-ai.
 const STATUS_CONCEPT_HOMEPAGE = () => {
   useNavLinks();
   const [heroSlide, setHeroSlide] = useState(0);
-  const { vis, S } = useScrollAnimation();
+  const { S } = useScrollAnimation();
 
   const heroImages = [hero1Img, hero3Img, hero4Img];
 
