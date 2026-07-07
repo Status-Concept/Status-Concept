@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-import useNavLinks from "../useNavLinks";
 import Layout from "../components/Layout";
 import LocalizedLink from "../components/LocalizedLink";
 import FavoriteButton from "../FavoriteButton";
@@ -20,7 +19,6 @@ const titleFromSlug = (value = "product") => value
   .join(" ");
 
 const PRODUCT_DETAIL = () => {
-  useNavLinks();
   const navigate = useNavigate();
   const location = useLocation();
   const { id } = useParams();

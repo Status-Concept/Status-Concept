@@ -1,11 +1,9 @@
-import useNavLinks from "../useNavLinks";
 import Layout from "../components/Layout";
 import LocalizedLink from "../components/LocalizedLink";
 import showroomQuintaImg from "../assets/images/enhanced/showroom-quinta-ai.webp";
 import whyStatusImg from "../assets/images/why-status.jpg";
 
 const ABOUT_PAGE = () => {
-  useNavLinks();
 
   const timeline = [
     { year: "2013", title: "The first outdoor vision", desc: "Statvs begins with a focused idea: bring high-quality outdoor furniture to the Algarve with proper guidance, materials and service." },

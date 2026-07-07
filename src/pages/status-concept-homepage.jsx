@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import useNavLinks from "../useNavLinks";
 import { useScrollAnimation } from "../hooks/useScrollAnimation";
 import Layout from "../components/Layout";
 import LocalizedLink from "../components/LocalizedLink";
@@ -10,7 +9,6 @@ import hero4Img from "../assets/images/enhanced/hero-4.webp";
 import showroomAlmancilImg from "../assets/images/enhanced/showroom-almancil-ai.webp";
 
 const STATUS_CONCEPT_HOMEPAGE = () => {
-  useNavLinks();
   const [heroSlide, setHeroSlide] = useState(0);
   const { S } = useScrollAnimation();
 

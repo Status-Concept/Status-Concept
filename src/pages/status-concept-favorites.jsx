@@ -1,12 +1,10 @@
 import { useState } from "react";
-import useNavLinks from "../useNavLinks";
 import Layout from "../components/Layout";
 import LocalizedLink from "../components/LocalizedLink";
 import { useFavorites } from "../FavoritesContext";
 import sicilyCornerImg from "../assets/images/sicily-corner.jpg";
 
 const FAVORITES_PAGE = () => {
-  useNavLinks();
   const { favorites, removeFavorite, clearFavorites } = useFavorites();
   const [removingId, setRemovingId] = useState(null);
   const [confirmClear, setConfirmClear] = useState(false);

@@ -1,5 +1,4 @@
 import { useState } from "react";
-import useNavLinks from "../useNavLinks";
 import Layout from "../components/Layout";
 import LocalizedLink from "../components/LocalizedLink";
 import projectQuintaImg from "../assets/images/project-quinta.jpg";
@@ -10,7 +9,6 @@ import collectionSicilyImg from "../assets/images/collection-sicily.jpg";
 import collectionMiamiImg from "../assets/images/collection-miami.jpg";
 
 const PROJECTS_PAGE = () => {
-  useNavLinks();
   const [activeProject, setActiveProject] = useState(null);
   const [filter, setFilter] = useState("all");
 

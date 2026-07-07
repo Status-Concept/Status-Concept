@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
-import useNavLinks from "../useNavLinks";
 import Layout from "../components/Layout";
 import LocalizedLink from "../components/LocalizedLink";
 import FavoriteButton from "../FavoriteButton";
@@ -104,7 +103,6 @@ function NoImagePlaceholder({ list }) {
 }
 
 const PRODUCTS_PAGE = () => {
-  useNavLinks();
   const navigate = useNavigate();
   const location = useLocation();
   const [searchParams] = useSearchParams();

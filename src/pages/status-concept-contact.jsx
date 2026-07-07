@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useLocation, useSearchParams } from "react-router-dom";
-import useNavLinks from "../useNavLinks";
 import Layout from "../components/Layout";
 import { supabase } from "../lib/supabase";
 import { sanitizePhone, sanitizeText } from "../utils/sanitize";
@@ -11,7 +10,6 @@ const mapsUrl = (query) => "https://www.google.com/maps/dir/?api=1&destination="
 const telHref = (n) => "tel:" + n.replace(/[^\d+]/g, "");
 
 const CONTACT_PAGE = () => {
-  useNavLinks();
   const [searchParams] = useSearchParams();
   const location = useLocation();
   // A product enquiry can arrive via ?product= or router state (from a product page).
