@@ -2,6 +2,7 @@ import { useState } from "react";
 import Layout from "../components/Layout";
 import LocalizedLink from "../components/LocalizedLink";
 import { useFavorites } from "../FavoritesContext";
+import { whatsappUrl, whatsappShortlistMessage } from "../utils/whatsapp";
 import sicilyCornerImg from "../assets/images/sicily-corner.jpg";
 
 const FAVORITES_PAGE = () => {
@@ -95,6 +96,7 @@ const FAVORITES_PAGE = () => {
               <p className="fs rd-count">{favorites.length} selected {favorites.length === 1 ? "item" : "items"}</p>
             </div>
             <LocalizedLink className="cb cg" to="/contact" state={{ shortlist: favorites.map((f) => f.name || f.id) }}>Request a proposal for these</LocalizedLink>
+            <a className="cb cd" href={whatsappUrl(whatsappShortlistMessage(favorites.map((f) => f.name || f.id)))} target="_blank" rel="noopener noreferrer">WhatsApp us</a>
           </div>
         </>
       )}

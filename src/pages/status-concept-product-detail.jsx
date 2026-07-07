@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import Layout from "../components/Layout";
 import LocalizedLink from "../components/LocalizedLink";
+import { whatsappUrl } from "../utils/whatsapp";
 import FavoriteButton from "../FavoriteButton";
 import { glatzProductDetails, glatzProducts } from "../data/glatzProducts";
 import { kitchenProductDetails, kitchenProducts, kitchenCollectionHeroes } from "../data/kitchenProducts";
@@ -271,6 +272,7 @@ const PRODUCT_DETAIL = () => {
           <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginBottom: 28 }}>
             <LocalizedLink className="cb cg" to="/contact" state={enquireState}>Request a proposal</LocalizedLink>
             <LocalizedLink className="cb cd" to="/contact" state={enquireState}>Book a showroom visit</LocalizedLink>
+            <a className="cb cd" href={whatsappUrl(`Hello STATVS, I'm interested in the ${product.name}.`)} target="_blank" rel="noopener noreferrer">WhatsApp us</a>
           </div>
 
           <div className="rd-tabs">

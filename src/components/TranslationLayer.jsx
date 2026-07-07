@@ -153,6 +153,7 @@ const translations = {
     'Request quote': 'Pedir proposta',
     'Request a proposal': 'Pedir proposta',
     'Request a proposal for these': 'Pedir proposta para estas',
+    'WhatsApp us': 'Fale connosco no WhatsApp',
     'Enquire about your shortlist': 'Consultar sobre a sua seleção',
     'Book showroom': 'Marcar showroom',
     Specs: 'Especificações',
