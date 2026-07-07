@@ -25,6 +25,7 @@ const ClientLayout = lazy(() => import('./pages/client/ClientLayout'))
 const ClientDashboard = lazy(() => import('./pages/client/ClientDashboard'))
 const ClientProfile = lazy(() => import('./pages/client/ClientProfile'))
 const ClientFavorites = lazy(() => import('./pages/client/ClientFavorites'))
+const Legal = lazy(() => import('./pages/status-concept-legal'))
 
 const routesFor = (prefix = '') => (
   <>
@@ -39,6 +40,10 @@ const routesFor = (prefix = '') => (
     <Route path={`${prefix}/after-care`} element={<Placeholder title="After Care & Valet Service" subtitle="Seasonal care, cleaning and maintenance for your outdoor furniture. Full details coming soon." />} />
     <Route path={`${prefix}/gallery`} element={<Placeholder title="Gallery" subtitle="Completed outdoor spaces from across the Algarve." />} />
     <Route path={`${prefix}/catalogue`} element={<Placeholder title="Catalogue" subtitle="Browse and download our full product catalogue. Coming soon." />} />
+    <Route path={`${prefix}/privacy`} element={<Legal doc="privacy" />} />
+    <Route path={`${prefix}/privacidade`} element={<Legal doc="privacy" />} />
+    <Route path={`${prefix}/cookies`} element={<Legal doc="cookies" />} />
+    <Route path={`${prefix}/terms`} element={<Legal doc="terms" />} />
     <Route path={`${prefix}/login`} element={<Login />} />
     <Route path={`${prefix}/registar`} element={<Register />} />
     <Route

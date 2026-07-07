@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import LocalizedLink from './LocalizedLink'
 
 const CONSENT_KEY = 'cookie_consent'
 
@@ -18,7 +19,7 @@ export default function ConsentNotice() {
         <span className="fs">Privacidade e cookies</span>
         <p className="fs">
           Usamos cookies essenciais para o funcionamento do site e, com o teu consentimento, cookies adicionais para melhorar a experiencia.
-          <a href="/privacidade"> Politica de privacidade</a>
+          <LocalizedLink to="/privacidade"> Politica de privacidade</LocalizedLink>
         </p>
       </div>
       <div className="cookie-actions">

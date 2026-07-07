@@ -69,9 +69,9 @@ export default function Footer() {
       <div className="fs" style={{display:"flex",justifyContent:"space-between",alignItems:"center",maxWidth:"var(--max-width)",margin:"0 auto",paddingTop:24,fontSize:11,color:"rgba(255,255,255,.62)",letterSpacing:1,flexWrap:"wrap",gap:12}}>
         <span>© 2026 Statvs. All rights reserved.</span>
         <div style={{display:"flex",gap:24}}>
-          <a href="#" style={{color:"inherit",textDecoration:"none"}}>Privacy Policy</a>
-          <a href="#" style={{color:"inherit",textDecoration:"none"}}>Cookie Policy</a>
-          <a href="#" style={{color:"inherit",textDecoration:"none"}}>Terms</a>
+          <LocalizedLink to="/privacy" style={{color:"inherit",textDecoration:"none"}}>Privacy Policy</LocalizedLink>
+          <LocalizedLink to="/cookies" style={{color:"inherit",textDecoration:"none"}}>Cookie Policy</LocalizedLink>
+          <LocalizedLink to="/terms" style={{color:"inherit",textDecoration:"none"}}>Terms</LocalizedLink>
         </div>
       </div>
     </footer>
