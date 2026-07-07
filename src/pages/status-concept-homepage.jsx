@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useScrollAnimation } from "../hooks/useScrollAnimation";
 import Layout from "../components/Layout";
 import LocalizedLink from "../components/LocalizedLink";
+import { getSupabase } from "../lib/supabase";
 import hero1Img from "../assets/images/enhanced/hero-1.webp";
 import hero3Img from "../assets/images/enhanced/hero-3.webp";
 import showroomQuintaImg from "../assets/images/enhanced/showroom-quinta-ai.webp";
@@ -10,7 +11,29 @@ import showroomAlmancilImg from "../assets/images/enhanced/showroom-almancil-ai.
 
 const STATUS_CONCEPT_HOMEPAGE = () => {
   const [heroSlide, setHeroSlide] = useState(0);
+  const [nlEmail, setNlEmail] = useState("");
+  const [nlStatus, setNlStatus] = useState("idle"); // idle | sending | sent | error
   const { S } = useScrollAnimation();
+
+  const subscribe = async (event) => {
+    event.preventDefault();
+    if (nlStatus === "sending") return;
+    const email = nlEmail.trim().toLowerCase().slice(0, 320);
+    if (!email) return;
+    setNlStatus("sending");
+    try {
+      const supabase = await getSupabase();
+      if (!supabase) throw new Error("no-backend");
+      const { error } = await supabase.from("subscribers").insert({ email, source: "homepage_newsletter" });
+      // A duplicate email (unique violation, 23505) is treated as success — we
+      // never reveal whether an address is already subscribed.
+      if (error && error.code !== "23505") throw error;
+      setNlStatus("sent");
+      setNlEmail("");
+    } catch {
+      setNlStatus("error");
+    }
+  };
 
   const heroImages = [hero1Img, hero3Img, hero4Img];
 
@@ -152,10 +175,20 @@ const STATUS_CONCEPT_HOMEPAGE = () => {
         <span className="fs sl">Stay inspired</span>
         <h2 className="ff" style={{fontSize:"clamp(24px,2.8vw,34px)",fontWeight:400,marginTop:12,marginBottom:12,letterSpacing:"-0.01em"}}>Notes from the showroom</h2>
         <p className="fs" style={{fontSize:14,color:"var(--text-grey)",lineHeight:1.75,maxWidth:400,margin:"0 auto 32px",fontWeight:300}}>New collections, private project features and seasonal care notes, a few times a year.</p>
-        <form onSubmit={(e)=>e.preventDefault()} style={{display:"flex",maxWidth:480,margin:"0 auto"}}>
-          <input type="email" aria-label="Email address" placeholder="Your email address" className="fs" style={{flex:1,padding:"15px 20px",border:"1px solid var(--mid-grey)",borderRight:"none",background:"#fff",fontSize:13,letterSpacing:.5,outline:"none",color:"var(--text-dark)",borderRadius:"2px 0 0 2px"}}/>
-          <button type="submit" className="fs" style={{padding:"15px 28px",background:"var(--black)",color:"#fff",border:"none",fontSize:10,letterSpacing:3,textTransform:"uppercase",cursor:"pointer",whiteSpace:"nowrap",borderRadius:"0 2px 2px 0",transition:"background .3s"}} onMouseEnter={e=>e.target.style.background="var(--accent)"} onMouseLeave={e=>e.target.style.background="var(--black)"}>Subscribe</button>
-        </form>
+        {nlStatus === "sent" ? (
+          <p className="fs" style={{fontSize:14,color:"var(--text-dark)",maxWidth:480,margin:"0 auto"}}>Thank you — you're on the list.</p>
+        ) : (
+          <>
+            <form onSubmit={subscribe} style={{display:"flex",maxWidth:480,margin:"0 auto"}}>
+              <input type="email" required aria-label="Email address" placeholder="Your email address" value={nlEmail} onChange={(e)=>setNlEmail(e.target.value)} className="fs" style={{flex:1,padding:"15px 20px",border:"1px solid var(--mid-grey)",borderRight:"none",background:"#fff",fontSize:13,letterSpacing:.5,outline:"none",color:"var(--text-dark)",borderRadius:"2px 0 0 2px"}}/>
+              <button type="submit" disabled={nlStatus==="sending"} className="fs" style={{padding:"15px 28px",background:"var(--black)",color:"#fff",border:"none",fontSize:10,letterSpacing:3,textTransform:"uppercase",cursor:nlStatus==="sending"?"default":"pointer",whiteSpace:"nowrap",borderRadius:"0 2px 2px 0",transition:"background .3s",opacity:nlStatus==="sending"?.7:1}} onMouseEnter={e=>{if(nlStatus!=="sending")e.target.style.background="var(--accent)"}} onMouseLeave={e=>e.target.style.background="var(--black)"}>{nlStatus==="sending"?"Sending…":"Subscribe"}</button>
+            </form>
+            {nlStatus === "error" && (
+              <p className="fs" role="alert" style={{fontSize:12,color:"var(--text-dark)",marginTop:12}}>Something went wrong. Please try again.</p>
+            )}
+            <p className="fs" style={{fontSize:11,color:"var(--text-grey)",marginTop:16,fontWeight:300}}>By subscribing you agree to receive occasional emails.</p>
+          </>
+        )}
       </section>
     </Layout>
   );

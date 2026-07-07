@@ -228,6 +228,9 @@ const translations = {
     '10+ Years Experience': '10+ anos de experiência',
     'Stay inspired': 'Mantenha-se inspirado',
     'New collections, private project features and seasonal care notes, a few times a year.': 'Novas coleções, projetos privados em destaque e notas de cuidado sazonal, algumas vezes por ano.',
+    "Thank you — you're on the list.": 'Obrigado — está na lista.',
+    'Something went wrong. Please try again.': 'Algo correu mal. Tente novamente.',
+    'By subscribing you agree to receive occasional emails.': 'Ao subscrever aceita receber emails ocasionais.',
     // About page
     'About Statvs': 'Sobre a Statvs',
     'A decade of furnishing terraces, gardens and poolside spaces for the Algarve lifestyle.': 'Uma década a mobilar terraços, jardins e espaços de piscina para o estilo de vida algarvio.',

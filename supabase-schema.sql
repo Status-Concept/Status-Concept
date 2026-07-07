@@ -35,6 +35,14 @@ create table if not exists public.enquiries (
   created_at timestamptz not null default now()
 );
 
+-- Newsletter signups from the homepage.
+create table if not exists public.subscribers (
+  id uuid default gen_random_uuid() primary key,
+  email text not null unique check (char_length(email) <= 320),
+  source text check (char_length(source) <= 60),
+  created_at timestamptz not null default now()
+);
+
 -- User profiles, extending Supabase Auth users.
 create table if not exists public.profiles (
   id uuid references auth.users(id) on delete cascade primary key,
@@ -57,10 +65,20 @@ alter table public.products enable row level security;
 alter table public.profiles enable row level security;
 alter table public.favorites enable row level security;
 alter table public.enquiries enable row level security;
+alter table public.subscribers enable row level security;
 
 grant usage on schema public to anon, authenticated;
 grant select on public.products to anon, authenticated;
 grant insert on public.enquiries to anon, authenticated;
+grant insert on public.subscribers to anon, authenticated;
+
+-- Newsletter is insert-only from the public site, like enquiries.
+drop policy if exists "Anyone can subscribe" on public.subscribers;
+create policy "Anyone can subscribe"
+  on public.subscribers
+  for insert
+  to anon, authenticated
+  with check (true);
 
 -- Enquiries are write-only from the public site: anyone may submit, nobody
 -- (anon or authenticated) may read them back. No select/update/delete policy.
