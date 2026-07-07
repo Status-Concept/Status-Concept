@@ -1,0 +1,48 @@
+/* ========================================
+   STATVS — DESIGN SYSTEM
+   Clean white luxe — warm neutrals, charcoal, restrained bronze
+   ======================================== */
+
+:root {
+  /* Core palette — clean white, warm neutrals, one quiet bronze accent */
+  --white: #ffffff;
+  --off-white: #f8f7f4;
+  --light-grey: #f1efea;
+  --mid-grey: #e3e0d9;
+  --text-grey: #756f63;
+  --text-dark: #1c1b18;
+  --text-body: #3d3b35;
+  --accent: #82704f;
+  --accent-hover: #6f5e44;
+  --accent-light: #f2ede4;
+  --black: #1a1815;
+  --font-heading: 'Outfit', 'Helvetica Neue', sans-serif;
+  --font-body: 'Outfit', 'Helvetica Neue', sans-serif;
+  --font-serif: 'Cormorant Garamond', Georgia, serif; /* logo STATVS apenas */
+  --max-width: 1240px;
+  --max-width-wide: 1800px;
+  --section-padding: clamp(60px, 10vw, 120px);
+  --header-h: 104px;
+  /* Soft, layered, warm-ink shadows + easing for a premium feel */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --shadow-sm: 0 1px 2px rgba(28,27,24,.04), 0 2px 8px rgba(28,27,24,.05);
+  --shadow-md: 0 4px 12px rgba(28,27,24,.05), 0 16px 32px rgba(28,27,24,.08);
+  --shadow-lg: 0 10px 24px rgba(28,27,24,.06), 0 28px 56px rgba(28,27,24,.11);
+
+  /* Legacy aliases → mapped onto the neutral scale */
+  --stone: var(--text-dark);
+  --stone-l: var(--text-body);
+  --cream: var(--white);
+  --cream-w: var(--light-grey);
+  --sand: #cfc8b9;
+  --sand-l: var(--mid-grey);
+  --sand-d: var(--text-grey);
+  --ocean: #3d3b35;
+  --ocean-d: #1c1b18;
+  --ocean-l: #9b9488;
+  --gold: var(--accent);
+  --gold-l: #a8916b;
+  --sage: #6f6a5f;
+  --sage-l: #9b9488;
+}
+
