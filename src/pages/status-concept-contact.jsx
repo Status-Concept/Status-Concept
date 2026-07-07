@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useLocation, useSearchParams } from "react-router-dom";
 import Layout from "../components/Layout";
 import { getSupabase } from "../lib/supabase";
+import { useAuth } from "../context/AuthContext";
 import { sanitizePhone, sanitizeText } from "../utils/sanitize";
 import { SHOWROOMS, CONTACT } from "../data/showrooms";
 import { whatsappUrl } from "../utils/whatsapp";
@@ -13,6 +14,7 @@ const telHref = (n) => "tel:" + n.replace(/[^\d+]/g, "");
 const CONTACT_PAGE = () => {
   const [searchParams] = useSearchParams();
   const location = useLocation();
+  const { user } = useAuth();
   // A product enquiry can arrive via ?product= or router state (from a product page).
   const enquiryProduct = searchParams.get("product") || location.state?.product || "";
   const enquiryInterest = searchParams.get("interest") || location.state?.interest || "";
@@ -63,6 +65,9 @@ const CONTACT_PAGE = () => {
       interest: formData.interest.slice(0, 100),
       message: sanitizeText(formData.message).slice(0, 4000),
       source: shortlist.length ? "favorites_shortlist" : enquiryProduct ? "product_enquiry" : "contact_page",
+      // PoC for the enquiry loop: attribute the enquiry to the account when one
+      // is signed in, so a future /cliente history view can read it back.
+      user_id: user?.id ?? null,
     };
 
     try {

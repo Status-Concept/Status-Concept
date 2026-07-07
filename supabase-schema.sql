@@ -32,6 +32,9 @@ create table if not exists public.enquiries (
   interest text check (char_length(interest) <= 100),
   message text check (char_length(message) <= 4000),
   source text check (char_length(source) <= 60),
+  -- Stamped when a logged-in user submits, so the account can later show its
+  -- own enquiry history (see docs/design/enquiry-loop.md). Null for anonymous.
+  user_id uuid references auth.users(id) on delete set null,
   created_at timestamptz not null default now()
 );
 
