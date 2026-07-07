@@ -68,7 +68,7 @@ function App() {
         <FavoritesProvider>
           <ScrollToTop />
           <TranslationLayer />
-          <PageNav />
+          {import.meta.env.DEV && <PageNav />}
           <Suspense fallback={<div style={{ minHeight: '100vh', background: 'var(--cream)' }} aria-busy="true" />}>
             <Routes>
               {routesFor()}

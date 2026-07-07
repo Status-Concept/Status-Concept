@@ -7,7 +7,6 @@ import { getLangFromPath, stripLangFromPath, withLang } from './utils/language'
 const pages = [
   { path: '/', label: 'Homepage' },
   { path: '/products', label: 'Products' },
-  { path: '/collection', label: 'Collection' },
   { path: '/product/sicily-modular-set', label: 'Product Detail' },
   { path: '/about', label: 'About' },
   { path: '/projects', label: 'Projects' },
@@ -15,6 +14,8 @@ const pages = [
   { path: '/favorites', label: 'Favorites' },
 ]
 
+// Dev-only QA overlay — gated at the render site in App.jsx so it never ships
+// to production visitors.
 export default function PageNav() {
   const [open, setOpen] = useState(false)
   const navigate = useNavigate()
