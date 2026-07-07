@@ -3,6 +3,7 @@ import { useLocation, useSearchParams } from "react-router-dom";
 import useNavLinks from "../useNavLinks";
 import Layout from "../components/Layout";
 import { supabase } from "../lib/supabase";
+import { sanitizePhone, sanitizeText } from "../utils/sanitize";
 import showroomQuintaImg from "../assets/images/enhanced/showroom-quinta-ai.webp";
 import showroomAlmancilImg from "../assets/images/enhanced/showroom-almancil-ai.webp";
 
@@ -72,11 +73,11 @@ const CONTACT_PAGE = () => {
     setStatus("sending");
 
     const payload = {
-      name: formData.name.trim(),
-      email: formData.email.trim(),
-      phone: formData.phone.trim(),
-      interest: formData.interest,
-      message: formData.message.trim(),
+      name: sanitizeText(formData.name).slice(0, 200),
+      email: formData.email.trim().slice(0, 320),
+      phone: sanitizePhone(formData.phone).slice(0, 40),
+      interest: formData.interest.slice(0, 100),
+      message: sanitizeText(formData.message).slice(0, 4000),
       source: shortlist.length ? "favorites_shortlist" : enquiryProduct ? "product_enquiry" : "contact_page",
     };
 

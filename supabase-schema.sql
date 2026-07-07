@@ -23,6 +23,18 @@ create table if not exists public.products (
   updated_at timestamptz not null default now()
 );
 
+-- Public enquiry submissions from the contact form.
+create table if not exists public.enquiries (
+  id uuid default gen_random_uuid() primary key,
+  name text not null check (char_length(name) <= 200),
+  email text not null check (char_length(email) <= 320),
+  phone text check (char_length(phone) <= 40),
+  interest text check (char_length(interest) <= 100),
+  message text check (char_length(message) <= 4000),
+  source text check (char_length(source) <= 60),
+  created_at timestamptz not null default now()
+);
+
 -- User profiles, extending Supabase Auth users.
 create table if not exists public.profiles (
   id uuid references auth.users(id) on delete cascade primary key,
@@ -44,9 +56,20 @@ create table if not exists public.favorites (
 alter table public.products enable row level security;
 alter table public.profiles enable row level security;
 alter table public.favorites enable row level security;
+alter table public.enquiries enable row level security;
 
 grant usage on schema public to anon, authenticated;
 grant select on public.products to anon, authenticated;
+grant insert on public.enquiries to anon, authenticated;
+
+-- Enquiries are write-only from the public site: anyone may submit, nobody
+-- (anon or authenticated) may read them back. No select/update/delete policy.
+drop policy if exists "Anyone can submit an enquiry" on public.enquiries;
+create policy "Anyone can submit an enquiry"
+  on public.enquiries
+  for insert
+  to anon, authenticated
+  with check (true);
 
 drop policy if exists "Anyone can view active products" on public.products;
 create policy "Anyone can view active products"
