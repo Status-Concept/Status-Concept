@@ -3,6 +3,7 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import Layout from "../components/Layout";
 import LocalizedLink from "../components/LocalizedLink";
 import { whatsappUrl } from "../utils/whatsapp";
+import { productSrcSet } from "../utils/imageVariants";
 import FavoriteButton from "../FavoriteButton";
 import { glatzProductDetails, glatzProducts } from "../data/glatzProducts";
 import { kitchenProductDetails, kitchenProducts, kitchenCollectionHeroes } from "../data/kitchenProducts";
@@ -211,6 +212,8 @@ const PRODUCT_DETAIL = () => {
               >
                 <img
                   src={image}
+                  srcSet={productSrcSet(image)}
+                  sizes="72px"
                   alt={`${product.name} view ${index + 1}`}
                   className={`rd-thumb ${activeImg === index ? "active" : ""}`}
                   loading="lazy"
@@ -313,7 +316,7 @@ const PRODUCT_DETAIL = () => {
             >
               <div className="rd-product-media">
                 <FavoriteButton product={{ id: item.id, name: item.name, collection: item.collectionName || item.collection, img: item.img, route: item.route || `/product/${item.id}` }} size={15} style={{ position: "absolute", top: 12, right: 12 }} />
-                <img src={item.img} alt={item.name} loading="lazy" decoding="async" />
+                <img src={item.img} srcSet={productSrcSet(item.img)} sizes="(max-width: 640px) 60vw, 280px" alt={item.name} loading="lazy" decoding="async" />
               </div>
               <div className="rd-product-info">
                 <h3 className="ff" data-no-translate>{item.name}</h3>

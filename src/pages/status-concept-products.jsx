@@ -3,6 +3,7 @@ import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import Layout from "../components/Layout";
 import LocalizedLink from "../components/LocalizedLink";
 import FavoriteButton from "../FavoriteButton";
+import { productSrcSet } from "../utils/imageVariants";
 import { glatzProducts } from "../data/glatzProducts";
 import { kitchenCollectionMeta, kitchenProducts } from "../data/kitchenProducts";
 import { catalogProducts } from "../data/catalogProducts";
@@ -260,7 +261,7 @@ const PRODUCTS_PAGE = () => {
                           style={{ position: "absolute", top: 12, right: 12 }}
                         />
                         {hasImage(product)
-                          ? <img src={product.img} alt={product.name} loading="lazy" decoding="async" />
+                          ? <img src={product.img} srcSet={productSrcSet(product.img)} sizes="(max-width: 640px) 50vw, (max-width: 1100px) 33vw, 300px" alt={product.name} loading="lazy" decoding="async" />
                           : <NoImagePlaceholder />}
                       </div>
                       <div className="rd-product-info">
@@ -275,7 +276,7 @@ const PRODUCTS_PAGE = () => {
                   {filteredProducts.map((product) => (
                     <article key={product.id || product.name} className={`rd-product-row ${product.category === "kitchen" && !product.fit ? "kitchen-product" : ""} ${product.fit === "contain" ? "studio-product" : ""}`}>
                       {hasImage(product)
-                        ? <img src={product.img} alt={product.name} loading="lazy" decoding="async" />
+                        ? <img src={product.img} srcSet={productSrcSet(product.img)} sizes="220px" alt={product.name} loading="lazy" decoding="async" />
                         : <NoImagePlaceholder list />}
                       <div>
                         <span className="rd-kicker fs">{categoryLabelOf(product)}</span>
