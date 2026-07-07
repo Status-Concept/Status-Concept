@@ -32,7 +32,7 @@ export default function ClientFavorites() {
                 <img src={item.img || '/placeholder.svg'} alt={item.name || item.id} />
                 <FavoriteButton product={item} size={16} style={{ position: 'absolute', top: 12, right: 12 }} />
               </div>
-              <h3 className="ff"><LocalizedLink className="rd-card-link" to={item.route || `/product/${item.id}`}>{item.name || item.id}</LocalizedLink></h3>
+              <h3 className="ff"><LocalizedLink className="rd-card-link" data-no-translate to={item.route || `/product/${item.id}`}>{item.name || item.id}</LocalizedLink></h3>
               <p className="fs">{item.collection || 'Statvs'} Collection</p>
             </article>
           ))}

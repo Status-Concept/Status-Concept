@@ -145,7 +145,7 @@ const PRODUCT_DETAIL = () => {
               {["Piece", "W", "D", "H", "Seat H"].map((heading) => <th key={heading}>{heading}</th>)}
             </tr>
           </thead>
-          <tbody>
+          <tbody data-no-translate>
             {(product.dims || []).map((row) => (
               <tr key={row.piece}>
                 <td>{row.piece}</td>
@@ -165,7 +165,7 @@ const PRODUCT_DETAIL = () => {
         <div className="rd-spec-list fs">
           {(product.materials || []).map((material) => (
             <div key={material}>
-              <span>{material}</span>
+              <span data-no-translate>{material}</span>
               <strong>Included</strong>
             </div>
           ))}
@@ -178,7 +178,7 @@ const PRODUCT_DETAIL = () => {
         {(product.specs || []).map((spec) => (
           <div key={spec.label}>
             <span>{spec.label}</span>
-            <strong>{spec.value}</strong>
+            <strong data-no-translate>{spec.value}</strong>
           </div>
         ))}
       </div>
@@ -232,7 +232,7 @@ const PRODUCT_DETAIL = () => {
         <aside className="rd-product-panel">
           <button type="button" className="rd-back-link" onClick={() => goTo("/products")}>Back to products</button>
           <span className="rd-kicker fs" style={{ marginTop: 28 }}>{product.collection} Collection</span>
-          <h1 className="rd-title ff" style={{ color: "var(--text-dark)", fontSize: "clamp(32px, 4vw, 48px)", fontWeight: 400 }}>{product.name}</h1>
+          <h1 className="rd-title ff" data-no-translate style={{ color: "var(--text-dark)", fontSize: "clamp(32px, 4vw, 48px)", fontWeight: 400 }}>{product.name}</h1>
           <div className="la" style={{ marginBottom: 20 }} />
           <p className="rd-lede fs">{product.tagline}</p>
 
@@ -316,9 +316,9 @@ const PRODUCT_DETAIL = () => {
                 <img src={item.img} alt={item.name} loading="lazy" decoding="async" />
               </div>
               <div className="rd-product-info">
-                <h3 className="ff">{item.name}</h3>
+                <h3 className="ff" data-no-translate>{item.name}</h3>
                 <div className="rd-product-meta fs">
-                  <span>{item.collectionName || item.collection}</span>
+                  <span data-no-translate>{item.collectionName || item.collection}</span>
                   <span>View</span>
                 </div>
               </div>

@@ -117,7 +117,7 @@ const STATUS_CONCEPT_GLATZ = () => {
                     <img src={p.img} alt={p.name} style={{ maxWidth: "100%", maxHeight: "100%", objectFit: "contain" }} />
                   </div>
                   <div style={{ padding: "18px 20px 20px", borderTop: "1px solid var(--sand-l)" }}>
-                    <h3 className="ff" style={{ fontSize: 19, fontWeight: 400, marginBottom: 6 }}><LocalizedLink className="rd-card-link" to={`/product/${id}`}>{p.name}</LocalizedLink></h3>
+                    <h3 className="ff" style={{ fontSize: 19, fontWeight: 400, marginBottom: 6 }}><LocalizedLink className="rd-card-link" data-no-translate to={`/product/${id}`}>{p.name}</LocalizedLink></h3>
                     <p className="fs" style={{ fontSize: 12.5, color: "var(--sand-d)", lineHeight: 1.6, fontWeight: 300, marginBottom: 12 }}>{p.desc}</p>
                     <span className="fs" style={{ fontSize: 10, letterSpacing: 2.5, textTransform: "uppercase", color: "var(--gold)", display: "inline-flex", alignItems: "center", gap: 8 }}>
                       Discover <span style={{ display: "inline-block", width: 18, height: 1, background: "var(--gold)" }} />

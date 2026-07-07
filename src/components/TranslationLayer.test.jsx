@@ -50,6 +50,18 @@ describe('TranslationLayer', () => {
     expect(getByTestId('t').textContent).toBe('Products')
   })
 
+  it('protects catalog data equal to a dict key while translating a sibling', async () => {
+    const { getByTestId } = renderInRoot(
+      <MemoryRouter initialEntries={['/pt']}>
+        <TranslationLayer />
+        <span data-no-translate data-testid="data">New</span>
+        <span data-testid="chrome">New</span>
+      </MemoryRouter>,
+    )
+    await waitFor(() => expect(getByTestId('chrome').textContent).toBe('Novo'))
+    expect(getByTestId('data').textContent).toBe('New')
+  })
+
   it('leaves text untranslated under /en', async () => {
     const { getByTestId } = renderInRoot(
       <MemoryRouter initialEntries={['/en']}>

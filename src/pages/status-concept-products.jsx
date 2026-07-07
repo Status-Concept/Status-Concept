@@ -223,7 +223,7 @@ const PRODUCTS_PAGE = () => {
               {isKitchenCategory && (
                 <div className="rd-range-strip" role="group" aria-label="Kitchen ranges">
                   {kitchenCollections.map((collection) => (
-                    <button key={collection.key} type="button" className={`rd-range-chip ${activeKitchenCollection === collection.key ? "active" : ""}`} aria-pressed={activeKitchenCollection === collection.key} onClick={() => selectKitchenCollection(collection.key)}>
+                    <button key={collection.key} type="button" data-no-translate className={`rd-range-chip ${activeKitchenCollection === collection.key ? "active" : ""}`} aria-pressed={activeKitchenCollection === collection.key} onClick={() => selectKitchenCollection(collection.key)}>
                       {collection.label}
                     </button>
                   ))}
@@ -267,7 +267,7 @@ const PRODUCTS_PAGE = () => {
                       </div>
                       <div className="rd-product-info">
                         <span className="rd-product-cat fs">{categoryLabelOf(product)}</span>
-                        <h3 className="ff"><LocalizedLink className="rd-card-link" to={productRoute(product)} state={{ product }}>{product.name}</LocalizedLink></h3>
+                        <h3 className="ff"><LocalizedLink className="rd-card-link" data-no-translate to={productRoute(product)} state={{ product }}>{product.name}</LocalizedLink></h3>
                       </div>
                     </article>
                   ))}
@@ -281,7 +281,7 @@ const PRODUCTS_PAGE = () => {
                         : <NoImagePlaceholder list />}
                       <div>
                         <span className="rd-kicker fs">{categoryLabelOf(product)}</span>
-                        <h3 className="ff"><LocalizedLink className="rd-card-link" to={productRoute(product)} state={{ product }}>{product.name}</LocalizedLink></h3>
+                        <h3 className="ff"><LocalizedLink className="rd-card-link" data-no-translate to={productRoute(product)} state={{ product }}>{product.name}</LocalizedLink></h3>
                         {product.desc && <p className="rd-lede fs">{product.desc}</p>}
                       </div>
                       <FavoriteButton

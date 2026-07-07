@@ -80,7 +80,7 @@ const FAVORITES_PAGE = () => {
                     </div>
                   </div>
                   <div className="rd-product-info">
-                    <h3 className="ff"><LocalizedLink className="rd-card-link" to={item.route || `/product/${item.id}`}>{item.name || item.id}</LocalizedLink></h3>
+                    <h3 className="ff"><LocalizedLink className="rd-card-link" data-no-translate to={item.route || `/product/${item.id}`}>{item.name || item.id}</LocalizedLink></h3>
                     <div className="rd-product-meta fs">
                       <span>{item.collection || "Statvs"}</span>
                       <span>Saved</span>
