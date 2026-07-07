@@ -1,6 +1,6 @@
 import { createContext, useCallback, useContext, useRef, useState, useEffect } from "react";
 import { useAuth } from "./context/AuthContext";
-import { supabase } from "./lib/supabase";
+import { getSupabase } from "./lib/supabase";
 
 const FavoritesContext = createContext();
 
@@ -60,7 +60,9 @@ export function FavoritesProvider({ children }) {
   }, [favoriteDetails]);
 
   const loadSupabaseFavorites = useCallback(async () => {
-    if (!supabase || !user) return;
+    if (!user) return;
+    const supabase = await getSupabase();
+    if (!supabase) return;
     setLoading(true);
 
     const localFavorites = readStorage(STORAGE_KEY, []);
@@ -108,6 +110,7 @@ export function FavoritesProvider({ children }) {
 
     setFavoriteDetails((prev) => ({ ...prev, [id]: { ...product, id } }));
 
+    const supabase = user ? await getSupabase() : null;
     if (user && supabase) {
       if (isFavorite(id)) {
         setFavorites((prev) => prev.filter((f) => favoriteId(f) !== id));
@@ -132,14 +135,18 @@ export function FavoritesProvider({ children }) {
 
   const removeFavorite = async (id) => {
     setFavorites((prev) => prev.filter((f) => favoriteId(f) !== id));
-    if (user && supabase) {
+    if (!user) return;
+    const supabase = await getSupabase();
+    if (supabase) {
       await supabase.from("favorites").delete().eq("user_id", user.id).eq("product_id", id);
     }
   };
 
   const clearFavorites = async () => {
     setFavorites([]);
-    if (user && supabase) {
+    if (!user) return;
+    const supabase = await getSupabase();
+    if (supabase) {
       await supabase.from("favorites").delete().eq("user_id", user.id);
     }
   };

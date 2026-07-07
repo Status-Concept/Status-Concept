@@ -7,7 +7,10 @@ vi.mock('./context/AuthContext', () => ({
   useAuth: () => ({ user: mockUser, loading: false }),
 }))
 // No backend in the test — keep the guest path.
-vi.mock('./lib/supabase', () => ({ supabase: null }))
+vi.mock('./lib/supabase', () => ({
+  getSupabase: () => Promise.resolve(null),
+  isSupabaseConfigured: false,
+}))
 
 import { FavoritesProvider, useFavorites } from './FavoritesContext'
 

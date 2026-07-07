@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useLocation, useSearchParams } from "react-router-dom";
 import Layout from "../components/Layout";
-import { supabase } from "../lib/supabase";
+import { getSupabase } from "../lib/supabase";
 import { sanitizePhone, sanitizeText } from "../utils/sanitize";
 import showroomQuintaImg from "../assets/images/enhanced/showroom-quinta-ai.webp";
 import showroomAlmancilImg from "../assets/images/enhanced/showroom-almancil-ai.webp";
@@ -80,6 +80,7 @@ const CONTACT_PAGE = () => {
     };
 
     try {
+      const supabase = await getSupabase();
       if (!supabase) throw new Error("no-backend");
       const { error } = await supabase.from("enquiries").insert(payload);
       if (error) throw error;

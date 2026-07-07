@@ -1,5 +1,5 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react'
-import { supabase, isSupabaseConfigured } from '../lib/supabase'
+import { getSupabase, isSupabaseConfigured } from '../lib/supabase'
 import { sanitizePhone, sanitizeText } from '../utils/sanitize'
 
 const AuthContext = createContext(null)
@@ -8,9 +8,10 @@ export function AuthProvider({ children }) {
   const [session, setSession] = useState(null)
   const [user, setUser] = useState(null)
   const [profile, setProfile] = useState(null)
-  const [loading, setLoading] = useState(Boolean(supabase))
+  const [loading, setLoading] = useState(isSupabaseConfigured)
 
   const fetchProfile = useCallback(async (userId) => {
+    const supabase = await getSupabase()
     if (!supabase || !userId) {
       setProfile(null)
       return null
@@ -38,34 +39,40 @@ export function AuthProvider({ children }) {
 
   useEffect(() => {
     let mounted = true
+    let listener = null
 
-    if (!supabase) {
+    if (!isSupabaseConfigured) {
       return undefined
     }
 
-    supabase.auth.getSession().then(async ({ data }) => {
-      if (!mounted) return
-      setSession(data.session)
-      setUser(data.session?.user || null)
-      if (data.session?.user) await fetchProfile(data.session.user.id)
-      setLoading(false)
-    })
+    getSupabase().then((supabase) => {
+      if (!mounted || !supabase) return
 
-    const { data: listener } = supabase.auth.onAuthStateChange((_event, nextSession) => {
-      setSession(nextSession)
-      setUser(nextSession?.user || null)
-      if (nextSession?.user) fetchProfile(nextSession.user.id)
-      else setProfile(null)
-      setLoading(false)
+      supabase.auth.getSession().then(async ({ data }) => {
+        if (!mounted) return
+        setSession(data.session)
+        setUser(data.session?.user || null)
+        if (data.session?.user) await fetchProfile(data.session.user.id)
+        setLoading(false)
+      })
+
+      listener = supabase.auth.onAuthStateChange((_event, nextSession) => {
+        setSession(nextSession)
+        setUser(nextSession?.user || null)
+        if (nextSession?.user) fetchProfile(nextSession.user.id)
+        else setProfile(null)
+        setLoading(false)
+      }).data
     })
 
     return () => {
       mounted = false
-      listener.subscription.unsubscribe()
+      listener?.subscription.unsubscribe()
     }
   }, [fetchProfile])
 
   const login = useCallback(async ({ email, password }) => {
+    const supabase = await getSupabase()
     if (!supabase) throw new Error('Supabase nao esta configurado.')
     const { data, error } = await supabase.auth.signInWithPassword({
       email: sanitizeText(email).toLowerCase(),
@@ -77,6 +84,7 @@ export function AuthProvider({ children }) {
   }, [fetchProfile])
 
   const register = useCallback(async ({ name, email, password, phone }) => {
+    const supabase = await getSupabase()
     if (!supabase) throw new Error('Supabase nao esta configurado.')
     const cleanName = sanitizeText(name)
     const cleanPhone = sanitizePhone(phone)
@@ -105,6 +113,7 @@ export function AuthProvider({ children }) {
   }, [])
 
   const updateProfile = useCallback(async ({ name, phone }) => {
+    const supabase = await getSupabase()
     if (!supabase || !user) throw new Error('Sessao invalida.')
     const payload = {
       name: sanitizeText(name),
@@ -124,6 +133,7 @@ export function AuthProvider({ children }) {
   }, [user])
 
   const logout = useCallback(async () => {
+    const supabase = await getSupabase()
     if (!supabase) return
     const { error } = await supabase.auth.signOut()
     if (error) throw error
