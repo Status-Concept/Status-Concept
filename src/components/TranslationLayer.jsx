@@ -437,18 +437,26 @@ export default function TranslationLayer() {
   const lang = getLangFromPath(location.pathname)
 
   useEffect(() => {
-    let applying = false
-    const run = () => {
-      if (applying) return
-      applying = true
-      applyTranslations(lang)
-      applying = false
-    }
-
-    run()
-    const observer = new MutationObserver(run)
     const root = document.getElementById('root')
-    if (root) observer.observe(root, { childList: true, subtree: true, characterData: true })
+    if (!root) return
+
+    const observe = () => observer.observe(root, { childList: true, subtree: true, characterData: true })
+
+    // Disconnect around our own DOM writes so the translation never re-triggers
+    // itself. The old synchronous `applying` guard was already false by the
+    // time the async observer callback fired, so each real mutation cost two
+    // full-tree walks. MutationObserver already batches the records from one
+    // React commit into a single callback, so this needs no extra debounce —
+    // and staying synchronous (no requestAnimationFrame) keeps it working in
+    // background/inactive tabs where rAF callbacks are throttled or withheld.
+    const observer = new MutationObserver(() => {
+      observer.disconnect()
+      applyTranslations(lang)
+      observe()
+    })
+
+    applyTranslations(lang)
+    observe()
 
     return () => observer.disconnect()
   }, [lang, location.pathname, location.search])
