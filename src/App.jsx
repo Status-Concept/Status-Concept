@@ -26,6 +26,7 @@ const ClientDashboard = lazy(() => import('./pages/client/ClientDashboard'))
 const ClientProfile = lazy(() => import('./pages/client/ClientProfile'))
 const ClientFavorites = lazy(() => import('./pages/client/ClientFavorites'))
 const Legal = lazy(() => import('./pages/status-concept-legal'))
+const AfterCare = lazy(() => import('./pages/status-concept-aftercare'))
 
 const routesFor = (prefix = '') => (
   <>
@@ -37,7 +38,7 @@ const routesFor = (prefix = '') => (
     <Route path={`${prefix}/contact`} element={<Contact />} />
     <Route path={`${prefix}/projects`} element={<Projects />} />
     <Route path={`${prefix}/favorites`} element={<Favorites />} />
-    <Route path={`${prefix}/after-care`} element={<Placeholder title="After Care & Valet Service" subtitle="Seasonal care, cleaning and maintenance for your outdoor furniture. Full details coming soon." />} />
+    <Route path={`${prefix}/after-care`} element={<AfterCare />} />
     <Route path={`${prefix}/gallery`} element={<Placeholder title="Gallery" subtitle="Completed outdoor spaces from across the Algarve." />} />
     <Route path={`${prefix}/catalogue`} element={<Placeholder title="Catalogue" subtitle="Browse and download our full product catalogue. Coming soon." />} />
     <Route path={`${prefix}/privacy`} element={<Legal doc="privacy" />} />
