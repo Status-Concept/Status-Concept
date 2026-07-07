@@ -1,4 +1,4 @@
-import { createContext, useCallback, useContext, useState, useEffect } from "react";
+import { createContext, useCallback, useContext, useRef, useState, useEffect } from "react";
 import { useAuth } from "./context/AuthContext";
 import { supabase } from "./lib/supabase";
 
@@ -25,12 +25,37 @@ export function FavoritesProvider({ children }) {
   const [favorites, setFavorites] = useState(() => readStorage(STORAGE_KEY, []));
   const [favoriteDetails, setFavoriteDetails] = useState(() => readStorage(DETAILS_KEY, {}));
   const [loading, setLoading] = useState(false);
+  // Tracks the previous auth state so we can distinguish a real logout (value
+  // -> null) from the initial anonymous mount (null from the start).
+  const prevUserRef = useRef(null);
+  const loggingOutRef = useRef(false);
+
+  // On logout, wipe the account's favorites from storage and memory so they are
+  // never exposed to the next visitor on a shared device.
+  useEffect(() => {
+    const wasLoggedIn = Boolean(prevUserRef.current);
+    prevUserRef.current = user;
+    if (wasLoggedIn && !user) {
+      loggingOutRef.current = true;
+      localStorage.removeItem(STORAGE_KEY);
+      localStorage.removeItem(DETAILS_KEY);
+      setFavorites([]);
+      setFavoriteDetails({});
+    }
+  }, [user]);
 
   useEffect(() => {
+    // Don't let the logout render re-persist the account's list before state
+    // settles to empty; the wipe effect owns storage during that transition.
+    if (loggingOutRef.current) {
+      if (favorites.length === 0) loggingOutRef.current = false;
+      return;
+    }
     if (!user) localStorage.setItem(STORAGE_KEY, JSON.stringify(favorites));
   }, [favorites, user]);
 
   useEffect(() => {
+    if (loggingOutRef.current) return;
     localStorage.setItem(DETAILS_KEY, JSON.stringify(favoriteDetails));
   }, [favoriteDetails]);
 
