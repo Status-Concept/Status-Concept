@@ -294,6 +294,7 @@ const translations = {
     'Request After Care': 'Pedir After Care',
     'Completed outdoor spaces from across the Algarve.': 'Espaços exteriores concluídos por todo o Algarve.',
     'Browse and download our full product catalogue. Coming soon.': 'Consulte e descarregue o nosso catálogo completo de produtos. Brevemente.',
+    'Every piece in one place — browse the full range by category, then open any product for details.': 'Todas as peças num só lugar — explore a gama completa por categoria e abra qualquer produto para ver detalhes.',
     // Contact page
     'Choose a showroom, send an enquiry or speak with the team about your outdoor space.': 'Escolha um showroom, envie um pedido ou fale com a equipa sobre o seu espaço exterior.',
     'Our flagship showroom between Quinta do Lago and Vale do Lobo, created for seeing complete outdoor settings in person.': 'O nosso showroom principal entre a Quinta do Lago e o Vale do Lobo, criado para ver ambientes exteriores completos ao vivo.',

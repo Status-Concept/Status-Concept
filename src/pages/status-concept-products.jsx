@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import Layout from "../components/Layout";
 import LocalizedLink from "../components/LocalizedLink";
+import NoImagePlaceholder from "../components/NoImagePlaceholder";
 import FavoriteButton from "../FavoriteButton";
 import { productSrcSet } from "../utils/imageVariants";
 import { glatzProducts } from "../data/glatzProducts";
@@ -89,16 +90,6 @@ function CategoryCarousel({ categories, onOpen }) {
       >
         {paused ? "▶" : "❚❚"}
       </button>
-    </div>
-  );
-}
-
-// "No image" placeholder — a quiet brand panel (serif monogram) rather than an apology.
-function NoImagePlaceholder({ list }) {
-  return (
-    <div className={`rd-no-image${list ? " list" : ""}`}>
-      <span className="rd-no-image-mark" aria-hidden="true">S</span>
-      <span className="rd-no-image-label">See it in the showroom</span>
     </div>
   );
 }
