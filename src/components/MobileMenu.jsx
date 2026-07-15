@@ -49,7 +49,6 @@ export default function MobileMenu({ open, onClose }) {
             {l:"Products",s:["Lounge","Dining","Sun Loungers","Day Beds","Coffee Tables","Bar & Patio"]},
             {l:"Shade Solutions",s:["Glatz Parasols","Parasols","Bioclimatic Pergolas","Retractable Pergolas"]},
             {l:"Outdoor Kitchens",s:["BBQ Systems","Pizza Ovens","Full Kitchens"]},
-            {l:"Leisure",s:["Sound Systems"]},
             {l:"Projects",s:[]},
             {l:"Why Us",s:[]},
             {l:"After Care",s:[]},

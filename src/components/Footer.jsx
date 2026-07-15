@@ -16,8 +16,6 @@ const ROUTES = {
   "Why Us": "/about",
   "After Care": "/after-care",
   "Projects": "/projects",
-  "Gallery": "/gallery",
-  "Catalogue": "/catalogue",
   "Showroom Quinta do Lago": "/contact",
   "Showroom Almancil": "/contact",
   [CONTACT.phone]: CONTACT.phoneHref,
@@ -43,7 +41,7 @@ export default function Footer() {
         {[
           {t:"Products",ls:["Lounge","Dining","Sun Loungers","Day Beds","Coffee Tables","Bar & Patio"]},
           {t:"Solutions",ls:["Glatz Parasols","Bioclimatic Pergolas","Outdoor Kitchens"]},
-          {t:"Company",ls:["Why Us","After Care","Projects","Gallery","Catalogue"]},
+          {t:"Company",ls:["Why Us","After Care","Projects"]},
           {t:"Contact",ls:["Showroom Quinta do Lago","Showroom Almancil",CONTACT.phone,CONTACT.email]},
         ].map(c => (
           <div key={c.t}>

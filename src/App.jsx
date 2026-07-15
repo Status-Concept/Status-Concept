@@ -8,7 +8,6 @@ import ConsentNotice from './components/ConsentNotice'
 import TranslationLayer from './components/TranslationLayer'
 import Homepage from './pages/status-concept-homepage'
 import ScrollToTop from './ScrollToTop'
-import PageNav from './PageNav'
 
 // Route-level code splitting: only the homepage ships in the entry chunk.
 const Products = lazy(() => import('./pages/status-concept-products'))
@@ -70,7 +69,6 @@ function App() {
         <FavoritesProvider>
           <ScrollToTop />
           <TranslationLayer />
-          {import.meta.env.DEV && <PageNav />}
           <Suspense fallback={<div style={{ minHeight: '100vh', background: 'var(--cream)' }} aria-busy="true" />}>
             <Routes>
               {routesFor()}

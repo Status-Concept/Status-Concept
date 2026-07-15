@@ -1,5 +1,5 @@
 import { describe, it, expect, afterEach } from 'vitest'
-import { render, screen, cleanup } from '@testing-library/react'
+import { render, screen, cleanup, fireEvent } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import App from './App'
 
@@ -35,5 +35,19 @@ describe('routing', () => {
     // The heading translates to PT via TranslationLayer; assert the page mounted
     // by its stable structure rather than copy.
     expect(await screen.findAllByText(/Almancil/i)).not.toHaveLength(0)
+  })
+
+  it('opens product search from the public header', async () => {
+    renderAt('/en')
+    fireEvent.click(await screen.findByRole('button', { name: 'Search products' }))
+
+    expect(await screen.findByLabelText('Search products')).toBeTruthy()
+  })
+
+  it('shows a full product results page from a search query', async () => {
+    renderAt('/en/products?q=vita%20sfera')
+
+    expect(await screen.findByRole('heading', { name: 'Results for "vita sfera"' })).toBeTruthy()
+    expect(await screen.findByText('VITA(R) Sfera')).toBeTruthy()
   })
 })

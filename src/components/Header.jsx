@@ -1,10 +1,11 @@
-import { useEffect, useState } from 'react'
+import { lazy, Suspense, useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { useAuth } from '../context/AuthContext'
 import { getLangFromPath, stripLangFromPath, withLang } from '../utils/language'
 import LocalizedLink from './LocalizedLink'
 import SocialLinks from './SocialIcons'
 import { CONTACT } from '../data/showrooms'
+
+const ProductSearch = lazy(() => import('./ProductSearch'))
 
 const PRODUCT_LINKS = [
   ["Lounge", "/products?cat=lounge"],
@@ -18,11 +19,10 @@ const PRODUCT_LINKS = [
 export default function Header({ onOpenMenu }) {
   const navigate = useNavigate()
   const location = useLocation()
-  const { isAuthenticated, profile, user } = useAuth()
-  const firstName = (profile?.name || user?.email || "").split(/[\s@]/)[0]
   const [scrolled, setScrolled] = useState(false)
   const [langOpen, setLangOpen] = useState(false)
   const [productsOpen, setProductsOpen] = useState(false)
+  const [searchOpen, setSearchOpen] = useState(false)
   const currentLang = getLangFromPath(location.pathname)
 
   useEffect(() => {
@@ -57,37 +57,13 @@ export default function Header({ onOpenMenu }) {
           <a href={CONTACT.emailHref} data-no-translate style={{ color: "inherit", textDecoration: "none" }}>{CONTACT.email}</a>
         </div>
         <div style={{ display: "flex", gap: "12px", alignItems: "center" }}>
-          <LocalizedLink
-            className="fs"
-            data-no-translate={isAuthenticated ? true : undefined}
-            to={isAuthenticated ? "/cliente" : "/login"}
-            style={{
-              padding: "6px 16px",
-              border: "1px solid var(--mid-grey)",
-              background: "transparent",
-              color: "var(--text-dark)",
-              textDecoration: "none",
-              borderRadius: 2, cursor: "pointer", fontSize: 12, letterSpacing: 1.5,
-              textTransform: "uppercase", transition: "color .3s, border-color .3s",
-            }}
-            onMouseEnter={e => {
-              e.currentTarget.style.borderColor = "var(--accent)"
-              e.currentTarget.style.color = "var(--accent)"
-            }}
-            onMouseLeave={e => {
-              e.currentTarget.style.borderColor = "var(--mid-grey)"
-              e.currentTarget.style.color = "var(--text-grey)"
-            }}
-          >
-            {isAuthenticated ? (firstName || "A Minha Conta") : "Login"}
-          </LocalizedLink>
           <div style={{ display: "flex", gap: "2px", alignItems: "center" }}>
             <SocialLinks linkStyle={{ color: "var(--text-dark)" }} />
           </div>
         </div>
       </div>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "18px 48px", maxWidth: "var(--max-width)", margin: "0 auto" }}>
-        <LocalizedLink to="/" aria-label="STATVS — home" style={{ display: "block", lineHeight: 1, textDecoration: "none" }}>
+        <LocalizedLink className="header-logo" to="/" aria-label="STATVS — home" style={{ display: "block", lineHeight: 1, textDecoration: "none" }}>
           <span className="logo-serif" style={{ fontSize: 28, fontWeight: 400, letterSpacing: 8, color: "var(--text-dark)" }}>
             ST<span style={{ color: "var(--accent)" }}>A</span>TVS
           </span>
@@ -141,9 +117,24 @@ export default function Header({ onOpenMenu }) {
             <LocalizedLink key={label} className="nl" to={path} style={{ color: "inherit" }}>{label}</LocalizedLink>
           ))}
         </nav>
-        <div style={{ display: "flex", alignItems: "center", gap: "20px" }}>
+        <div className="header-actions" style={{ display: "flex", alignItems: "center", gap: "20px" }}>
+          <button
+            type="button"
+            className="site-search-trigger fs"
+            aria-label={currentLang === "pt" ? "Pesquisar produtos" : "Search products"}
+            aria-expanded={searchOpen}
+            aria-controls="site-product-search"
+            onClick={() => {
+              setSearchOpen((open) => !open)
+              setLangOpen(false)
+              setProductsOpen(false)
+            }}
+          >
+            <span className="site-search-trigger-icon" aria-hidden="true" />
+            <span className="site-search-trigger-label">{currentLang === "pt" ? "Pesquisar" : "Search"}</span>
+          </button>
           <div data-no-translate style={{ position: "relative" }}>
-            <button className="fs" onClick={() => setLangOpen(!langOpen)} style={{
+            <button className="fs language-trigger" onClick={() => setLangOpen(!langOpen)} style={{
               background: "none", border: "none", cursor: "pointer", fontSize: "12px",
               letterSpacing: "2px", color: "var(--text-grey)", padding: "10px 12px",
             }}>
@@ -172,6 +163,11 @@ export default function Header({ onOpenMenu }) {
           </button>
         </div>
       </div>
+      {searchOpen && (
+        <Suspense fallback={<div className="site-search-loading" aria-busy="true" />}>
+          <ProductSearch onClose={() => setSearchOpen(false)} />
+        </Suspense>
+      )}
     </header>
   )
 }
