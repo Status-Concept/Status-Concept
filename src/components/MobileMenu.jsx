@@ -1,5 +1,7 @@
 import { useEffect, useRef } from 'react'
+import { useLocation } from 'react-router-dom'
 import LocalizedLink from './LocalizedLink'
+import { getLangFromPath } from '../utils/language'
 
 const NAV_ROUTES = {
   "Products": "/products",
@@ -27,23 +29,50 @@ const NAV_ROUTES = {
 
 export default function MobileMenu({ open, onClose }) {
   const closeRef = useRef(null)
+  const panelRef = useRef(null)
+  const previousFocusRef = useRef(null)
+  const location = useLocation()
+  const isPortuguese = getLangFromPath(location.pathname) === 'pt'
 
   useEffect(() => {
-    if (open) closeRef.current?.focus()
-  }, [open])
-
-  useEffect(() => {
-    if (!open) return
-    const onKeyDown = (e) => { if (e.key === "Escape") onClose() }
+    if (!open) return undefined
+    previousFocusRef.current = document.activeElement
+    const previousOverflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    const focusTimer = window.setTimeout(() => closeRef.current?.focus(), 0)
+    const onKeyDown = (event) => {
+      if (event.key === 'Escape') onClose()
+      if (event.key !== 'Tab' || !panelRef.current) return
+      const focusable = [...panelRef.current.querySelectorAll('a[href], button:not([disabled])')]
+      if (!focusable.length) return
+      const first = focusable[0]
+      const last = focusable[focusable.length - 1]
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault()
+        last.focus()
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault()
+        first.focus()
+      }
+    }
     document.addEventListener("keydown", onKeyDown)
-    return () => document.removeEventListener("keydown", onKeyDown)
+    return () => {
+      window.clearTimeout(focusTimer)
+      document.body.style.overflow = previousOverflow
+      document.removeEventListener("keydown", onKeyDown)
+      previousFocusRef.current?.focus?.()
+    }
   }, [open, onClose])
+
+  // Keep a closed modal out of both the tab order and accessibility tree.
+  // Mounting only while open is more reliable than `inert` across browsers.
+  if (!open) return null
 
   return (
     <>
-      <div className={`moo ${open ? "op" : ""}`} onClick={onClose} aria-hidden="true" />
-      <div className={`mo ${open ? "op" : ""}`} role="dialog" aria-modal="true" aria-label="Menu" inert={!open}>
-        <button ref={closeRef} onClick={onClose} aria-label="Close menu" style={{position:"absolute",top:28,right:28,background:"none",border:"none",fontSize:28,cursor:"pointer",color:"var(--stone)",fontWeight:300}}>×</button>
+      <div className="moo op" onClick={onClose} aria-hidden="true" />
+      <div ref={panelRef} className="mo op" role="dialog" aria-modal="true" aria-label={isPortuguese ? 'Menu de navegação' : 'Navigation menu'}>
+        <button type="button" ref={closeRef} onClick={onClose} aria-label={isPortuguese ? 'Fechar menu' : 'Close menu'} style={{position:"absolute",top:28,right:28,background:"none",border:"none",fontSize:28,cursor:"pointer",color:"var(--stone)",fontWeight:300}}>×</button>
         <nav style={{display:"flex",flexDirection:"column"}}>
           {[
             {l:"Products",s:["Lounge","Dining","Sun Loungers","Day Beds","Coffee Tables","Bar & Patio"]},

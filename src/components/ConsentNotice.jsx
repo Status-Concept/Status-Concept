@@ -18,12 +18,12 @@ export default function ConsentNotice() {
       <div>
         <span className="fs">Privacidade e cookies</span>
         <p className="fs">
-          Usamos cookies essenciais para o funcionamento do site e, com o teu consentimento, cookies adicionais para melhorar a experiencia.
-          <LocalizedLink to="/privacidade"> Politica de privacidade</LocalizedLink>
+          Usamos cookies essenciais para o funcionamento do site e, com o teu consentimento, cookies adicionais para melhorar a experiência.
+          <LocalizedLink to="/privacidade"> Política de privacidade</LocalizedLink>
         </p>
       </div>
       <div className="cookie-actions">
-        <button type="button" className="cb cd" onClick={() => choose('rejected')}>Rejeitar nao essenciais</button>
+        <button type="button" className="cb cd" onClick={() => choose('rejected')}>Rejeitar não essenciais</button>
         <button type="button" className="cb cg" onClick={() => choose('accepted')}>Aceitar</button>
       </div>
     </div>

@@ -36,3 +36,6 @@ skills-lock.json
 src/assets/images/enhanced/*-bg-ai.png
 src/assets/images/enhanced/shade-empty-garden-bg-ai.png
 src/assets/images/enhanced/shade-grass-hero-ai.png
+
+# Obsidian vault hub note (lives in the repo folder, not part of the site)
+Status-Concept.md

@@ -1,10 +1,12 @@
-import { useEffect, useState } from 'react'
+import { lazy, Suspense, useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import { getLangFromPath, stripLangFromPath, withLang } from '../utils/language'
 import LocalizedLink from './LocalizedLink'
 import SocialLinks from './SocialIcons'
 import { CONTACT } from '../data/showrooms'
+
+const SearchPanel = lazy(() => import('./SearchPanel'))
 
 const PRODUCT_LINKS = [
   ["Lounge", "/products?cat=lounge"],
@@ -23,12 +25,23 @@ export default function Header({ onOpenMenu }) {
   const [scrolled, setScrolled] = useState(false)
   const [langOpen, setLangOpen] = useState(false)
   const [productsOpen, setProductsOpen] = useState(false)
+  const [searchOpen, setSearchOpen] = useState(false)
   const currentLang = getLangFromPath(location.pathname)
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 8)
     window.addEventListener('scroll', handleScroll, { passive: true })
     return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
+
+  useEffect(() => {
+    const handleSearchShortcut = (event) => {
+      if (!(event.ctrlKey || event.metaKey) || event.key.toLowerCase() !== 'k') return
+      event.preventDefault()
+      setSearchOpen(true)
+    }
+    document.addEventListener('keydown', handleSearchShortcut)
+    return () => document.removeEventListener('keydown', handleSearchShortcut)
   }, [])
 
   const changeLanguage = (lang) => {
@@ -38,6 +51,7 @@ export default function Header({ onOpenMenu }) {
   }
 
   return (
+    <>
     <header style={{
       position: "fixed", top: 0, left: 0, right: 0, zIndex: 100,
       background: "var(--cream)",
@@ -141,27 +155,51 @@ export default function Header({ onOpenMenu }) {
             <LocalizedLink key={label} className="nl" to={path} style={{ color: "inherit" }}>{label}</LocalizedLink>
           ))}
         </nav>
-        <div style={{ display: "flex", alignItems: "center", gap: "20px" }}>
+        <div className="header-actions">
+          <button
+            type="button"
+            className="header-search-trigger fs"
+            aria-label={currentLang === 'pt' ? 'Pesquisar' : 'Search'}
+            aria-haspopup="dialog"
+            aria-expanded={searchOpen}
+            aria-keyshortcuts="Control+K Meta+K"
+            onClick={() => setSearchOpen(true)}
+          >
+            <svg aria-hidden="true" viewBox="0 0 24 24" width="18" height="18" fill="none">
+              <circle cx="10.8" cy="10.8" r="6.5" stroke="currentColor" strokeWidth="1.5" />
+              <path d="m15.7 15.7 4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+            </svg>
+            <span>Search</span>
+          </button>
           <div data-no-translate style={{ position: "relative" }}>
-            <button className="fs" onClick={() => setLangOpen(!langOpen)} style={{
+            <button
+              type="button"
+              className="fs"
+              aria-label={currentLang === 'pt' ? 'Escolher idioma' : 'Choose language'}
+              aria-haspopup="menu"
+              aria-expanded={langOpen}
+              onClick={() => setLangOpen(!langOpen)}
+              onKeyDown={(event) => { if (event.key === 'Escape') setLangOpen(false) }}
+              style={{
               background: "none", border: "none", cursor: "pointer", fontSize: "12px",
               letterSpacing: "2px", color: "var(--text-grey)", padding: "10px 12px",
-            }}>
+              }}
+            >
               {currentLang.toUpperCase()} v
             </button>
             {langOpen && (
-              <div style={{ position: "absolute", top: "100%", right: 0, marginTop: 8, background: "var(--cream)", border: "1px solid var(--mid-grey)", padding: "8px 0", minWidth: 80, boxShadow: "0 8px 24px rgba(0,0,0,.08)" }}>
+              <div role="menu" aria-label={currentLang === 'pt' ? 'Idiomas' : 'Languages'} style={{ position: "absolute", top: "100%", right: 0, marginTop: 8, background: "var(--cream)", border: "1px solid var(--mid-grey)", padding: "8px 0", minWidth: 80, boxShadow: "0 8px 24px rgba(0,0,0,.08)" }}>
                 {["EN", "PT"].map(l => (
-                  <div key={l} className="fs" style={{ padding: "6px 16px", fontSize: "11px", letterSpacing: "2px", cursor: "pointer", color: "var(--text-body)", transition: "color .2s" }}
+                  <button key={l} type="button" role="menuitemradio" aria-checked={currentLang === l.toLowerCase()} className="fs" style={{ display: 'block', width: '100%', padding: "8px 16px", border: 0, background: 'transparent', textAlign: 'left', fontSize: "11px", letterSpacing: "2px", cursor: "pointer", color: "var(--text-body)", transition: "color .2s" }}
                     onClick={() => changeLanguage(l.toLowerCase())}
-                    onMouseEnter={e => e.target.style.color = "var(--accent)"}
-                    onMouseLeave={e => e.target.style.color = "var(--text-body)"}
-                  >{l}</div>
+                    onMouseEnter={e => e.currentTarget.style.color = "var(--accent)"}
+                    onMouseLeave={e => e.currentTarget.style.color = "var(--text-body)"}
+                  >{l}</button>
                 ))}
               </div>
             )}
           </div>
-          <button onClick={onOpenMenu} className="nav-burger" aria-label="Open menu" aria-haspopup="dialog" style={{
+          <button onClick={onOpenMenu} className="nav-burger" aria-label={currentLang === 'pt' ? 'Abrir menu' : 'Open menu'} aria-haspopup="dialog" style={{
             background: "none", border: "none", cursor: "pointer", padding: 0,
             width: 44, height: 44,
             color: "var(--text-dark)",
@@ -173,5 +211,11 @@ export default function Header({ onOpenMenu }) {
         </div>
       </div>
     </header>
+    {searchOpen && (
+      <Suspense fallback={<div className="site-search-loading" role="status">Loading search</div>}>
+        <SearchPanel open={searchOpen} onClose={() => setSearchOpen(false)} />
+      </Suspense>
+    )}
+    </>
   )
 }

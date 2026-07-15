@@ -5,17 +5,16 @@ import LocalizedLink from "../components/LocalizedLink";
 import NoImagePlaceholder from "../components/NoImagePlaceholder";
 import FavoriteButton from "../FavoriteButton";
 import { productSrcSet } from "../utils/imageVariants";
-import { glatzProducts } from "../data/glatzProducts";
 import { kitchenCollectionMeta, kitchenProducts } from "../data/kitchenProducts";
 import { catalogProducts } from "../data/catalogProducts";
+import { allProducts } from "../data/productCatalog";
 import { noImageProducts } from "../data/productImageStatus";
+import { searchProducts } from "../utils/productSearch";
 import { getLangFromPath, withLang } from "../utils/language";
 import kitchenHeroImg from "../assets/images/kitchen/kitchen-hero.webp";
 import furnitureSeriesImg from "../assets/images/enhanced/furniture-series-golf-hero.webp";
 import sicilyModularSetFullImg from "../assets/images/sicily-modular-set-full.webp";
 import sicilyCornerImg from "../assets/images/sicily-corner.jpg";
-import sicilyCentreImg from "../assets/images/sicily-centre.jpg";
-import sicilyOttomanImg from "../assets/images/sicily-ottoman.jpg";
 
 const shadeHeroImg = "/product-images/glatz/ambiente-nova/01.webp";
 const shadeChipImg = "/product-images/glatz/sombrano-s-plus/05.webp";
@@ -99,11 +98,13 @@ const PRODUCTS_PAGE = () => {
   const location = useLocation();
   const [searchParams] = useSearchParams();
   const catParam = searchParams.get("cat");
+  const queryParam = searchParams.get("q")?.trim() || "";
   const currentLang = getLangFromPath(location.pathname);
   const [activeCategory, setActiveCategory] = useState(null); // null = category landing
   const [activeKitchenCollection, setActiveKitchenCollection] = useState(null);
   const [viewMode, setViewMode] = useState("grid");
   const [sortBy, setSortBy] = useState("featured");
+  const [searchInput, setSearchInput] = useState(queryParam);
 
   const validCategories = ["lounge", "dining", "sunlounger", "shade", "kitchen"];
   const categoryAliases = { daybed: "sunlounger", coffee: "dining", side: "dining", bar: "lounge", puffs: "lounge" };
@@ -116,6 +117,10 @@ const PRODUCTS_PAGE = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [catParam]);
 
+  useEffect(() => {
+    setSearchInput(queryParam);
+  }, [queryParam]);
+
   const catalogImg = (category) => catalogProducts.find((product) => product.category === category)?.img || furnitureSeriesImg;
 
   const categories = [
@@ -126,23 +131,27 @@ const PRODUCTS_PAGE = () => {
     { key: "kitchen", label: "Modular Kitchen", chip: kitchenHeroImg, banner: kitchenHeroImg, title: "Modular Kitchen", copy: "Draco Grills modular outdoor kitchens in Black Stainless Steel, Carbon Line Teak and natural Teak." },
   ];
 
-  const allProducts = useMemo(() => [
-    { id: "sicily-modular-set", name: "Sicily Modular Set", collection: "Sicily", category: "lounge", categoryLabel: "Lounge", img: sicilyModularSetFullImg, images: [sicilyModularSetFullImg, sicilyCornerImg, sicilyCentreImg, sicilyOttomanImg], tag: "Popular", desc: "A contemporary modular lounge system for generous outdoor living areas." },
-    ...glatzProducts,
-    ...kitchenProducts,
-    ...catalogProducts.filter((product) => product.category !== "kitchen"),
-  ], []);
-
   const kitchenCollections = kitchenCollectionMeta.map((collection) => ({
     ...collection,
     count: kitchenProducts.filter((product) => product.collection === collection.key).length,
   }));
 
-  const isLanding = !activeCategory;
+  const hasSearch = Boolean(queryParam);
+  const isLanding = !activeCategory && !hasSearch;
   const selectedCategory = categories.find((category) => category.key === activeCategory);
   const isKitchenCategory = activeCategory === "kitchen";
+  const searchMatches = useMemo(() => searchProducts(allProducts, queryParam), [queryParam]);
 
   const filteredProducts = useMemo(() => {
+    if (hasSearch) {
+      const scoped = activeCategory
+        ? searchMatches.filter((product) => product.category === activeCategory)
+        : searchMatches;
+      return sortBy === "name"
+        ? [...scoped].sort((a, b) => a.name.localeCompare(b.name))
+        : scoped;
+    }
+
     if (!activeCategory) return [];
     const base = activeCategory === "kitchen"
       ? kitchenProducts.filter((product) => product.collection === activeKitchenCollection)
@@ -156,7 +165,12 @@ const PRODUCTS_PAGE = () => {
       if (sortBy === "name") return a.name.localeCompare(b.name);
       return (b.tag ? 1 : 0) - (a.tag ? 1 : 0);
     });
-  }, [activeCategory, activeKitchenCollection, allProducts, sortBy]);
+  }, [activeCategory, activeKitchenCollection, hasSearch, searchMatches, sortBy]);
+
+  const searchCategoryCounts = categories.map((category) => ({
+    ...category,
+    count: searchMatches.filter((product) => product.category === category.key).length,
+  })).filter((category) => category.count > 0);
 
   const productRoute = (product) => product.route || `/product/${product.id || slug(product.name)}`;
   const favPayload = (product) => ({ id: product.id || slug(product.name), name: product.name, collection: product.collectionName || product.collection, img: product.img, category: product.category, route: productRoute(product) });
@@ -173,6 +187,16 @@ const PRODUCTS_PAGE = () => {
   const openCategory = (key) => goTo(`/products?cat=${key}`);
   const backToLanding = () => goTo(`/products`);
   const selectKitchenCollection = (key) => { setActiveKitchenCollection(key); scrollToProducts(); };
+  const setSearchScope = (key) => {
+    const query = encodeURIComponent(queryParam);
+    goTo(key ? `/products?q=${query}&cat=${key}` : `/products?q=${query}`);
+  };
+  const submitResultsSearch = (event) => {
+    event.preventDefault();
+    const cleanQuery = searchInput.trim();
+    if (!cleanQuery) return;
+    goTo(`/products?q=${encodeURIComponent(cleanQuery)}`);
+  };
 
   const categoryLabelOf = (product) => product.categoryLabel || categories.find((category) => category.key === product.category)?.label || "Outdoor living";
   const hasImage = productHasImage;
@@ -196,21 +220,65 @@ const PRODUCTS_PAGE = () => {
         </>
       ) : (
         <>
-          <section className="prod-banner">
-            <img src={selectedCategory.banner} alt="" style={{ objectPosition: selectedCategory.bannerPosition || "center" }} />
-          </section>
-          <div className="rd-page-head">
+          {!hasSearch && (
+            <section className="prod-banner">
+              <img src={selectedCategory.banner} alt="" style={{ objectPosition: selectedCategory.bannerPosition || "center" }} />
+            </section>
+          )}
+          <div className={`rd-page-head ${hasSearch ? "search-head" : ""}`}>
             <button type="button" className="rd-back-to-cats" onClick={backToLanding}>
               <span aria-hidden="true">←</span> Products
             </button>
-            <span className="rd-kicker fs">Products / {selectedCategory.label}</span>
-            <h1 className="rd-title ff">{selectedCategory.title}</h1>
-            <p className="rd-lede fs">{selectedCategory.copy}</p>
+            {hasSearch ? (
+              <>
+                <span className="rd-kicker fs">Search</span>
+                <h1 className="rd-title ff">Search results</h1>
+                <p className="rd-lede fs">Explore matches across furniture, shade, kitchens, collections and materials.</p>
+              </>
+            ) : (
+              <>
+                <span className="rd-kicker fs">Products / {selectedCategory.label}</span>
+                <h1 className="rd-title ff">{selectedCategory.title}</h1>
+                <p className="rd-lede fs">{selectedCategory.copy}</p>
+              </>
+            )}
           </div>
 
           <main className="rd-products-layout">
             <section>
-              {isKitchenCategory && (
+              {hasSearch && (
+                <>
+                  <form className="rd-results-search" role="search" onSubmit={submitResultsSearch}>
+                    <svg aria-hidden="true" viewBox="0 0 24 24" width="21" height="21" fill="none">
+                      <circle cx="10.8" cy="10.8" r="6.5" stroke="currentColor" strokeWidth="1.5" />
+                      <path d="m15.7 15.7 4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                    </svg>
+                    <label className="sr-only" htmlFor="results-search-input">{currentLang === "pt" ? "Pesquisar produtos, coleções ou materiais" : "Search products, collections or materials"}</label>
+                    <input
+                      id="results-search-input"
+                      className="ff"
+                      type="search"
+                      value={searchInput}
+                      autoComplete="off"
+                      placeholder={currentLang === "pt" ? "Pesquisar produtos, coleções ou materiais" : "Search products, collections or materials"}
+                      onChange={(event) => setSearchInput(event.target.value)}
+                    />
+                    <button type="submit" className="fs">Search <span aria-hidden="true">→</span></button>
+                  </form>
+                  <div className="rd-search-scopes" role="group" aria-label={currentLang === "pt" ? "Filtrar resultados por categoria" : "Filter search results by category"}>
+                    <button type="button" className={!activeCategory ? "active" : ""} aria-pressed={!activeCategory} onClick={() => setSearchScope(null)}>
+                      <span>All</span><small data-no-translate>{searchMatches.length}</small>
+                    </button>
+                    {searchCategoryCounts.map((category) => (
+                      <button key={category.key} type="button" className={activeCategory === category.key ? "active" : ""} aria-pressed={activeCategory === category.key} onClick={() => setSearchScope(category.key)}>
+                        <span>{category.label}</span><small data-no-translate>{category.count}</small>
+                      </button>
+                    ))}
+                  </div>
+                </>
+              )}
+
+              {!hasSearch && isKitchenCategory && (
                 <div className="rd-range-strip" role="group" aria-label="Kitchen ranges">
                   {kitchenCollections.map((collection) => (
                     <button key={collection.key} type="button" data-no-translate className={`rd-range-chip ${activeKitchenCollection === collection.key ? "active" : ""}`} aria-pressed={activeKitchenCollection === collection.key} onClick={() => selectKitchenCollection(collection.key)}>
@@ -222,25 +290,48 @@ const PRODUCTS_PAGE = () => {
 
               <div className="rd-products-toolbar">
                 <div>
-                  <span className="rd-kicker fs">{isKitchenCategory ? activeRange?.label : selectedCategory.label}</span>
-                  <p className="rd-count fs">{filteredProducts.length} products shown</p>
+                  {hasSearch ? (
+                    <>
+                      <span className="rd-kicker fs" data-no-translate>“{queryParam}”</span>
+                      <p className="rd-count fs">{filteredProducts.length} results</p>
+                    </>
+                  ) : (
+                    <>
+                      <span className="rd-kicker fs">{isKitchenCategory ? activeRange?.label : selectedCategory.label}</span>
+                      <p className="rd-count fs">{filteredProducts.length} products shown</p>
+                    </>
+                  )}
                 </div>
                 <div className="rd-toolbar-actions">
                   <select className="rd-select fs" value={sortBy} onChange={(event) => setSortBy(event.target.value)}>
-                    <option value="featured">Featured</option>
+                    <option value="featured">{hasSearch ? "Relevance" : "Featured"}</option>
                     <option value="name">Name</option>
                   </select>
-                  <div className="rd-view-toggle" role="group" aria-label="View mode">
-                    <button type="button" className={viewMode === "grid" ? "active" : ""} onClick={() => setViewMode("grid")} aria-label="Grid view" aria-pressed={viewMode === "grid"}>▦</button>
-                    <button type="button" className={viewMode === "list" ? "active" : ""} onClick={() => setViewMode("list")} aria-label="List view" aria-pressed={viewMode === "list"}>☰</button>
+                  <div className="rd-view-toggle" role="group" aria-label={currentLang === "pt" ? "Modo de visualização" : "View mode"}>
+                    <button type="button" className={viewMode === "grid" ? "active" : ""} onClick={() => setViewMode("grid")} aria-label={currentLang === "pt" ? "Vista em grelha" : "Grid view"} aria-pressed={viewMode === "grid"}>▦</button>
+                    <button type="button" className={viewMode === "list" ? "active" : ""} onClick={() => setViewMode("list")} aria-label={currentLang === "pt" ? "Vista em lista" : "List view"} aria-pressed={viewMode === "list"}>☰</button>
                   </div>
                 </div>
               </div>
 
               {filteredProducts.length === 0 ? (
-                <div className="rd-empty-state fs" style={{ textAlign: "center", padding: "64px 24px", color: "var(--text-grey)" }}>
-                  No pieces in this category yet. Contact the showroom.
-                </div>
+                hasSearch ? (
+                  <div className="rd-search-empty" role="status">
+                    <span className="rd-kicker fs">No results for</span>
+                    <h2 className="ff" data-no-translate>“{queryParam}”</h2>
+                    <p className="fs">Try a product type, collection or material, or ask our showroom team for help.</p>
+                    <div className="rd-search-empty-actions">
+                      {["Modular sofas", "Parasols", "Outdoor kitchens", "Sun loungers"].map((suggestion) => (
+                        <button key={suggestion} type="button" onClick={() => goTo(`/products?q=${encodeURIComponent(suggestion)}`)}>{suggestion}</button>
+                      ))}
+                    </div>
+                    <LocalizedLink className="rd-search-empty-contact fs" to="/contact">Ask the showroom team <span aria-hidden="true">→</span></LocalizedLink>
+                  </div>
+                ) : (
+                  <div className="rd-empty-state fs" style={{ textAlign: "center", padding: "64px 24px", color: "var(--text-grey)" }}>
+                    No pieces in this category yet. Contact the showroom.
+                  </div>
+                )
               ) : viewMode === "grid" ? (
                 <div className="rd-product-grid editorial">
                   {filteredProducts.map((product) => (

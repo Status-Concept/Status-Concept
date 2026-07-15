@@ -1,10 +1,14 @@
 ﻿import { useState } from "react";
+import { useLocation } from "react-router-dom";
 import { useFavorites } from "./FavoritesContext";
+import { getLangFromPath } from "./utils/language";
 
 export default function FavoriteButton({ product, size = 20, style = {} }) {
   const { isFavorite, toggleFavorite } = useFavorites();
+  const location = useLocation();
   const [animate, setAnimate] = useState(false);
   const active = isFavorite(product.id);
+  const isPortuguese = getLangFromPath(location.pathname) === "pt";
 
   const handleClick = (e) => {
     e.stopPropagation();
@@ -16,8 +20,11 @@ export default function FavoriteButton({ product, size = 20, style = {} }) {
 
   return (
     <button
+      type="button"
       onClick={handleClick}
-      aria-label={active ? "Remove from favorites" : "Add to favorites"}
+      aria-label={active
+        ? (isPortuguese ? "Remover dos favoritos" : "Remove from favorites")
+        : (isPortuguese ? "Adicionar aos favoritos" : "Add to favorites")}
       style={{
         background: "rgba(0,0,0,.35)",
         backdropFilter: "blur(4px)",

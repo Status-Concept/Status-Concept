@@ -1,7 +1,9 @@
 import { useState } from 'react'
-import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import { useToast } from '../context/ToastContext'
+import LocalizedLink from '../components/LocalizedLink'
+import { getLangFromPath, withLang } from '../utils/language'
 
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
@@ -10,15 +12,17 @@ export default function Login() {
   const location = useLocation()
   const { login, isSupabaseConfigured } = useAuth()
   const { showToast } = useToast()
+  const lang = getLangFromPath(location.pathname)
+  const isPortuguese = lang === 'pt'
   const [values, setValues] = useState({ email: '', password: '' })
   const [errors, setErrors] = useState({})
   const [submitting, setSubmitting] = useState(false)
 
   const validate = () => {
     const next = {}
-    if (!values.email.trim()) next.email = 'O email e obrigatorio.'
-    else if (!emailPattern.test(values.email)) next.email = 'Introduz um email valido.'
-    if (!values.password) next.password = 'A password e obrigatoria.'
+    if (!values.email.trim()) next.email = isPortuguese ? 'O email é obrigatório.' : 'Email is required.'
+    else if (!emailPattern.test(values.email)) next.email = isPortuguese ? 'Introduza um email válido.' : 'Enter a valid email.'
+    if (!values.password) next.password = isPortuguese ? 'A palavra-passe é obrigatória.' : 'Password is required.'
     setErrors(next)
     return Object.keys(next).length === 0
   }
@@ -29,10 +33,10 @@ export default function Login() {
     setSubmitting(true)
     try {
       await login(values)
-      showToast('Sessao iniciada com sucesso.')
-      navigate(location.state?.from?.pathname || '/cliente', { replace: true })
+      showToast(isPortuguese ? 'Sessão iniciada com sucesso.' : 'Signed in successfully.')
+      navigate(location.state?.from?.pathname || withLang('/cliente', lang), { replace: true })
     } catch (error) {
-      showToast(error.message || 'Nao foi possivel iniciar sessao.', 'error')
+      showToast(error.message || (isPortuguese ? 'Não foi possível iniciar sessão.' : 'Unable to sign in.'), 'error')
     } finally {
       setSubmitting(false)
     }
@@ -41,13 +45,13 @@ export default function Login() {
   return (
     <main className="auth-page">
       <section className="auth-card">
-        <Link to="/" className="auth-logo ff">ST<span>A</span>TVS</Link>
-        <span className="fs sl">Area de cliente</span>
-        <h1 className="ff">Entrar na conta</h1>
-        <p className="fs auth-copy">Acede aos teus favoritos, dados pessoais e pedidos de orcamento.</p>
+        <LocalizedLink to="/" className="auth-logo ff">ST<span>A</span>TVS</LocalizedLink>
+        <span className="fs sl">{isPortuguese ? 'Área de cliente' : 'Client area'}</span>
+        <h1 className="ff">{isPortuguese ? 'Entrar na conta' : 'Sign in to your account'}</h1>
+        <p className="fs auth-copy">{isPortuguese ? 'Aceda aos seus favoritos, dados pessoais e pedidos de orçamento.' : 'Access your favorites, personal details and proposal requests.'}</p>
 
         {!isSupabaseConfigured && (
-          <div className="form-alert fs">Configura o Supabase no ficheiro .env para ativar o login.</div>
+          <div className="form-alert fs">{isPortuguese ? 'Configure o Supabase no ficheiro .env para ativar o login.' : 'Configure Supabase in the .env file to enable sign-in.'}</div>
         )}
 
         <form onSubmit={handleSubmit} className="auth-form" noValidate>
@@ -64,7 +68,7 @@ export default function Login() {
           </label>
 
           <label className="form-field">
-            <span className="fs">Password</span>
+            <span className="fs">{isPortuguese ? 'Palavra-passe' : 'Password'}</span>
             <input
               className={errors.password ? 'invalid' : ''}
               type="password"
@@ -76,13 +80,15 @@ export default function Login() {
           </label>
 
           <button className="cb cg auth-submit" type="submit" disabled={submitting || !isSupabaseConfigured}>
-            {submitting ? 'A processar...' : 'Entrar'}
+            {submitting ? (isPortuguese ? 'A processar...' : 'Signing in...') : (isPortuguese ? 'Entrar' : 'Sign in')}
           </button>
         </form>
 
-        <p className="fs auth-switch">Ainda nao tens conta? <Link to="/registar">Criar conta</Link></p>
+        <p className="fs auth-switch">
+          {isPortuguese ? 'Ainda não tem conta? ' : 'New to STATVS? '}
+          <LocalizedLink to="/register">{isPortuguese ? 'Criar conta' : 'Create an account'}</LocalizedLink>
+        </p>
       </section>
     </main>
   )
 }
-

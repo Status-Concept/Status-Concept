@@ -9,6 +9,7 @@ import TranslationLayer from './components/TranslationLayer'
 import Homepage from './pages/status-concept-homepage'
 import ScrollToTop from './ScrollToTop'
 import PageNav from './PageNav'
+import RouteMetadata from './components/RouteMetadata'
 
 // Route-level code splitting: only the homepage ships in the entry chunk.
 const Products = lazy(() => import('./pages/status-concept-products'))
@@ -28,6 +29,7 @@ const ClientFavorites = lazy(() => import('./pages/client/ClientFavorites'))
 const Legal = lazy(() => import('./pages/status-concept-legal'))
 const AfterCare = lazy(() => import('./pages/status-concept-aftercare'))
 const Catalogue = lazy(() => import('./pages/status-concept-catalogue'))
+const NotFound = lazy(() => import('./pages/NotFound'))
 
 const routesFor = (prefix = '') => (
   <>
@@ -48,6 +50,7 @@ const routesFor = (prefix = '') => (
     <Route path={`${prefix}/terms`} element={<Legal doc="terms" />} />
     <Route path={`${prefix}/login`} element={<Login />} />
     <Route path={`${prefix}/registar`} element={<Register />} />
+    <Route path={`${prefix}/register`} element={<Register />} />
     <Route
       path={`${prefix}/cliente`}
       element={
@@ -69,6 +72,7 @@ function App() {
       <AuthProvider>
         <FavoritesProvider>
           <ScrollToTop />
+          <RouteMetadata />
           <TranslationLayer />
           {import.meta.env.DEV && <PageNav />}
           <Suspense fallback={<div style={{ minHeight: '100vh', background: 'var(--cream)' }} aria-busy="true" />}>
@@ -76,6 +80,7 @@ function App() {
               {routesFor()}
               {routesFor('/en')}
               {routesFor('/pt')}
+              <Route path="*" element={<NotFound />} />
             </Routes>
           </Suspense>
           <ConsentNotice />

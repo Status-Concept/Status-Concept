@@ -20,6 +20,10 @@ const titleFromSlug = (value = "product") => value
   .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
   .join(" ");
 
+const displayDimension = (value) => /^(todo:|see source sheet)/i.test(String(value || '').trim())
+  ? 'Available on request'
+  : value;
+
 const PRODUCT_DETAIL = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -149,10 +153,10 @@ const PRODUCT_DETAIL = () => {
             {(product.dims || []).map((row) => (
               <tr key={row.piece}>
                 <td>{row.piece}</td>
-                <td>{row.w}</td>
-                <td>{row.d}</td>
-                <td>{row.h}</td>
-                <td>{row.sh}</td>
+                <td>{displayDimension(row.w)}</td>
+                <td>{displayDimension(row.d)}</td>
+                <td>{displayDimension(row.h)}</td>
+                <td>{displayDimension(row.sh)}</td>
               </tr>
             ))}
           </tbody>
@@ -263,7 +267,7 @@ const PRODUCT_DETAIL = () => {
                   >
                     <div>
                       <span style={{ fontSize: 14, fontWeight: 500, color: "var(--text-dark)", display: "block" }}>{opt.label}</span>
-                      <span style={{ fontSize: 11, color: "var(--text-grey)", marginTop: 2, display: "block" }}>{opt.dimensions}</span>
+                      <span style={{ fontSize: 11, color: "var(--text-grey)", marginTop: 2, display: "block" }}>{displayDimension(opt.dimensions)}</span>
                     </div>
                     <span style={{ fontSize: 10, letterSpacing: 1.5, textTransform: "uppercase", color: "var(--text-grey)", whiteSpace: "nowrap" }}>SKU: {opt.sku}</span>
                   </button>
