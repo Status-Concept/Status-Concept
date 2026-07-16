@@ -5,17 +5,9 @@ import { getLangFromPath, stripLangFromPath, withLang } from '../utils/language'
 import LocalizedLink from './LocalizedLink'
 import SocialLinks from './SocialIcons'
 import { CONTACT } from '../data/showrooms'
+import { PRODUCT_MENU } from '../data/productMenu'
 
 const SearchPanel = lazy(() => import('./SearchPanel'))
-
-const PRODUCT_LINKS = [
-  ["Lounge", "/products?cat=lounge"],
-  ["Dining", "/products?cat=dining"],
-  ["Sun Loungers & Day Beds", "/products?cat=sunlounger"],
-  ["Shade Solutions", "/products?cat=shade"],
-  ["Glatz Parasols", "/glatz-parasols"],
-  ["Outdoor Kitchens", "/products?cat=kitchen"],
-]
 
 export default function Header({ onOpenMenu }) {
   const navigate = useNavigate()
@@ -25,7 +17,10 @@ export default function Header({ onOpenMenu }) {
   const [scrolled, setScrolled] = useState(false)
   const [langOpen, setLangOpen] = useState(false)
   const [productsOpen, setProductsOpen] = useState(false)
+  const [hoverCat, setHoverCat] = useState(null)
   const [searchOpen, setSearchOpen] = useState(false)
+  const closeProducts = () => { setProductsOpen(false); setHoverCat(null) }
+  const activeSub = PRODUCT_MENU.find((category) => category.key === hoverCat)
   const currentLang = getLangFromPath(location.pathname)
 
   useEffect(() => {
@@ -117,36 +112,64 @@ export default function Header({ onOpenMenu }) {
           <div
             style={{ position: "relative" }}
             onMouseEnter={() => setProductsOpen(true)}
-            onMouseLeave={() => setProductsOpen(false)}
+            onMouseLeave={closeProducts}
             onFocus={() => setProductsOpen(true)}
-            onBlur={(e) => { if (!e.currentTarget.contains(e.relatedTarget)) setProductsOpen(false) }}
-            onKeyDown={(e) => { if (e.key === "Escape") setProductsOpen(false) }}
+            onBlur={(e) => { if (!e.currentTarget.contains(e.relatedTarget)) closeProducts() }}
+            onKeyDown={(e) => { if (e.key === "Escape") closeProducts() }}
           >
             <LocalizedLink
               className="nl"
               aria-haspopup="true"
               aria-expanded={productsOpen}
               to="/products"
-              onClick={() => setProductsOpen(false)}
+              onClick={closeProducts}
               style={{ color: "inherit", font: "inherit", letterSpacing: "inherit", textTransform: "inherit", cursor: "pointer", padding: "8px 0", display: "inline-flex", alignItems: "center", gap: 6 }}
             >
               Products
               <span aria-hidden="true" style={{ fontSize: 8, opacity: .6, transform: productsOpen ? "rotate(180deg)" : "none", transition: "transform .2s" }}>▾</span>
             </LocalizedLink>
             {productsOpen && (
-              <div role="menu" aria-label="Products" style={{ position: "absolute", top: "100%", left: 0, paddingTop: 8, minWidth: 240, zIndex: 120 }}>
-                <div style={{ background: "var(--white)", border: "1px solid var(--mid-grey)", boxShadow: "var(--shadow-md)", borderRadius: 2, padding: "10px 0" }}>
-                  {PRODUCT_LINKS.map(([label, path]) => (
-                    <LocalizedLink
-                      key={label}
-                      role="menuitem"
-                      to={path}
-                      onClick={() => setProductsOpen(false)}
-                      style={{ display: "block", textAlign: "left", font: "inherit", fontSize: 11, letterSpacing: "2px", textTransform: "uppercase", textDecoration: "none", color: "var(--text-body)", padding: "11px 22px", cursor: "pointer", transition: "color .2s, background .2s" }}
-                      onMouseEnter={e => { e.currentTarget.style.color = "var(--accent)"; e.currentTarget.style.background = "var(--light-grey)" }}
-                      onMouseLeave={e => { e.currentTarget.style.color = "var(--text-body)"; e.currentTarget.style.background = "none" }}
-                    >{label}</LocalizedLink>
-                  ))}
+              <div style={{ position: "absolute", top: "100%", left: 0, paddingTop: 8, zIndex: 120 }}>
+                <div style={{ display: "flex", alignItems: "stretch", background: "var(--white)", border: "1px solid var(--mid-grey)", boxShadow: "var(--shadow-md)", borderRadius: 2 }}>
+                  {/* Level 1 — categories */}
+                  <div role="menu" aria-label="Products" style={{ padding: "10px 0", minWidth: 236, flex: "0 0 auto" }}>
+                    {PRODUCT_MENU.map((category) => {
+                      const hasSub = category.items?.length > 0
+                      const isActive = hoverCat === category.key
+                      return (
+                        <LocalizedLink
+                          key={category.key}
+                          role="menuitem"
+                          to={category.to}
+                          aria-haspopup={hasSub ? "true" : undefined}
+                          aria-expanded={hasSub ? isActive : undefined}
+                          onMouseEnter={() => setHoverCat(category.key)}
+                          onFocus={() => setHoverCat(category.key)}
+                          onClick={closeProducts}
+                          style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 16, textAlign: "left", font: "inherit", fontSize: 11, letterSpacing: "2px", textTransform: "uppercase", textDecoration: "none", color: isActive ? "var(--accent)" : "var(--text-body)", background: isActive ? "var(--light-grey)" : "none", padding: "11px 22px", cursor: "pointer", transition: "color .2s, background .2s" }}
+                        >
+                          <span>{category.label}</span>
+                          {hasSub && <span aria-hidden="true" style={{ fontSize: 11, opacity: isActive ? .9 : .4 }}>›</span>}
+                        </LocalizedLink>
+                      )
+                    })}
+                  </div>
+                  {/* Level 2 — type sub-menu */}
+                  {activeSub?.items?.length > 0 && (
+                    <div role="menu" aria-label={activeSub.label} style={{ borderLeft: "1px solid var(--light-grey)", padding: "10px 0", minWidth: 220, alignSelf: "stretch" }}>
+                      {activeSub.items.map((item) => (
+                        <LocalizedLink
+                          key={item.to}
+                          role="menuitem"
+                          to={item.to}
+                          onClick={closeProducts}
+                          style={{ display: "block", font: "inherit", fontSize: 12, letterSpacing: ".3px", textTransform: "none", textDecoration: "none", color: "var(--text-body)", padding: "11px 24px", whiteSpace: "nowrap", cursor: "pointer", transition: "color .2s, background .2s" }}
+                          onMouseEnter={e => { e.currentTarget.style.color = "var(--accent)"; e.currentTarget.style.background = "var(--light-grey)" }}
+                          onMouseLeave={e => { e.currentTarget.style.color = "var(--text-body)"; e.currentTarget.style.background = "none" }}
+                        >{item.name}</LocalizedLink>
+                      ))}
+                    </div>
+                  )}
                 </div>
               </div>
             )}

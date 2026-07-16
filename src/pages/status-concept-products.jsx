@@ -99,6 +99,8 @@ const PRODUCTS_PAGE = () => {
   const [searchParams] = useSearchParams();
   const catParam = searchParams.get("cat");
   const queryParam = searchParams.get("q")?.trim() || "";
+  const collectionParam = searchParams.get("collection")?.trim() || "";
+  const typeParam = searchParams.get("type")?.trim().toLowerCase() || "";
   const currentLang = getLangFromPath(location.pathname);
   const [activeCategory, setActiveCategory] = useState(null); // null = category landing
   const [activeKitchenCollection, setActiveKitchenCollection] = useState(null);
@@ -113,9 +115,15 @@ const PRODUCTS_PAGE = () => {
     const resolved = categoryAliases[catParam] || catParam;
     const isValid = validCategories.includes(resolved);
     setActiveCategory(isValid ? resolved : null);
-    setActiveKitchenCollection(resolved === "kitchen" ? (kitchenCollectionMeta[0]?.key || null) : null);
+    setActiveKitchenCollection(
+      resolved === "kitchen"
+        ? (kitchenCollectionMeta.some((collection) => collection.key === collectionParam)
+            ? collectionParam
+            : (kitchenCollectionMeta[0]?.key || null))
+        : null,
+    );
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [catParam]);
+  }, [catParam, collectionParam]);
 
   useEffect(() => {
     setSearchInput(queryParam);
@@ -153,9 +161,18 @@ const PRODUCTS_PAGE = () => {
     }
 
     if (!activeCategory) return [];
-    const base = activeCategory === "kitchen"
+    let base = activeCategory === "kitchen"
       ? kitchenProducts.filter((product) => product.collection === activeKitchenCollection)
       : allProducts.filter((product) => product.category === activeCategory);
+
+    if (collectionParam && activeCategory !== "kitchen") {
+      base = base.filter((product) => slug(product.collectionName || product.collection) === collectionParam);
+    }
+
+    if (typeParam && activeCategory !== "kitchen") {
+      const needle = typeParam.replace(/-/g, " ");
+      base = base.filter((product) => `${product.name} ${product.collectionName || ""}`.toLowerCase().includes(needle));
+    }
 
     return [...base].sort((a, b) => {
       // Products without a clean white-bg image always sink to the bottom.
@@ -165,7 +182,21 @@ const PRODUCTS_PAGE = () => {
       if (sortBy === "name") return a.name.localeCompare(b.name);
       return (b.tag ? 1 : 0) - (a.tag ? 1 : 0);
     });
-  }, [activeCategory, activeKitchenCollection, hasSearch, searchMatches, sortBy]);
+  }, [activeCategory, activeKitchenCollection, hasSearch, searchMatches, sortBy, collectionParam, typeParam]);
+
+  const activeRefinementLabel = useMemo(() => {
+    if (!activeCategory || activeCategory === "kitchen") return null;
+    if (collectionParam) {
+      const match = allProducts.find(
+        (product) => product.category === activeCategory && slug(product.collectionName || product.collection) === collectionParam,
+      );
+      return match ? (match.collectionName || match.collection) : null;
+    }
+    if (typeParam) {
+      return typeParam.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
+    }
+    return null;
+  }, [collectionParam, typeParam, activeCategory]);
 
   const searchCategoryCounts = categories.map((category) => ({
     ...category,
@@ -297,7 +328,15 @@ const PRODUCTS_PAGE = () => {
                     </>
                   ) : (
                     <>
-                      <span className="rd-kicker fs">{isKitchenCategory ? activeRange?.label : selectedCategory.label}</span>
+                      <span className="rd-kicker fs">
+                        {isKitchenCategory ? activeRange?.label : selectedCategory.label}
+                        {activeRefinementLabel && (
+                          <span data-no-translate style={{ display: "inline-flex", alignItems: "center", gap: 6, marginLeft: 10, padding: "2px 6px 2px 10px", background: "var(--light-grey)", borderRadius: 2, textTransform: "none", letterSpacing: 0 }}>
+                            {activeRefinementLabel}
+                            <LocalizedLink to={`/products?cat=${activeCategory}`} aria-label={currentLang === "pt" ? "Limpar filtro" : "Clear filter"} style={{ color: "var(--text-grey)", textDecoration: "none", fontSize: 14, lineHeight: 1 }}>×</LocalizedLink>
+                          </span>
+                        )}
+                      </span>
                       <p className="rd-count fs">{filteredProducts.length} products shown</p>
                     </>
                   )}
