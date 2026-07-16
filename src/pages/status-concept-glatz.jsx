@@ -3,7 +3,7 @@ import { useScrollAnimation } from "../hooks/useScrollAnimation";
 import Layout from "../components/Layout";
 import LocalizedLink from "../components/LocalizedLink";
 import { glatzProducts } from "../data/glatzProducts";
-import heroImg from "../assets/images/glatz/sunwing-casa-1.webp";
+import heroImg from "../assets/images/glatz/glatz-alu-smart-lifestyle.jpg";
 import catWoodImg from "../assets/images/glatz/cat-wood.jpg";
 import catCentreImg from "../assets/images/glatz/cat-centre.png";
 import catSidemastImg from "../assets/images/glatz/cat-sidemast.jpg";
@@ -56,7 +56,12 @@ const STATUS_CONCEPT_GLATZ = () => {
     <Layout>
       {/* HERO */}
       <section className="rd-page-hero">
-        <img className="rd-hero-img" src={heroImg} alt="Glatz parasol on a terrace" />
+        <img
+          className="rd-hero-img"
+          src={heroImg}
+          alt="Glatz parasol on a terrace"
+          style={{ objectPosition: "center 18%" }}
+        />
       </section>
       <div className="rd-page-head">
         <span className="rd-kicker fs">Official Glatz partner · Swiss made since 1895</span>
