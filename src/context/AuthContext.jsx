@@ -3,12 +3,16 @@ import { getSupabase, isSupabaseConfigured } from '../lib/supabase'
 import { sanitizePhone, sanitizeText } from '../utils/sanitize'
 
 const AuthContext = createContext(null)
+// Client authentication is intentionally paused. Keep the login surface
+// available as a clear endpoint without making auth requests until the client
+// area is deliberately re-enabled.
+export const AUTH_ENABLED = false
 
 export function AuthProvider({ children }) {
   const [session, setSession] = useState(null)
   const [user, setUser] = useState(null)
   const [profile, setProfile] = useState(null)
-  const [loading, setLoading] = useState(isSupabaseConfigured)
+  const [loading, setLoading] = useState(AUTH_ENABLED && isSupabaseConfigured)
 
   const fetchProfile = useCallback(async (userId) => {
     const supabase = await getSupabase()
@@ -41,7 +45,7 @@ export function AuthProvider({ children }) {
     let mounted = true
     let listener = null
 
-    if (!isSupabaseConfigured) {
+    if (!AUTH_ENABLED || !isSupabaseConfigured) {
       return undefined
     }
 
@@ -72,6 +76,7 @@ export function AuthProvider({ children }) {
   }, [fetchProfile])
 
   const login = useCallback(async ({ email, password }) => {
+    if (!AUTH_ENABLED) throw new Error('A area de cliente esta temporariamente indisponivel.')
     const supabase = await getSupabase()
     if (!supabase) throw new Error('Supabase nao esta configurado.')
     const { data, error } = await supabase.auth.signInWithPassword({
@@ -84,6 +89,7 @@ export function AuthProvider({ children }) {
   }, [fetchProfile])
 
   const register = useCallback(async ({ name, email, password, phone }) => {
+    if (!AUTH_ENABLED) throw new Error('A area de cliente esta temporariamente indisponivel.')
     const supabase = await getSupabase()
     if (!supabase) throw new Error('Supabase nao esta configurado.')
     const cleanName = sanitizeText(name)
@@ -113,6 +119,7 @@ export function AuthProvider({ children }) {
   }, [])
 
   const updateProfile = useCallback(async ({ name, phone }) => {
+    if (!AUTH_ENABLED) throw new Error('A area de cliente esta temporariamente indisponivel.')
     const supabase = await getSupabase()
     if (!supabase || !user) throw new Error('Sessao invalida.')
     const payload = {
@@ -133,6 +140,7 @@ export function AuthProvider({ children }) {
   }, [user])
 
   const logout = useCallback(async () => {
+    if (!AUTH_ENABLED) return
     const supabase = await getSupabase()
     if (!supabase) return
     const { error } = await supabase.auth.signOut()
@@ -149,6 +157,7 @@ export function AuthProvider({ children }) {
     loading,
     isAuthenticated: Boolean(user),
     isSupabaseConfigured,
+    isAuthEnabled: AUTH_ENABLED,
     login,
     register,
     logout,

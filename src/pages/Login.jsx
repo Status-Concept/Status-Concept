@@ -10,7 +10,7 @@ const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 export default function Login() {
   const navigate = useNavigate()
   const location = useLocation()
-  const { login, isSupabaseConfigured } = useAuth()
+  const { login, isAuthEnabled } = useAuth()
   const { showToast } = useToast()
   const lang = getLangFromPath(location.pathname)
   const isPortuguese = lang === 'pt'
@@ -50,8 +50,8 @@ export default function Login() {
         <h1 className="ff">{isPortuguese ? 'Entrar na conta' : 'Sign in to your account'}</h1>
         <p className="fs auth-copy">{isPortuguese ? 'Aceda aos seus favoritos, dados pessoais e pedidos de orçamento.' : 'Access your favorites, personal details and proposal requests.'}</p>
 
-        {!isSupabaseConfigured && (
-          <div className="form-alert fs">{isPortuguese ? 'Configure o Supabase no ficheiro .env para ativar o login.' : 'Configure Supabase in the .env file to enable sign-in.'}</div>
+        {!isAuthEnabled && (
+          <div className="form-alert fs">{isPortuguese ? 'A área de cliente está temporariamente indisponível.' : 'The client area is currently unavailable.'}</div>
         )}
 
         <form onSubmit={handleSubmit} className="auth-form" noValidate>
@@ -60,6 +60,7 @@ export default function Login() {
             <input
               className={errors.email ? 'invalid' : ''}
               type="email"
+              disabled={!isAuthEnabled}
               value={values.email}
               onChange={(e) => setValues({ ...values, email: e.target.value })}
               autoComplete="email"
@@ -72,6 +73,7 @@ export default function Login() {
             <input
               className={errors.password ? 'invalid' : ''}
               type="password"
+              disabled={!isAuthEnabled}
               value={values.password}
               onChange={(e) => setValues({ ...values, password: e.target.value })}
               autoComplete="current-password"
@@ -79,14 +81,13 @@ export default function Login() {
             {errors.password && <small>{errors.password}</small>}
           </label>
 
-          <button className="cb cg auth-submit" type="submit" disabled={submitting || !isSupabaseConfigured}>
+          <button className="cb cg auth-submit" type="submit" disabled={submitting || !isAuthEnabled}>
             {submitting ? (isPortuguese ? 'A processar...' : 'Signing in...') : (isPortuguese ? 'Entrar' : 'Sign in')}
           </button>
         </form>
 
         <p className="fs auth-switch">
-          {isPortuguese ? 'Ainda não tem conta? ' : 'New to STATVS? '}
-          <LocalizedLink to="/register">{isPortuguese ? 'Criar conta' : 'Create an account'}</LocalizedLink>
+          {isPortuguese ? 'A área de cliente ficará disponível numa fase futura.' : 'The client area will be available in a future phase.'}
         </p>
       </section>
     </main>
