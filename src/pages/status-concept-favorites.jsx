@@ -4,11 +4,13 @@ import LocalizedLink from "../components/LocalizedLink";
 import { useFavorites } from "../FavoritesContext";
 import { whatsappUrl, whatsappShortlistMessage } from "../utils/whatsapp";
 import sicilyCornerImg from "../assets/images/sicily-corner.jpg";
+import { limitPageItems } from "../config/contentLimits";
 
 const FAVORITES_PAGE = () => {
   const { favorites, removeFavorite, clearFavorites } = useFavorites();
   const [removingId, setRemovingId] = useState(null);
   const [confirmClear, setConfirmClear] = useState(false);
+  const displayedFavorites = limitPageItems(favorites);
 
   const removeWithMotion = (event, id) => {
     event.stopPropagation();
@@ -66,7 +68,7 @@ const FAVORITES_PAGE = () => {
             </div>
 
             <div className="rd-favorites-grid">
-              {favorites.map((item) => (
+              {displayedFavorites.map((item) => (
                 <article
                   key={item.id}
                   className={`rd-fav-card rd-product-card ${removingId === item.id ? "removing" : ""}`}

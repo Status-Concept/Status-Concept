@@ -11,6 +11,7 @@ import { glatzProducts } from "../data/glatzProducts";
 import { kitchenProducts } from "../data/kitchenProducts";
 import { noImageProducts } from "../data/productImageStatus";
 import { productSrcSet } from "../utils/imageVariants";
+import { limitPageItems } from "../config/contentLimits";
 
 const slug = (value) => value.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
 const hasImage = (product) => product.category === "kitchen" || !noImageProducts.has(product.id);
@@ -55,11 +56,11 @@ export default function Catalogue() {
             <div className="rd-products-toolbar">
               <div>
                 <span className="rd-kicker fs">{g.label}</span>
-                <p className="rd-count fs">{g.items.length} products shown</p>
+                <p className="rd-count fs">{limitPageItems(g.items, g.key === "kitchen").length} products shown</p>
               </div>
             </div>
             <div className="rd-product-grid editorial">
-              {g.items.map((product) => (
+              {limitPageItems(g.items, g.key === "kitchen").map((product) => (
                 <article key={product.id || product.name} className="rd-product-card">
                   <div className="rd-product-media">
                     {hasImage(product)

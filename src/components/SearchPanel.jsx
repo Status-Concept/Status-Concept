@@ -52,7 +52,7 @@ export default function SearchPanel({ open, onClose }) {
   const searchPlaceholder = isPortuguese ? 'Pesquisar produtos, coleções ou materiais' : 'Search products, collections or materials'
 
   const fullProductResults = useMemo(() => searchProducts(allProducts, query), [query])
-  const productResults = useMemo(() => fullProductResults.slice(0, 6), [fullProductResults])
+  const productResults = useMemo(() => fullProductResults.slice(0, 5), [fullProductResults])
   const categoryResults = useMemo(
     () => (query ? CATEGORY_LINKS.filter((item) => matchesQuery(item, query)).slice(0, 3) : []),
     [query],

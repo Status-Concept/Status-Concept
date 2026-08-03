@@ -15,6 +15,7 @@ import kitchenHeroImg from "../assets/images/kitchen/kitchen-hero.webp";
 import furnitureSeriesImg from "../assets/images/enhanced/furniture-series-golf-hero.webp";
 import sicilyModularSetFullImg from "../assets/images/sicily-modular-set-full.webp";
 import sicilyCornerImg from "../assets/images/sicily-corner.jpg";
+import { limitPageItems } from "../config/contentLimits";
 
 const shadeHeroImg = "/product-images/glatz/ambiente-nova/01.webp";
 const shadeChipImg = "/product-images/glatz/sombrano-s-plus/05.webp";
@@ -184,6 +185,10 @@ const PRODUCTS_PAGE = () => {
     });
   }, [activeCategory, activeKitchenCollection, hasSearch, searchMatches, sortBy, collectionParam, typeParam]);
 
+  // Keep the catalogue useful at a glance while preserving the complete
+  // kitchen range, which is intentionally the exception to the content cap.
+  const displayedProducts = limitPageItems(filteredProducts, isKitchenCategory);
+
   const activeRefinementLabel = useMemo(() => {
     if (!activeCategory || activeCategory === "kitchen") return null;
     if (collectionParam) {
@@ -337,7 +342,7 @@ const PRODUCTS_PAGE = () => {
                           </span>
                         )}
                       </span>
-                      <p className="rd-count fs">{filteredProducts.length} products shown</p>
+                      <p className="rd-count fs">{displayedProducts.length} products shown</p>
                     </>
                   )}
                 </div>
@@ -373,7 +378,7 @@ const PRODUCTS_PAGE = () => {
                 )
               ) : viewMode === "grid" ? (
                 <div className="rd-product-grid editorial">
-                  {filteredProducts.map((product) => (
+                  {displayedProducts.map((product) => (
                     <article key={product.id || product.name} className={`rd-product-card ${product.category === "kitchen" && !product.fit ? "kitchen-product" : ""} ${product.category === "shade" && !product.fit ? "shade-product" : ""} ${product.fit === "contain" ? "studio-product" : ""} ${product.fit === "wide" ? "wide-product" : ""} ${product.id === "sicily-modular-set" ? "contain-media" : ""}`}>
                       <div className="rd-product-media">
                         <FavoriteButton
@@ -394,7 +399,7 @@ const PRODUCTS_PAGE = () => {
                 </div>
               ) : (
                 <div className="rd-product-list">
-                  {filteredProducts.map((product) => (
+                  {displayedProducts.map((product) => (
                     <article key={product.id || product.name} className={`rd-product-row ${product.category === "kitchen" && !product.fit ? "kitchen-product" : ""} ${product.fit === "contain" ? "studio-product" : ""}`}>
                       {hasImage(product)
                         ? <img src={product.img} srcSet={productSrcSet(product.img)} sizes="220px" alt={product.name} loading="lazy" decoding="async" />

@@ -10,6 +10,7 @@ import catSidemastImg from "../assets/images/glatz/cat-sidemast.jpg";
 import catVitaImg from "../assets/images/glatz/cat-vita.png";
 import catWindproofImg from "../assets/images/glatz/cat-windproof.png";
 import catGiantImg from "../assets/images/glatz/cat-giant.png";
+import { limitPageItems } from "../config/contentLimits";
 
 const byId = Object.fromEntries(glatzProducts.map((p) => [p.id, p]));
 
@@ -51,6 +52,9 @@ const STATUS_CONCEPT_GLATZ = () => {
   const { S } = useScrollAnimation();
   const [activeCat, setActiveCat] = useState("sidemast");
   const current = CATEGORIES.find((c) => c.key === activeCat);
+  // Keep every category selectable, while only loading five category images.
+  const visibleCategories = CATEGORIES;
+  const visibleModels = limitPageItems(current.models);
 
   return (
     <Layout>
@@ -83,14 +87,14 @@ const STATUS_CONCEPT_GLATZ = () => {
       {/* CATEGORY TILES — Glatz's flyout method */}
       <section id="glatz-cats" data-animate style={{ padding: "0 48px var(--section-padding)", ...S("glatz-cats") }}>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(170px, 1fr))", gap: 14, maxWidth: 1240, margin: "0 auto" }}>
-          {CATEGORIES.map((c) => (
+          {visibleCategories.map((c, index) => (
             <div key={c.key} onClick={() => setActiveCat(c.key)}
-              style={{ position: "relative", height: 230, cursor: "pointer", overflow: "hidden", borderRadius: 4,
+              style={{ position: "relative", height: 230, cursor: "pointer", overflow: "hidden", borderRadius: 4, background: "var(--stone)",
                 outline: activeCat === c.key ? "2px solid var(--gold)" : "1px solid var(--sand-l)", outlineOffset: -2,
                 transition: "outline-color .3s" }}>
-              <img src={c.img} alt={c.label} style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover",
+              {index < 5 && <img src={c.img} alt={c.label} style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover",
                 filter: activeCat === c.key ? "brightness(.85)" : "brightness(.62)", transition: "filter .4s, transform .8s cubic-bezier(.16,1,.3,1)",
-                transform: activeCat === c.key ? "scale(1.05)" : "scale(1)" }} />
+                transform: activeCat === c.key ? "scale(1.05)" : "scale(1)" }} />}
               <div style={{ position: "absolute", inset: 0, background: "linear-gradient(transparent 30%, rgba(26,26,46,.78))" }} />
               <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, padding: "14px 16px" }}>
                 <span className="fs" style={{ fontSize: 9, letterSpacing: 2, textTransform: "uppercase", color: "var(--gold-l)", display: "block", marginBottom: 4 }}>{c.sub} · {c.models.length} models</span>
@@ -110,7 +114,7 @@ const STATUS_CONCEPT_GLATZ = () => {
             <p className="fs" style={{ fontSize: 14, color: "var(--sand-d)", maxWidth: 520, margin: "16px auto 0", lineHeight: 1.7, fontWeight: 300 }}>{current.blurb}</p>
           </div>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))", gap: 20 }}>
-            {current.models.map((id) => {
+            {visibleModels.map((id) => {
               const p = byId[id];
               if (!p) return null;
               return (
