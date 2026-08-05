@@ -7,7 +7,6 @@ import projectVilamouraImg from "../assets/images/project-vilamoura.jpg";
 import projectAlmancilImg from "../assets/images/project-almancil.jpg";
 import collectionSicilyImg from "../assets/images/collection-sicily.jpg";
 import collectionMiamiImg from "../assets/images/collection-miami.jpg";
-import { limitPageItems } from "../config/contentLimits";
 
 const PROJECTS_PAGE = () => {
   const [activeProject, setActiveProject] = useState(null);
@@ -23,7 +22,6 @@ const PROJECTS_PAGE = () => {
   ];
 
   const filtered = filter === "all" ? projects : projects.filter((project) => project.type === filter);
-  const visibleProjects = limitPageItems(filtered);
   const selected = activeProject !== null ? projects[activeProject] : null;
 
   return (
@@ -53,7 +51,7 @@ const PROJECTS_PAGE = () => {
         </div>
 
         <div className="rd-project-grid">
-          {visibleProjects.map((project, index) => (
+          {filtered.map((project, index) => (
             <article
               key={project.name}
               className={`rd-project-card ${index === 0 || index === 4 ? "wide" : ""} ${index === 1 ? "tall" : ""}`}

@@ -21,6 +21,7 @@ const Projects = lazy(() => import('./pages/status-concept-projects'))
 const Favorites = lazy(() => import('./pages/status-concept-favorites'))
 const Placeholder = lazy(() => import('./pages/status-concept-placeholder'))
 const Login = lazy(() => import('./pages/Login'))
+const Register = lazy(() => import('./pages/Register'))
 const ClientLayout = lazy(() => import('./pages/client/ClientLayout'))
 const ClientDashboard = lazy(() => import('./pages/client/ClientDashboard'))
 const ClientProfile = lazy(() => import('./pages/client/ClientProfile'))
@@ -48,6 +49,8 @@ const routesFor = (prefix = '') => (
     <Route path={`${prefix}/cookies`} element={<Legal doc="cookies" />} />
     <Route path={`${prefix}/terms`} element={<Legal doc="terms" />} />
     <Route path={`${prefix}/login`} element={<Login />} />
+    <Route path={`${prefix}/registar`} element={<Register />} />
+    <Route path={`${prefix}/register`} element={<Register />} />
     <Route
       path={`${prefix}/cliente`}
       element={

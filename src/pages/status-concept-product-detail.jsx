@@ -13,7 +13,6 @@ import sicilyModularSetFullImg from "../assets/images/sicily-modular-set-full.we
 import sicilyCornerImg from "../assets/images/sicily-corner.jpg";
 import sicilyCentreImg from "../assets/images/sicily-centre.jpg";
 import sicilyOttomanImg from "../assets/images/sicily-ottoman.jpg";
-import { limitPageImages, limitPageItems } from "../config/contentLimits";
 
 const titleFromSlug = (value = "product") => value
   .split("-")
@@ -99,8 +98,7 @@ const PRODUCT_DETAIL = () => {
     ],
     materials: ["Product information available through the showroom team"],
   };
-  const allImages = product.images?.length ? product.images : [product.image || sicilyCornerImg];
-  const images = limitPageImages(allImages, product);
+  const images = product.images?.length ? product.images : [product.image || sicilyCornerImg];
   const safeActiveImg = activeImg < images.length ? activeImg : 0;
   const goTo = (path) => navigate(withLang(path, currentLang));
 
@@ -141,8 +139,6 @@ const PRODUCT_DETAIL = () => {
       ...glatzProducts.slice(0, 3),
     ].filter((item) => item.id !== product.id).slice(0, 4);
   })();
-  const displayedRelatedProducts = limitPageItems(relatedProducts, product.category === "kitchen");
-
   const renderTab = () => {
     if (activeTab === "dimensions") {
       return (
@@ -309,7 +305,7 @@ const PRODUCT_DETAIL = () => {
           <button type="button" className="rd-back-link" onClick={() => goTo("/products")}>View all</button>
         </div>
         <div className="rd-horizontal-scroll">
-          {displayedRelatedProducts.map((item) => {
+          {relatedProducts.map((item) => {
             const openItem = () => navigate(withLang(item.route || `/product/${item.id}`, currentLang), { state: { product: item } });
             return (
             <article
