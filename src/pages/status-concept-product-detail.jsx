@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { lazy, Suspense, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import Layout from "../components/Layout";
 import LocalizedLink from "../components/LocalizedLink";
@@ -8,11 +8,14 @@ import FavoriteButton from "../FavoriteButton";
 import { glatzProductDetails, glatzProducts } from "../data/glatzProducts";
 import { kitchenProductDetails, kitchenProducts, kitchenCollectionHeroes } from "../data/kitchenProducts";
 import { catalogProducts } from "../data/catalogProducts";
+import { product3dById } from "../data/product3d";
 import { getLangFromPath, withLang } from "../utils/language";
 import sicilyModularSetFullImg from "../assets/images/sicily-modular-set-full.webp";
 import sicilyCornerImg from "../assets/images/sicily-corner.jpg";
 import sicilyCentreImg from "../assets/images/sicily-centre.jpg";
 import sicilyOttomanImg from "../assets/images/sicily-ottoman.jpg";
+
+const Product3DViewer = lazy(() => import("../components/Product3DViewer"));
 
 const titleFromSlug = (value = "product") => value
   .split("-")
@@ -30,6 +33,7 @@ const PRODUCT_DETAIL = () => {
   const { id } = useParams();
   const currentLang = getLangFromPath(location.pathname);
   const [activeImg, setActiveImg] = useState(0);
+  const [mediaMode, setMediaMode] = useState("image");
   const [activeTab, setActiveTab] = useState("specs");
   const [lightboxOpen, setLightboxOpen] = useState(false);
 
@@ -99,6 +103,7 @@ const PRODUCT_DETAIL = () => {
     materials: ["Product information available through the showroom team"],
   };
   const images = product.images?.length ? product.images : [product.image || sicilyCornerImg];
+  const model3d = product3dById[product.id];
   const safeActiveImg = activeImg < images.length ? activeImg : 0;
   const goTo = (path) => navigate(withLang(path, currentLang));
 
@@ -209,8 +214,8 @@ const PRODUCT_DETAIL = () => {
                 key={image + index}
                 type="button"
                 aria-label={`View image ${index + 1}`}
-                aria-pressed={activeImg === index}
-                onClick={() => setActiveImg(index)}
+                aria-pressed={mediaMode === "image" && activeImg === index}
+                onClick={() => { setMediaMode("image"); setActiveImg(index); }}
                 style={{ padding: 0, border: "none", background: "none", cursor: "pointer", display: "block" }}
               >
                 <img
@@ -218,19 +223,37 @@ const PRODUCT_DETAIL = () => {
                   srcSet={productSrcSet(image)}
                   sizes="72px"
                   alt={`${product.name} view ${index + 1}`}
-                  className={`rd-thumb ${activeImg === index ? "active" : ""}`}
+                  className={`rd-thumb ${mediaMode === "image" && activeImg === index ? "active" : ""}`}
                   loading="lazy"
                   decoding="async"
                 />
               </button>
             ))}
+            {model3d && (
+              <button
+                type="button"
+                className={`rd-3d-thumb ${mediaMode === "3d" ? "active" : ""}`}
+                aria-label={currentLang === "pt" ? `Ver ${product.name} em 3D` : `View ${product.name} in 3D`}
+                aria-pressed={mediaMode === "3d"}
+                onClick={() => setMediaMode("3d")}
+              >
+                <strong aria-hidden="true">360°</strong>
+                <span className="fs">{currentLang === "pt" ? "Vista 3D" : "3D view"}</span>
+              </button>
+            )}
           </div>
-          <div className="rd-main-photo">
+          <div className={`rd-main-photo ${mediaMode === "3d" ? "rd-main-photo-3d" : ""}`}>
             {product.tag && <span className={`tag ${product.tag === "New" ? "tag-new" : "tag-popular"}`} style={{ position: "absolute", top: 16, left: 16, zIndex: 3 }}>{product.tag}</span>}
             <FavoriteButton product={{ id: product.id || id, name: product.name, collection: product.collection, img: images[0], route: `/product/${product.id || id}` }} size={18} style={{ position: "absolute", top: 16, right: 16 }} />
-            <button type="button" aria-label="Open full-size image" onClick={() => setLightboxOpen(true)} style={{ padding: 0, border: "none", background: "none", cursor: "zoom-in", display: "block", width: "100%" }}>
-              <img src={images[safeActiveImg]} alt={product.name} />
-            </button>
+            {mediaMode === "3d" && model3d ? (
+              <Suspense fallback={<div className="rd-3d-loading fs" role="status"><span>{currentLang === "pt" ? "A preparar a vista 3D…" : "Preparing the 3D view…"}</span></div>}>
+                <Product3DViewer model={model3d} productName={product.name} lang={currentLang} />
+              </Suspense>
+            ) : (
+              <button type="button" aria-label={currentLang === "pt" ? "Abrir imagem em tamanho completo" : "Open full-size image"} onClick={() => setLightboxOpen(true)} style={{ padding: 0, border: "none", background: "none", cursor: "zoom-in", display: "block", width: "100%" }}>
+                <img src={images[safeActiveImg]} alt={product.name} />
+              </button>
+            )}
           </div>
         </section>
 

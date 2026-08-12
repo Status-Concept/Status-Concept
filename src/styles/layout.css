@@ -341,6 +341,27 @@
   object-position: center;
   background: var(--white);
 }
+.rd-3d-badge {
+  position: absolute;
+  left: 12px;
+  bottom: 12px;
+  z-index: 2;
+  padding: 7px 9px;
+  background: rgba(18, 23, 28, .9);
+  color: #fff;
+  font-size: 9px;
+  letter-spacing: 1.25px;
+  text-transform: uppercase;
+  pointer-events: none;
+}
+.rd-3d-list-badge {
+  display: inline-block;
+  margin-top: 9px;
+  color: var(--accent);
+  font-size: 10px;
+  letter-spacing: 1.1px;
+  text-transform: uppercase;
+}
 .rd-product-overlay { display: none; }
 .rd-overlay-pill { display: none; }
 .rd-product-info { padding: 16px 0 0; }
@@ -646,6 +667,113 @@
   object-fit: contain;
   display: block;
 }
+.rd-main-photo-3d { cursor: default; }
+.rd-3d-thumb {
+  width: 84px;
+  height: 64px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  padding: 6px;
+  border: 2px solid transparent;
+  background: linear-gradient(145deg, #212a30, #11161a);
+  color: #fff;
+  opacity: .72;
+  cursor: pointer;
+  transition: opacity .25s ease, border-color .25s ease, transform .25s ease;
+}
+.rd-3d-thumb strong { font-size: 14px; font-weight: 500; letter-spacing: .4px; }
+.rd-3d-thumb span { font-size: 8px; letter-spacing: 1.3px; text-transform: uppercase; }
+.rd-3d-thumb.active,
+.rd-3d-thumb:hover { border-color: var(--accent); opacity: 1; transform: translateY(-1px); }
+.rd-3d-viewer {
+  position: relative;
+  min-height: min(76vh, 780px);
+  overflow: hidden;
+  background: #151a1e;
+  color: #fff;
+  touch-action: none;
+  overscroll-behavior: contain;
+  user-select: none;
+}
+.rd-3d-viewer-canvas {
+  display: block;
+  width: 100%;
+  height: min(76vh, 780px);
+  min-height: 520px;
+  background: radial-gradient(circle at 50% 35%, #303a40 0%, #151a1e 68%);
+  --poster-color: transparent;
+  touch-action: none;
+  cursor: grab;
+}
+.rd-3d-viewer-canvas:active { cursor: grabbing; }
+.rd-3d-loading {
+  position: relative;
+  display: grid;
+  min-height: min(76vh, 780px);
+  place-items: center;
+  padding: 32px;
+  overflow: hidden;
+  background: #151a1e;
+  color: #fff;
+  text-align: center;
+}
+.rd-3d-loading img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: .42;
+  filter: saturate(.7);
+}
+.rd-3d-loading span { position: relative; z-index: 1; letter-spacing: 1.1px; }
+.rd-3d-controls {
+  position: absolute;
+  right: 16px;
+  bottom: 16px;
+  left: 16px;
+  z-index: 2;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  pointer-events: none;
+}
+.rd-3d-hint {
+  max-width: 280px;
+  padding: 8px 10px;
+  background: rgba(18, 23, 28, .74);
+  color: rgba(255,255,255,.82);
+  font-size: 10px;
+  letter-spacing: .8px;
+}
+.rd-3d-actions { display: flex; gap: 8px; pointer-events: auto; }
+.rd-3d-actions button {
+  padding: 9px 11px;
+  border: 1px solid rgba(255,255,255,.38);
+  background: rgba(18, 23, 28, .78);
+  color: #fff;
+  cursor: pointer;
+  font-size: 10px;
+  letter-spacing: .8px;
+  transition: background .2s ease, border-color .2s ease;
+}
+.rd-3d-actions button:hover,
+.rd-3d-actions button:focus-visible { border-color: #fff; background: rgba(18, 23, 28, .96); }
+.rd-3d-fallback {
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 18px;
+  min-height: min(76vh, 780px);
+  padding: 32px;
+  text-align: center;
+}
+.rd-3d-fallback img { width: min(100%, 560px); height: 58%; object-fit: contain; opacity: .72; }
+.rd-3d-fallback p { max-width: 380px; color: rgba(255,255,255,.8); line-height: 1.6; }
 .rd-product-panel { position: sticky; top: calc(var(--header-h) + 11px); }
 .rd-tabs { display: flex; gap: 6px; border-bottom: 1px solid var(--mid-grey); margin-top: 28px; }
 .rd-tab-btn {
@@ -1392,7 +1520,15 @@
   .rd-gallery-sticky { grid-template-columns: 1fr; }
   .rd-thumbs { display: flex; overflow-x: auto; }
   .rd-thumb { width: 78px; height: 78px; }
+  .rd-3d-thumb { flex: 0 0 78px; width: 78px; height: 78px; }
   .rd-main-photo img { height: auto; aspect-ratio: 4 / 5; }
+  .rd-3d-viewer,
+  .rd-3d-loading,
+  .rd-3d-fallback { min-height: 0; }
+  .rd-3d-viewer-canvas { height: min(72vh, 620px); min-height: 420px; }
+  .rd-3d-loading { min-height: 420px; }
+  .rd-3d-controls { align-items: stretch; flex-direction: column; gap: 8px; }
+  .rd-3d-actions { justify-content: flex-end; }
   .rd-mobile-cta { display: block; }
   .rd-masonry { column-count: 1; }
   .rd-bento-grid { grid-template-columns: 1fr; }

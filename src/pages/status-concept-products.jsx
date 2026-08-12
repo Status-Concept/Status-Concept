@@ -7,6 +7,7 @@ import FavoriteButton from "../FavoriteButton";
 import { productSrcSet } from "../utils/imageVariants";
 import { kitchenCollectionMeta, kitchenProducts } from "../data/kitchenProducts";
 import { catalogProducts } from "../data/catalogProducts";
+import { product3dById } from "../data/product3d";
 import { allProducts } from "../data/productCatalog";
 import { noImageProducts } from "../data/productImageStatus";
 import { searchProducts } from "../utils/productSearch";
@@ -384,6 +385,9 @@ const PRODUCTS_PAGE = () => {
                         {hasImage(product)
                           ? <img src={product.img} srcSet={productSrcSet(product.img)} sizes="(max-width: 640px) 50vw, (max-width: 1100px) 33vw, 300px" alt={product.name} loading="lazy" decoding="async" />
                           : <NoImagePlaceholder />}
+                        {product3dById[product.id] && (
+                          <span className="rd-3d-badge fs" data-no-translate>{currentLang === "pt" ? "360° · Ver em 3D" : "360° · View in 3D"}</span>
+                        )}
                       </div>
                       <div className="rd-product-info">
                         <span className="rd-product-cat fs">{categoryLabelOf(product)}</span>
@@ -402,6 +406,7 @@ const PRODUCTS_PAGE = () => {
                       <div>
                         <span className="rd-kicker fs">{categoryLabelOf(product)}</span>
                         <h3 className="ff"><LocalizedLink className="rd-card-link" data-no-translate to={productRoute(product)} state={{ product }}>{product.name}</LocalizedLink></h3>
+                        {product3dById[product.id] && <span className="rd-3d-list-badge fs" data-no-translate>{currentLang === "pt" ? "Vista 3D disponível" : "3D view available"}</span>}
                         {product.desc && <p className="rd-lede fs">{product.desc}</p>}
                       </div>
                       <FavoriteButton
