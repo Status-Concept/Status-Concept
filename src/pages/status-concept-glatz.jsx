@@ -10,6 +10,7 @@ import catSidemastImg from "../assets/images/glatz/cat-sidemast.jpg";
 import catVitaImg from "../assets/images/glatz/cat-vita.png";
 import catWindproofImg from "../assets/images/glatz/cat-windproof.png";
 import catGiantImg from "../assets/images/glatz/cat-giant.png";
+import { limitPageItems } from "../config/contentLimits";
 
 const byId = Object.fromEntries(glatzProducts.map((p) => [p.id, p]));
 
@@ -51,6 +52,7 @@ const STATUS_CONCEPT_GLATZ = () => {
   const { S } = useScrollAnimation();
   const [activeCat, setActiveCat] = useState("sidemast");
   const current = CATEGORIES.find((c) => c.key === activeCat);
+  const visibleModels = limitPageItems(current.models);
 
   return (
     <Layout>
@@ -110,7 +112,7 @@ const STATUS_CONCEPT_GLATZ = () => {
             <p className="fs" style={{ fontSize: 14, color: "var(--sand-d)", maxWidth: 520, margin: "16px auto 0", lineHeight: 1.7, fontWeight: 300 }}>{current.blurb}</p>
           </div>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))", gap: 20 }}>
-            {current.models.map((id) => {
+            {visibleModels.map((id) => {
               const p = byId[id];
               if (!p) return null;
               return (

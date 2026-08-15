@@ -36,4 +36,9 @@ describe('routing', () => {
     // by its stable structure rather than copy.
     expect(await screen.findAllByText(/Almancil/i)).not.toHaveLength(0)
   })
+
+  it('does not expose unknown public product ids', async () => {
+    renderAt('/en/product/private-draft-that-must-not-exist')
+    expect(await screen.findByText('This page does not exist.')).toBeTruthy()
+  })
 })

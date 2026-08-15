@@ -1,18 +1,18 @@
-// Curated two-level Products nav: each category shows a short list of furniture
-// types (its "subtitles"), not the full collection dump. Type links filter the
-// catalogue via ?type=<keyword> (matched against product names); the kitchen
-// ranges use ?collection=<key>. Hand-authored — keep the type keywords in sync
-// with the catalogue so every leaf returns products.
+// The header and mobile navigation use this same taxonomy so a category leaf
+// never points at a stale name-search filter.
 export const PRODUCT_MENU = [
   {
     key: 'lounge',
     label: 'Lounge',
     to: '/products?cat=lounge',
     items: [
-      { name: 'Sofa Sets', to: '/products?cat=lounge&type=sofa' },
-      { name: 'Corner Sofas', to: '/products?cat=lounge&type=corner' },
-      { name: 'Armchairs', to: '/products?cat=lounge&type=armchair' },
+      { name: 'Upholstered', to: '/products?cat=lounge&material=upholstered' },
+      { name: 'Rope', to: '/products?cat=lounge&material=rope' },
+      { name: 'Aluminium', to: '/products?cat=lounge&material=aluminium' },
+      { name: 'Sofas', to: '/products?cat=lounge&type=sofa' },
       { name: 'Modular', to: '/products?cat=lounge&type=modular' },
+      { name: 'Armchairs', to: '/products?cat=lounge&type=armchair' },
+      { name: 'Poufs', to: '/products?cat=lounge&type=pouf' },
     ],
   },
   {
@@ -20,11 +20,10 @@ export const PRODUCT_MENU = [
     label: 'Dining',
     to: '/products?cat=dining',
     items: [
-      { name: 'Dining Tables', to: '/products?cat=dining&type=table' },
-      { name: 'Dining Chairs', to: '/products?cat=dining&type=chair' },
+      { name: 'Tables', to: '/products?cat=dining&type=table' },
+      { name: 'Chairs', to: '/products?cat=dining&type=chair' },
       { name: 'Armchairs', to: '/products?cat=dining&type=armchair' },
-      { name: 'Side Tables', to: '/products?cat=dining&type=side-table' },
-      { name: 'Bar Stools', to: '/products?cat=dining&type=bar' },
+      { name: 'Bar Stools', to: '/products?cat=dining&type=bar-stool' },
     ],
   },
   {
@@ -32,20 +31,30 @@ export const PRODUCT_MENU = [
     label: 'Sun Loungers & Day Beds',
     to: '/products?cat=sunlounger',
     items: [
-      { name: 'Sun Loungers', to: '/products?cat=sunlounger&type=lounger' },
-      { name: 'Day Beds', to: '/products?cat=sunlounger&type=bed' },
+      { name: 'Sun Loungers', to: '/products?cat=sunlounger&type=sun-lounger' },
+      { name: 'Day Beds', to: '/products?cat=sunlounger&type=day-bed' },
     ],
   },
-  { key: 'shade', label: 'Shade Solutions', to: '/products?cat=shade' },
-  { key: 'glatz', label: 'Glatz Parasols', to: '/glatz-parasols' },
+  {
+    key: 'shade',
+    label: 'Shade Solutions',
+    to: '/products?cat=shade',
+    items: [
+      { name: 'Pergolas', to: '/products?cat=shade&type=pergola' },
+      { name: 'Parasols', to: '/products?cat=shade&type=parasol' },
+      { name: 'Awnings', to: '/products?cat=shade&type=awning' },
+      { name: 'Glatz Parasols', to: '/glatz-parasols' },
+    ],
+  },
   {
     key: 'kitchen',
     label: 'Outdoor Kitchens',
     to: '/products?cat=kitchen',
     items: [
-      { name: 'Black Stainless Steel', to: '/products?cat=kitchen&collection=black-stainless-steel' },
-      { name: 'Carbon Line Teak', to: '/products?cat=kitchen&collection=carbon-line-teak' },
-      { name: 'Teak', to: '/products?cat=kitchen&collection=teak' },
+      { name: 'Modular Kitchens', to: '/products?cat=kitchen&type=modular' },
+      { name: 'Built-in Kitchens', to: '/products?cat=kitchen&type=built-in' },
+      { name: 'Attachments & Accessories', to: '/products?cat=kitchen&type=accessories' },
+      { name: 'BBQs', to: '/products?cat=kitchen&type=bbq' },
     ],
   },
 ]

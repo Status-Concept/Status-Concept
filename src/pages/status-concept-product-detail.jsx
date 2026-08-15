@@ -1,27 +1,21 @@
-import { lazy, Suspense, useState } from "react";
+import { useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import Layout from "../components/Layout";
 import LocalizedLink from "../components/LocalizedLink";
+import NotFound from "./NotFound";
 import { whatsappUrl } from "../utils/whatsapp";
 import { productSrcSet } from "../utils/imageVariants";
 import FavoriteButton from "../FavoriteButton";
-import { glatzProductDetails, glatzProducts } from "../data/glatzProducts";
-import { kitchenProductDetails, kitchenProducts, kitchenCollectionHeroes } from "../data/kitchenProducts";
-import { catalogProducts } from "../data/catalogProducts";
-import { product3dById } from "../data/product3d";
+import { glatzProductDetails } from "../data/glatzProducts";
+import { kitchenProductDetails, kitchenCollectionHeroes } from "../data/kitchenProducts";
+import { demoProducts } from "../data/demoProducts";
+import { limitPageImages } from "../config/contentLimits";
+import { getProductFacets, normalizeProduct } from "../data/productTaxonomy";
 import { getLangFromPath, withLang } from "../utils/language";
 import sicilyModularSetFullImg from "../assets/images/sicily-modular-set-full.webp";
 import sicilyCornerImg from "../assets/images/sicily-corner.jpg";
 import sicilyCentreImg from "../assets/images/sicily-centre.jpg";
 import sicilyOttomanImg from "../assets/images/sicily-ottoman.jpg";
-
-const Product3DViewer = lazy(() => import("../components/Product3DViewer"));
-
-const titleFromSlug = (value = "product") => value
-  .split("-")
-  .filter(Boolean)
-  .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-  .join(" ");
 
 const displayDimension = (value) => /^(todo:|see source sheet)/i.test(String(value || '').trim())
   ? 'Available on request'
@@ -33,33 +27,44 @@ const PRODUCT_DETAIL = () => {
   const { id } = useParams();
   const currentLang = getLangFromPath(location.pathname);
   const [activeImg, setActiveImg] = useState(0);
-  const [mediaMode, setMediaMode] = useState("image");
   const [activeTab, setActiveTab] = useState("specs");
   const [lightboxOpen, setLightboxOpen] = useState(false);
 
-  const catalogProductDetails = Object.fromEntries(catalogProducts.map((product) => [product.id, {
-    id: product.id,
-    name: product.name,
-    collection: product.collectionName,
-    collectionSlug: product.collection,
-    category: product.category,
-    tag: product.tag,
-    tagline: product.tagline,
-    images: product.images,
-    specs: [
+  const demoCatalogProducts = demoProducts.filter((rawProduct) => rawProduct.category !== "kitchen" && rawProduct.category !== "shade");
+  const demoKitchenProducts = demoProducts.filter((rawProduct) => rawProduct.category === "kitchen");
+  const demoGlatzProducts = demoProducts.filter((rawProduct) => rawProduct.category === "shade");
+  const catalogProductDetails = Object.fromEntries(demoCatalogProducts.map((rawProduct) => {
+    const product = normalizeProduct(rawProduct);
+    const specs = [
+      ...product.specs,
       { label: "Category", value: product.categoryLabel },
       { label: "Collection", value: product.collectionName },
       product.supplier ? { label: "Supplier", value: product.supplier } : null,
-      product.sku ? { label: "SKU", value: product.sku } : null,
+      rawProduct.sku ? { label: "SKU", value: rawProduct.sku } : null,
       { label: "Availability", value: "Through the showroom team" },
-    ].filter(Boolean),
-    materials: ["Full specifications available through the showroom team"],
-  }]));
+    ].filter(Boolean);
+    return [product.id, {
+      ...product,
+      id: product.id,
+      name: product.name,
+      collection: product.collectionName,
+      collectionSlug: product.collection,
+      tag: product.tag,
+      tagline: product.tagline || product.desc,
+      images: product.images,
+      specs,
+      dims: product.dimensions,
+      materials: product.materials,
+    }];
+  }));
+
+  const demoKitchenProductDetails = Object.fromEntries(demoKitchenProducts.map((product) => [product.id, kitchenProductDetails[product.id]]).filter(([, product]) => product));
+  const demoGlatzProductDetails = Object.fromEntries(demoGlatzProducts.map((product) => [product.id, glatzProductDetails[product.id]]).filter(([, product]) => product));
 
   const allProducts = {
     ...catalogProductDetails,
-    ...kitchenProductDetails,
-    ...glatzProductDetails,
+    ...demoKitchenProductDetails,
+    ...demoGlatzProductDetails,
     "sicily-modular-set": {
       id: "sicily-modular-set",
       name: "Sicily Modular Set",
@@ -89,21 +94,9 @@ const PRODUCT_DETAIL = () => {
   };
 
   const passedProduct = location.state?.product;
-  const product = allProducts[id] || {
-    id,
-    name: passedProduct?.name || titleFromSlug(id),
-    collection: passedProduct?.collectionName || passedProduct?.collection || "Status Concept",
-    category: passedProduct?.category || "catalog",
-    tagline: passedProduct?.desc || "Detailed specifications for this product are being prepared. Contact the showroom team for current availability, finishes and dimensions.",
-    images: passedProduct?.images?.length ? passedProduct.images : [passedProduct?.img || sicilyCornerImg],
-    specs: [
-      { label: "Status", value: "Details available on request" },
-      { label: "Category", value: "Outdoor living" },
-    ],
-    materials: ["Product information available through the showroom team"],
-  };
-  const images = product.images?.length ? product.images : [product.image || sicilyCornerImg];
-  const model3d = product3dById[product.id];
+  const product = allProducts[id];
+  if (!product) return <NotFound />;
+  const images = limitPageImages(product.images?.length ? product.images : [product.image || sicilyCornerImg], product);
   const safeActiveImg = activeImg < images.length ? activeImg : 0;
   const goTo = (path) => navigate(withLang(path, currentLang));
 
@@ -115,20 +108,36 @@ const PRODUCT_DETAIL = () => {
     ? kitchenCollectionHeroes[product.collectionSlug || passedProduct?.collection]
     : null;
 
+  const availableTabs = [
+    { key: "specs", label: "Specs", available: (product.specs || []).length > 0 },
+    { key: "dimensions", label: "Dimensions", available: (product.dims || product.dimensions || []).length > 0 },
+    { key: "materials", label: "Materials", available: (product.materials || []).length > 0 },
+  ].filter((tab) => tab.available);
+  const effectiveActiveTab = availableTabs.some((tab) => tab.key === activeTab)
+    ? activeTab
+    : availableTabs[0]?.key || "specs";
   const isSameCollection = product.category === "kitchen" || product.category === "shade" || product.id === "sicily-modular-set";
   const relatedProducts = (() => {
     if (catalogProductDetails[product.id]) {
-      return catalogProducts
-        .filter((item) => item.id !== product.id && item.category === product.category)
+      const currentFacets = getProductFacets(product);
+      return [...demoCatalogProducts, ...demoKitchenProducts, ...demoGlatzProducts]
+        .map((item) => ({ raw: item, facets: getProductFacets(item) }))
+        .filter(({ raw, facets }) => raw.id !== product.id && facets.category === currentFacets.category)
+        .sort((a, b) => {
+          const score = (item) => (item.facets.collection === currentFacets.collection ? 3 : 0)
+            + item.facets.materialFamilies.filter((material) => currentFacets.materialFamilies.includes(material)).length;
+          return score(b) - score(a);
+        })
+        .map(({ raw }) => raw)
         .slice(0, 6);
     }
     if (product.category === "kitchen") {
-      return kitchenProducts
+      return demoKitchenProducts
         .filter((item) => item.id !== product.id && (item.collection === product.collectionSlug || item.collectionName === product.collection))
         .slice(0, 6);
     }
     if (product.category === "shade") {
-      return glatzProducts
+      return demoGlatzProducts
         .filter((item) => item.id !== product.id)
         .slice(0, 6);
     }
@@ -141,11 +150,11 @@ const PRODUCT_DETAIL = () => {
     }
     return [
       { id: "sicily-modular-set", name: "Sicily Modular Set", collectionName: "Sicily", img: sicilyCornerImg, route: "/product/sicily-modular-set" },
-      ...glatzProducts.slice(0, 3),
+      ...demoGlatzProducts.slice(0, 3),
     ].filter((item) => item.id !== product.id).slice(0, 4);
   })();
   const renderTab = () => {
-    if (activeTab === "dimensions") {
+    if (effectiveActiveTab === "dimensions") {
       return (
         <table className="rd-dim-table fs">
           <thead>
@@ -154,7 +163,7 @@ const PRODUCT_DETAIL = () => {
             </tr>
           </thead>
           <tbody data-no-translate>
-            {(product.dims || []).map((row) => (
+            {(product.dims || product.dimensions || []).map((row) => (
               <tr key={row.piece}>
                 <td>{row.piece}</td>
                 <td>{displayDimension(row.w)}</td>
@@ -168,7 +177,7 @@ const PRODUCT_DETAIL = () => {
       );
     }
 
-    if (activeTab === "materials") {
+    if (effectiveActiveTab === "materials") {
       return (
         <div className="rd-spec-list fs">
           {(product.materials || []).map((material) => (
@@ -214,8 +223,8 @@ const PRODUCT_DETAIL = () => {
                 key={image + index}
                 type="button"
                 aria-label={`View image ${index + 1}`}
-                aria-pressed={mediaMode === "image" && activeImg === index}
-                onClick={() => { setMediaMode("image"); setActiveImg(index); }}
+                aria-pressed={activeImg === index}
+                onClick={() => setActiveImg(index)}
                 style={{ padding: 0, border: "none", background: "none", cursor: "pointer", display: "block" }}
               >
                 <img
@@ -223,37 +232,26 @@ const PRODUCT_DETAIL = () => {
                   srcSet={productSrcSet(image)}
                   sizes="72px"
                   alt={`${product.name} view ${index + 1}`}
-                  className={`rd-thumb ${mediaMode === "image" && activeImg === index ? "active" : ""}`}
+                  className={`rd-thumb ${activeImg === index ? "active" : ""}`}
                   loading="lazy"
                   decoding="async"
                 />
               </button>
             ))}
-            {model3d && (
-              <button
-                type="button"
-                className={`rd-3d-thumb ${mediaMode === "3d" ? "active" : ""}`}
-                aria-label={currentLang === "pt" ? `Ver ${product.name} em 3D` : `View ${product.name} in 3D`}
-                aria-pressed={mediaMode === "3d"}
-                onClick={() => setMediaMode("3d")}
-              >
-                <strong aria-hidden="true">360°</strong>
-                <span className="fs">{currentLang === "pt" ? "Vista 3D" : "3D view"}</span>
-              </button>
-            )}
           </div>
-          <div className={`rd-main-photo ${mediaMode === "3d" ? "rd-main-photo-3d" : ""}`}>
+          <div className="rd-main-photo">
             {product.tag && <span className={`tag ${product.tag === "New" ? "tag-new" : "tag-popular"}`} style={{ position: "absolute", top: 16, left: 16, zIndex: 3 }}>{product.tag}</span>}
             <FavoriteButton product={{ id: product.id || id, name: product.name, collection: product.collection, img: images[0], route: `/product/${product.id || id}` }} size={18} style={{ position: "absolute", top: 16, right: 16 }} />
-            {mediaMode === "3d" && model3d ? (
-              <Suspense fallback={<div className="rd-3d-loading fs" role="status"><span>{currentLang === "pt" ? "A preparar a vista 3D…" : "Preparing the 3D view…"}</span></div>}>
-                <Product3DViewer model={model3d} productName={product.name} lang={currentLang} />
-              </Suspense>
-            ) : (
-              <button type="button" aria-label={currentLang === "pt" ? "Abrir imagem em tamanho completo" : "Open full-size image"} onClick={() => setLightboxOpen(true)} style={{ padding: 0, border: "none", background: "none", cursor: "zoom-in", display: "block", width: "100%" }}>
-                <img src={images[safeActiveImg]} alt={product.name} />
-              </button>
-            )}
+            <div className="rd-mobile-gallery-track" aria-label="Swipe through product images">
+              {images.map((image, index) => (
+                <button key={`${image}-mobile-${index}`} type="button" onClick={() => { setActiveImg(index); setLightboxOpen(true) }} aria-label={`Open image ${index + 1}`}>
+                  <img src={image} srcSet={productSrcSet(image)} sizes="88vw" alt={`${product.name} view ${index + 1}`} loading={index === 0 ? "eager" : "lazy"} decoding="async" />
+                </button>
+              ))}
+            </div>
+            <button className="rd-desktop-main-image" type="button" aria-label="Open full-size image" onClick={() => setLightboxOpen(true)} style={{ padding: 0, border: "none", background: "none", cursor: "zoom-in", display: "block", width: "100%" }}>
+              <img src={images[safeActiveImg]} alt={product.name} />
+            </button>
           </div>
         </section>
 
@@ -304,18 +302,14 @@ const PRODUCT_DETAIL = () => {
             <a className="cb cd" href={whatsappUrl(`Hello STATVS, I'm interested in the ${product.name}.`)} target="_blank" rel="noopener noreferrer">WhatsApp us</a>
           </div>
 
-          <div className="rd-tabs">
-            {[
-              { key: "specs", label: "Specs" },
-              { key: "dimensions", label: "Dimensions" },
-              { key: "materials", label: "Materials" },
-            ].map((tab) => (
-              <button key={tab.key} type="button" className={`rd-tab-btn ${activeTab === tab.key ? "active" : ""}`} onClick={() => setActiveTab(tab.key)}>
+          {availableTabs.length > 0 && <div className="rd-tabs">
+            {availableTabs.map((tab) => (
+              <button key={tab.key} type="button" className={`rd-tab-btn ${effectiveActiveTab === tab.key ? "active" : ""}`} onClick={() => setActiveTab(tab.key)}>
                 {tab.label}
               </button>
             ))}
-          </div>
-          <div className="rd-tab-panel">{renderTab()}</div>
+          </div>}
+          {availableTabs.length > 0 && <div className="rd-tab-panel">{renderTab()}</div>}
         </aside>
       </main>
 

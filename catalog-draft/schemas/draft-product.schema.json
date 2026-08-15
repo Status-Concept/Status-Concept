@@ -1,0 +1,61 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://statusconcept.local/schemas/draft-product.schema.json",
+  "title": "Status Concept draft product",
+  "type": "object",
+  "required": [
+    "id",
+    "canonicalName",
+    "collection",
+    "supplier",
+    "category",
+    "subcategory",
+    "productType",
+    "sourceFamily",
+    "description",
+    "specs",
+    "dimensions",
+    "materials",
+    "variants",
+    "components",
+    "referenceImages",
+    "finalImages",
+    "researchSources",
+    "selectionStatus",
+    "approvalStatus",
+    "publicationStatus",
+    "imageStatus",
+    "isPublished",
+    "reviewNotes"
+  ],
+  "properties": {
+    "id": { "type": "string", "minLength": 1 },
+    "canonicalName": { "type": "string", "minLength": 1 },
+    "collection": { "type": "string" },
+    "supplier": { "type": "string" },
+    "category": { "type": "string" },
+    "subcategory": { "type": "string" },
+    "productType": { "type": "string" },
+    "sourceFamily": { "type": "string" },
+    "description": { "type": "string" },
+    "specs": { "type": "array" },
+    "dimensions": { "type": "array" },
+    "materials": { "type": "array", "items": { "type": "string" } },
+    "variants": { "type": "array" },
+    "components": { "type": "array" },
+    "referenceImages": { "type": "array" },
+    "finalImages": { "type": "array" },
+    "researchSources": { "type": "array" },
+    "selectionStatus": {
+      "enum": ["candidate", "needs_review", "unreviewed"]
+    },
+    "approvalStatus": { "enum": ["draft", "review", "approved"] },
+    "publicationStatus": { "enum": ["hidden", "ready", "published"] },
+    "imageStatus": {
+      "enum": ["reference-only", "awaiting-final-images", "final-approved"]
+    },
+    "isPublished": { "const": false },
+    "reviewNotes": { "type": "array", "items": { "type": "string" } }
+  },
+  "additionalProperties": false
+}

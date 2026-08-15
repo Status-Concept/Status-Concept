@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://statusconcept.local/schemas/selection-evidence.schema.json",
+  "title": "Status Concept selection evidence",
+  "type": "object",
+  "required": [
+    "photoId",
+    "photoPath",
+    "sourceReference",
+    "boundingBox",
+    "observedMark",
+    "proposedStatus",
+    "finalStatus"
+  ],
+  "properties": {
+    "photoId": { "type": "string", "minLength": 1 },
+    "photoPath": { "type": "string", "minLength": 1 },
+    "sourceReference": { "type": "string", "minLength": 1 },
+    "boundingBox": {
+      "type": "object",
+      "required": ["x", "y", "width", "height"],
+      "properties": {
+        "x": { "type": "number", "minimum": 0 },
+        "y": { "type": "number", "minimum": 0 },
+        "width": { "type": "number", "exclusiveMinimum": 0 },
+        "height": { "type": "number", "exclusiveMinimum": 0 }
+      },
+      "additionalProperties": false
+    },
+    "observedMark": { "type": "string" },
+    "proposedStatus": {
+      "enum": ["candidate", "excluded", "needs_review", "unreviewed"]
+    },
+    "finalStatus": {
+      "enum": ["candidate", "excluded", "needs_review", "unreviewed"]
+    },
+    "confidence": {
+      "enum": ["high", "medium", "low", "uncertain"]
+    },
+    "reviewedBy": { "type": ["string", "null"] },
+    "reviewedAt": { "type": ["string", "null"], "format": "date-time" },
+    "notes": { "type": "string" }
+  },
+  "additionalProperties": false
+}

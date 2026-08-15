@@ -4,6 +4,7 @@ import { AuthProvider } from './context/AuthContext'
 import { ToastProvider } from './context/ToastContext'
 import { FavoritesProvider } from './FavoritesContext'
 import ProtectedRoute from './components/ProtectedRoute'
+import StaffRoute from './components/StaffRoute'
 import ConsentNotice from './components/ConsentNotice'
 import TranslationLayer from './components/TranslationLayer'
 import Homepage from './pages/status-concept-homepage'
@@ -26,13 +27,28 @@ const ClientLayout = lazy(() => import('./pages/client/ClientLayout'))
 const ClientDashboard = lazy(() => import('./pages/client/ClientDashboard'))
 const ClientProfile = lazy(() => import('./pages/client/ClientProfile'))
 const ClientFavorites = lazy(() => import('./pages/client/ClientFavorites'))
+const StaffLayout = lazy(() => import('./pages/staff/StaffLayout'))
+const StaffDeliveries = lazy(() => import('./pages/staff/StaffDeliveries'))
+const StaffDeliveryDetail = lazy(() => import('./pages/staff/StaffDeliveryDetail'))
 const Legal = lazy(() => import('./pages/status-concept-legal'))
 const AfterCare = lazy(() => import('./pages/status-concept-aftercare'))
 const Catalogue = lazy(() => import('./pages/status-concept-catalogue'))
 const NotFound = lazy(() => import('./pages/NotFound'))
+const DraftCataloguePage = import.meta.env.DEV
+  ? lazy(() => import('./dev/catalog-draft/DraftCataloguePage'))
+  : null
+const DraftProductPage = import.meta.env.DEV
+  ? lazy(() => import('./dev/catalog-draft/DraftProductPage'))
+  : null
 
 const routesFor = (prefix = '') => (
   <>
+    {import.meta.env.DEV && DraftCataloguePage && DraftProductPage ? (
+      <>
+        <Route path={(prefix || '') + '/__dev/catalog-draft'} element={<DraftCataloguePage />} />
+        <Route path={(prefix || '') + '/__dev/catalog-draft/:id'} element={<DraftProductPage />} />
+      </>
+    ) : null}
     <Route path={prefix || '/'} element={<Homepage />} />
     <Route path={`${prefix}/products`} element={<Products />} />
     <Route path={`${prefix}/glatz-parasols`} element={<GlatzParasols />} />
@@ -62,6 +78,18 @@ const routesFor = (prefix = '') => (
       <Route index element={<ClientDashboard />} />
       <Route path="perfil" element={<ClientProfile />} />
       <Route path="favoritos" element={<ClientFavorites />} />
+    </Route>
+    <Route
+      path={`${prefix}/staff`}
+      element={
+        <StaffRoute>
+          <StaffLayout />
+        </StaffRoute>
+      }
+    >
+      <Route index element={<StaffDeliveries />} />
+      <Route path="deliveries" element={<StaffDeliveries />} />
+      <Route path="deliveries/:id" element={<StaffDeliveryDetail />} />
     </Route>
   </>
 )

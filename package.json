@@ -12,10 +12,12 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "test": "vitest run",
+    "validate:catalog": "vitest run src/data/productTaxonomy.test.js",
+    "validate:draft": "node scripts/catalog-draft/validate-selection.mjs && node scripts/catalog-draft/validate-drafts.mjs",
+    "check:production-leaks": "node scripts/catalog-draft/check-production-leaks.mjs",
     "check": "npm run lint && npm test"
   },
   "dependencies": {
-    "@google/model-viewer": "^4.2.0",
     "@supabase/supabase-js": "^2.107.0",
     "react": "^19.2.6",
     "react-dom": "^19.2.6",

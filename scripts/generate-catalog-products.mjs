@@ -25,9 +25,9 @@ const imageExtensions = new Set([".jpg", ".jpeg", ".png", ".webp"]);
 const categoryLabels = {
   lounge: "Lounge",
   dining: "Dining",
-  sunlounger: "Sun Loungers",
-  shade: "Shade",
-  kitchen: "Modular Kitchen",
+  sunlounger: "Sun Loungers & Day Beds",
+  shade: "Shade Solutions",
+  kitchen: "Outdoor Kitchens",
   decor: "Decor",
 };
 
@@ -195,6 +195,7 @@ for (const item of manifest) {
   const isBullKitchen = item.category === "kitchen";
   const collectionName = isBullKitchen ? "Bull" : collectionFromName(parsed.name);
   const imageUrls = await copyImages(parsed.images, id);
+  const sourcePath = path.relative(sourceRoot, dir).replaceAll(path.sep, "/");
 
   products.push({
     id,
@@ -210,7 +211,18 @@ for (const item of manifest) {
     tagline: parsed.tagline,
     supplier: parsed.supplier,
     sku: parsed.sku,
-    sourcePath: path.relative(sourceRoot, dir).replaceAll(path.sep, "/"),
+    sourcePath,
+    // Canonical fields are emitted even while the approval workbook is being
+    // populated. Empty fields stay empty until an official source is checked.
+    subcategory: "",
+    productType: [],
+    materialFamilies: [],
+    specs: [],
+    dimensions: [],
+    materials: [],
+    sourceUrl: item.sourceTree === "site-statusconcept.com" ? `https://${sourcePath}` : "",
+    reviewedAt: "",
+    approvalStatus: "review",
   });
 }
 

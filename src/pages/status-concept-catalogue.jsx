@@ -6,9 +6,7 @@ import { useRef } from "react";
 import Layout from "../components/Layout";
 import LocalizedLink from "../components/LocalizedLink";
 import NoImagePlaceholder from "../components/NoImagePlaceholder";
-import { catalogProducts } from "../data/catalogProducts";
-import { glatzProducts } from "../data/glatzProducts";
-import { kitchenProducts } from "../data/kitchenProducts";
+import { demoProducts } from "../data/demoProducts";
 import { noImageProducts } from "../data/productImageStatus";
 import { productSrcSet } from "../utils/imageVariants";
 
@@ -25,7 +23,7 @@ const CATEGORY_ORDER = [
   { key: "kitchen", label: "Outdoor Kitchens" },
 ];
 
-const ALL = [...catalogProducts, ...glatzProducts, ...kitchenProducts];
+const ALL = demoProducts;
 
 export default function Catalogue() {
   const sectionsRef = useRef({});

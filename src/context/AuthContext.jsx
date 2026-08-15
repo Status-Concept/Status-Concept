@@ -19,7 +19,7 @@ export function AuthProvider({ children }) {
 
     const { data, error } = await supabase
       .from('profiles')
-      .select('id, name, phone, created_at, updated_at')
+      .select('id, name, phone, role, created_at, updated_at')
       .eq('id', userId)
       .maybeSingle()
 
@@ -32,6 +32,7 @@ export function AuthProvider({ children }) {
       ...data,
       name: sanitizeText(data.name),
       phone: sanitizePhone(data.phone),
+      role: ['client', 'delivery', 'admin'].includes(data.role) ? data.role : 'client',
     }
     setProfile(cleanProfile)
     return cleanProfile
@@ -124,7 +125,7 @@ export function AuthProvider({ children }) {
     const { data, error } = await supabase
       .from('profiles')
       .upsert({ id: user.id, ...payload }, { onConflict: 'id' })
-      .select('id, name, phone, created_at, updated_at')
+      .select('id, name, phone, role, created_at, updated_at')
       .single()
 
     if (error) throw error
@@ -142,6 +143,11 @@ export function AuthProvider({ children }) {
     setProfile(null)
   }, [])
 
+  const hasRole = useCallback((roles) => {
+    const allowed = Array.isArray(roles) ? roles : [roles]
+    return Boolean(profile?.role && allowed.includes(profile.role))
+  }, [profile])
+
   const value = useMemo(() => ({
     session,
     user,
@@ -149,12 +155,13 @@ export function AuthProvider({ children }) {
     loading,
     isAuthenticated: Boolean(user),
     isSupabaseConfigured,
+    hasRole,
     login,
     register,
     logout,
     updateProfile,
     refreshProfile: () => fetchProfile(user?.id),
-  }), [session, user, profile, loading, login, register, logout, updateProfile, fetchProfile])
+  }), [session, user, profile, loading, login, register, logout, updateProfile, fetchProfile, hasRole])
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
 }

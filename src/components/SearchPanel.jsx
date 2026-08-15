@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import LocalizedLink from './LocalizedLink'
-import { allProducts } from '../data/productCatalog'
+import { demoProducts } from '../data/demoProducts'
 import { useLocalizedNavigate } from '../hooks/useLocalizedNavigate'
 import { normalizeSearchText, searchProducts } from '../utils/productSearch'
 import { getLangFromPath } from '../utils/language'
@@ -51,7 +51,7 @@ export default function SearchPanel({ open, onClose }) {
   const isPortuguese = getLangFromPath(location.pathname) === 'pt'
   const searchPlaceholder = isPortuguese ? 'Pesquisar produtos, coleções ou materiais' : 'Search products, collections or materials'
 
-  const fullProductResults = useMemo(() => searchProducts(allProducts, query), [query])
+  const fullProductResults = useMemo(() => searchProducts(demoProducts, query), [query])
   const productResults = useMemo(() => fullProductResults.slice(0, 6), [fullProductResults])
   const categoryResults = useMemo(
     () => (query ? CATEGORY_LINKS.filter((item) => matchesQuery(item, query)).slice(0, 3) : []),
