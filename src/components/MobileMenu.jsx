@@ -3,13 +3,12 @@ import { useLocation } from 'react-router-dom'
 import LocalizedLink from './LocalizedLink'
 import { PRODUCT_MENU } from '../data/productMenu'
 import { getLangFromPath } from '../utils/language'
+import { SITE_FEATURES } from '../config/sitePhase'
 
 const UTILITY_ITEMS = [
-  { label: 'Projects', to: '/projects' },
-  { label: 'About', to: '/about' },
-  { label: 'After Care', to: '/after-care' },
+  { label: 'About', to: '/about', feature: 'showrooms' },
   { label: 'Contact', to: '/contact' },
-]
+].filter((item) => !item.feature || SITE_FEATURES[item.feature])
 
 export default function MobileMenu({ open, onClose }) {
   const closeRef = useRef(null)

@@ -3,7 +3,6 @@ import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
 import Layout from '../components/Layout'
 import LocalizedLink from '../components/LocalizedLink'
 import NoImagePlaceholder from '../components/NoImagePlaceholder'
-import FavoriteButton from '../FavoriteButton'
 import { productSrcSet } from '../utils/imageVariants'
 import { demoProducts } from '../data/demoProducts'
 import { kitchenCollectionMeta } from '../data/kitchenProducts'
@@ -101,13 +100,12 @@ function FilterPanel({ category, products, filters, onChange, onClear, open, onC
   )
 }
 
-function ProductCard({ product, categoryLabel, favPayload, onNavigate }) {
+function ProductCard({ product, categoryLabel, onNavigate }) {
   const image = productImage(product)
   const isLifestyle = product.imageMode === 'lifestyle'
   return (
     <article className={`rd-product-card ${isLifestyle ? 'lifestyle-product' : 'studio-product'}`}>
       <div className="rd-product-media">
-        <FavoriteButton product={favPayload(product)} size={16} style={{ position: 'absolute', top: 12, right: 12 }} />
         {productHasImage(product) ? (
           <img
             src={image}
@@ -188,15 +186,6 @@ const PRODUCTS_PAGE = () => {
   const searchCategoryCounts = categories
     .map((category) => ({ ...category, count: searchMatches.filter((product) => product.category === category.key).length }))
     .filter((category) => category.count > 0)
-
-  const favPayload = (product) => ({
-    id: product.id || product.name,
-    name: product.name,
-    collection: product.collectionName || product.collection,
-    img: productImage(product),
-    category: product.category,
-    route: productRoute(product),
-  })
 
   const goTo = (path) => navigate(withLang(path, currentLang))
   const updateSearch = (mutator) => {
@@ -341,7 +330,7 @@ const PRODUCTS_PAGE = () => {
                 </div>
               ) : viewMode === 'grid' ? (
                 <div className="rd-product-grid editorial">
-                  {filteredProducts.map((product) => <ProductCard key={product.id || product.name} product={product} categoryLabel={categoryLabel(product)} favPayload={favPayload} />)}
+                  {filteredProducts.map((product) => <ProductCard key={product.id || product.name} product={product} categoryLabel={categoryLabel(product)} />)}
                 </div>
               ) : (
                 <div className="rd-product-list">
@@ -351,7 +340,6 @@ const PRODUCTS_PAGE = () => {
                       <article key={product.id || product.name} className="rd-product-row">
                         {productHasImage(product) ? <img src={image} srcSet={productSrcSet(image)} sizes="220px" alt={product.name} loading="lazy" decoding="async" /> : <NoImagePlaceholder list />}
                         <div><span className="rd-kicker fs">{categoryLabel(product)}</span><h3 className="ff"><LocalizedLink className="rd-card-link" data-no-translate to={productRoute(product)} state={{ product }}>{product.name}</LocalizedLink></h3>{product.desc && <p className="rd-lede fs">{product.desc}</p>}</div>
-                        <FavoriteButton product={favPayload(product)} size={16} style={{ position: 'relative' }} />
                       </article>
                     )
                   })}

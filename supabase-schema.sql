@@ -166,6 +166,34 @@ create policy "Users can update own profile"
   using ((select auth.uid()) = id)
   with check ((select auth.uid()) = id);
 
+-- Profile owners may edit their contact details, but role changes are
+-- administrator-controlled. The column revoke protects direct table writes;
+-- the trigger also protects deployments where broader grants already exist.
+revoke update (role) on table public.profiles from anon, authenticated;
+
+create or replace function private.prevent_profile_role_change()
+returns trigger
+language plpgsql
+security definer
+set search_path = public, auth, pg_temp
+as $$
+begin
+  if new.role is distinct from old.role
+    and coalesce(current_setting('request.jwt.claim.role', true), '') <> 'service_role'
+  then
+    raise exception 'Profile roles are managed by administrators';
+  end if;
+  return new;
+end;
+$$;
+
+revoke all on function private.prevent_profile_role_change() from public, anon, authenticated;
+
+drop trigger if exists prevent_profile_role_change on public.profiles;
+create trigger prevent_profile_role_change
+  before update of role on public.profiles
+  for each row execute function private.prevent_profile_role_change();
+
 drop policy if exists "Users can view own favorites" on public.favorites;
 drop policy if exists "Users can insert own favorites" on public.favorites;
 drop policy if exists "Users can delete own favorites" on public.favorites;

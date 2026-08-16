@@ -42,3 +42,8 @@ Status-Concept.md
 
 # Private catalogue sources, stock, review evidence and images
 .catalog-private/
+
+# Local developer inputs and generated outputs
+env/
+outputs/
+env

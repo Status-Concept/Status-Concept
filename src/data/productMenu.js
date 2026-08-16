@@ -43,7 +43,6 @@ export const PRODUCT_MENU = [
       { name: 'Pergolas', to: '/products?cat=shade&type=pergola' },
       { name: 'Parasols', to: '/products?cat=shade&type=parasol' },
       { name: 'Awnings', to: '/products?cat=shade&type=awning' },
-      { name: 'Glatz Parasols', to: '/glatz-parasols' },
     ],
   },
   {

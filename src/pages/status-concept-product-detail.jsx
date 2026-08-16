@@ -5,10 +5,9 @@ import LocalizedLink from "../components/LocalizedLink";
 import NotFound from "./NotFound";
 import { whatsappUrl } from "../utils/whatsapp";
 import { productSrcSet } from "../utils/imageVariants";
-import FavoriteButton from "../FavoriteButton";
 import { glatzProductDetails } from "../data/glatzProducts";
 import { kitchenProductDetails, kitchenCollectionHeroes } from "../data/kitchenProducts";
-import { demoProducts } from "../data/demoProducts";
+import { demoProducts, demoProductIds } from "../data/demoProducts";
 import { limitPageImages } from "../config/contentLimits";
 import { getProductFacets, normalizeProduct } from "../data/productTaxonomy";
 import { getLangFromPath, withLang } from "../utils/language";
@@ -94,6 +93,7 @@ const PRODUCT_DETAIL = () => {
   };
 
   const passedProduct = location.state?.product;
+  if (!demoProductIds.has(id)) return <NotFound />;
   const product = allProducts[id];
   if (!product) return <NotFound />;
   const images = limitPageImages(product.images?.length ? product.images : [product.image || sicilyCornerImg], product);
@@ -241,7 +241,6 @@ const PRODUCT_DETAIL = () => {
           </div>
           <div className="rd-main-photo">
             {product.tag && <span className={`tag ${product.tag === "New" ? "tag-new" : "tag-popular"}`} style={{ position: "absolute", top: 16, left: 16, zIndex: 3 }}>{product.tag}</span>}
-            <FavoriteButton product={{ id: product.id || id, name: product.name, collection: product.collection, img: images[0], route: `/product/${product.id || id}` }} size={18} style={{ position: "absolute", top: 16, right: 16 }} />
             <div className="rd-mobile-gallery-track" aria-label="Swipe through product images">
               {images.map((image, index) => (
                 <button key={`${image}-mobile-${index}`} type="button" onClick={() => { setActiveImg(index); setLightboxOpen(true) }} aria-label={`Open image ${index + 1}`}>
@@ -335,7 +334,6 @@ const PRODUCT_DETAIL = () => {
               onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openItem(); } }}
             >
               <div className="rd-product-media">
-                <FavoriteButton product={{ id: item.id, name: item.name, collection: item.collectionName || item.collection, img: item.img, route: item.route || `/product/${item.id}` }} size={15} style={{ position: "absolute", top: 12, right: 12 }} />
                 <img src={item.img} srcSet={productSrcSet(item.img)} sizes="(max-width: 640px) 60vw, 280px" alt={item.name} loading="lazy" decoding="async" />
               </div>
               <div className="rd-product-info">

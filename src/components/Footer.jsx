@@ -9,15 +9,10 @@ const ROUTES = {
   "Day Beds": "/products?cat=daybed",
   "Coffee Tables": "/products?cat=coffee",
   "Bar & Patio": "/products?cat=bar",
-  "Glatz Parasols": "/glatz-parasols",
   "Parasols": "/products?cat=shade",
   "Bioclimatic Pergolas": "/products?cat=shade",
   "Outdoor Kitchens": "/products?cat=kitchen",
   "Why Us": "/about",
-  "After Care": "/after-care",
-  "Projects": "/projects",
-  "Gallery": "/gallery",
-  "Catalogue": "/catalogue",
   "Showroom Quinta do Lago": "/contact",
   "Showroom Almancil": "/contact",
   [CONTACT.phone]: CONTACT.phoneHref,
@@ -35,15 +30,15 @@ export default function Footer() {
             <span className="logo-serif" style={{fontSize:24,fontWeight:400,letterSpacing:8}}>ST<span style={{color:"var(--accent)"}}>A</span>TVS</span>
             <div className="fs" style={{fontSize:10,letterSpacing:3,color:"rgba(255,255,255,.4)",marginTop:2}}>OUTDOOR FURNITURE SPECIALISTS</div>
           </div>
-          <p className="fs" style={{fontSize:13,lineHeight:1.7,color:"rgba(255,255,255,.55)",fontWeight:300}}>Outdoor furniture specialists since 2013. Two Algarve showrooms, European makers, and After Care that continues long after delivery.</p>
+          <p className="fs" style={{fontSize:13,lineHeight:1.7,color:"rgba(255,255,255,.55)",fontWeight:300}}>Outdoor furniture specialists since 2013. Two Algarve showrooms and European makers, selected for life outside.</p>
           <div style={{display:"flex",gap:"2px",marginTop:20}}>
             <SocialLinks linkStyle={{color:"rgba(255,255,255,.45)"}} />
           </div>
         </div>
         {[
           {t:"Products",ls:["Lounge","Dining","Sun Loungers","Day Beds","Coffee Tables","Bar & Patio"]},
-          {t:"Solutions",ls:["Glatz Parasols","Bioclimatic Pergolas","Outdoor Kitchens"]},
-          {t:"Company",ls:["Why Us","After Care","Projects","Gallery","Catalogue"]},
+          {t:"Solutions",ls:["Parasols","Bioclimatic Pergolas","Outdoor Kitchens"]},
+          {t:"Company",ls:["Why Us"]},
           {t:"Contact",ls:["Showroom Quinta do Lago","Showroom Almancil",CONTACT.phone,CONTACT.email]},
         ].map(c => (
           <div key={c.t}>

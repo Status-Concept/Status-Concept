@@ -18,8 +18,6 @@ const CATEGORY_LINKS = [
 
 const PAGE_LINKS = [
   { key: 'showrooms', label: 'Showrooms', eyebrow: 'Visit', path: '/about', keywords: 'showroom showrooms visit directions almancil quinta do lago loja exposicao morada' },
-  { key: 'after-care', label: 'After Care', eyebrow: 'Service', path: '/after-care', keywords: 'after care maintenance repair cleaning winter storage manutencao limpeza reparacao' },
-  { key: 'projects', label: 'Projects', eyebrow: 'Inspiration', path: '/projects', keywords: 'projects portfolio villa terrace pool projectos projetos inspiracao' },
   { key: 'contact', label: 'Contact', eyebrow: 'Speak with us', path: '/contact', keywords: 'contact quote proposal appointment whatsapp email telefone contacto orcamento proposta' },
 ]
 

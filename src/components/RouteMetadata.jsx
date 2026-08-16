@@ -4,26 +4,18 @@ import { getLangFromPath, stripLangFromPath } from '../utils/language'
 
 const PAGE_TITLES = {
   '/products': ['Products', 'Produtos'],
-  '/glatz-parasols': ['Glatz Parasols', 'Chapéus de sol Glatz'],
   '/about': ['About & Showrooms', 'Sobre nós e showrooms'],
   '/contact': ['Contact & Showroom Visits', 'Contacto e visitas ao showroom'],
-  '/projects': ['Outdoor Projects', 'Projetos de exterior'],
-  '/favorites': ['Favorites', 'Favoritos'],
-  '/after-care': ['After Care', 'After Care'],
-  '/gallery': ['Gallery', 'Galeria'],
-  '/catalogue': ['Catalogue', 'Catálogo'],
+  '/login': ['Login', 'Entrar'],
   '/privacy': ['Privacy Policy', 'Política de privacidade'],
   '/privacidade': ['Privacy Policy', 'Política de privacidade'],
   '/cookies': ['Cookie Policy', 'Política de cookies'],
   '/terms': ['Terms', 'Termos'],
-  '/login': ['Client Login', 'Área de cliente'],
-  '/register': ['Create an Account', 'Criar conta'],
-  '/registar': ['Create an Account', 'Criar conta'],
 }
 
 const DESCRIPTIONS = {
-  en: "Outdoor furniture, shade and outdoor kitchens for Algarve homes, with showrooms in Quinta do Lago and Almancil and dedicated After Care.",
-  pt: 'Mobiliário, sombra e cozinhas de exterior para casas no Algarve, com showrooms na Quinta do Lago e em Almancil e serviço After Care.',
+  en: "Outdoor furniture, shade and outdoor kitchens for Algarve homes, with showrooms in Quinta do Lago and Almancil.",
+  pt: 'Mobiliário, sombra e cozinhas de exterior para casas no Algarve, com showrooms na Quinta do Lago e em Almancil.',
 }
 
 const titleizeSlug = (value) => value

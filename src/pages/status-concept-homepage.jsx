@@ -1,10 +1,10 @@
-import { useMemo, useState } from 'react'
+import { useMemo } from 'react'
 import Layout from '../components/Layout'
 import LocalizedLink from '../components/LocalizedLink'
-import { getSupabase } from '../lib/supabase'
 import { SHOWROOMS, HOURS } from '../data/showrooms'
 import { demoProducts } from '../data/demoProducts'
 import { PRODUCT_CATEGORIES, normalizeProduct } from '../data/productTaxonomy'
+import { SITE_FEATURES } from '../config/sitePhase'
 import hero1Img from '../assets/images/enhanced/hero-1.webp'
 import showroomQuintaImg from '../assets/images/enhanced/showroom-quinta-ai.webp'
 import showroomAlmancilImg from '../assets/images/enhanced/showroom-almancil-ai.webp'
@@ -32,9 +32,6 @@ function ProductPreview({ product }) {
 }
 
 const STATUS_CONCEPT_HOMEPAGE = () => {
-  const [nlEmail, setNlEmail] = useState('')
-  const [nlStatus, setNlStatus] = useState('idle')
-
   const categories = useMemo(() => PRODUCT_CATEGORIES.map((category) => {
     const products = demoProducts.map(normalizeProduct).filter((product) => product.category === category.key)
     const image = category.key === 'lounge'
@@ -51,24 +48,6 @@ const STATUS_CONCEPT_HOMEPAGE = () => {
     const selected = preferred.map((id) => products.find((product) => product.id === id)).filter(Boolean)
     return selected.length >= 4 ? selected.slice(0, 4) : products.filter((product) => productImage(product)).slice(0, 4)
   }, [])
-
-  const subscribe = async (event) => {
-    event.preventDefault()
-    if (nlStatus === 'sending') return
-    const email = nlEmail.trim().toLowerCase().slice(0, 320)
-    if (!email) return
-    setNlStatus('sending')
-    try {
-      const supabase = await getSupabase()
-      if (!supabase) throw new Error('no-backend')
-      const { error } = await supabase.from('subscribers').insert({ email, source: 'homepage_newsletter' })
-      if (error && error.code !== '23505') throw error
-      setNlStatus('sent')
-      setNlEmail('')
-    } catch {
-      setNlStatus('error')
-    }
-  }
 
   const showrooms = SHOWROOMS.map((showroom) => ({
     ...showroom,
@@ -111,7 +90,7 @@ const STATUS_CONCEPT_HOMEPAGE = () => {
         <section className="home-services" aria-label="Status Concept services">
           <div><span className="rd-kicker fs">Showrooms</span><strong className="ff">See the collection in person.</strong><LocalizedLink to="/contact">Plan your visit <span aria-hidden="true">→</span></LocalizedLink></div>
           <div><span className="rd-kicker fs">Installation</span><strong className="ff">Delivered and placed with care.</strong><LocalizedLink to="/contact">Talk to the team <span aria-hidden="true">→</span></LocalizedLink></div>
-          <div><span className="rd-kicker fs">After Care</span><strong className="ff">Kept beautiful, season after season.</strong><LocalizedLink to="/after-care">Discover After Care <span aria-hidden="true">→</span></LocalizedLink></div>
+          {SITE_FEATURES.afterCare && <div><span className="rd-kicker fs">After Care</span><strong className="ff">Kept beautiful, season after season.</strong><LocalizedLink to="/after-care">Discover After Care <span aria-hidden="true">→</span></LocalizedLink></div>}
         </section>
 
         <section className="home-section home-showrooms" aria-labelledby="home-showrooms-title">
@@ -127,18 +106,6 @@ const STATUS_CONCEPT_HOMEPAGE = () => {
           <div className="home-hours">{HOURS.map((hours) => <span key={hours.label} className="fs"><strong>{hours.label}</strong> {hours.value}</span>)}</div>
         </section>
 
-        <section className="home-newsletter" aria-labelledby="newsletter-title">
-          <span className="rd-kicker fs">From the showroom</span>
-          <h2 id="newsletter-title" className="ff">New collections and quiet notes from the Algarve.</h2>
-          {nlStatus === 'sent' ? <p className="fs">Thank you — you're on the list.</p> : (
-            <form onSubmit={subscribe}>
-              <label className="sr-only" htmlFor="homepage-newsletter-email">Email address</label>
-              <input id="homepage-newsletter-email" type="email" required placeholder="Your email address" value={nlEmail} onChange={(event) => setNlEmail(event.target.value)} />
-              <button type="submit" disabled={nlStatus === 'sending'}>{nlStatus === 'sending' ? 'Sending…' : 'Subscribe'}</button>
-            </form>
-          )}
-          {nlStatus === 'error' && <p className="fs" role="alert">Something went wrong. Please try again.</p>}
-        </section>
       </main>
     </Layout>
   )

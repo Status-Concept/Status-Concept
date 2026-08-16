@@ -5,6 +5,31 @@ import { extname } from 'node:path'
 
 const virtualModuleId = 'virtual:status-concept-draft-catalog'
 const resolvedVirtualModuleId = '\0' + virtualModuleId
+const PRIVATE_IMAGE_ROOTS = new Set(['reference-images', 'final-images'])
+const IMAGE_CONTENT_TYPES = {
+  '.avif': 'image/avif',
+  '.jpg': 'image/jpeg',
+  '.jpeg': 'image/jpeg',
+  '.png': 'image/png',
+  '.webp': 'image/webp',
+}
+
+export function isAllowedPrivateAssetPath(requestPath) {
+  const normalized = String(requestPath || '').replaceAll('\\', '/')
+  const [root] = normalized.split('/')
+  return PRIVATE_IMAGE_ROOTS.has(root)
+    && !normalized.includes('..')
+    && /\.(?:avif|jpe?g|png|webp)$/i.test(normalized)
+}
+
+export function resolvePrivateAssetPath(privateRoot, requestPath) {
+  if (!isAllowedPrivateAssetPath(requestPath)) return null
+  const normalized = String(requestPath).replaceAll('\\', '/')
+  const filePath = path.resolve(privateRoot, ...normalized.split('/'))
+  const relativePath = path.relative(privateRoot, filePath)
+  if (relativePath.startsWith('..') || path.isAbsolute(relativePath)) return null
+  return filePath
+}
 
 export default function draftCatalogDevPlugin() {
   const draftPath = path.resolve(process.cwd(), '.catalog-private', 'generated', 'draft-products.json')
@@ -27,19 +52,15 @@ export default function draftCatalogDevPlugin() {
       server.watcher.add(draftPath)
       server.middlewares.use('/__status-private', (request, response, next) => {
         const requestPath = decodeURIComponent(String(request.url || '').split('?')[0]).replace(/^\/+/, '')
-        const filePath = path.resolve(privateRoot, requestPath)
-        if (!filePath.startsWith(privateRoot + path.sep) || !fs.existsSync(filePath) || !fs.statSync(filePath).isFile()) {
+        const filePath = resolvePrivateAssetPath(privateRoot, requestPath)
+        if (!filePath || !fs.existsSync(filePath) || !fs.statSync(filePath).isFile()) {
           next()
           return
         }
-        const contentTypes = {
-          '.jpg': 'image/jpeg',
-          '.jpeg': 'image/jpeg',
-          '.png': 'image/png',
-          '.webp': 'image/webp',
-        }
         response.statusCode = 200
-        response.setHeader('Content-Type', contentTypes[extname(filePath).toLowerCase()] || 'application/octet-stream')
+        response.setHeader('Content-Type', IMAGE_CONTENT_TYPES[extname(filePath).toLowerCase()])
+        response.setHeader('Cache-Control', 'no-store')
+        response.setHeader('X-Content-Type-Options', 'nosniff')
         createReadStream(filePath).pipe(response)
       })
       server.watcher.on('change', (changedPath) => {

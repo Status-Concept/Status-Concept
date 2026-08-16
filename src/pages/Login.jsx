@@ -1,45 +1,17 @@
 import { useState } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom'
-import { useAuth } from '../context/AuthContext'
-import { useToast } from '../context/ToastContext'
+import { useLocation } from 'react-router-dom'
 import LocalizedLink from '../components/LocalizedLink'
-import { getLangFromPath, withLang } from '../utils/language'
-
-const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+import { getLangFromPath } from '../utils/language'
 
 export default function Login() {
-  const navigate = useNavigate()
   const location = useLocation()
-  const { login, isSupabaseConfigured } = useAuth()
-  const { showToast } = useToast()
   const lang = getLangFromPath(location.pathname)
   const isPortuguese = lang === 'pt'
-  const [values, setValues] = useState({ email: '', password: '' })
-  const [errors, setErrors] = useState({})
-  const [submitting, setSubmitting] = useState(false)
+  const [notice, setNotice] = useState('')
 
-  const validate = () => {
-    const next = {}
-    if (!values.email.trim()) next.email = isPortuguese ? 'O email é obrigatório.' : 'Email is required.'
-    else if (!emailPattern.test(values.email)) next.email = isPortuguese ? 'Introduza um email válido.' : 'Enter a valid email.'
-    if (!values.password) next.password = isPortuguese ? 'A palavra-passe é obrigatória.' : 'Password is required.'
-    setErrors(next)
-    return Object.keys(next).length === 0
-  }
-
-  const handleSubmit = async (event) => {
+  const handleSubmit = (event) => {
     event.preventDefault()
-    if (!validate()) return
-    setSubmitting(true)
-    try {
-      await login(values)
-      showToast(isPortuguese ? 'Sessão iniciada com sucesso.' : 'Signed in successfully.')
-      navigate(location.state?.from?.pathname || withLang('/cliente', lang), { replace: true })
-    } catch (error) {
-      showToast(error.message || (isPortuguese ? 'Não foi possível iniciar sessão.' : 'Unable to sign in.'), 'error')
-    } finally {
-      setSubmitting(false)
-    }
+    setNotice(isPortuguese ? 'O login ainda não está desenvolvido.' : 'Login is not developed yet.')
   }
 
   return (
@@ -48,46 +20,34 @@ export default function Login() {
         <LocalizedLink to="/" className="auth-logo ff">ST<span>A</span>TVS</LocalizedLink>
         <span className="fs sl">{isPortuguese ? 'Área de cliente' : 'Client area'}</span>
         <h1 className="ff">{isPortuguese ? 'Entrar na conta' : 'Sign in to your account'}</h1>
-        <p className="fs auth-copy">{isPortuguese ? 'Aceda aos seus favoritos, dados pessoais e pedidos de orçamento.' : 'Access your favorites, personal details and proposal requests.'}</p>
+        <p className="fs auth-copy">{isPortuguese ? 'A área de cliente ainda está a ser preparada.' : 'The client area is still being prepared.'}</p>
 
-        {!isSupabaseConfigured && (
-          <div className="form-alert fs">{isPortuguese ? 'Configure o Supabase no ficheiro .env para ativar o login.' : 'Configure Supabase in the .env file to enable sign-in.'}</div>
-        )}
+        <div className="form-alert fs">{isPortuguese ? 'O login ainda não está desenvolvido.' : 'Login is not developed yet.'}</div>
 
         <form onSubmit={handleSubmit} className="auth-form" noValidate>
           <label className="form-field">
-            <span className="fs">Email</span>
+            <span className="fs">{isPortuguese ? 'Utilizador' : 'Username'}</span>
             <input
-              className={errors.email ? 'invalid' : ''}
-              type="email"
-              value={values.email}
-              onChange={(e) => setValues({ ...values, email: e.target.value })}
-              autoComplete="email"
+              type="text"
+              autoComplete="username"
             />
-            {errors.email && <small>{errors.email}</small>}
           </label>
 
           <label className="form-field">
             <span className="fs">{isPortuguese ? 'Palavra-passe' : 'Password'}</span>
             <input
-              className={errors.password ? 'invalid' : ''}
               type="password"
-              value={values.password}
-              onChange={(e) => setValues({ ...values, password: e.target.value })}
               autoComplete="current-password"
             />
-            {errors.password && <small>{errors.password}</small>}
           </label>
 
-          <button className="cb cg auth-submit" type="submit" disabled={submitting || !isSupabaseConfigured}>
-            {submitting ? (isPortuguese ? 'A processar...' : 'Signing in...') : (isPortuguese ? 'Entrar' : 'Sign in')}
+          <button className="cb cg auth-submit" type="submit">
+            {isPortuguese ? 'Entrar' : 'Sign in'}
           </button>
         </form>
 
-        <p className="fs auth-switch">
-          {isPortuguese ? 'Ainda não tem conta? ' : 'New to STATVS? '}
-          <LocalizedLink to="/register">{isPortuguese ? 'Criar conta' : 'Create an account'}</LocalizedLink>
-        </p>
+        {notice && <p className="fs form-alert" role="status">{notice}</p>}
+        <p className="fs auth-switch"><LocalizedLink to="/">{isPortuguese ? 'Voltar ao site' : 'Back to website'}</LocalizedLink></p>
       </section>
     </main>
   )

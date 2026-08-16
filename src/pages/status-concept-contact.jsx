@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { useLocation, useSearchParams } from "react-router-dom";
 import Layout from "../components/Layout";
 import { getSupabase } from "../lib/supabase";
-import { useAuth } from "../context/AuthContext";
 import { sanitizePhone, sanitizeText } from "../utils/sanitize";
 import { SHOWROOMS, CONTACT } from "../data/showrooms";
 import { whatsappUrl } from "../utils/whatsapp";
@@ -14,31 +13,21 @@ const telHref = (n) => "tel:" + n.replace(/[^\d+]/g, "");
 const CONTACT_PAGE = () => {
   const [searchParams] = useSearchParams();
   const location = useLocation();
-  const { user } = useAuth();
   // A product enquiry can arrive via ?product= or router state (from a product page).
   const enquiryProduct = searchParams.get("product") || location.state?.product || "";
   const enquiryInterest = searchParams.get("interest") || location.state?.interest || "";
-  const shortlist = location.state?.shortlist || [];
   const [formData, setFormData] = useState({ name: "", email: "", phone: "", interest: "", message: "" });
   const [status, setStatus] = useState("idle"); // idle | sending | sent | error
   const [activeShowroom, setActiveShowroom] = useState(0);
 
   useEffect(() => {
-    if (shortlist.length) {
-      setFormData((prev) => ({
-        ...prev,
-        message: prev.message || `I'd like a proposal for these pieces:\n${shortlist.map((n) => `• ${n}`).join("\n")}`,
-      }));
-      return;
-    }
     if (!enquiryProduct && !enquiryInterest) return;
     setFormData((prev) => ({
       ...prev,
       interest: prev.interest || enquiryInterest,
       message: prev.message || (enquiryProduct ? `I'd like a proposal for the ${enquiryProduct}.` : prev.message),
     }));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [enquiryProduct, enquiryInterest, shortlist.length]);
+  }, [enquiryProduct, enquiryInterest]);
 
   // Shared name/address/phone/maps come from the single-source data module;
   // the contact-page-specific fields (mobile, gps, image, description) stay here.
@@ -49,7 +38,7 @@ const CONTACT_PAGE = () => {
   const showrooms = SHOWROOMS.map((s) => ({ name: s.name, address: s.address, phone: s.phone, maps: s.maps, ...showroomExtra[s.key] }));
 
   const active = showrooms[activeShowroom];
-  const interests = ["Outdoor Furniture", "Shade Solutions", "Outdoor Kitchens", "Decor & Leisure", "After Care Service", "General Enquiry"];
+  const interests = ["Outdoor Furniture", "Shade Solutions", "Outdoor Kitchens", "General Enquiry"];
 
   const canSubmit = formData.name.trim() && formData.email.trim() && formData.message.trim();
 
@@ -64,10 +53,7 @@ const CONTACT_PAGE = () => {
       phone: sanitizePhone(formData.phone).slice(0, 40),
       interest: formData.interest.slice(0, 100),
       message: sanitizeText(formData.message).slice(0, 4000),
-      source: shortlist.length ? "favorites_shortlist" : enquiryProduct ? "product_enquiry" : "contact_page",
-      // PoC for the enquiry loop: attribute the enquiry to the account when one
-      // is signed in, so a future /cliente history view can read it back.
-      user_id: user?.id ?? null,
+      source: enquiryProduct ? "product_enquiry" : "contact_page",
     };
 
     try {
@@ -146,7 +132,7 @@ const CONTACT_PAGE = () => {
 
         <div className="rd-form-panel">
           <span className="rd-kicker fs">Enquiry</span>
-          <h2 className="ff" style={{ fontSize: "clamp(32px, 4vw, 46px)", fontWeight: 300, marginBottom: 14 }}>{shortlist.length ? "Enquire about your shortlist" : enquiryProduct ? `Enquire about ${enquiryProduct}` : "Tell us what you need"}</h2>
+              <h2 className="ff" style={{ fontSize: "clamp(32px, 4vw, 46px)", fontWeight: 300, marginBottom: 14 }}>{enquiryProduct ? `Enquire about ${enquiryProduct}` : "Tell us what you need"}</h2>
           <p className="rd-lede fs" style={{ marginBottom: 34 }}>Share the type of space, the product family you are interested in and the best way to contact you.</p>
 
           {status === "sent" ? (
