@@ -1,9 +1,12 @@
+import { useEffect, useState } from "react";
 import Layout from "../components/Layout";
 import LocalizedLink from "../components/LocalizedLink";
 import { allProducts } from "../data/productCatalog";
 import { productSrcSet } from "../utils/imageVariants";
 import { noImageProducts } from "../data/productImageStatus";
 import hero1Img from "../assets/images/enhanced/hero-1.webp";
+import hero3Img from "../assets/images/enhanced/hero-3.webp";
+import hero4Img from "../assets/images/enhanced/hero-4.webp";
 import sicilyImg from "../assets/images/sicily-modular-set-full.webp";
 import shadeImg from "../assets/images/shade-parasols.jpg";
 import kitchenImg from "../assets/images/kitchen/kitchen-hero.webp";
@@ -19,22 +22,61 @@ const categories = [
 
 const productHasImage = (product) => product.category === "kitchen" || !noImageProducts.has(product.id);
 const productRoute = (product) => product.route || `/product/${product.id}`;
+const heroImages = [hero1Img, hero3Img, hero4Img];
 
 export default function Homepage() {
+  const [heroSlide, setHeroSlide] = useState(0);
   const featured = ["lounge", "dining", "shade", "kitchen"]
     .map((category) => allProducts.find((product) => product.category === category && productHasImage(product) && product.img))
     .filter(Boolean);
 
+  useEffect(() => {
+    if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) return undefined;
+    const interval = window.setInterval(() => {
+      setHeroSlide((current) => (current + 1) % heroImages.length);
+    }, 5000);
+    return () => window.clearInterval(interval);
+  }, []);
+
+  const moveHero = (direction) => {
+    setHeroSlide((current) => (current + direction + heroImages.length) % heroImages.length);
+  };
+
   return (
     <Layout>
       <main className="home-minimal">
-        <section className="home-hero" aria-labelledby="home-title">
-          <img src={hero1Img} alt="A considered outdoor living space in the Algarve" />
+        <section className="home-hero" aria-labelledby="home-title" aria-roledescription="carousel" aria-label="Featured outdoor settings">
+          <div className="home-hero-slides">
+            {heroImages.map((image, index) => (
+              <img
+                key={image}
+                className={`home-hero-slide${heroSlide === index ? " is-active" : ""}`}
+                src={image}
+                alt={heroSlide === index ? "A considered outdoor living space in the Algarve" : ""}
+                aria-hidden={heroSlide === index ? undefined : true}
+              />
+            ))}
+          </div>
           <div className="home-hero-overlay" />
           <div className="home-hero-copy">
             <span className="home-kicker fs">Outdoor living / Algarve</span>
             <h1 id="home-title" className="ff">Outdoor spaces,<br />made to stay outside.</h1>
             <LocalizedLink className="home-hero-link fs" to="/products">Explore the collection <span aria-hidden="true">↗</span></LocalizedLink>
+          </div>
+          <button type="button" className="home-hero-control home-hero-control-prev" onClick={() => moveHero(-1)} aria-label="Previous slide">‹</button>
+          <button type="button" className="home-hero-control home-hero-control-next" onClick={() => moveHero(1)} aria-label="Next slide">›</button>
+          <div className="home-hero-dots" role="tablist" aria-label="Choose hero slide">
+            {heroImages.map((image, index) => (
+              <button
+                key={image}
+                type="button"
+                role="tab"
+                className={`home-hero-dot${heroSlide === index ? " is-active" : ""}`}
+                aria-label={`Go to slide ${index + 1}`}
+                aria-selected={heroSlide === index}
+                onClick={() => setHeroSlide(index)}
+              />
+            ))}
           </div>
         </section>
 
