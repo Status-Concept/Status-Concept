@@ -360,17 +360,32 @@
   animation: fu .6s both;
 }
 
+.brand-logo {
+  display: block;
+  height: auto;
+  object-fit: contain;
+}
+
+.brand-logo-link {
+  display: inline-flex;
+  flex-shrink: 0;
+  line-height: 0;
+  text-decoration: none;
+}
+
+.brand-logo--header { width: 156px; }
+.brand-logo--footer {
+  width: 190px;
+  max-width: 100%;
+}
+
 .auth-logo {
   display: inline-block;
   margin-bottom: 28px;
-  color: var(--text-dark);
-  font-family: var(--font-serif);
-  font-size: 28px;
-  letter-spacing: 8px;
-  line-height: 1;
+  line-height: 0;
   text-decoration: none;
 }
-.auth-logo span { color: var(--accent); }
+.auth-logo .brand-logo { width: 190px; max-width: 100%; }
 
 .auth-card h1,
 .account-panel h2,
@@ -1114,6 +1129,7 @@
 }
 
 @media (max-width: 480px) {
+  .brand-logo--header { width: 126px; }
   .grid-4 { grid-template-columns: 1fr !important; }
   .footer-grid { grid-template-columns: 1fr !important; }
 

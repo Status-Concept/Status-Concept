@@ -9,7 +9,9 @@ export const PRODUCT_MENU = [
     label: 'Lounge',
     to: '/products?cat=lounge',
     items: [
-      { name: 'Sofa Sets', to: '/products?cat=lounge&type=sofa' },
+      { name: 'Upholstered', to: '/products?cat=lounge&subcat=upholstered' },
+      { name: 'Rope', to: '/products?cat=lounge&subcat=rope' },
+      { name: 'Aluminium', to: '/products?cat=lounge&subcat=aluminium' },
       { name: 'Corner Sofas', to: '/products?cat=lounge&type=corner' },
       { name: 'Armchairs', to: '/products?cat=lounge&type=armchair' },
       { name: 'Modular', to: '/products?cat=lounge&type=modular' },
@@ -36,7 +38,16 @@ export const PRODUCT_MENU = [
       { name: 'Day Beds', to: '/products?cat=sunlounger&type=bed' },
     ],
   },
-  { key: 'shade', label: 'Shade Solutions', to: '/products?cat=shade' },
+  {
+    key: 'shade',
+    label: 'Shade Solutions',
+    to: '/products?cat=shade',
+    items: [
+      { name: 'Pergolas', to: '/products?cat=shade&subcat=pergolas' },
+      { name: 'Parasols', to: '/products?cat=shade&subcat=parasols' },
+      { name: 'Awnings', to: '/products?cat=shade&subcat=awnings' },
+    ],
+  },
   { key: 'glatz', label: 'Glatz Parasols', to: '/glatz-parasols' },
   {
     key: 'kitchen',

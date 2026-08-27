@@ -13,17 +13,79 @@ import { searchProducts } from "../utils/productSearch";
 import { getLangFromPath, withLang } from "../utils/language";
 import kitchenHeroImg from "../assets/images/kitchen/kitchen-hero.webp";
 import furnitureSeriesImg from "../assets/images/enhanced/furniture-series-golf-hero.webp";
+import shadeHeroLifestyleImg from "../assets/images/enhanced/shade-glatz-realistic-hero.webp";
 import sicilyModularSetFullImg from "../assets/images/sicily-modular-set-full.webp";
 import sicilyCornerImg from "../assets/images/sicily-corner.jpg";
 
-const shadeHeroImg = "/product-images/glatz/ambiente-nova/01.webp";
 const shadeChipImg = "/product-images/glatz/sombrano-s-plus/05.webp";
 
 const slug = (value) => value.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+const VALID_CATEGORIES = ["lounge", "dining", "sunlounger", "shade", "kitchen"];
+const CATEGORY_ALIASES = { daybed: "sunlounger", coffee: "dining", side: "dining", bar: "lounge", puffs: "lounge" };
+const SUBCATEGORIES = {
+  lounge: [
+    { key: "upholstered", label: "Upholstered" },
+    { key: "rope", label: "Rope" },
+    { key: "aluminium", label: "Aluminium" },
+  ],
+  shade: [
+    { key: "pergolas", label: "Pergolas" },
+    { key: "parasols", label: "Parasols" },
+    { key: "awnings", label: "Awnings" },
+  ],
+  kitchen: [
+    { key: "modular", label: "Modular kitchens" },
+    { key: "built-in", label: "Built-in kitchens" },
+    { key: "accessories", label: "Attachments & accessories" },
+    { key: "bbq", label: "BBQs" },
+  ],
+};
 
-// Kitchen products always keep their image (exception); everything else falls
-// back to a "No image" placeholder when it has no clean white-background shot.
-const productHasImage = (product) => product.category === "kitchen" || !noImageProducts.has(product.id);
+const productSearchText = (product) => JSON.stringify({
+  name: product.name,
+  collection: product.collectionName || product.collection,
+  category: product.categoryLabel || product.category,
+  materials: product.materials,
+  specs: product.specs,
+  desc: product.desc,
+  tagline: product.tagline,
+  supplier: product.supplier,
+  sourcePath: product.sourcePath,
+  subcategories: product.subcategories,
+}).toLowerCase();
+
+export const matchesSubcategory = (product, key) => {
+  if (product.subcategories?.includes(key)) return true;
+  const haystack = productSearchText(product);
+  const terms = {
+    upholstered: ["upholster", "cushion", "fabric", "textile"],
+    rope: ["rope", "cord"],
+    aluminium: ["aluminium", "aluminum"],
+    pergolas: ["pergola", "bioclimatic"],
+    parasols: ["parasol", "shade", "glatz"],
+    awnings: ["awning", "retractable"],
+    modular: ["modular", "draco", "kitchen"],
+    "built-in": ["built-in", "built in", "integrated"],
+    accessories: ["accessor", "attachment", "sink", "drawer", "shelf"],
+    bbq: ["bbq", "grill", "barbecue"],
+  }[key] || [key];
+  return terms.some((term) => haystack.includes(term));
+};
+
+// Kitchen and shade products keep their supplied catalogue imagery. Their main
+// shots are intentionally contextual, so the white-background classifier should
+// not replace them with a showroom placeholder.
+export const productHasImage = (product) => product.category === "kitchen" || product.category === "shade" || !noImageProducts.has(product.id);
+
+const CATEGORY_LABELS = {
+  lounge: "Lounge",
+  dining: "Dining",
+  sunlounger: "Sun Loungers",
+  shade: "Shade",
+  kitchen: "Outdoor Kitchens",
+};
+
+export const productBrandLabel = (product) => product.supplier?.trim() || product.categoryLabel || CATEGORY_LABELS[product.category] || "Outdoor living";
 
 // Auto-advancing category carousel — slides right-to-left one tile every 5s, looping.
 // Fully responsive via CSS container-query units: tile width is a fraction of the
@@ -32,13 +94,15 @@ const productHasImage = (product) => product.category === "kitchen" || !noImageP
 function CategoryCarousel({ categories, onOpen }) {
   const [idx, setIdx] = useState(0);
   const [animate, setAnimate] = useState(true);
-  const [paused, setPaused] = useState(false); // explicit pause (WCAG 2.2.2)
+  const prefersReducedMotion = typeof window !== "undefined"
+    && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+  const [paused, setPaused] = useState(Boolean(prefersReducedMotion)); // explicit pause (WCAG 2.2.2)
   const [hovered, setHovered] = useState(false); // pause while the pointer is over it
   const items = [...categories, ...categories]; // duplicated for a seamless loop
   const stepPct = 100 / items.length; // one tile as a percentage of the whole track
 
   useEffect(() => {
-    if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (prefersReducedMotion) return;
     // At the duplicate seam: let the slide finish, then jump back to the start instantly.
     if (idx === categories.length) {
       const t = setTimeout(() => { setAnimate(false); setIdx(0); }, 700);
@@ -54,7 +118,7 @@ function CategoryCarousel({ categories, onOpen }) {
     // Normal cadence: advance one tile every 5s.
     const t = setTimeout(() => setIdx((i) => i + 1), 5000);
     return () => clearTimeout(t);
-  }, [idx, animate, categories.length, paused, hovered]);
+  }, [idx, animate, categories.length, paused, hovered, prefersReducedMotion]);
 
   return (
     <div
@@ -71,23 +135,39 @@ function CategoryCarousel({ categories, onOpen }) {
           transition: animate ? "transform .7s cubic-bezier(0.16, 1, 0.3, 1)" : "none",
         }}
       >
-        {items.map((category, i) => (
-          <button key={`${category.key}-${i}`} type="button" className="cat-chip" aria-label={category.title} onClick={() => onOpen(category.key)}>
+        {items.map((category, i) => {
+          const isClone = i >= categories.length;
+          return (
+          <button
+            key={`${category.key}-${i}`}
+            type="button"
+            className="cat-chip"
+            aria-label={category.title}
+            aria-hidden={isClone || undefined}
+            tabIndex={isClone ? -1 : 0}
+            onClick={() => onOpen(category.key)}
+          >
             <span className="cat-chip-img">
               <img src={category.chip} alt="" loading="lazy" />
             </span>
             <span className="lbl">{category.label}</span>
           </button>
-        ))}
+          );
+        })}
       </div>
       <button
         type="button"
         className="cat-carousel-toggle fs"
-        aria-label={paused ? "Play category slideshow" : "Pause category slideshow"}
+        aria-label={prefersReducedMotion ? "Category slideshow disabled by reduced motion preference" : (paused ? "Play category slideshow" : "Pause category slideshow")}
         aria-pressed={paused}
+        disabled={prefersReducedMotion}
         onClick={() => setPaused((p) => !p)}
       >
-        {paused ? "▶" : "❚❚"}
+        {paused ? (
+          <svg aria-hidden="true" viewBox="0 0 24 24"><path d="m9 7 8 5-8 5Z" /></svg>
+        ) : (
+          <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M8 6v12M16 6v12" /></svg>
+        )}
       </button>
     </div>
   );
@@ -101,29 +181,13 @@ const PRODUCTS_PAGE = () => {
   const queryParam = searchParams.get("q")?.trim() || "";
   const collectionParam = searchParams.get("collection")?.trim() || "";
   const typeParam = searchParams.get("type")?.trim().toLowerCase() || "";
+  const subcategoryParam = searchParams.get("subcat")?.trim().toLowerCase() || "";
   const currentLang = getLangFromPath(location.pathname);
-  const [activeCategory, setActiveCategory] = useState(null); // null = category landing
-  const [activeKitchenCollection, setActiveKitchenCollection] = useState(null);
-  const [viewMode, setViewMode] = useState("grid");
-  const [sortBy, setSortBy] = useState("featured");
+  const resolvedCategory = CATEGORY_ALIASES[catParam] || catParam;
+  const activeCategory = VALID_CATEGORIES.includes(resolvedCategory) ? resolvedCategory : null;
+  const viewMode = searchParams.get("view") === "list" ? "list" : "grid";
+  const sortBy = searchParams.get("sort") === "name" ? "name" : "featured";
   const [searchInput, setSearchInput] = useState(queryParam);
-
-  const validCategories = ["lounge", "dining", "sunlounger", "shade", "kitchen"];
-  const categoryAliases = { daybed: "sunlounger", coffee: "dining", side: "dining", bar: "lounge", puffs: "lounge" };
-
-  useEffect(() => {
-    const resolved = categoryAliases[catParam] || catParam;
-    const isValid = validCategories.includes(resolved);
-    setActiveCategory(isValid ? resolved : null);
-    setActiveKitchenCollection(
-      resolved === "kitchen"
-        ? (kitchenCollectionMeta.some((collection) => collection.key === collectionParam)
-            ? collectionParam
-            : (kitchenCollectionMeta[0]?.key || null))
-        : null,
-    );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [catParam, collectionParam]);
 
   useEffect(() => {
     setSearchInput(queryParam);
@@ -135,14 +199,23 @@ const PRODUCTS_PAGE = () => {
     { key: "lounge", label: "Lounge", chip: sicilyCornerImg, banner: sicilyModularSetFullImg, title: "Lounge", copy: "Sofas, lounge sets and armchairs made for long Algarve afternoons." },
     { key: "dining", label: "Dining", chip: catalogImg("dining"), banner: catalogImg("dining"), title: "Dining", copy: "Outdoor dining sets, tables and chairs for terrace meals from breakfast to late dinner." },
     { key: "sunlounger", label: "Sun Loungers", chip: catalogImg("sunlounger"), banner: catalogImg("sunlounger"), title: "Sun Loungers & Day Beds", copy: "Poolside loungers and day beds built for Algarve summers." },
-    { key: "shade", label: "Shade", chip: shadeChipImg, banner: shadeHeroImg, bannerPosition: "center 28%", title: "Shade Solutions", copy: "Glatz parasols, bioclimatic pergolas and retractable systems for gardens, terraces and outdoor rooms." },
-    { key: "kitchen", label: "Modular Kitchen", chip: kitchenHeroImg, banner: kitchenHeroImg, title: "Modular Kitchen", copy: "Draco Grills modular outdoor kitchens in Black Stainless Steel, Carbon Line Teak and natural Teak." },
+    { key: "shade", label: "Shade Solutions", chip: shadeChipImg, banner: shadeHeroLifestyleImg, bannerPosition: "center 34%", title: "Shade Solutions", copy: "Pergolas, parasols and awnings for gardens, terraces and outdoor rooms." },
+    { key: "kitchen", label: "Outdoor Kitchens", chip: kitchenHeroImg, banner: kitchenHeroImg, title: "Outdoor Kitchens", copy: "Modular kitchens, built-in kitchens, BBQs and the accessories that make outdoor cooking work." },
   ];
 
   const kitchenCollections = kitchenCollectionMeta.map((collection) => ({
     ...collection,
     count: kitchenProducts.filter((product) => product.collection === collection.key).length,
   }));
+  const activeSubcategories = activeCategory ? (SUBCATEGORIES[activeCategory] || []) : [];
+  const activeSubcategory = activeSubcategories.some((item) => item.key === subcategoryParam)
+    ? subcategoryParam
+    : "";
+  const activeKitchenCollection = activeCategory === "kitchen" && !activeSubcategory
+    ? (kitchenCollections.some((collection) => collection.key === collectionParam)
+        ? collectionParam
+        : (kitchenCollections[0]?.key || null))
+    : null;
 
   const hasSearch = Boolean(queryParam);
   const isLanding = !activeCategory && !hasSearch;
@@ -150,7 +223,7 @@ const PRODUCTS_PAGE = () => {
   const isKitchenCategory = activeCategory === "kitchen";
   const searchMatches = useMemo(() => searchProducts(allProducts, queryParam), [queryParam]);
 
-  const filteredProducts = useMemo(() => {
+  const filteredProducts = (() => {
     if (hasSearch) {
       const scoped = activeCategory
         ? searchMatches.filter((product) => product.category === activeCategory)
@@ -162,11 +235,17 @@ const PRODUCTS_PAGE = () => {
 
     if (!activeCategory) return [];
     let base = activeCategory === "kitchen"
-      ? kitchenProducts.filter((product) => product.collection === activeKitchenCollection)
+      ? (activeSubcategory
+          ? kitchenProducts
+          : kitchenProducts.filter((product) => product.collection === activeKitchenCollection))
       : allProducts.filter((product) => product.category === activeCategory);
 
     if (collectionParam && activeCategory !== "kitchen") {
       base = base.filter((product) => slug(product.collectionName || product.collection) === collectionParam);
+    }
+
+    if (activeSubcategory) {
+      base = base.filter((product) => matchesSubcategory(product, activeSubcategory));
     }
 
     if (typeParam && activeCategory !== "kitchen") {
@@ -182,10 +261,14 @@ const PRODUCTS_PAGE = () => {
       if (sortBy === "name") return a.name.localeCompare(b.name);
       return (b.tag ? 1 : 0) - (a.tag ? 1 : 0);
     });
-  }, [activeCategory, activeKitchenCollection, hasSearch, searchMatches, sortBy, collectionParam, typeParam]);
+  })();
 
-  const activeRefinementLabel = useMemo(() => {
-    if (!activeCategory || activeCategory === "kitchen") return null;
+  const activeRefinementLabel = (() => {
+    if (!activeCategory) return null;
+    if (activeSubcategory) {
+      return activeSubcategories.find((item) => item.key === activeSubcategory)?.label || activeSubcategory;
+    }
+    if (activeCategory === "kitchen") return null;
     if (collectionParam) {
       const match = allProducts.find(
         (product) => product.category === activeCategory && slug(product.collectionName || product.collection) === collectionParam,
@@ -196,7 +279,7 @@ const PRODUCTS_PAGE = () => {
       return typeParam.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
     }
     return null;
-  }, [collectionParam, typeParam, activeCategory]);
+  })();
 
   const searchCategoryCounts = categories.map((category) => ({
     ...category,
@@ -206,6 +289,15 @@ const PRODUCTS_PAGE = () => {
   const productRoute = (product) => product.route || `/product/${product.id || slug(product.name)}`;
   const favPayload = (product) => ({ id: product.id || slug(product.name), name: product.name, collection: product.collectionName || product.collection, img: product.img, category: product.category, route: productRoute(product) });
   const goTo = (path, state) => navigate(withLang(path, currentLang), state ? { state } : undefined);
+  const updateProductQuery = (changes) => {
+    const params = new URLSearchParams(searchParams);
+    Object.entries(changes).forEach(([key, value]) => {
+      if (value === null || value === undefined || value === "") params.delete(key);
+      else params.set(key, value);
+    });
+    const query = params.toString();
+    goTo(`/products${query ? `?${query}` : ""}`);
+  };
 
   const scrollToProducts = () => {
     const layout = document.querySelector(".rd-products-layout");
@@ -217,7 +309,10 @@ const PRODUCTS_PAGE = () => {
 
   const openCategory = (key) => goTo(`/products?cat=${key}`);
   const backToLanding = () => goTo(`/products`);
-  const selectKitchenCollection = (key) => { setActiveKitchenCollection(key); scrollToProducts(); };
+  const selectKitchenCollection = (key) => {
+    updateProductQuery({ cat: "kitchen", collection: key, subcat: null, type: null });
+    requestAnimationFrame(scrollToProducts);
+  };
   const setSearchScope = (key) => {
     const query = encodeURIComponent(queryParam);
     goTo(key ? `/products?q=${query}&cat=${key}` : `/products?q=${query}`);
@@ -229,7 +324,6 @@ const PRODUCTS_PAGE = () => {
     goTo(`/products?q=${encodeURIComponent(cleanQuery)}`);
   };
 
-  const categoryLabelOf = (product) => product.categoryLabel || categories.find((category) => category.key === product.category)?.label || "Outdoor living";
   const hasImage = productHasImage;
   const activeRange = kitchenCollections.find((collection) => collection.key === activeKitchenCollection);
 
@@ -238,12 +332,12 @@ const PRODUCTS_PAGE = () => {
       {isLanding ? (
         <>
           <section className="prod-banner">
-            <img src={furnitureSeriesImg} alt="" style={{ objectPosition: "center 40%" }} />
+            <img src={furnitureSeriesImg} alt="" decoding="async" fetchPriority="high" style={{ objectPosition: "center 40%" }} />
           </section>
           <div className="rd-page-head">
             <span className="rd-kicker fs">Products</span>
             <h1 className="rd-title ff">Products</h1>
-            <p className="rd-lede fs">Explore each outdoor category — furniture, shade and kitchens — selected for the Algarve lifestyle.</p>
+            <p className="rd-lede fs">Explore furniture, shade and outdoor kitchens selected for the Algarve lifestyle.</p>
           </div>
           <main className="rd-products-layout">
             <CategoryCarousel categories={categories} onOpen={openCategory} />
@@ -253,7 +347,7 @@ const PRODUCTS_PAGE = () => {
         <>
           {!hasSearch && (
             <section className="prod-banner">
-              <img src={selectedCategory.banner} alt="" style={{ objectPosition: selectedCategory.bannerPosition || "center" }} />
+              <img src={selectedCategory.banner} alt="" decoding="async" fetchPriority="high" style={{ objectPosition: selectedCategory.bannerPosition || "center" }} />
             </section>
           )}
           <div className={`rd-page-head ${hasSearch ? "search-head" : ""}`}>
@@ -319,36 +413,68 @@ const PRODUCTS_PAGE = () => {
                 </div>
               )}
 
+              {!hasSearch && activeSubcategories.length > 0 && (
+                <div className="rd-filter-strip" role="group" aria-label="Filter by product type or material">
+                  <span className="rd-filter-label fs">Browse by</span>
+                  {activeSubcategories.map((item) => (
+                    <button
+                      key={item.key}
+                      type="button"
+                      className={`rd-filter-chip ${activeSubcategory === item.key ? "active" : ""}`}
+                      aria-pressed={activeSubcategory === item.key}
+                      onClick={() => updateProductQuery({
+                        cat: activeCategory,
+                        subcat: activeSubcategory === item.key ? null : item.key,
+                        collection: null,
+                        type: null,
+                      })}
+                    >
+                      {item.label}
+                    </button>
+                  ))}
+                </div>
+              )}
+
               <div className="rd-products-toolbar">
                 <div>
                   {hasSearch ? (
                     <>
                       <span className="rd-kicker fs" data-no-translate>“{queryParam}”</span>
-                      <p className="rd-count fs">{filteredProducts.length} results</p>
+                      <p className="rd-count fs" aria-live="polite">{filteredProducts.length} results</p>
                     </>
                   ) : (
                     <>
                       <span className="rd-kicker fs">
-                        {isKitchenCategory ? activeRange?.label : selectedCategory.label}
+                        {isKitchenCategory ? (activeRange?.label || selectedCategory.label) : selectedCategory.label}
                         {activeRefinementLabel && (
                           <span data-no-translate style={{ display: "inline-flex", alignItems: "center", gap: 6, marginLeft: 10, padding: "2px 6px 2px 10px", background: "var(--light-grey)", borderRadius: 2, textTransform: "none", letterSpacing: 0 }}>
                             {activeRefinementLabel}
-                            <LocalizedLink to={`/products?cat=${activeCategory}`} aria-label={currentLang === "pt" ? "Limpar filtro" : "Clear filter"} style={{ color: "var(--text-grey)", textDecoration: "none", fontSize: 14, lineHeight: 1 }}>×</LocalizedLink>
+                            <button
+                              type="button"
+                              className="rd-clear-filter"
+                              aria-label={currentLang === "pt" ? "Limpar filtro" : "Clear filter"}
+                              onClick={() => updateProductQuery({ collection: null, type: null, subcat: null })}
+                            >×</button>
                           </span>
                         )}
                       </span>
-                      <p className="rd-count fs">{filteredProducts.length} products shown</p>
+                      <p className="rd-count fs" aria-live="polite">{filteredProducts.length} products shown</p>
                     </>
                   )}
                 </div>
                 <div className="rd-toolbar-actions">
-                  <select className="rd-select fs" value={sortBy} onChange={(event) => setSortBy(event.target.value)}>
+                  <label className="sr-only" htmlFor="product-sort">{currentLang === "pt" ? "Ordenar produtos" : "Sort products"}</label>
+                  <select id="product-sort" className="rd-select fs" value={sortBy} onChange={(event) => updateProductQuery({ sort: event.target.value === "featured" ? null : event.target.value })}>
                     <option value="featured">{hasSearch ? "Relevance" : "Featured"}</option>
                     <option value="name">Name</option>
                   </select>
                   <div className="rd-view-toggle" role="group" aria-label={currentLang === "pt" ? "Modo de visualização" : "View mode"}>
-                    <button type="button" className={viewMode === "grid" ? "active" : ""} onClick={() => setViewMode("grid")} aria-label={currentLang === "pt" ? "Vista em grelha" : "Grid view"} aria-pressed={viewMode === "grid"}>▦</button>
-                    <button type="button" className={viewMode === "list" ? "active" : ""} onClick={() => setViewMode("list")} aria-label={currentLang === "pt" ? "Vista em lista" : "List view"} aria-pressed={viewMode === "list"}>☰</button>
+                    <button type="button" className={viewMode === "grid" ? "active" : ""} onClick={() => updateProductQuery({ view: null })} aria-label={currentLang === "pt" ? "Vista em grelha" : "Grid view"} aria-pressed={viewMode === "grid"}>
+                      <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M5 5h5v5H5zM14 5h5v5h-5zM5 14h5v5H5zM14 14h5v5h-5z" /></svg>
+                    </button>
+                    <button type="button" className={viewMode === "list" ? "active" : ""} onClick={() => updateProductQuery({ view: "list" })} aria-label={currentLang === "pt" ? "Vista em lista" : "List view"} aria-pressed={viewMode === "list"}>
+                      <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M5 7h14M5 12h14M5 17h14" /></svg>
+                    </button>
                   </div>
                 </div>
               </div>
@@ -367,13 +493,13 @@ const PRODUCTS_PAGE = () => {
                     <LocalizedLink className="rd-search-empty-contact fs" to="/contact">Ask the showroom team <span aria-hidden="true">→</span></LocalizedLink>
                   </div>
                 ) : (
-                  <div className="rd-empty-state fs" style={{ textAlign: "center", padding: "64px 24px", color: "var(--text-grey)" }}>
+                  <div className="rd-empty-state fs" role="status" style={{ textAlign: "center", padding: "64px 24px", color: "var(--text-grey)" }}>
                     No pieces in this category yet. Contact the showroom.
                   </div>
                 )
               ) : viewMode === "grid" ? (
                 <div className="rd-product-grid editorial">
-                  {filteredProducts.map((product) => (
+                  {filteredProducts.map((product, index) => (
                     <article key={product.id || product.name} className={`rd-product-card ${product.category === "kitchen" && !product.fit ? "kitchen-product" : ""} ${product.category === "shade" && !product.fit ? "shade-product" : ""} ${product.fit === "contain" ? "studio-product" : ""} ${product.fit === "wide" ? "wide-product" : ""} ${product.id === "sicily-modular-set" ? "contain-media" : ""}`}>
                       <div className="rd-product-media">
                         <FavoriteButton
@@ -382,11 +508,17 @@ const PRODUCTS_PAGE = () => {
                           style={{ position: "absolute", top: 12, right: 12 }}
                         />
                         {hasImage(product)
-                          ? <img src={product.img} srcSet={productSrcSet(product.img)} sizes="(max-width: 640px) 50vw, (max-width: 1100px) 33vw, 300px" alt={product.name} loading="lazy" decoding="async" />
+                          ? (product.heroImage ? (
+                            <>
+                              <img className="rd-product-image rd-product-image-isolated" src={product.img} srcSet={productSrcSet(product.img)} sizes="(max-width: 760px) calc(100vw - 48px), (max-width: 1100px) 50vw, 33vw" alt={product.name} loading={index < 3 ? "eager" : "lazy"} fetchPriority={index < 3 ? "high" : "auto"} decoding="async" />
+                              <img className="rd-product-image rd-product-image-hero" src={product.heroImage} sizes="(max-width: 760px) calc(100vw - 48px), (max-width: 1100px) 50vw, 33vw" alt="" aria-hidden="true" loading="lazy" decoding="async" />
+                            </>
+                          ) : <img src={product.img} srcSet={productSrcSet(product.img)} sizes="(max-width: 760px) calc(100vw - 48px), (max-width: 1100px) 50vw, 33vw" alt={product.name} loading={index < 3 ? "eager" : "lazy"} fetchPriority={index < 3 ? "high" : "auto"} decoding="async" />)
                           : <NoImagePlaceholder />}
+                        <span className="rd-product-view fs">View product <span aria-hidden="true">↗</span></span>
                       </div>
                       <div className="rd-product-info">
-                        <span className="rd-product-cat fs">{categoryLabelOf(product)}</span>
+                        <span className="rd-product-cat fs">{productBrandLabel(product)}</span>
                         <h3 className="ff"><LocalizedLink className="rd-card-link" data-no-translate to={productRoute(product)} state={{ product }}>{product.name}</LocalizedLink></h3>
                       </div>
                     </article>
@@ -397,10 +529,10 @@ const PRODUCTS_PAGE = () => {
                   {filteredProducts.map((product) => (
                     <article key={product.id || product.name} className={`rd-product-row ${product.category === "kitchen" && !product.fit ? "kitchen-product" : ""} ${product.fit === "contain" ? "studio-product" : ""}`}>
                       {hasImage(product)
-                        ? <img src={product.img} srcSet={productSrcSet(product.img)} sizes="220px" alt={product.name} loading="lazy" decoding="async" />
+                        ? <img src={product.img} srcSet={productSrcSet(product.img)} sizes="(max-width: 760px) calc(100vw - 48px), 220px" alt={product.name} loading="lazy" decoding="async" />
                         : <NoImagePlaceholder list />}
                       <div>
-                        <span className="rd-kicker fs">{categoryLabelOf(product)}</span>
+                        <span className="rd-kicker fs">{productBrandLabel(product)}</span>
                         <h3 className="ff"><LocalizedLink className="rd-card-link" data-no-translate to={productRoute(product)} state={{ product }}>{product.name}</LocalizedLink></h3>
                         {product.desc && <p className="rd-lede fs">{product.desc}</p>}
                       </div>

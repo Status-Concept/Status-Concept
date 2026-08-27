@@ -39,8 +39,8 @@ export const catalogProducts = [
       "/product-images/catalog/bella-reclining-dining-set/01.webp"
     ],
     "tag": "",
-    "desc": "Our every day lifestyle is changing and our garden becomes a beautiful extension of our home. The consumer has realized that they can custom build their backyard dreams andare enjoying creat.",
-    "tagline": "Our every day lifestyle is changing and our garden becomes a beautiful extension of our home. The consumer has realized that they can custom build their backyard dreams andare enjoying creating their visions.",
+    "desc": "Our everyday lifestyle is changing and our garden becomes a beautiful extension of our home.",
+    "tagline": "Our everyday lifestyle is changing and our garden becomes a beautiful extension of our home. The consumer has realized that they can custom build their backyard dreams and are enjoying creating their visions.",
     "supplier": "",
     "sku": "",
     "sourcePath": "site-statusconcept.com/furniture-series/dining/bella-reclining-dining-set"
@@ -58,8 +58,8 @@ export const catalogProducts = [
       "/product-images/catalog/bern/01.webp"
     ],
     "tag": "",
-    "desc": "Our every day lifestyle is changing and our garden becomes a beautiful extension of our home. The consumer has realized that they can custom build their backyard dreams andare enjoying creat.",
-    "tagline": "Our every day lifestyle is changing and our garden becomes a beautiful extension of our home. The consumer has realized that they can custom build their backyard dreams andare enjoying creating their visions.",
+    "desc": "Our everyday lifestyle is changing and our garden becomes a beautiful extension of our home.",
+    "tagline": "Our everyday lifestyle is changing and our garden becomes a beautiful extension of our home. The consumer has realized that they can custom build their backyard dreams and are enjoying creating their visions.",
     "supplier": "",
     "sku": "",
     "sourcePath": "site-statusconcept.com/furniture-series/dining/bern"
@@ -220,8 +220,8 @@ export const catalogProducts = [
       "/product-images/catalog/florida-dining/01.webp"
     ],
     "tag": "",
-    "desc": "Our every day lifestyle is changing and our garden becomes a beautiful extension of our home. The consumer has realized that they can custom build their backyard dreams andare enjoying creat.",
-    "tagline": "Our every day lifestyle is changing and our garden becomes a beautiful extension of our home. The consumer has realized that they can custom build their backyard dreams andare enjoying creating their visions.",
+    "desc": "Our everyday lifestyle is changing and our garden becomes a beautiful extension of our home.",
+    "tagline": "Our everyday lifestyle is changing and our garden becomes a beautiful extension of our home. The consumer has realized that they can custom build their backyard dreams and are enjoying creating their visions.",
     "supplier": "",
     "sku": "",
     "sourcePath": "site-statusconcept.com/furniture-series/dining/dining-tables/florida-dining"
@@ -239,8 +239,8 @@ export const catalogProducts = [
       "/product-images/catalog/florida-dining-armchair/01.webp"
     ],
     "tag": "",
-    "desc": "Our every day lifestyle is changing and our garden becomes a beautiful extension of our home. The consumer has realized that they can custom build their backyard dreams andare enjoying creat.",
-    "tagline": "Our every day lifestyle is changing and our garden becomes a beautiful extension of our home. The consumer has realized that they can custom build their backyard dreams andare enjoying creating their visions.",
+    "desc": "Our everyday lifestyle is changing and our garden becomes a beautiful extension of our home.",
+    "tagline": "Our everyday lifestyle is changing and our garden becomes a beautiful extension of our home. The consumer has realized that they can custom build their backyard dreams and are enjoying creating their visions.",
     "supplier": "",
     "sku": "",
     "sourcePath": "site-statusconcept.com/furniture-series/dining/chairs/aluminium-6/florida-dining-armchair"
@@ -258,8 +258,8 @@ export const catalogProducts = [
       "/product-images/catalog/florida-dining-set/01.webp"
     ],
     "tag": "",
-    "desc": "Our every day lifestyle is changing and our garden becomes a beautiful extension of our home. The consumer has realized that they can custom build their backyard dreams andare enjoying creat.",
-    "tagline": "Our every day lifestyle is changing and our garden becomes a beautiful extension of our home. The consumer has realized that they can custom build their backyard dreams andare enjoying creating their visions.",
+    "desc": "Our everyday lifestyle is changing and our garden becomes a beautiful extension of our home.",
+    "tagline": "Our everyday lifestyle is changing and our garden becomes a beautiful extension of our home. The consumer has realized that they can custom build their backyard dreams and are enjoying creating their visions.",
     "supplier": "",
     "sku": "",
     "sourcePath": "site-statusconcept.com/furniture-series/dining/florida-dining-set"
@@ -278,8 +278,8 @@ export const catalogProducts = [
       "/product-images/catalog/florida-dining-table-with-miami-dining-armchairs/02.webp"
     ],
     "tag": "",
-    "desc": "Our every day lifestyle is changing and our garden becomes a beautiful extension of our home. The consumer has realized that they can custom build their backyard dreams andare enjoying creat.",
-    "tagline": "Our every day lifestyle is changing and our garden becomes a beautiful extension of our home. The consumer has realized that they can custom build their backyard dreams andare enjoying creating their visions.",
+    "desc": "Our everyday lifestyle is changing and our garden becomes a beautiful extension of our home.",
+    "tagline": "Our everyday lifestyle is changing and our garden becomes a beautiful extension of our home. The consumer has realized that they can custom build their backyard dreams and are enjoying creating their visions.",
     "supplier": "",
     "sku": "",
     "sourcePath": "site-statusconcept.com/furniture-series/dining/florida-dining-table-with-miami-dining-armchairs"
@@ -297,8 +297,8 @@ export const catalogProducts = [
       "/product-images/catalog/florida-dining-table-with-orlando-dining-armchairs/01.webp"
     ],
     "tag": "",
-    "desc": "Our every day lifestyle is changing and our garden becomes a beautiful extension of our home. The consumer has realized that they can custom build their backyard dreams andare enjoying creat.",
-    "tagline": "Our every day lifestyle is changing and our garden becomes a beautiful extension of our home. The consumer has realized that they can custom build their backyard dreams andare enjoying creating their visions.",
+    "desc": "Our everyday lifestyle is changing and our garden becomes a beautiful extension of our home.",
+    "tagline": "Our everyday lifestyle is changing and our garden becomes a beautiful extension of our home. The consumer has realized that they can custom build their backyard dreams and are enjoying creating their visions.",
     "supplier": "",
     "sku": "",
     "sourcePath": "site-statusconcept.com/furniture-series/dining/florida-dining-table-with-orlando-dining-armchairs"
@@ -360,8 +360,8 @@ export const catalogProducts = [
       "/product-images/catalog/laguna-dining/01.webp"
     ],
     "tag": "",
-    "desc": "Our every day lifestyle is changing and our garden becomes a beautiful extension of our home. The consumer has realized that they can custom build their backyard dreams andare enjoying creat.",
-    "tagline": "Our every day lifestyle is changing and our garden becomes a beautiful extension of our home. The consumer has realized that they can custom build their backyard dreams andare enjoying creating their visions.",
+    "desc": "Our everyday lifestyle is changing and our garden becomes a beautiful extension of our home.",
+    "tagline": "Our everyday lifestyle is changing and our garden becomes a beautiful extension of our home. The consumer has realized that they can custom build their backyard dreams and are enjoying creating their visions.",
     "supplier": "",
     "sku": "",
     "sourcePath": "site-statusconcept.com/furniture-series/dining/dining-tables/laguna-dining"
@@ -379,8 +379,8 @@ export const catalogProducts = [
       "/product-images/catalog/laguna-dining-reno-armchair/01.webp"
     ],
     "tag": "",
-    "desc": "Our every day lifestyle is changing and our garden becomes a beautiful extension of our home. The consumer has realized that they can custom build their backyard dreams andare enjoying creat.",
-    "tagline": "Our every day lifestyle is changing and our garden becomes a beautiful extension of our home. The consumer has realized that they can custom build their backyard dreams andare enjoying creating their visions.",
+    "desc": "Our everyday lifestyle is changing and our garden becomes a beautiful extension of our home.",
+    "tagline": "Our everyday lifestyle is changing and our garden becomes a beautiful extension of our home. The consumer has realized that they can custom build their backyard dreams and are enjoying creating their visions.",
     "supplier": "",
     "sku": "",
     "sourcePath": "site-statusconcept.com/furniture-series/dining/dining-sets/laguna-dining-reno-armchair"
@@ -398,8 +398,8 @@ export const catalogProducts = [
       "/product-images/catalog/laguna-dining-chair/01.webp"
     ],
     "tag": "",
-    "desc": "Our every day lifestyle is changing and our garden becomes a beautiful extension of our home. The consumer has realized that they can custom build their backyard dreams andare enjoying creat.",
-    "tagline": "Our every day lifestyle is changing and our garden becomes a beautiful extension of our home. The consumer has realized that they can custom build their backyard dreams andare enjoying creating their visions.",
+    "desc": "Our everyday lifestyle is changing and our garden becomes a beautiful extension of our home.",
+    "tagline": "Our everyday lifestyle is changing and our garden becomes a beautiful extension of our home. The consumer has realized that they can custom build their backyard dreams and are enjoying creating their visions.",
     "supplier": "",
     "sku": "",
     "sourcePath": "site-statusconcept.com/furniture-series/dining/chairs/aluminium-6/laguna-dining-chair"
@@ -417,8 +417,8 @@ export const catalogProducts = [
       "/product-images/catalog/laguna-dining-set/01.webp"
     ],
     "tag": "",
-    "desc": "Our every day lifestyle is changing and our garden becomes a beautiful extension of our home. The consumer has realized that they can custom build their backyard dreams andare enjoying creat.",
-    "tagline": "Our every day lifestyle is changing and our garden becomes a beautiful extension of our home. The consumer has realized that they can custom build their backyard dreams andare enjoying creating their visions.",
+    "desc": "Our everyday lifestyle is changing and our garden becomes a beautiful extension of our home.",
+    "tagline": "Our everyday lifestyle is changing and our garden becomes a beautiful extension of our home. The consumer has realized that they can custom build their backyard dreams and are enjoying creating their visions.",
     "supplier": "",
     "sku": "",
     "sourcePath": "site-statusconcept.com/furniture-series/dining/laguna-dining-set"
@@ -436,8 +436,8 @@ export const catalogProducts = [
       "/product-images/catalog/laguna-dining-table-with-miami-dining-armchairs/01.webp"
     ],
     "tag": "",
-    "desc": "Our every day lifestyle is changing and our garden becomes a beautiful extension of our home. The consumer has realized that they can custom build their backyard dreams andare enjoying creat.",
-    "tagline": "Our every day lifestyle is changing and our garden becomes a beautiful extension of our home. The consumer has realized that they can custom build their backyard dreams andare enjoying creating their visions.",
+    "desc": "Our everyday lifestyle is changing and our garden becomes a beautiful extension of our home.",
+    "tagline": "Our everyday lifestyle is changing and our garden becomes a beautiful extension of our home. The consumer has realized that they can custom build their backyard dreams and are enjoying creating their visions.",
     "supplier": "",
     "sku": "",
     "sourcePath": "site-statusconcept.com/furniture-series/dining/laguna-dining-table-with-miami-dining-armchairs"
@@ -507,8 +507,8 @@ export const catalogProducts = [
       "/product-images/catalog/lisbon-dining-table-lisbon-armchair/01.webp"
     ],
     "tag": "",
-    "desc": "Our every day lifestyle is changing and our garden becomes a beautiful extension of our home. The consumer has realized that they can custom build their backyard dreams andare enjoying creat.",
-    "tagline": "Our every day lifestyle is changing and our garden becomes a beautiful extension of our home. The consumer has realized that they can custom build their backyard dreams andare enjoying creating their visions.",
+    "desc": "Our everyday lifestyle is changing and our garden becomes a beautiful extension of our home.",
+    "tagline": "Our everyday lifestyle is changing and our garden becomes a beautiful extension of our home. The consumer has realized that they can custom build their backyard dreams and are enjoying creating their visions.",
     "supplier": "",
     "sku": "",
     "sourcePath": "site-statusconcept.com/furniture-series/dining/dining-sets/lisbon-dining-table-lisbon-armchair"
@@ -579,8 +579,8 @@ export const catalogProducts = [
       "/product-images/catalog/miami-dining-chair/02.webp"
     ],
     "tag": "",
-    "desc": "Our every day lifestyle is changing and our garden becomes a beautiful extension of our home. The consumer has realized that they can custom build their backyard dreams andare enjoying creat.",
-    "tagline": "Our every day lifestyle is changing and our garden becomes a beautiful extension of our home. The consumer has realized that they can custom build their backyard dreams andare enjoying creating their visions.",
+    "desc": "Our everyday lifestyle is changing and our garden becomes a beautiful extension of our home.",
+    "tagline": "Our everyday lifestyle is changing and our garden becomes a beautiful extension of our home. The consumer has realized that they can custom build their backyard dreams and are enjoying creating their visions.",
     "supplier": "",
     "sku": "",
     "sourcePath": "site-statusconcept.com/furniture-series/dining/chairs/upholstered-6/miami-dining-chair"
@@ -659,8 +659,8 @@ export const catalogProducts = [
       "/product-images/catalog/munich-dining-table-with-reno-dining-armchairs/01.webp"
     ],
     "tag": "",
-    "desc": "Our every day lifestyle is changing and our garden becomes a beautiful extension of our home. The consumer has realized that they can custom build their backyard dreams andare enjoying creat.",
-    "tagline": "Our every day lifestyle is changing and our garden becomes a beautiful extension of our home. The consumer has realized that they can custom build their backyard dreams andare enjoying creating their visions.",
+    "desc": "Our everyday lifestyle is changing and our garden becomes a beautiful extension of our home.",
+    "tagline": "Our everyday lifestyle is changing and our garden becomes a beautiful extension of our home. The consumer has realized that they can custom build their backyard dreams and are enjoying creating their visions.",
     "supplier": "",
     "sku": "",
     "sourcePath": "site-statusconcept.com/furniture-series/dining/munich-dining-table-with-reno-dining-armchairs"
@@ -678,8 +678,8 @@ export const catalogProducts = [
       "/product-images/catalog/naples/01.webp"
     ],
     "tag": "",
-    "desc": "Our every day lifestyle is changing and our garden becomes a beautiful extension of our home. The consumer has realized that they can custom build their backyard dreams andare enjoying creat.",
-    "tagline": "Our every day lifestyle is changing and our garden becomes a beautiful extension of our home. The consumer has realized that they can custom build their backyard dreams andare enjoying creating their visions.",
+    "desc": "Our everyday lifestyle is changing and our garden becomes a beautiful extension of our home.",
+    "tagline": "Our everyday lifestyle is changing and our garden becomes a beautiful extension of our home. The consumer has realized that they can custom build their backyard dreams and are enjoying creating their visions.",
     "supplier": "",
     "sku": "",
     "sourcePath": "site-statusconcept.com/furniture-series/dining/naples"
@@ -723,8 +723,8 @@ export const catalogProducts = [
       "/product-images/catalog/orland-dining-set/01.webp"
     ],
     "tag": "",
-    "desc": "Our every day lifestyle is changing and our garden becomes a beautiful extension of our home. The consumer has realized that they can custom build their backyard dreams andare enjoying creat.",
-    "tagline": "Our every day lifestyle is changing and our garden becomes a beautiful extension of our home. The consumer has realized that they can custom build their backyard dreams andare enjoying creating their visions.",
+    "desc": "Our everyday lifestyle is changing and our garden becomes a beautiful extension of our home.",
+    "tagline": "Our everyday lifestyle is changing and our garden becomes a beautiful extension of our home. The consumer has realized that they can custom build their backyard dreams and are enjoying creating their visions.",
     "supplier": "",
     "sku": "",
     "sourcePath": "site-statusconcept.com/furniture-series/dining/orland-dining-set"
@@ -747,8 +747,8 @@ export const catalogProducts = [
       "/product-images/catalog/orlando-dining-armchair/06.webp"
     ],
     "tag": "",
-    "desc": "Our every day lifestyle is changing and our garden becomes a beautiful extension of our home. The consumer has realized that they can custom build their backyard dreams andare enjoying creat.",
-    "tagline": "Our every day lifestyle is changing and our garden becomes a beautiful extension of our home. The consumer has realized that they can custom build their backyard dreams andare enjoying creating their visions.",
+    "desc": "Our everyday lifestyle is changing and our garden becomes a beautiful extension of our home.",
+    "tagline": "Our everyday lifestyle is changing and our garden becomes a beautiful extension of our home. The consumer has realized that they can custom build their backyard dreams and are enjoying creating their visions.",
     "supplier": "",
     "sku": "",
     "sourcePath": "site-statusconcept.com/furniture-series/dining/chairs/aluminium-6/orlando-dining-armchair"
@@ -819,8 +819,8 @@ export const catalogProducts = [
       "/product-images/catalog/reno-dining-chair/02.webp"
     ],
     "tag": "",
-    "desc": "Our every day lifestyle is changing and our garden becomes a beautiful extension of our home. The consumer has realized that they can custom build their backyard dreams andare enjoying creat.",
-    "tagline": "Our every day lifestyle is changing and our garden becomes a beautiful extension of our home. The consumer has realized that they can custom build their backyard dreams andare enjoying creating their visions.",
+    "desc": "Our everyday lifestyle is changing and our garden becomes a beautiful extension of our home.",
+    "tagline": "Our everyday lifestyle is changing and our garden becomes a beautiful extension of our home. The consumer has realized that they can custom build their backyard dreams and are enjoying creating their visions.",
     "supplier": "",
     "sku": "",
     "sourcePath": "site-statusconcept.com/furniture-series/dining/chairs/upholstered-6/reno-dining-chair"
@@ -1056,8 +1056,8 @@ export const catalogProducts = [
       "/product-images/catalog/zanzibar-2/01.webp"
     ],
     "tag": "",
-    "desc": "Our every day lifestyle is changing and our garden becomes a beautiful extension of our home. The consumer has realized that they can custom build their backyard dreams andare enjoying creat.",
-    "tagline": "Our every day lifestyle is changing and our garden becomes a beautiful extension of our home. The consumer has realized that they can custom build their backyard dreams andare enjoying creating their visions.",
+    "desc": "Our everyday lifestyle is changing and our garden becomes a beautiful extension of our home.",
+    "tagline": "Our everyday lifestyle is changing and our garden becomes a beautiful extension of our home. The consumer has realized that they can custom build their backyard dreams and are enjoying creating their visions.",
     "supplier": "",
     "sku": "",
     "sourcePath": "site-statusconcept.com/furniture-series/dining/zanzibar-2"
@@ -1091,9 +1091,9 @@ export const catalogProducts = [
   {
     "id": "zanzibar-dinning",
     "fit": "wide",
-    "name": "Zanzibar Dinning",
+    "name": "Zanzibar Dining",
     "collection": "zanzibar-dinning",
-    "collectionName": "Zanzibar Dinning",
+    "collectionName": "Zanzibar Dining",
     "category": "dining",
     "categoryLabel": "Dining",
     "img": "/product-images/catalog/zanzibar-dinning/01.webp",
@@ -1103,8 +1103,8 @@ export const catalogProducts = [
       "/product-images/catalog/zanzibar-dinning/03.webp"
     ],
     "tag": "",
-    "desc": "Our every day lifestyle is changing and our garden becomes a beautiful extension of our home. The consumer has realized that they can custom build their backyard dreams andare enjoying creat.",
-    "tagline": "Our every day lifestyle is changing and our garden becomes a beautiful extension of our home. The consumer has realized that they can custom build their backyard dreams andare enjoying creating their visions.",
+    "desc": "Our everyday lifestyle is changing and our garden becomes a beautiful extension of our home.",
+    "tagline": "Our everyday lifestyle is changing and our garden becomes a beautiful extension of our home. The consumer has realized that they can custom build their backyard dreams and are enjoying creating their visions.",
     "supplier": "",
     "sku": "",
     "sourcePath": "site-statusconcept.com/furniture-series/dining/zanzibar-dinning"
@@ -1267,8 +1267,8 @@ export const catalogProducts = [
       "/product-images/catalog/bella-reclining-sofa-set/01.webp"
     ],
     "tag": "",
-    "desc": "Our every day lifestyle is changing and our garden becomes a beautiful extension of our home. The consumer has realized that they can custom build their backyard dreams andare enjoying creat.",
-    "tagline": "Our every day lifestyle is changing and our garden becomes a beautiful extension of our home. The consumer has realized that they can custom build their backyard dreams andare enjoying creating their visions.",
+    "desc": "Our everyday lifestyle is changing and our garden becomes a beautiful extension of our home.",
+    "tagline": "Our everyday lifestyle is changing and our garden becomes a beautiful extension of our home. The consumer has realized that they can custom build their backyard dreams and are enjoying creating their visions.",
     "supplier": "",
     "sku": "",
     "sourcePath": "site-statusconcept.com/furniture-series/lounge/sofa-sets/3-seats-sofas/bella-reclining-sofa-set"
@@ -1286,8 +1286,8 @@ export const catalogProducts = [
       "/product-images/catalog/bella-reclining-sofa-set-dining-set/01.webp"
     ],
     "tag": "",
-    "desc": "Our every day lifestyle is changing and our garden becomes a beautiful extension of our home. The consumer has realized that they can custom build their backyard dreams andare enjoying creat.",
-    "tagline": "Our every day lifestyle is changing and our garden becomes a beautiful extension of our home. The consumer has realized that they can custom build their backyard dreams andare enjoying creating their visions.",
+    "desc": "Our everyday lifestyle is changing and our garden becomes a beautiful extension of our home.",
+    "tagline": "Our everyday lifestyle is changing and our garden becomes a beautiful extension of our home. The consumer has realized that they can custom build their backyard dreams and are enjoying creating their visions.",
     "supplier": "",
     "sku": "",
     "sourcePath": "site-statusconcept.com/furniture-series/lounge/sofa-sets/bella-reclining-sofa-set-dining-set"
@@ -1335,7 +1335,7 @@ export const catalogProducts = [
     ],
     "tag": "",
     "desc": "Width Depth Height 3 Seater Right End Corner 273 97 58 Left End Chaise Lounger 181 97 58 Corner Unit 97 97 58 3 Seater Right or Left En 273 97 58 2 Seater Right or Left End 175 97 58 Middle.",
-    "tagline": "Width Depth Height 3 Seater Right End Corner 273 97 58 Left End Chaise Lounger 181 97 58 Corner Unit 97 97 58 3 Seater Right or Left En 273 97 58 2 Seater Right or Left End 175 97 58 Middle Unit 76 97 58 Our every day lifestyle is changing and our garden becomes a beautiful exten.",
+    "tagline": "Width Depth Height 3 Seater Right End Corner 273 97 58 Left End Chaise Lounger 181 97 58 Corner Unit 97 97 58 3 Seater Right or Left En 273 97 58 2 Seater Right or Left End 175 97 58 Middle Unit 76 97 58 Our everyday lifestyle is changing and our garden becomes a beautiful exten.",
     "supplier": "",
     "sku": "",
     "sourcePath": "site-statusconcept.com/furniture-series/lounge/aluminium-4/berlin-modular-sofa"
@@ -1473,8 +1473,8 @@ export const catalogProducts = [
       "/product-images/catalog/cairo-sofa-set/01.webp"
     ],
     "tag": "",
-    "desc": "Our every day lifestyle is changing and our garden becomes a beautiful extension of our home. The consumer has realized that they can custom build their backyard dreams andare enjoying creat.",
-    "tagline": "Our every day lifestyle is changing and our garden becomes a beautiful extension of our home. The consumer has realized that they can custom build their backyard dreams andare enjoying creating their visions.",
+    "desc": "Our everyday lifestyle is changing and our garden becomes a beautiful extension of our home.",
+    "tagline": "Our everyday lifestyle is changing and our garden becomes a beautiful extension of our home. The consumer has realized that they can custom build their backyard dreams and are enjoying creating their visions.",
     "supplier": "",
     "sku": "",
     "sourcePath": "site-statusconcept.com/furniture-series/lounge/upholstered-4/cairo-sofa-set"
@@ -1492,8 +1492,8 @@ export const catalogProducts = [
       "/product-images/catalog/dakkar/01.webp"
     ],
     "tag": "",
-    "desc": "Our every day lifestyle is changing and our garden becomes a beautiful extension of our home. The consumer has realized that they can custom build their backyard dreams andare enjoying creat.",
-    "tagline": "Our every day lifestyle is changing and our garden becomes a beautiful extension of our home. The consumer has realized that they can custom build their backyard dreams andare enjoying creating their visions.",
+    "desc": "Our everyday lifestyle is changing and our garden becomes a beautiful extension of our home.",
+    "tagline": "Our everyday lifestyle is changing and our garden becomes a beautiful extension of our home. The consumer has realized that they can custom build their backyard dreams and are enjoying creating their visions.",
     "supplier": "",
     "sku": "",
     "sourcePath": "site-statusconcept.com/furniture-series/lounge/upholstered-4/dakkar"
@@ -1511,8 +1511,8 @@ export const catalogProducts = [
       "/product-images/catalog/dijon/01.webp"
     ],
     "tag": "",
-    "desc": "Our every day lifestyle is changing and our garden becomes a beautiful extension of our home. The consumer has realized that they can custom build their backyard dreams andare enjoying creat.",
-    "tagline": "Our every day lifestyle is changing and our garden becomes a beautiful extension of our home. The consumer has realized that they can custom build their backyard dreams andare enjoying creating their visions.",
+    "desc": "Our everyday lifestyle is changing and our garden becomes a beautiful extension of our home.",
+    "tagline": "Our everyday lifestyle is changing and our garden becomes a beautiful extension of our home. The consumer has realized that they can custom build their backyard dreams and are enjoying creating their visions.",
     "supplier": "",
     "sku": "",
     "sourcePath": "site-statusconcept.com/furniture-series/lounge/upholstered-4/dijon"
@@ -1687,8 +1687,8 @@ export const catalogProducts = [
       "/product-images/catalog/luanda-2/01.webp"
     ],
     "tag": "",
-    "desc": "Our every day lifestyle is changing and our garden becomes a beautiful extension of our home. The consumer has realized that they can custom build their backyard dreams andare enjoying creat.",
-    "tagline": "Our every day lifestyle is changing and our garden becomes a beautiful extension of our home. The consumer has realized that they can custom build their backyard dreams andare enjoying creating their visions.",
+    "desc": "Our everyday lifestyle is changing and our garden becomes a beautiful extension of our home.",
+    "tagline": "Our everyday lifestyle is changing and our garden becomes a beautiful extension of our home. The consumer has realized that they can custom build their backyard dreams and are enjoying creating their visions.",
     "supplier": "",
     "sku": "",
     "sourcePath": "site-statusconcept.com/furniture-series/lounge/upholstered-4/luanda-2"
@@ -1757,8 +1757,8 @@ export const catalogProducts = [
       "/product-images/catalog/manila/01.webp"
     ],
     "tag": "",
-    "desc": "Our every day lifestyle is changing and our garden becomes a beautiful extension of our home. The consumer has realized that they can custom build their backyard dreams andare enjoying creat.",
-    "tagline": "Our every day lifestyle is changing and our garden becomes a beautiful extension of our home. The consumer has realized that they can custom build their backyard dreams andare enjoying creating their visions.",
+    "desc": "Our everyday lifestyle is changing and our garden becomes a beautiful extension of our home.",
+    "tagline": "Our everyday lifestyle is changing and our garden becomes a beautiful extension of our home. The consumer has realized that they can custom build their backyard dreams and are enjoying creating their visions.",
     "supplier": "",
     "sku": "",
     "sourcePath": "site-statusconcept.com/furniture-series/lounge/upholstered-4/manila"
@@ -1799,8 +1799,8 @@ export const catalogProducts = [
       "/product-images/catalog/miami-sofa-set/01.webp"
     ],
     "tag": "",
-    "desc": "Our every day lifestyle is changing and our garden becomes a beautiful extension of our home. The consumer has realized that they can custom build their backyard dreams andare enjoying creat.",
-    "tagline": "Our every day lifestyle is changing and our garden becomes a beautiful extension of our home. The consumer has realized that they can custom build their backyard dreams andare enjoying creating their visions.",
+    "desc": "Our everyday lifestyle is changing and our garden becomes a beautiful extension of our home.",
+    "tagline": "Our everyday lifestyle is changing and our garden becomes a beautiful extension of our home. The consumer has realized that they can custom build their backyard dreams and are enjoying creating their visions.",
     "supplier": "",
     "sku": "",
     "sourcePath": "site-statusconcept.com/furniture-series/bar-patio/upholstered-3/miami-sofa-set"
@@ -1842,8 +1842,8 @@ export const catalogProducts = [
       "/product-images/catalog/newport/01.webp"
     ],
     "tag": "",
-    "desc": "Our every day lifestyle is changing and our garden becomes a beautiful extension of our home. The consumer has realized that they can custom build their backyard dreams andare enjoying creat.",
-    "tagline": "Our every day lifestyle is changing and our garden becomes a beautiful extension of our home. The consumer has realized that they can custom build their backyard dreams andare enjoying creating their visions.",
+    "desc": "Our everyday lifestyle is changing and our garden becomes a beautiful extension of our home.",
+    "tagline": "Our everyday lifestyle is changing and our garden becomes a beautiful extension of our home. The consumer has realized that they can custom build their backyard dreams and are enjoying creating their visions.",
     "supplier": "",
     "sku": "",
     "sourcePath": "site-statusconcept.com/furniture-series/lounge/sofa-sets/3-seats-sofas/newport"
@@ -1910,8 +1910,8 @@ export const catalogProducts = [
       "/product-images/catalog/oxford-2/01.webp"
     ],
     "tag": "",
-    "desc": "Our every day lifestyle is changing and our garden becomes a beautiful extension of our home. The consumer has realized that they can custom build their backyard dreams andare enjoying creat.",
-    "tagline": "Our every day lifestyle is changing and our garden becomes a beautiful extension of our home. The consumer has realized that they can custom build their backyard dreams andare enjoying creating their visions.",
+    "desc": "Our everyday lifestyle is changing and our garden becomes a beautiful extension of our home.",
+    "tagline": "Our everyday lifestyle is changing and our garden becomes a beautiful extension of our home. The consumer has realized that they can custom build their backyard dreams and are enjoying creating their visions.",
     "supplier": "",
     "sku": "",
     "sourcePath": "site-statusconcept.com/furniture-series/lounge/sofa-sets/2-seats-sofas/oxford-2"
@@ -1929,8 +1929,8 @@ export const catalogProducts = [
       "/product-images/catalog/oxford-modular-sofa/01.webp"
     ],
     "tag": "",
-    "desc": "Our every day lifestyle is changing and our garden becomes a beautiful extension of our home. The consumer has realized that they can custom build their backyard dreams andare enjoying creat.",
-    "tagline": "Our every day lifestyle is changing and our garden becomes a beautiful extension of our home. The consumer has realized that they can custom build their backyard dreams andare enjoying creating their visions.",
+    "desc": "Our everyday lifestyle is changing and our garden becomes a beautiful extension of our home.",
+    "tagline": "Our everyday lifestyle is changing and our garden becomes a beautiful extension of our home. The consumer has realized that they can custom build their backyard dreams and are enjoying creating their visions.",
     "supplier": "",
     "sku": "",
     "sourcePath": "site-statusconcept.com/furniture-series/lounge/upholstered-4/oxford-modular-sofa"
@@ -1968,8 +1968,8 @@ export const catalogProducts = [
       "/product-images/catalog/reno-2/01.webp"
     ],
     "tag": "",
-    "desc": "Our every day lifestyle is changing and our garden becomes a beautiful extension of our home. The consumer has realized that they can custom build their backyard dreams andare enjoying creat.",
-    "tagline": "Our every day lifestyle is changing and our garden becomes a beautiful extension of our home. The consumer has realized that they can custom build their backyard dreams andare enjoying creating their visions.",
+    "desc": "Our everyday lifestyle is changing and our garden becomes a beautiful extension of our home.",
+    "tagline": "Our everyday lifestyle is changing and our garden becomes a beautiful extension of our home. The consumer has realized that they can custom build their backyard dreams and are enjoying creating their visions.",
     "supplier": "",
     "sku": "",
     "sourcePath": "site-statusconcept.com/furniture-series/lounge/upholstered-4/reno-2"
@@ -1989,8 +1989,8 @@ export const catalogProducts = [
       "/product-images/catalog/reno-balcony-set/03.webp"
     ],
     "tag": "",
-    "desc": "Our every day lifestyle is changing and our garden becomes a beautiful extension of our home. The consumer has realized that they can custom build their backyard dreams andare enjoying creat.",
-    "tagline": "Our every day lifestyle is changing and our garden becomes a beautiful extension of our home. The consumer has realized that they can custom build their backyard dreams andare enjoying creating their visions.",
+    "desc": "Our everyday lifestyle is changing and our garden becomes a beautiful extension of our home.",
+    "tagline": "Our everyday lifestyle is changing and our garden becomes a beautiful extension of our home. The consumer has realized that they can custom build their backyard dreams and are enjoying creating their visions.",
     "supplier": "",
     "sku": "",
     "sourcePath": "site-statusconcept.com/furniture-series/bar-patio/reno-balcony-set"
@@ -2012,8 +2012,8 @@ export const catalogProducts = [
       "/product-images/catalog/reno-sofa-set/05.webp"
     ],
     "tag": "",
-    "desc": "Our every day lifestyle is changing and our garden becomes a beautiful extension of our home. The consumer has realized that they can custom build their backyard dreams andare enjoying creat.",
-    "tagline": "Our every day lifestyle is changing and our garden becomes a beautiful extension of our home. The consumer has realized that they can custom build their backyard dreams andare enjoying creating their visions.",
+    "desc": "Our everyday lifestyle is changing and our garden becomes a beautiful extension of our home.",
+    "tagline": "Our everyday lifestyle is changing and our garden becomes a beautiful extension of our home. The consumer has realized that they can custom build their backyard dreams and are enjoying creating their visions.",
     "supplier": "",
     "sku": "",
     "sourcePath": "site-statusconcept.com/furniture-series/lounge/sofa-sets/2-seats-sofas/reno-sofa-set"
@@ -2139,8 +2139,8 @@ export const catalogProducts = [
       "/product-images/catalog/tahiti-2/01.webp"
     ],
     "tag": "",
-    "desc": "Our every day lifestyle is changing and our garden becomes a beautiful extension of our home. The consumer has realized that they can custom build their backyard dreams andare enjoying creat.",
-    "tagline": "Our every day lifestyle is changing and our garden becomes a beautiful extension of our home. The consumer has realized that they can custom build their backyard dreams andare enjoying creating their visions.",
+    "desc": "Our everyday lifestyle is changing and our garden becomes a beautiful extension of our home.",
+    "tagline": "Our everyday lifestyle is changing and our garden becomes a beautiful extension of our home. The consumer has realized that they can custom build their backyard dreams and are enjoying creating their visions.",
     "supplier": "",
     "sku": "",
     "sourcePath": "site-statusconcept.com/furniture-series/lounge/aluminium-4/tahiti-2"
@@ -2714,8 +2714,8 @@ export const catalogProducts = [
       "/product-images/catalog/antalya-daybed/03.webp"
     ],
     "tag": "",
-    "desc": "Our every day lifestyle is changing and our garden becomes a beautiful extension of our home. The consumer has realized that they can custom build their backyard dreams andare enjoying creat.",
-    "tagline": "Our every day lifestyle is changing and our garden becomes a beautiful extension of our home. The consumer has realized that they can custom build their backyard dreams andare enjoying creating their visions.",
+    "desc": "Our everyday lifestyle is changing and our garden becomes a beautiful extension of our home.",
+    "tagline": "Our everyday lifestyle is changing and our garden becomes a beautiful extension of our home. The consumer has realized that they can custom build their backyard dreams and are enjoying creating their visions.",
     "supplier": "",
     "sku": "",
     "sourcePath": "site-statusconcept.com/furniture-series/day-bed/aluminium-8/antalya-daybed"
@@ -2759,8 +2759,8 @@ export const catalogProducts = [
       "/product-images/catalog/bali-double-sun-lounger/02.webp"
     ],
     "tag": "",
-    "desc": "Our every day lifestyle is changing and our garden becomes a beautiful extension of our home. The consumer has realized that they can custom build their backyard dreams andare enjoying creat.",
-    "tagline": "Our every day lifestyle is changing and our garden becomes a beautiful extension of our home. The consumer has realized that they can custom build their backyard dreams andare enjoying creating their visions.",
+    "desc": "Our everyday lifestyle is changing and our garden becomes a beautiful extension of our home.",
+    "tagline": "Our everyday lifestyle is changing and our garden becomes a beautiful extension of our home. The consumer has realized that they can custom build their backyard dreams and are enjoying creating their visions.",
     "supplier": "",
     "sku": "",
     "sourcePath": "site-statusconcept.com/furniture-series/day-bed/aluminium-8/bali-double-sun-lounger"
@@ -2960,8 +2960,8 @@ export const catalogProducts = [
       "/product-images/catalog/maui/01.webp"
     ],
     "tag": "",
-    "desc": "Our every day lifestyle is changing and our garden becomes a beautiful extension of our home. The consumer has realized that they can custom build their backyard dreams andare enjoying creat.",
-    "tagline": "Our every day lifestyle is changing and our garden becomes a beautiful extension of our home. The consumer has realized that they can custom build their backyard dreams andare enjoying creating their visions.",
+    "desc": "Our everyday lifestyle is changing and our garden becomes a beautiful extension of our home.",
+    "tagline": "Our everyday lifestyle is changing and our garden becomes a beautiful extension of our home. The consumer has realized that they can custom build their backyard dreams and are enjoying creating their visions.",
     "supplier": "",
     "sku": "",
     "sourcePath": "site-statusconcept.com/furniture-series/day-bed/aluminium-8/maui"
@@ -3005,8 +3005,8 @@ export const catalogProducts = [
       "/product-images/catalog/oxford/01.webp"
     ],
     "tag": "",
-    "desc": "Our every day lifestyle is changing and our garden becomes a beautiful extension of our home. The consumer has realized that they can custom build their backyard dreams andare enjoying creat.",
-    "tagline": "Our every day lifestyle is changing and our garden becomes a beautiful extension of our home. The consumer has realized that they can custom build their backyard dreams andare enjoying creating their visions.",
+    "desc": "Our everyday lifestyle is changing and our garden becomes a beautiful extension of our home.",
+    "tagline": "Our everyday lifestyle is changing and our garden becomes a beautiful extension of our home. The consumer has realized that they can custom build their backyard dreams and are enjoying creating their visions.",
     "supplier": "",
     "sku": "",
     "sourcePath": "site-statusconcept.com/furniture-series/day-bed/upholstered-8/oxford"
@@ -3156,8 +3156,8 @@ export const catalogProducts = [
       "/product-images/catalog/tahiti/01.webp"
     ],
     "tag": "",
-    "desc": "Our every day lifestyle is changing and our garden becomes a beautiful extension of our home. The consumer has realized that they can custom build their backyard dreams andare enjoying creat.",
-    "tagline": "Our every day lifestyle is changing and our garden becomes a beautiful extension of our home. The consumer has realized that they can custom build their backyard dreams andare enjoying creating their visions.",
+    "desc": "Our everyday lifestyle is changing and our garden becomes a beautiful extension of our home.",
+    "tagline": "Our everyday lifestyle is changing and our garden becomes a beautiful extension of our home. The consumer has realized that they can custom build their backyard dreams and are enjoying creating their visions.",
     "supplier": "",
     "sku": "",
     "sourcePath": "site-statusconcept.com/furniture-series/sun-lounger/upholstered-2/tahiti"

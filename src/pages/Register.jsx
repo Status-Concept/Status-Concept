@@ -4,6 +4,7 @@ import { useAuth } from '../context/AuthContext'
 import { useToast } from '../context/ToastContext'
 import LocalizedLink from '../components/LocalizedLink'
 import { getLangFromPath, withLang } from '../utils/language'
+import BrandLogo from '../components/BrandLogo'
 
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
@@ -51,7 +52,9 @@ export default function Register() {
   return (
     <main className="auth-page">
       <section className="auth-card">
-        <LocalizedLink to="/" className="auth-logo ff">ST<span>A</span>TVS</LocalizedLink>
+        <LocalizedLink to="/" className="auth-logo" aria-label="STATVS home">
+          <BrandLogo alt="" />
+        </LocalizedLink>
         <span className="fs sl">{isPortuguese ? 'Nova conta' : 'New account'}</span>
         <h1 className="ff">{isPortuguese ? 'Criar área de cliente' : 'Create your client account'}</h1>
         <p className="fs auth-copy">{isPortuguese ? 'Guarde favoritos, prepare pedidos de orçamento e mantenha os seus dados atualizados.' : 'Save favorites, prepare proposal requests and keep your details up to date.'}</p>

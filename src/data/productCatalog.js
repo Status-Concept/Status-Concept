@@ -13,8 +13,12 @@ const sicilyModularSet = {
   collectionName: 'Sicily',
   category: 'lounge',
   categoryLabel: 'Lounge',
-  img: sicilyModularSetFullImg,
-  images: [sicilyModularSetFullImg, sicilyCornerImg, sicilyCentreImg, sicilyOttomanImg],
+  // Keep the catalogue surface isolated and quiet. The lifestyle image is
+  // reserved for the Talenti-style hover reveal on product cards.
+  img: sicilyCornerImg,
+  heroImage: sicilyModularSetFullImg,
+  images: [sicilyCornerImg, sicilyCentreImg, sicilyOttomanImg],
+  subcategories: ['upholstered', 'aluminium'],
   tag: 'Popular',
   desc: 'A contemporary modular lounge system for generous outdoor living areas.',
 }

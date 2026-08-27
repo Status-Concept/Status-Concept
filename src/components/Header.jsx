@@ -6,6 +6,7 @@ import LocalizedLink from './LocalizedLink'
 import SocialLinks from './SocialIcons'
 import { CONTACT } from '../data/showrooms'
 import { PRODUCT_MENU } from '../data/productMenu'
+import BrandLogo from './BrandLogo'
 
 const SearchPanel = lazy(() => import('./SearchPanel'))
 
@@ -95,14 +96,9 @@ export default function Header({ onOpenMenu }) {
           </div>
         </div>
       </div>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "18px 48px", maxWidth: "var(--max-width)", margin: "0 auto" }}>
-        <LocalizedLink to="/" aria-label="STATVS — home" style={{ display: "block", lineHeight: 1, textDecoration: "none" }}>
-          <span className="logo-serif" style={{ fontSize: 28, fontWeight: 400, letterSpacing: 8, color: "var(--text-dark)" }}>
-            ST<span style={{ color: "var(--accent)" }}>A</span>TVS
-          </span>
-          <div className="fs" style={{ fontSize: 9, letterSpacing: 2, color: "var(--text-grey)", marginTop: 2 }}>
-            OUTDOOR FURNITURE SPECIALISTS
-          </div>
+      <div className="header-main" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "12px 48px", maxWidth: "var(--max-width)", margin: "0 auto" }}>
+        <LocalizedLink to="/" aria-label="STATVS home" className="brand-logo-link brand-logo-link--header">
+          <BrandLogo className="brand-logo--header" alt="" fetchPriority="high" />
         </LocalizedLink>
         <nav className="fs nav-desktop" style={{
           display: "flex", gap: "32px", alignItems: "center", fontSize: "12px",
