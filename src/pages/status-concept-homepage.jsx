@@ -52,7 +52,7 @@ export default function Homepage() {
                 key={image}
                 className={`home-hero-slide${heroSlide === index ? " is-active" : ""}`}
                 src={image}
-                alt={heroSlide === index ? "A considered outdoor living space in the Algarve" : ""}
+                alt={heroSlide === index ? `Outdoor living setting ${index + 1} of ${heroImages.length}` : ""}
                 aria-hidden={heroSlide === index ? undefined : true}
               />
             ))}
