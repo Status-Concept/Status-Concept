@@ -11,7 +11,6 @@ import { demoProducts, demoProductIds } from "../data/demoProducts";
 import { limitPageImages } from "../config/contentLimits";
 import { getProductFacets, normalizeProduct } from "../data/productTaxonomy";
 import { getLangFromPath, withLang } from "../utils/language";
-import sicilyModularSetFullImg from "../assets/images/sicily-modular-set-full.webp";
 import sicilyCornerImg from "../assets/images/sicily-corner.jpg";
 import sicilyCentreImg from "../assets/images/sicily-centre.jpg";
 import sicilyOttomanImg from "../assets/images/sicily-ottoman.jpg";
@@ -72,7 +71,7 @@ const PRODUCT_DETAIL = () => {
       category: "lounge",
       tag: "Popular",
       tagline: "A contemporary modular outdoor sofa with generous proportions and flexible configurations.",
-      images: [sicilyModularSetFullImg, sicilyCornerImg, sicilyCentreImg, sicilyOttomanImg],
+      images: [sicilyCornerImg, sicilyCentreImg, sicilyOttomanImg],
       specs: [
         { label: "Type", value: "Modular Sofa Set" },
         { label: "Frame", value: "Premium Aluminium" },
@@ -99,6 +98,13 @@ const PRODUCT_DETAIL = () => {
   const images = limitPageImages(product.images?.length ? product.images : [product.image || sicilyCornerImg], product);
   const safeActiveImg = activeImg < images.length ? activeImg : 0;
   const goTo = (path) => navigate(withLang(path, currentLang));
+  const goBack = () => {
+    if (window.history.length > 1) {
+      navigate(-1);
+      return;
+    }
+    goTo("/products");
+  };
 
   // Carry the product (and a sensible interest) into the enquiry form.
   const INTEREST_BY_CATEGORY = { shade: "Shade Solutions", kitchen: "Outdoor Kitchens", lounge: "Outdoor Furniture", dining: "Outdoor Furniture", sunlounger: "Outdoor Furniture", decor: "Decor & Leisure", leisure: "Decor & Leisure" };
@@ -215,6 +221,13 @@ const PRODUCT_DETAIL = () => {
         </section>
       )}
 
+      <div className="rd-detail-topbar">
+        <button type="button" className="rd-detail-back" onClick={goBack}>
+          <span aria-hidden="true">←</span>
+          <span>Back</span>
+        </button>
+      </div>
+
       <main className="rd-detail-layout">
         <section className="rd-gallery-sticky" aria-label="Product gallery">
           <div className="rd-thumbs">
@@ -255,7 +268,6 @@ const PRODUCT_DETAIL = () => {
         </section>
 
         <aside className="rd-product-panel">
-          <button type="button" className="rd-back-link" onClick={() => goTo("/products")}>Back to products</button>
           <span className="rd-kicker fs" style={{ marginTop: 28 }}>{product.collection} Collection</span>
           <h1 className="rd-title ff" data-no-translate style={{ color: "var(--text-dark)", fontSize: "clamp(32px, 4vw, 48px)", fontWeight: 400 }}>{product.name}</h1>
           <div className="la" style={{ marginBottom: 20 }} />

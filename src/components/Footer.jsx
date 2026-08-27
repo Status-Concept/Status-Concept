@@ -1,6 +1,7 @@
 import LocalizedLink from './LocalizedLink'
 import SocialLinks from './SocialIcons'
 import { CONTACT } from '../data/showrooms'
+import BrandLogo from './BrandLogo'
 
 const ROUTES = {
   "Lounge": "/products?cat=lounge",
@@ -27,8 +28,9 @@ export default function Footer() {
       <div className="footer-grid" style={{display:"grid",gridTemplateColumns:"1.5fr 1fr 1fr 1fr 1fr",gap:40,maxWidth:"var(--max-width)",margin:"0 auto",paddingBottom:48,borderBottom:"1px solid rgba(255,255,255,.1)"}}>
         <div>
           <div style={{marginBottom:20}}>
-            <span className="logo-serif" style={{fontSize:24,fontWeight:400,letterSpacing:8}}>ST<span style={{color:"var(--accent)"}}>A</span>TVS</span>
-            <div className="fs" style={{fontSize:10,letterSpacing:3,color:"rgba(255,255,255,.4)",marginTop:2}}>OUTDOOR FURNITURE SPECIALISTS</div>
+            <LocalizedLink to="/" aria-label="STATVS home" className="brand-logo-link brand-logo-link--footer">
+              <BrandLogo variant="footer" className="brand-logo--footer" alt="" loading="lazy" />
+            </LocalizedLink>
           </div>
           <p className="fs" style={{fontSize:13,lineHeight:1.7,color:"rgba(255,255,255,.55)",fontWeight:300}}>Outdoor furniture specialists since 2013. Two Algarve showrooms and European makers, selected for life outside.</p>
           <div style={{display:"flex",gap:"2px",marginTop:20}}>

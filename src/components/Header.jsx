@@ -1,17 +1,20 @@
 import { lazy, Suspense, useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
+import { useAuth } from '../context/AuthContext'
 import { getLangFromPath, stripLangFromPath, withLang } from '../utils/language'
 import LocalizedLink from './LocalizedLink'
 import SocialLinks from './SocialIcons'
 import { CONTACT } from '../data/showrooms'
 import { PRODUCT_MENU } from '../data/productMenu'
-import { SITE_FEATURES } from '../config/sitePhase'
+import BrandLogo from './BrandLogo'
 
 const SearchPanel = lazy(() => import('./SearchPanel'))
 
 export default function Header({ onOpenMenu }) {
   const navigate = useNavigate()
   const location = useLocation()
+  const { isAuthenticated, profile, user } = useAuth()
+  const firstName = (profile?.name || user?.email || "").split(/[\s@]/)[0]
   const [scrolled, setScrolled] = useState(false)
   const [langOpen, setLangOpen] = useState(false)
   const [productsOpen, setProductsOpen] = useState(false)
@@ -64,43 +67,45 @@ export default function Header({ onOpenMenu }) {
           <a href={CONTACT.emailHref} data-no-translate style={{ color: "inherit", textDecoration: "none" }}>{CONTACT.email}</a>
         </div>
         <div style={{ display: "flex", gap: "12px", alignItems: "center" }}>
-          <button
-            type="button"
+          <LocalizedLink
             className="fs"
-            aria-label={currentLang === 'pt' ? 'Login' : 'Login'}
-            onClick={() => navigate(withLang('/login', currentLang))}
+            data-no-translate={isAuthenticated ? true : undefined}
+            to={isAuthenticated ? "/cliente" : "/login"}
             style={{
-              background: "transparent",
+              padding: "6px 16px",
               border: "1px solid var(--mid-grey)",
+              background: "transparent",
               color: "var(--text-dark)",
-              cursor: "pointer",
-              fontSize: "11px",
-              letterSpacing: "2px",
-              padding: "8px 16px",
+              textDecoration: "none",
+              borderRadius: 2, cursor: "pointer", fontSize: 12, letterSpacing: 1.5,
+              textTransform: "uppercase", transition: "color .3s, border-color .3s",
+            }}
+            onMouseEnter={e => {
+              e.currentTarget.style.borderColor = "var(--accent)"
+              e.currentTarget.style.color = "var(--accent)"
+            }}
+            onMouseLeave={e => {
+              e.currentTarget.style.borderColor = "var(--mid-grey)"
+              e.currentTarget.style.color = "var(--text-grey)"
             }}
           >
-            LOGIN
-          </button>
+            {isAuthenticated ? (firstName || "A Minha Conta") : "Login"}
+          </LocalizedLink>
           <div style={{ display: "flex", gap: "2px", alignItems: "center" }}>
             <SocialLinks linkStyle={{ color: "var(--text-dark)" }} />
           </div>
         </div>
       </div>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "18px 48px", maxWidth: "var(--max-width)", margin: "0 auto" }}>
-        <LocalizedLink to="/" aria-label="STATVS — home" style={{ display: "block", lineHeight: 1, textDecoration: "none" }}>
-          <span className="logo-serif" style={{ fontSize: 28, fontWeight: 400, letterSpacing: 8, color: "var(--text-dark)" }}>
-            ST<span style={{ color: "var(--accent)" }}>A</span>TVS
-          </span>
-          <div className="fs" style={{ fontSize: 9, letterSpacing: 2, color: "var(--text-grey)", marginTop: 2 }}>
-            OUTDOOR FURNITURE SPECIALISTS
-          </div>
+      <div className="header-main" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "12px 48px", maxWidth: "var(--max-width)", margin: "0 auto" }}>
+        <LocalizedLink to="/" aria-label="STATVS home" className="brand-logo-link brand-logo-link--header">
+          <BrandLogo className="brand-logo--header" alt="" fetchPriority="high" />
         </LocalizedLink>
         <nav className="fs nav-desktop" style={{
           display: "flex", gap: "32px", alignItems: "center", fontSize: "12px",
           letterSpacing: "2px", textTransform: "uppercase",
           color: "var(--text-dark)",
         }}>
-          {SITE_FEATURES.products && <div
+          <div
             style={{ position: "relative" }}
             onMouseEnter={() => setProductsOpen(true)}
             onMouseLeave={closeProducts}
@@ -164,13 +169,13 @@ export default function Header({ onOpenMenu }) {
                 </div>
               </div>
             )}
-          </div>}
-          {[[SITE_FEATURES.showrooms && "Showrooms", SITE_FEATURES.showrooms && "/about"], ["Contact", "/contact"]].filter(([label]) => label).map(([label, path]) => (
+          </div>
+          {[["Projects", "/projects"], ["Showrooms", "/about"], ["Contact", "/contact"]].map(([label, path]) => (
             <LocalizedLink key={label} className="nl" to={path} style={{ color: "inherit" }}>{label}</LocalizedLink>
           ))}
         </nav>
         <div className="header-actions">
-          {SITE_FEATURES.search && <button
+          <button
             type="button"
             className="header-search-trigger fs"
             aria-label={currentLang === 'pt' ? 'Pesquisar' : 'Search'}
@@ -184,7 +189,7 @@ export default function Header({ onOpenMenu }) {
               <path d="m15.7 15.7 4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
             </svg>
             <span>Search</span>
-          </button>}
+          </button>
           <div data-no-translate style={{ position: "relative" }}>
             <button
               type="button"

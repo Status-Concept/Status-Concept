@@ -56,12 +56,17 @@ const cleanValue = (value) => {
   return text;
 };
 
+const cleanProductName = (value) => cleanValue(value)
+  .replace(/\bDinning\b/g, "Dining");
+
 const stripHtml = (html = "") => cleanValue(decodeEntities(html)
   .replace(/<style[\s\S]*?<\/style>/gi, " ")
   .replace(/<script[\s\S]*?<\/script>/gi, " ")
   .replace(/<br\s*\/?>/gi, "\n")
   .replace(/<[^>]*>/g, " ")
   .replace(/—/g, "-")
+  .replace(/\bevery day lifestyle\b/gi, "everyday lifestyle")
+  .replace(/\bandare\b/gi, "and are")
   .replace(/\s+/g, " "));
 
 const truncate = (text, max = 190) => {
@@ -69,8 +74,10 @@ const truncate = (text, max = 190) => {
   if (value.length <= max) return value;
   const cut = value.slice(0, max);
   const lastStop = Math.max(cut.lastIndexOf(". "), cut.lastIndexOf("! "));
-  if (lastStop > max * 0.5) return cut.slice(0, lastStop + 1);
-  return `${cut.trim().replace(/[,.;:]+$/, "")}.`;
+  if (lastStop > max * 0.4) return cut.slice(0, lastStop + 1);
+  const lastWord = cut.lastIndexOf(" ");
+  const safeCut = lastWord > max * 0.6 ? cut.slice(0, lastWord) : cut;
+  return `${safeCut.trim().replace(/[,.;:]+$/, "")}.`;
 };
 
 const readText = (file) => {
@@ -134,7 +141,7 @@ function resolveSourceDir(item) {
 function parseScrapeProduct(dir, item) {
   const jsonFile = path.join(dir, "product.json");
   const record = fs.existsSync(jsonFile) ? JSON.parse(readText(jsonFile)) : {};
-  const name = cleanValue(decodeEntities(record.name)) || item.name;
+  const name = cleanProductName(decodeEntities(record.name)) || cleanProductName(item.name);
   const short = stripHtml(record.short_description || "");
   const long = stripHtml(record.description || "");
   const brand = cleanValue(record.brands?.[0]?.name);
@@ -151,7 +158,7 @@ function parseScrapeProduct(dir, item) {
 function parsePtProduct(dir, item) {
   const infoFile = path.join(dir, "info.md");
   const table = fs.existsSync(infoFile) ? readInfoTable(readText(infoFile)) : {};
-  const name = cleanValue(table.Nome) || item.name;
+  const name = cleanProductName(table.Nome) || cleanProductName(item.name);
   const supplier = cleanValue(table["Marca / Fornecedor"]);
   const originalModel = cleanValue(table["Modelo original do fornecedor"]);
   const label = categoryLabels[item.category] || "Outdoor living";

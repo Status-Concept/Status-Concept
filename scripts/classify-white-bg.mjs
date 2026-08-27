@@ -30,7 +30,7 @@ for (const m of kitchenSrc.matchAll(/id:\s*'([^']+)',[\s\S]*?\n\s*img:\s*(kitche
 
 // --- assemble every product shown on the site ---
 const items = [
-  { id: "sicily-modular-set", file: path.join(assets, "sicily-modular-set-full.webp") },
+  { id: "sicily-modular-set", file: path.join(assets, "sicily-corner.jpg") },
   ...glatzProducts.map((p) => ({ id: p.id, file: path.join(pub, p.img) })),
   ...kitchenItems,
   ...catalogProducts.filter((p) => p.category !== "kitchen").map((p) => ({ id: p.id, file: path.join(pub, p.img) })),
@@ -39,6 +39,9 @@ const items = [
 const WHITE = 244;          // channel threshold for "near white"
 const PASS_FRACTION = 0.85; // border must be this white to count as white-bg
 const N = 64;               // downsample size
+// Known studio images whose soft floor shadow lowers the border score even
+// though the presentation is intentionally isolated on white.
+const FORCE_WHITE = new Set(["sicily-modular-set"]);
 
 async function borderWhiteFraction(file) {
   const { data, info } = await sharp(file).resize(N, N, { fit: "fill" }).flatten({ background: "#ffffff" }).raw().toBuffer({ resolveWithObject: true });
@@ -65,8 +68,8 @@ for (const it of items) {
   }
 }
 
-const noImage = results.filter((r) => !r.whiteBg).map((r) => r.id);
-const whiteBg = results.filter((r) => r.whiteBg).map((r) => r.id);
+const noImage = results.filter((r) => !r.whiteBg && !FORCE_WHITE.has(r.id)).map((r) => r.id);
+const whiteBg = results.filter((r) => r.whiteBg || FORCE_WHITE.has(r.id)).map((r) => r.id);
 
 // Distribution to help calibrate
 const buckets = {};

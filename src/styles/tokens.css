@@ -18,7 +18,6 @@
   --black: #1a1815;
   --font-heading: 'Outfit', 'Helvetica Neue', sans-serif;
   --font-body: 'Outfit', 'Helvetica Neue', sans-serif;
-  --font-serif: 'Cormorant Garamond', Georgia, serif; /* logo STATVS apenas */
   --max-width: 1240px;
   --max-width-wide: 1800px;
   --section-padding: clamp(60px, 10vw, 120px);

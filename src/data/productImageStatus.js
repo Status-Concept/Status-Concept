@@ -126,7 +126,6 @@ export const noImageProducts = new Set([
   "saint-tropez-sun-lounger",
   "santorini-lounge",
   "seville",
-  "sicily-modular-set",
   "side-table-tray",
   "st-tropez-high-side-table",
   "st-tropez-low-side-table",
