@@ -117,9 +117,9 @@ const STATUS_CONCEPT_GLATZ = () => {
               if (!p) return null;
               return (
                 <article key={id} className="rd-product-card" style={{ background: "#fff", borderRadius: 4, overflow: "hidden", border: "1px solid var(--sand-l)" }}>
-                  <div style={{ height: 240, padding: 20, display: "flex", alignItems: "center", justifyContent: "center", background: "#fff", position: "relative" }}>
+                  <div className="glatz-model-media" style={{ display: "flex", alignItems: "center", justifyContent: "center", background: "#fff", position: "relative" }}>
                     {p.tag && <span className={`tag ${p.tag === "New" ? "tag-new" : "tag-popular"}`} style={{ position: "absolute", top: 12, left: 12 }}>{p.tag}</span>}
-                    <img src={p.img} alt={p.name} style={{ maxWidth: "100%", maxHeight: "100%", objectFit: "contain" }} />
+                    <img className="glatz-model-image" src={p.img} alt={p.name} />
                   </div>
                   <div style={{ padding: "18px 20px 20px", borderTop: "1px solid var(--sand-l)" }}>
                     <h3 className="ff" style={{ fontSize: 19, fontWeight: 400, marginBottom: 6 }}><LocalizedLink className="rd-card-link" data-no-translate to={`/product/${id}`}>{p.name}</LocalizedLink></h3>

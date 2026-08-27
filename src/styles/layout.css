@@ -427,6 +427,16 @@
   background: var(--white);
 }
 .rd-product-card.kitchen-product:hover .rd-product-media img { transform: none; }
+.glatz-model-media {
+  height: clamp(250px, 22vw, 320px);
+  padding: 8px;
+}
+.glatz-model-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
 .rd-product-card.contain-media .rd-product-media img {
   object-fit: contain;
   object-position: center;
