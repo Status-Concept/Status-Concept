@@ -13,6 +13,7 @@ import { SITE_FEATURES } from './config/sitePhase'
 // Route-level code splitting: only the homepage ships in the entry chunk.
 const Products = lazy(() => import('./pages/status-concept-products'))
 const ProductDetail = lazy(() => import('./pages/status-concept-product-detail'))
+const Glatz = lazy(() => import('./pages/status-concept-glatz'))
 const About = lazy(() => import('./pages/status-concept-about'))
 const Contact = lazy(() => import('./pages/status-concept-contact'))
 const Legal = lazy(() => import('./pages/status-concept-legal'))
@@ -36,6 +37,7 @@ const routesFor = (prefix = '') => (
     <Route path={prefix || '/'} element={<Homepage />} />
     {SITE_FEATURES.products && <Route path={`${prefix}/products`} element={<Products />} />}
     {SITE_FEATURES.products && <Route path={`${prefix}/product/:id`} element={<ProductDetail />} />}
+    {SITE_FEATURES.products && <Route path={`${prefix}/glatz-parasols`} element={<Glatz />} />}
     {SITE_FEATURES.showrooms && <Route path={`${prefix}/about`} element={<About />} />}
     <Route path={`${prefix}/contact`} element={<Contact />} />
     <Route path={`${prefix}/login`} element={<Login />} />

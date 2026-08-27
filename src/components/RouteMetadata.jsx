@@ -4,6 +4,7 @@ import { getLangFromPath, stripLangFromPath } from '../utils/language'
 
 const PAGE_TITLES = {
   '/products': ['Products', 'Produtos'],
+  '/glatz-parasols': ['Glatz Parasols', 'Chapéus de sol Glatz'],
   '/about': ['About & Showrooms', 'Sobre nós e showrooms'],
   '/contact': ['Contact & Showroom Visits', 'Contacto e visitas ao showroom'],
   '/login': ['Login', 'Entrar'],

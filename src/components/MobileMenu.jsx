@@ -6,7 +6,6 @@ import { getLangFromPath } from '../utils/language'
 const NAV_ROUTES = {
   "Products": "/products",
   "Furniture": "/products",
-  "Glatz Parasols": "/glatz-parasols",
   "Lounge": "/products?cat=lounge",
   "Dining": "/products?cat=dining",
   "Sun Loungers": "/products?cat=sunlounger",
@@ -18,7 +17,7 @@ const NAV_ROUTES = {
   "Rope": "/products?cat=lounge&subcat=rope",
   "Aluminium": "/products?cat=lounge&subcat=aluminium",
   "Pergolas": "/products?cat=shade&subcat=pergolas",
-  "Parasols": "/products?cat=shade&subcat=parasols",
+  "Glatz Parasols": "/glatz-parasols",
   "Awnings": "/products?cat=shade&subcat=awnings",
   "Outdoor Kitchens": "/products?cat=kitchen",
   "Modular Kitchens": "/products?cat=kitchen&subcat=modular",
@@ -80,7 +79,7 @@ export default function MobileMenu({ open, onClose }) {
         <nav style={{display:"flex",flexDirection:"column"}}>
           {[
             {l:"Products",s:["Lounge","Upholstered","Rope","Aluminium","Dining","Sun Loungers","Day Beds","Coffee Tables","Bar & Patio"]},
-            {l:"Shade Solutions",s:["Pergolas","Parasols","Awnings"]},
+            {l:"Shade Solutions",s:["Pergolas","Glatz Parasols","Awnings"]},
             {l:"Outdoor Kitchens",s:["Modular Kitchens","Built-in Kitchens","Attachments & Accessories","BBQs"]},
             {l:"Leisure",s:["Sound Systems"]},
             {l:"Projects",s:[]},
