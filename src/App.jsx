@@ -2,6 +2,7 @@ import { lazy, Suspense } from 'react'
 import { Routes, Route } from 'react-router-dom'
 import { AuthProvider } from './context/AuthContext'
 import { ToastProvider } from './context/ToastContext'
+import { FavoritesProvider } from './FavoritesContext'
 import ConsentNotice from './components/ConsentNotice'
 import TranslationLayer from './components/TranslationLayer'
 import Homepage from './pages/status-concept-homepage'
@@ -48,20 +49,22 @@ const routesFor = (prefix = '') => (
 function App() {
   return (
     <AuthProvider>
-      <ToastProvider>
-        <ScrollToTop />
-        <RouteMetadata />
-        <TranslationLayer />
-        <Suspense fallback={<div style={{ minHeight: '100vh', background: 'var(--cream)' }} aria-busy="true" />}>
-          <Routes>
-            {routesFor()}
-            {routesFor('/en')}
-            {routesFor('/pt')}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </Suspense>
-        <ConsentNotice />
-      </ToastProvider>
+      <FavoritesProvider>
+        <ToastProvider>
+          <ScrollToTop />
+          <RouteMetadata />
+          <TranslationLayer />
+          <Suspense fallback={<div style={{ minHeight: '100vh', background: 'var(--cream)' }} aria-busy="true" />}>
+            <Routes>
+              {routesFor()}
+              {routesFor('/en')}
+              {routesFor('/pt')}
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </Suspense>
+          <ConsentNotice />
+        </ToastProvider>
+      </FavoritesProvider>
     </AuthProvider>
   )
 }
