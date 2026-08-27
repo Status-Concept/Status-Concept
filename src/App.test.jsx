@@ -37,6 +37,20 @@ describe('routing', () => {
     expect(await screen.findAllByText(/Almancil/i)).not.toHaveLength(0)
   })
 
+  it('resolves disabled future-phase links without a 404', async () => {
+    renderAt('/en/projects')
+    expect(await screen.findByText('This feature is planned for a future phase.')).toBeTruthy()
+
+    cleanup()
+    renderAt('/en/after-care')
+    expect(await screen.findByText('This feature is planned for a future phase.')).toBeTruthy()
+  })
+
+  it('mounts the registration page from the login flow', async () => {
+    renderAt('/en/register')
+    expect(await screen.findByText('Create your client account')).toBeTruthy()
+  })
+
   it('does not expose unknown public product ids', async () => {
     renderAt('/en/product/private-draft-that-must-not-exist')
     expect(await screen.findByText('This page does not exist.')).toBeTruthy()

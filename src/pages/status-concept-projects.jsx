@@ -55,7 +55,16 @@ const PROJECTS_PAGE = () => {
             <article
               key={project.name}
               className={`rd-project-card ${index === 0 || index === 4 ? "wide" : ""} ${index === 1 ? "tall" : ""}`}
+              role="button"
+              tabIndex={0}
+              aria-label={`View project ${project.name}`}
               onClick={() => setActiveProject(projects.indexOf(project))}
+              onKeyDown={(event) => {
+                if (event.key === "Enter" || event.key === " ") {
+                  event.preventDefault();
+                  setActiveProject(projects.indexOf(project));
+                }
+              }}
             >
               <div className="rd-project-media">
                 <img src={project.img} alt={project.name} />

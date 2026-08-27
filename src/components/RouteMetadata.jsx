@@ -5,9 +5,13 @@ import { getLangFromPath, stripLangFromPath } from '../utils/language'
 const PAGE_TITLES = {
   '/products': ['Products', 'Produtos'],
   '/glatz-parasols': ['Glatz Parasols', 'Chapéus de sol Glatz'],
+  '/projects': ['Projects', 'Projetos'],
+  '/after-care': ['After Care', 'After Care'],
   '/about': ['About & Showrooms', 'Sobre nós e showrooms'],
   '/contact': ['Contact & Showroom Visits', 'Contacto e visitas ao showroom'],
   '/login': ['Login', 'Entrar'],
+  '/register': ['Register', 'Registar'],
+  '/registar': ['Register', 'Registar'],
   '/privacy': ['Privacy Policy', 'Política de privacidade'],
   '/privacidade': ['Privacy Policy', 'Política de privacidade'],
   '/cookies': ['Cookie Policy', 'Política de cookies'],

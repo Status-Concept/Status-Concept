@@ -86,8 +86,9 @@ const STATUS_CONCEPT_GLATZ = () => {
       <section id="glatz-cats" data-animate style={{ padding: "0 48px var(--section-padding)", ...S("glatz-cats") }}>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(170px, 1fr))", gap: 14, maxWidth: 1240, margin: "0 auto" }}>
           {CATEGORIES.map((c) => (
-            <div key={c.key} onClick={() => setActiveCat(c.key)}
+            <button key={c.key} type="button" aria-pressed={activeCat === c.key} onClick={() => setActiveCat(c.key)}
               style={{ position: "relative", height: 230, cursor: "pointer", overflow: "hidden", borderRadius: 4,
+                border: "none", padding: 0, background: "none", font: "inherit", textAlign: "left",
                 outline: activeCat === c.key ? "2px solid var(--gold)" : "1px solid var(--sand-l)", outlineOffset: -2,
                 transition: "outline-color .3s" }}>
               <img src={c.img} alt={c.label} style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover",
@@ -98,7 +99,7 @@ const STATUS_CONCEPT_GLATZ = () => {
                 <span className="fs" style={{ fontSize: 9, letterSpacing: 2, textTransform: "uppercase", color: "var(--gold-l)", display: "block", marginBottom: 4 }}>{c.sub} · {c.models.length} models</span>
                 <span className="ff" style={{ fontSize: 17, fontWeight: 400, color: "#fff", lineHeight: 1.2, display: "block" }}>{c.label}</span>
               </div>
-            </div>
+            </button>
           ))}
         </div>
       </section>
