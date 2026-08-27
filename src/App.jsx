@@ -1,5 +1,6 @@
 import { lazy, Suspense } from 'react'
 import { Routes, Route } from 'react-router-dom'
+import { AuthProvider } from './context/AuthContext'
 import { ToastProvider } from './context/ToastContext'
 import ConsentNotice from './components/ConsentNotice'
 import TranslationLayer from './components/TranslationLayer'
@@ -46,20 +47,22 @@ const routesFor = (prefix = '') => (
 
 function App() {
   return (
-    <ToastProvider>
-      <ScrollToTop />
-      <RouteMetadata />
-      <TranslationLayer />
-      <Suspense fallback={<div style={{ minHeight: '100vh', background: 'var(--cream)' }} aria-busy="true" />}>
-        <Routes>
-          {routesFor()}
-          {routesFor('/en')}
-          {routesFor('/pt')}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </Suspense>
-      <ConsentNotice />
-    </ToastProvider>
+    <AuthProvider>
+      <ToastProvider>
+        <ScrollToTop />
+        <RouteMetadata />
+        <TranslationLayer />
+        <Suspense fallback={<div style={{ minHeight: '100vh', background: 'var(--cream)' }} aria-busy="true" />}>
+          <Routes>
+            {routesFor()}
+            {routesFor('/en')}
+            {routesFor('/pt')}
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </Suspense>
+        <ConsentNotice />
+      </ToastProvider>
+    </AuthProvider>
   )
 }
 
