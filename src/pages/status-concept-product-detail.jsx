@@ -5,6 +5,7 @@ import LocalizedLink from "../components/LocalizedLink";
 import NotFound from "./NotFound";
 import { whatsappUrl } from "../utils/whatsapp";
 import { productSrcSet } from "../utils/imageVariants";
+import { productCollectionLabel } from "../utils/productLabels";
 import { glatzProductDetails } from "../data/glatzProducts";
 import { kitchenProductDetails, kitchenCollectionHeroes } from "../data/kitchenProducts";
 import { demoProducts, demoProductIds } from "../data/demoProducts";
@@ -350,8 +351,8 @@ const PRODUCT_DETAIL = () => {
               </div>
               <div className="rd-product-info">
                 <h3 className="ff" data-no-translate>{item.name}</h3>
-                <div className="rd-product-meta fs">
-                  <span data-no-translate>{item.collectionName || item.collection}</span>
+                <div className={`rd-product-meta fs ${item.category === "kitchen" ? "kitchen-product-meta" : ""}`}>
+                  <span data-no-translate>{productCollectionLabel(item)}</span>
                   <span>View</span>
                 </div>
               </div>

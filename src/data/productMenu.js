@@ -52,10 +52,24 @@ export const PRODUCT_MENU = [
     key: 'kitchen',
     label: 'Outdoor Kitchens',
     to: '/products?cat=kitchen',
+    items: [],
+  },
+  {
+    key: 'modular-kitchens',
+    label: 'Modular Kitchens',
+    to: '/products?cat=kitchen',
     items: [
       { name: 'Black Stainless Steel', to: '/products?cat=kitchen&collection=black-stainless-steel' },
       { name: 'Carbon Line Teak', to: '/products?cat=kitchen&collection=carbon-line-teak' },
       { name: 'Teak', to: '/products?cat=kitchen&collection=teak' },
+      { name: 'Attachments & Accessories', to: '/products?cat=kitchen&subcat=accessories' },
+      { name: 'BBQs', to: '/products?cat=kitchen&subcat=bbq' },
     ],
+  },
+  {
+    key: 'built-in-kitchens',
+    label: 'Built-in Kitchens',
+    to: '/products?cat=kitchen&mode=built-in',
+    items: [],
   },
 ]

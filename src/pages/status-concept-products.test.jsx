@@ -1,5 +1,8 @@
 import { describe, expect, it } from "vitest";
-import { matchesSubcategory, productBrandLabel, productHasImage } from "./status-concept-products";
+import { filterKitchenProducts, matchesSubcategory, productBrandLabel, productHasImage } from "./status-concept-products";
+import { kitchenCollectionHeroes, kitchenProducts } from "../data/kitchenProducts";
+import { PRODUCT_MENU } from "../data/productMenu";
+import { productCollectionLabel } from "../utils/productLabels";
 
 describe("product catalogue helpers", () => {
   it("keeps Sicily's isolated studio image visible", () => {
@@ -23,5 +26,52 @@ describe("product catalogue helpers", () => {
     };
 
     expect(matchesSubcategory(product, "aluminium")).toBe(true);
+  });
+
+  it("keeps the Draco kitchen scope to the requested three ranges and omits prices", () => {
+    expect([...new Set(kitchenProducts.map((product) => product.collection))]).toEqual([
+      "black-stainless-steel",
+      "carbon-line-teak",
+      "teak",
+    ]);
+    expect(kitchenProducts.every((product) => !Object.prototype.hasOwnProperty.call(product, "price"))).toBe(true);
+    expect(kitchenProducts.some((product) => product.specs?.dimensions?.startsWith("TODO:"))).toBe(false);
+    expect(productBrandLabel(kitchenProducts[0])).toBe("Black Steel");
+    expect(productCollectionLabel(kitchenProducts.find((product) => product.collection === "carbon-line-teak"))).toBe("Carbon Teak");
+  });
+
+  it("provides a collection-specific lifestyle hero for every kitchen range", () => {
+    expect(Object.keys(kitchenCollectionHeroes)).toEqual([
+      "black-stainless-steel",
+      "carbon-line-teak",
+      "teak",
+    ]);
+    expect(kitchenCollectionHeroes["black-stainless-steel"]).toContain("black-stainless-steel-lifestyle");
+    expect(kitchenCollectionHeroes["carbon-line-teak"]).toContain("carbon-line-teak-lifestyle");
+    expect(kitchenCollectionHeroes.teak).toContain("kitchen-hero");
+  });
+
+  it("keeps Browse by filtering inside the selected kitchen collection", () => {
+    const carbonAccessories = filterKitchenProducts(kitchenProducts, "carbon-line-teak", "accessories");
+
+    expect(carbonAccessories.length).toBeGreaterThan(0);
+    expect(carbonAccessories.every((product) => product.collection === "carbon-line-teak")).toBe(true);
+    expect(carbonAccessories.every((product) => matchesSubcategory(product, "accessories"))).toBe(true);
+  });
+
+  it("separates modular and built-in kitchen navigation", () => {
+    const kitchenTabs = PRODUCT_MENU.filter((item) => item.key.includes("kitchen"));
+    const modular = kitchenTabs.find((item) => item.key === "modular-kitchens");
+    const builtIn = kitchenTabs.find((item) => item.key === "built-in-kitchens");
+
+    expect(modular?.items.map((item) => item.name)).toEqual([
+      "Black Stainless Steel",
+      "Carbon Line Teak",
+      "Teak",
+      "Attachments & Accessories",
+      "BBQs",
+    ]);
+    expect(builtIn?.to).toContain("mode=built-in");
+    expect(modular?.items.some((item) => item.name.toLowerCase().includes("built-in"))).toBe(false);
   });
 });

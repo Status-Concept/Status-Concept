@@ -48,12 +48,16 @@ import kitchenImg50 from '../assets/images/kitchen/draco/kitchen-teak-modular-ou
 import kitchenImg51 from '../assets/images/kitchen/draco/kitchen-teak-modular-outdoor-kitchen-90-degree-corner-cabinet-with-ceramic-top.webp'
 import kitchenImg52 from '../assets/images/kitchen/draco/kitchen-teak-modular-outdoor-kitchen-3-drawer-cabinet-with-ceramic-top.webp'
 import kitchenImg53 from '../assets/images/kitchen/draco/kitchen-teak-modular-outdoor-kitchen-single-door-cabinet-with-ceramic-top.webp'
+import blackStainlessKitchenHeroImg from '../assets/images/kitchen/black-stainless-steel-lifestyle.jpg'
+import carbonLineKitchenHeroImg from '../assets/images/kitchen/carbon-line-teak-lifestyle.jpg'
 import kitchenHeroImg from '../assets/images/kitchen/kitchen-hero.webp'
 
 // Assembled "full kitchen" lifestyle scene shown as a hero on each module's detail page,
 // keyed by collection slug. Only collections with a genuine assembled-scene photo are listed;
 // a module whose collection is missing here simply renders without the hero band.
 export const kitchenCollectionHeroes = {
+  'black-stainless-steel': blackStainlessKitchenHeroImg,
+  'carbon-line-teak': carbonLineKitchenHeroImg,
   teak: kitchenHeroImg,
 }
 
@@ -707,7 +711,6 @@ export const kitchenProducts = [
     description: `The Draco Grills DRA5024 4 Burner BBQ, housed in stunning reclaimed Teak, is an ideal addition to your garden, combining style, durability, and exceptional cooking performance.  This build-in BBQ, finished in sleek 304-grade stainless steel, offers both aesthetic appeal and practicality.`,
     specs: {sku:"DRA5024",type:"Outdoor Kitchen > 4 Burner",dimensions:"53.3cm (H) x 81cm (L) x 63cm (D)",material:"Reclaimed teak and ceramic top",heatOutput:"65,000 BTU (12,500 BTU per main burner, 15,000 BTU for rear burner, so total is 12,500 x 4 + 15,000 = 65,000 BTU)",cookingArea:"66cm x 43cm (2838cm2)"},
   },
-  /* TODO: verificar dados - dimensions missing in source info.md */
   {
     id: 'teak-modular-outdoor-kitchen-corner-cabinet-with-ceramic-top',
     name: 'Teak Modular Outdoor Kitchen Corner Cabinet with Ceramic Top',
@@ -721,7 +724,7 @@ export const kitchenProducts = [
     tag: '',
     desc: `The Draco Grills Teak Corner Unit is a beautifully designed piece that will enhance your outdoor space while providing essential functionality for cooking and entertaining.  Crafted entirely from reclaimed Teak, this unit exemplifies understated elegance, offering ample storage for all your outdoor kitchen essentials.`,
     description: `The Draco Grills Teak Corner Unit is a beautifully designed piece that will enhance your outdoor space while providing essential functionality for cooking and entertaining.  Crafted entirely from reclaimed Teak, this unit exemplifies understated elegance, offering ample storage for all your outdoor kitchen essentials.`,
-    specs: {sku:"DRA5018",type:"Outdoor Kitchen > Module",dimensions:"TODO: verify dimensions",material:"Reclaimed teak and ceramic top"},
+    specs: {sku:"DRA5018",type:"Outdoor Kitchen > Module",dimensions:"119.8cm (W) x 97.7cm (H) x 63cm (D)",material:"Reclaimed teak and dark stone ceramic worktop"},
   },
   {
     id: 'teak-modular-outdoor-kitchen-single-fridge-cabinet-with-ceramic-top',
@@ -738,7 +741,6 @@ export const kitchenProducts = [
     description: `The Draco Grills DRA5025 Bar Fridge and Housing Unit kit is an ideal enhancement to your outdoor entertaining area, offering a blend of style, practicality, and durability.  Specifically designed to complement the Teak range, this fridge unit slots neatly into your outdoor kitchen and completes the look of your garden.`,
     specs: {sku:"DRA5025",type:"Outdoor Kitchen > Fridges",dimensions:"79.6cm (L) x 97.7cm (H) x 63cm (D)",material:"Reclaimed teak and ceramic top"},
   },
-  /* TODO: verificar dados - dimensions missing in source info.md */
   {
     id: 'teak-modular-outdoor-kitchen-coffee-bar-with-ceramic-top',
     name: 'Teak Modular Outdoor Kitchen Coffee Bar with Ceramic Top',
@@ -752,9 +754,8 @@ export const kitchenProducts = [
     tag: '',
     desc: `The Draco Grills DRA5012 Coffee Bar is an exquisite addition to your outdoor space, perfectly blending functionality with style.  Constructed entirely from reclaimed Teak, this unit is designed to elevate your garden while providing an inviting setting for cooking and entertaining guests around your stunning Draco Grills Outdoor Kitchen.`,
     description: `The Draco Grills DRA5012 Coffee Bar is an exquisite addition to your outdoor space, perfectly blending functionality with style.  Constructed entirely from reclaimed Teak, this unit is designed to elevate your garden while providing an inviting setting for cooking and entertaining guests around your stunning Draco Grills Outdoor Kitchen.`,
-    specs: {sku:"DRA5012",type:"Outdoor Kitchen > Module",dimensions:"TODO: verify dimensions",material:"Reclaimed teak and ceramic top"},
+    specs: {sku:"DRA5012",type:"Outdoor Kitchen > Module",dimensions:"120cm (L) x 111cm (H) x 60cm (D)",material:"Reclaimed teak and dark stone ceramic worktop"},
   },
-  /* TODO: verificar dados - dimensions missing in source info.md */
   {
     id: 'teak-modular-outdoor-kitchen-double-door-cabinet-with-ceramic-top',
     name: 'Teak Modular Outdoor Kitchen Double Door Cabinet with Ceramic Top',
@@ -768,9 +769,8 @@ export const kitchenProducts = [
     tag: '',
     desc: `The Draco Grills Teak Double Door Cabinet is an exquisite addition to any garden, blending functionality with style.  This beautifully crafted unit enhances your Draco Grills Reclaimed Teak Outdoor Kitchen, providing an ideal space for cooking and entertaining family and friends in an outdoor setting.`,
     description: `The Draco Grills Teak Double Door Cabinet is an exquisite addition to any garden, blending functionality with style.  This beautifully crafted unit enhances your Draco Grills Reclaimed Teak Outdoor Kitchen, providing an ideal space for cooking and entertaining family and friends in an outdoor setting.`,
-    specs: {sku:"DRA5015",type:"Outdoor Kitchen > Module",dimensions:"TODO: verify dimensions",material:"Reclaimed teak and ceramic top"},
+    specs: {sku:"DRA5015",type:"Outdoor Kitchen > Module",dimensions:"119.6cm (W) x 97.7cm (H) x 63cm (D)",material:"Reclaimed teak and dark stone ceramic worktop"},
   },
-  /* TODO: verificar dados - dimensions missing in source info.md */
   {
     id: 'teak-modular-outdoor-kitchen-sink-cabinet-with-ceramic-top',
     name: 'Teak Modular Outdoor Kitchen Sink Cabinet with Ceramic Top',
@@ -784,9 +784,8 @@ export const kitchenProducts = [
     tag: '',
     desc: `The Draco Grills DRA5017 Sink Cabinet is an elegant addition to any garden, designed to enhance your outdoor cooking and entertaining experience.  Crafted entirely from reclaimed Teak, this unit combines functionality with sophisticated aesthetics, making it a perfect fit for the beautiful Draco Grills Reclaimed Teak Outdoor Kitchen.`,
     description: `The Draco Grills DRA5017 Sink Cabinet is an elegant addition to any garden, designed to enhance your outdoor cooking and entertaining experience.  Crafted entirely from reclaimed Teak, this unit combines functionality with sophisticated aesthetics, making it a perfect fit for the beautiful Draco Grills Reclaimed Teak Outdoor Kitchen.`,
-    specs: {sku:"DRA5017C",type:"Outdoor Kitchen > Sinks",dimensions:"TODO: verify dimensions",material:"Reclaimed teak and ceramic top"},
+    specs: {sku:"DRA5017C",type:"Outdoor Kitchen > Sinks",dimensions:"79.6cm (W) x 97.7cm (H) x 63cm (D)",material:"Reclaimed teak and dark stone ceramic worktop"},
   },
-  /* TODO: verificar dados - dimensions missing in source info.md */
   {
     id: 'teak-modular-outdoor-kitchen-wine-cabinet-with-ceramic-top',
     name: 'Teak Modular Outdoor Kitchen Wine Cabinet with Ceramic Top',
@@ -800,9 +799,8 @@ export const kitchenProducts = [
     tag: '',
     desc: `The Draco Grills DRA5016 Wine Cabinet is an exquisite addition to your outdoor space, perfectly designed to complement the stunning Reclaimed Teak Outdoor Kitchen from Draco Grills.  This elegant unit not only enhances the aesthetic of your garden but also offers a practical solution for hosting and entertaining guests, making it easier than ever to serve drinks in style.`,
     description: `The Draco Grills DRA5016 Wine Cabinet is an exquisite addition to your outdoor space, perfectly designed to complement the stunning Reclaimed Teak Outdoor Kitchen from Draco Grills.  This elegant unit not only enhances the aesthetic of your garden but also offers a practical solution for hosting and entertaining guests, making it easier than ever to serve drinks in style.`,
-    specs: {sku:"DRA5016",type:"Outdoor Kitchen > Module",dimensions:"TODO: verify dimensions",material:"Reclaimed teak and ceramic top"},
+    specs: {sku:"DRA5016",type:"Outdoor Kitchen > Module",dimensions:"57.6cm (L) x 97.7cm (H) x 63cm (D)",material:"Reclaimed teak and dark stone ceramic worktop"},
   },
-  /* TODO: verificar dados - dimensions missing in source info.md */
   {
     id: 'teak-modular-outdoor-kitchen-90-degree-corner-cabinet-with-ceramic-top',
     name: 'Teak Modular Outdoor Kitchen 90 Degree Corner Cabinet with Ceramic Top',
@@ -816,9 +814,8 @@ export const kitchenProducts = [
     tag: '',
     desc: `The Draco Grills DRA5028 is an elegant 90-degree corner unit designed to enhance your outdoor space while providing practical solutions for cooking and entertaining.  Crafted entirely from reclaimed Teak, this piece embodies subtle sophistication, making it a perfect fit for any garden aesthetic.`,
     description: `The Draco Grills DRA5028 is an elegant 90-degree corner unit designed to enhance your outdoor space while providing practical solutions for cooking and entertaining.  Crafted entirely from reclaimed Teak, this piece embodies subtle sophistication, making it a perfect fit for any garden aesthetic.`,
-    specs: {sku:"DRA5028",type:"Outdoor Kitchen > Module",dimensions:"TODO: verify dimensions",material:"Reclaimed teak and ceramic top"},
+    specs: {sku:"DRA5028",type:"Outdoor Kitchen > Module",dimensions:"69.5cm (L) x 97.7cm (H) x 69.5cm (D)",material:"Reclaimed teak and dark stone ceramic worktop"},
   },
-  /* TODO: verificar dados - dimensions missing in source info.md */
   {
     id: 'teak-modular-outdoor-kitchen-3-drawer-cabinet-with-ceramic-top',
     name: 'Teak Modular Outdoor Kitchen 3 Drawer Cabinet with Ceramic Top',
@@ -832,9 +829,8 @@ export const kitchenProducts = [
     tag: '',
     desc: `The Draco Grills Teak 3 Drawer Cabinet is the perfect addition to your garden, bringing both practicality and refined style to your outdoor entertaining area.  As part of the Draco Grills Reclaimed Teak Outdoor Kitchen collection, this cabinet not only enhances the overall aesthetic but also provides essential storage space for hosting guests in comfort and ease.`,
     description: `The Draco Grills Teak 3 Drawer Cabinet is the perfect addition to your garden, bringing both practicality and refined style to your outdoor entertaining area.  As part of the Draco Grills Reclaimed Teak Outdoor Kitchen collection, this cabinet not only enhances the overall aesthetic but also provides essential storage space for hosting guests in comfort and ease.`,
-    specs: {sku:"DRA5014",type:"Outdoor Kitchen > Module",dimensions:"TODO: verify dimensions",material:"Reclaimed teak and ceramic top"},
+    specs: {sku:"DRA5014",type:"Outdoor Kitchen > Module",dimensions:"57.6cm (W) x 97.7cm (H) x 63cm (D)",material:"Reclaimed teak and dark stone ceramic worktop"},
   },
-  /* TODO: verificar dados - dimensions missing in source info.md */
   {
     id: 'teak-modular-outdoor-kitchen-single-door-cabinet-with-ceramic-top',
     name: 'Teak Modular Outdoor Kitchen Single Door Cabinet with Ceramic Top',
@@ -848,7 +844,7 @@ export const kitchenProducts = [
     tag: '',
     desc: `The Draco Grills Teak Single Door Cabinet is a stylish and functional addition to your outdoor entertaining space.  Designed to complement the Draco Grills Reclaimed Teak Outdoor Kitchen, this cabinet blends practicality with elegance, making it an ideal solution for those looking to enhance their garden with simple yet sophisticated storage.`,
     description: `The Draco Grills Teak Single Door Cabinet is a stylish and functional addition to your outdoor entertaining space.  Designed to complement the Draco Grills Reclaimed Teak Outdoor Kitchen, this cabinet blends practicality with elegance, making it an ideal solution for those looking to enhance their garden with simple yet sophisticated storage.`,
-    specs: {sku:"DRA5013",type:"Outdoor Kitchen > Module",dimensions:"TODO: verify dimensions",material:"Reclaimed teak and ceramic top"},
+    specs: {sku:"DRA5013",type:"Outdoor Kitchen > Module",dimensions:"57.6cm (W) x 97.7cm (H) x 63cm (D)",material:"Reclaimed teak and dark stone ceramic worktop"},
   },
 ]
 
@@ -865,7 +861,7 @@ export const kitchenProductDetails = Object.fromEntries(kitchenProducts.map((pro
     label: label.replace(/([A-Z])/g, ' $1').replace(/^./, (c) => c.toUpperCase()),
     value,
   })),
-  dims: [{ piece: product.name, w: product.specs.dimensions || 'TODO: verify dimensions', d: 'See source sheet', h: 'See source sheet', sh: '-' }],
+  dims: [{ piece: product.name, w: product.specs.dimensions || 'Available on request', d: 'See product specification', h: 'See product specification', sh: '-' }],
   materials: [product.specs.material, product.specs.type, product.specs.heatOutput, product.specs.cookingArea].filter(Boolean),
   colorLabel: 'Finish',
   colors: product.sourceCollection === 'Black Stainless Steel'

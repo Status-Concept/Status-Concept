@@ -5,11 +5,12 @@ import LocalizedLink from "../components/LocalizedLink";
 import NoImagePlaceholder from "../components/NoImagePlaceholder";
 import FavoriteButton from "../FavoriteButton";
 import { productSrcSet } from "../utils/imageVariants";
-import { kitchenCollectionMeta, kitchenProducts } from "../data/kitchenProducts";
+import { kitchenCollectionHeroes, kitchenCollectionMeta, kitchenProducts } from "../data/kitchenProducts";
 import { catalogProducts } from "../data/catalogProducts";
 import { allProducts } from "../data/productCatalog";
 import { noImageProducts } from "../data/productImageStatus";
 import { searchProducts } from "../utils/productSearch";
+import { productCollectionLabel } from "../utils/productLabels";
 import { getLangFromPath, withLang } from "../utils/language";
 import kitchenHeroImg from "../assets/images/kitchen/kitchen-hero.webp";
 import furnitureSeriesImg from "../assets/images/enhanced/furniture-series-golf-hero.webp";
@@ -35,7 +36,6 @@ const SUBCATEGORIES = {
   ],
   kitchen: [
     { key: "modular", label: "Modular kitchens" },
-    { key: "built-in", label: "Built-in kitchens" },
     { key: "accessories", label: "Attachments & accessories" },
     { key: "bbq", label: "BBQs" },
   ],
@@ -72,6 +72,11 @@ export const matchesSubcategory = (product, key) => {
   return terms.some((term) => haystack.includes(term));
 };
 
+export const filterKitchenProducts = (products, collection, subcategory) => products.filter((product) => (
+  (!collection || product.collection === collection)
+  && (!subcategory || matchesSubcategory(product, subcategory))
+));
+
 // Kitchen and shade products keep their supplied catalogue imagery. Their main
 // shots are intentionally contextual, so the white-background classifier should
 // not replace them with a showroom placeholder.
@@ -85,7 +90,8 @@ const CATEGORY_LABELS = {
   kitchen: "Outdoor Kitchens",
 };
 
-export const productBrandLabel = (product) => product.supplier?.trim() || product.categoryLabel || CATEGORY_LABELS[product.category] || "Outdoor living";
+export const productBrandLabel = (product) => product.supplier?.trim()
+  || (product.category === "kitchen" ? productCollectionLabel(product) || CATEGORY_LABELS[product.category] : product.categoryLabel || CATEGORY_LABELS[product.category] || "Outdoor living");
 
 // Auto-advancing category carousel — slides right-to-left one tile every 5s, looping.
 // Fully responsive via CSS container-query units: tile width is a fraction of the
@@ -182,6 +188,7 @@ const PRODUCTS_PAGE = () => {
   const collectionParam = searchParams.get("collection")?.trim() || "";
   const typeParam = searchParams.get("type")?.trim().toLowerCase() || "";
   const subcategoryParam = searchParams.get("subcat")?.trim().toLowerCase() || "";
+  const kitchenModeParam = searchParams.get("mode")?.trim().toLowerCase() || "";
   const currentLang = getLangFromPath(location.pathname);
   const resolvedCategory = CATEGORY_ALIASES[catParam] || catParam;
   const activeCategory = VALID_CATEGORIES.includes(resolvedCategory) ? resolvedCategory : null;
@@ -200,7 +207,7 @@ const PRODUCTS_PAGE = () => {
     { key: "dining", label: "Dining", chip: catalogImg("dining"), banner: catalogImg("dining"), title: "Dining", copy: "Outdoor dining sets, tables and chairs for terrace meals from breakfast to late dinner." },
     { key: "sunlounger", label: "Sun Loungers", chip: catalogImg("sunlounger"), banner: catalogImg("sunlounger"), title: "Sun Loungers & Day Beds", copy: "Poolside loungers and day beds built for Algarve summers." },
     { key: "shade", label: "Shade Solutions", chip: shadeChipImg, banner: shadeHeroLifestyleImg, bannerPosition: "center 34%", title: "Shade Solutions", copy: "Pergolas, parasols and awnings for gardens, terraces and outdoor rooms." },
-    { key: "kitchen", label: "Outdoor Kitchens", chip: kitchenHeroImg, banner: kitchenHeroImg, title: "Outdoor Kitchens", copy: "Modular kitchens, built-in kitchens, BBQs and the accessories that make outdoor cooking work." },
+    { key: "kitchen", label: "Outdoor Kitchens", chip: kitchenHeroImg, banner: kitchenHeroImg, title: "Modular Outdoor Kitchen", copy: "Modular kitchens, built-in kitchens, BBQs and the accessories that make outdoor cooking work." },
   ];
 
   const kitchenCollections = kitchenCollectionMeta.map((collection) => ({
@@ -211,7 +218,9 @@ const PRODUCTS_PAGE = () => {
   const activeSubcategory = activeSubcategories.some((item) => item.key === subcategoryParam)
     ? subcategoryParam
     : "";
-  const activeKitchenCollection = activeCategory === "kitchen" && !activeSubcategory
+  const isKitchenCategory = activeCategory === "kitchen";
+  const isBuiltInKitchen = isKitchenCategory && kitchenModeParam === "built-in";
+  const activeKitchenCollection = isKitchenCategory && !isBuiltInKitchen
     ? (kitchenCollections.some((collection) => collection.key === collectionParam)
         ? collectionParam
         : (kitchenCollections[0]?.key || null))
@@ -220,7 +229,11 @@ const PRODUCTS_PAGE = () => {
   const hasSearch = Boolean(queryParam);
   const isLanding = !activeCategory && !hasSearch;
   const selectedCategory = categories.find((category) => category.key === activeCategory);
-  const isKitchenCategory = activeCategory === "kitchen";
+  const kitchenPageLabel = isBuiltInKitchen ? "Built-in Kitchens" : "Modular Kitchens";
+  const kitchenPageTitle = isBuiltInKitchen ? "Built-in Kitchens" : selectedCategory?.title;
+  const kitchenPageCopy = isBuiltInKitchen
+    ? "Built-in outdoor kitchen solutions for seamless, permanent installations."
+    : selectedCategory?.copy;
   const searchMatches = useMemo(() => searchProducts(allProducts, queryParam), [queryParam]);
 
   const filteredProducts = (() => {
@@ -235,9 +248,7 @@ const PRODUCTS_PAGE = () => {
 
     if (!activeCategory) return [];
     let base = activeCategory === "kitchen"
-      ? (activeSubcategory
-          ? kitchenProducts
-          : kitchenProducts.filter((product) => product.collection === activeKitchenCollection))
+      ? (isBuiltInKitchen ? [] : filterKitchenProducts(kitchenProducts, activeKitchenCollection, activeSubcategory))
       : allProducts.filter((product) => product.category === activeCategory);
 
     if (collectionParam && activeCategory !== "kitchen") {
@@ -268,7 +279,7 @@ const PRODUCTS_PAGE = () => {
     if (activeSubcategory) {
       return activeSubcategories.find((item) => item.key === activeSubcategory)?.label || activeSubcategory;
     }
-    if (activeCategory === "kitchen") return null;
+    if (activeCategory === "kitchen") return isBuiltInKitchen ? kitchenPageLabel : null;
     if (collectionParam) {
       const match = allProducts.find(
         (product) => product.category === activeCategory && slug(product.collectionName || product.collection) === collectionParam,
@@ -310,7 +321,7 @@ const PRODUCTS_PAGE = () => {
   const openCategory = (key) => goTo(`/products?cat=${key}`);
   const backToLanding = () => goTo(`/products`);
   const selectKitchenCollection = (key) => {
-    updateProductQuery({ cat: "kitchen", collection: key, subcat: null, type: null });
+    updateProductQuery({ cat: "kitchen", mode: null, collection: key, subcat: null, type: null });
     requestAnimationFrame(scrollToProducts);
   };
   const setSearchScope = (key) => {
@@ -326,6 +337,9 @@ const PRODUCTS_PAGE = () => {
 
   const hasImage = productHasImage;
   const activeRange = kitchenCollections.find((collection) => collection.key === activeKitchenCollection);
+  const activeBanner = isKitchenCategory && activeKitchenCollection
+    ? (kitchenCollectionHeroes[activeKitchenCollection] || selectedCategory.banner)
+    : selectedCategory?.banner;
 
   return (
     <Layout>
@@ -347,10 +361,10 @@ const PRODUCTS_PAGE = () => {
         <>
           {!hasSearch && (
             <section className="prod-banner">
-              <img src={selectedCategory.banner} alt="" decoding="async" fetchPriority="high" style={{ objectPosition: selectedCategory.bannerPosition || "center" }} />
+              <img src={activeBanner} alt="" decoding="async" fetchPriority="high" style={{ objectPosition: selectedCategory.bannerPosition || "center" }} />
             </section>
           )}
-          <div className={`rd-page-head ${hasSearch ? "search-head" : ""}`}>
+          <div className={`rd-page-head ${hasSearch ? "search-head" : ""} ${isKitchenCategory && !hasSearch ? "kitchen-page-head" : ""}`}>
             <button type="button" className="rd-back-to-cats" onClick={backToLanding}>
               <span aria-hidden="true">←</span> Products
             </button>
@@ -362,14 +376,14 @@ const PRODUCTS_PAGE = () => {
               </>
             ) : (
               <>
-                <span className="rd-kicker fs">Products / {selectedCategory.label}</span>
-                <h1 className="rd-title ff">{selectedCategory.title}</h1>
-                <p className="rd-lede fs">{selectedCategory.copy}</p>
+                <span className="rd-kicker fs">Products / {isKitchenCategory ? kitchenPageLabel : selectedCategory.label}</span>
+                <h1 className="rd-title ff">{isKitchenCategory ? kitchenPageTitle : selectedCategory.title}</h1>
+                <p className="rd-lede fs">{isKitchenCategory ? kitchenPageCopy : selectedCategory.copy}</p>
               </>
             )}
           </div>
 
-          <main className="rd-products-layout">
+          <main className={`rd-products-layout ${isKitchenCategory && !hasSearch ? "kitchen-products-layout" : ""}`}>
             <section>
               {hasSearch && (
                 <>
@@ -404,6 +418,25 @@ const PRODUCTS_PAGE = () => {
               )}
 
               {!hasSearch && isKitchenCategory && (
+                <div className="rd-kitchen-tabs" role="tablist" aria-label="Kitchen types">
+                  <button
+                    type="button"
+                    role="tab"
+                    className={!isBuiltInKitchen ? "active" : ""}
+                    aria-selected={!isBuiltInKitchen}
+                    onClick={() => updateProductQuery({ cat: "kitchen", mode: null, collection: null, subcat: null, type: null })}
+                  >Modular Kitchens</button>
+                  <button
+                    type="button"
+                    role="tab"
+                    className={isBuiltInKitchen ? "active" : ""}
+                    aria-selected={isBuiltInKitchen}
+                    onClick={() => updateProductQuery({ cat: "kitchen", mode: "built-in", collection: null, subcat: null, type: null })}
+                  >Built-in Kitchens</button>
+                </div>
+              )}
+
+              {!hasSearch && isKitchenCategory && !isBuiltInKitchen && (
                 <div className="rd-range-strip" role="group" aria-label="Kitchen ranges">
                   {kitchenCollections.map((collection) => (
                     <button key={collection.key} type="button" data-no-translate className={`rd-range-chip ${activeKitchenCollection === collection.key ? "active" : ""}`} aria-pressed={activeKitchenCollection === collection.key} onClick={() => selectKitchenCollection(collection.key)}>
@@ -425,7 +458,7 @@ const PRODUCTS_PAGE = () => {
                       onClick={() => updateProductQuery({
                         cat: activeCategory,
                         subcat: activeSubcategory === item.key ? null : item.key,
-                        collection: null,
+                        collection: activeCategory === "kitchen" ? activeKitchenCollection : null,
                         type: null,
                       })}
                     >
@@ -494,7 +527,9 @@ const PRODUCTS_PAGE = () => {
                   </div>
                 ) : (
                   <div className="rd-empty-state fs" role="status" style={{ textAlign: "center", padding: "64px 24px", color: "var(--text-grey)" }}>
-                    No pieces in this category yet. Contact the showroom.
+                    {isBuiltInKitchen
+                      ? "Built-in kitchen products are being curated. Contact the showroom for current options."
+                      : "No pieces in this category yet. Contact the showroom."}
                   </div>
                 )
               ) : viewMode === "grid" ? (

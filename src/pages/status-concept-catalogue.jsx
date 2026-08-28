@@ -6,6 +6,7 @@ import { useRef } from "react";
 import Layout from "../components/Layout";
 import LocalizedLink from "../components/LocalizedLink";
 import NoImagePlaceholder from "../components/NoImagePlaceholder";
+import { productCollectionLabel } from "../utils/productLabels";
 import { demoProducts } from "../data/demoProducts";
 import { noImageProducts } from "../data/productImageStatus";
 import { productSrcSet } from "../utils/imageVariants";
@@ -65,7 +66,7 @@ export default function Catalogue() {
                       : <NoImagePlaceholder />}
                   </div>
                   <div className="rd-product-info">
-                    <span className="rd-product-cat fs">{product.collectionName || product.collection || g.label}</span>
+                    <span className="rd-product-cat fs">{productCollectionLabel(product) || g.label}</span>
                     <h3 className="ff"><LocalizedLink className="rd-card-link" data-no-translate to={productRoute(product)} state={{ product }}>{product.name}</LocalizedLink></h3>
                   </div>
                 </article>

@@ -47,6 +47,29 @@
   max-width: 680px;
   font-weight: 300;
 }
+.kitchen-page-head {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 16px;
+  padding-bottom: 0;
+  text-align: center;
+}
+.kitchen-page-head .rd-back-to-cats {
+  align-self: flex-start;
+  margin-bottom: 12px;
+}
+.kitchen-page-head .rd-kicker { margin-bottom: 7px; }
+.kitchen-page-head .rd-title {
+  font-size: clamp(30px, 3.4vw, 42px);
+  letter-spacing: -0.02em;
+  margin-bottom: 8px;
+}
+.kitchen-page-head .rd-lede {
+  font-size: 14px;
+  line-height: 1.5;
+  margin: 0;
+}
 .rd-section { padding: var(--section-padding) 48px; }
 .rd-section > * { max-width: var(--max-width); margin-left: auto; margin-right: auto; }
 .rd-section.alt { background: var(--white); border-top: 1px solid var(--light-grey); border-bottom: 1px solid var(--light-grey); }
@@ -1310,8 +1333,40 @@
   color: var(--text-grey);
   margin-bottom: 7px;
 }
+.rd-product-card.kitchen-product .rd-product-cat {
+  font-size: 9px;
+  letter-spacing: 1.3px;
+  margin-bottom: 5px;
+}
+.rd-product-meta.kitchen-product-meta {
+  font-size: 9px;
+  letter-spacing: 1.25px;
+  margin-top: 7px;
+}
 
 /* Kitchen range switcher (replaces the "choose a collection" screen) */
+.rd-kitchen-tabs {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.rd-kitchen-tabs button {
+  min-height: 40px;
+  padding: 8px 16px;
+  border: 1px solid var(--mid-grey);
+  border-radius: 2px;
+  background: var(--white);
+  color: var(--text-grey);
+  font: inherit;
+  font-size: 11px;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: color .2s, border-color .2s, background .2s;
+}
+.rd-kitchen-tabs button:hover { color: var(--text-dark); border-color: var(--text-dark); }
+.rd-kitchen-tabs button.active { background: var(--black); color: #fff; border-color: var(--black); }
 .rd-range-strip { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 30px; }
 .rd-range-chip {
   font-family: var(--font-body);
@@ -1329,6 +1384,14 @@
 }
 .rd-range-chip:hover { color: var(--text-dark); border-color: var(--text-dark); }
 .rd-range-chip.active { background: var(--black); color: #fff; border-color: var(--black); }
+
+@media (min-width: 761px) {
+  .kitchen-products-layout { padding-top: 18px; }
+  .kitchen-products-layout .rd-range-strip { justify-content: center; gap: 8px; margin-bottom: 12px; }
+  .kitchen-products-layout .rd-range-chip { min-height: 40px; padding: 8px 18px; }
+  .kitchen-products-layout .rd-filter-strip { justify-content: center; margin-bottom: 16px; padding: 8px 0; }
+  .kitchen-products-layout .rd-filter-chip { min-height: 40px; padding: 7px 12px; }
+}
 
 .rd-back-to-cats {
   display: inline-flex;
