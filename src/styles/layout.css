@@ -48,18 +48,39 @@
   font-weight: 300;
 }
 .kitchen-page-head {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  display: grid;
+  grid-template-columns: minmax(140px, 160px) minmax(0, 710px) minmax(0, 1fr);
+  align-items: start;
+  column-gap: 0;
   padding-top: 16px;
   padding-bottom: 0;
   text-align: center;
 }
 .kitchen-page-head .rd-back-to-cats {
-  align-self: flex-start;
-  margin-bottom: 12px;
+  grid-column: 1;
+  grid-row: 1;
+  align-self: start;
+  justify-self: start;
+  margin: 0;
 }
-.kitchen-page-head .rd-kicker { margin-bottom: 7px; }
+.kitchen-page-head .rd-kicker,
+.kitchen-page-head .rd-title,
+.kitchen-page-head .rd-lede {
+  grid-column: 2;
+  width: 100%;
+  justify-self: start;
+}
+.kitchen-page-head .rd-kicker {
+  grid-row: 1;
+  margin-top: 24px;
+  margin-bottom: 7px;
+}
+.kitchen-page-head .rd-title {
+  grid-row: 2;
+}
+.kitchen-page-head .rd-lede {
+  grid-row: 3;
+}
 .kitchen-page-head .rd-title {
   font-size: clamp(30px, 3.4vw, 42px);
   letter-spacing: -0.02em;
@@ -450,6 +471,24 @@
   background: var(--white);
 }
 .rd-product-card.kitchen-product:hover .rd-product-media img { transform: none; }
+.glatz-category-rail {
+  display: flex !important;
+  width: 100%;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x proximity;
+  scrollbar-color: var(--sand-d) transparent;
+  scrollbar-width: thin;
+  padding-bottom: 10px;
+}
+.glatz-category-rail::-webkit-scrollbar { height: 7px; }
+.glatz-category-rail::-webkit-scrollbar-track { background: transparent; }
+.glatz-category-rail::-webkit-scrollbar-thumb { background: var(--sand-d); border-radius: 999px; }
+.glatz-category-tile {
+  flex: 0 0 max(190px, calc((100% - 56px) / 5));
+  scroll-snap-align: start;
+}
+.glatz-category-tile:focus-visible { outline: 2px solid var(--gold); outline-offset: 4px; }
 .glatz-model-media {
   height: clamp(250px, 22vw, 320px);
   padding: 8px;
@@ -1637,6 +1676,23 @@
 }
 
 @media (max-width: 760px) {
+  .kitchen-page-head {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 16px;
+  }
+  .kitchen-page-head .rd-back-to-cats {
+    align-self: flex-start;
+    margin-bottom: 12px;
+  }
+  .kitchen-page-head .rd-kicker,
+  .kitchen-page-head .rd-title,
+  .kitchen-page-head .rd-lede {
+    width: auto;
+    justify-self: auto;
+  }
+  .kitchen-page-head .rd-kicker { margin-top: 0; }
   .rd-page-hero,
   .rd-full-hero { padding: 64px 24px 52px; }
   .rd-kitchen-hero { min-height: clamp(380px, 56vh, 520px); padding: 56px 24px 40px; }

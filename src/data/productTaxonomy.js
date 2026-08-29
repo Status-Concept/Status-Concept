@@ -74,6 +74,30 @@ export const PRODUCT_CATEGORIES = [
       { value: 'ceramic', label: 'Ceramic' },
     ],
   },
+  {
+    key: 'carpets',
+    label: 'Carpets',
+    title: 'Carpets',
+    copy: 'Outdoor rugs that bring warmth, texture and definition to an open-air room.',
+    types: [],
+    materials: [],
+  },
+  {
+    key: 'decor',
+    label: 'Decor',
+    title: 'Decor',
+    copy: 'Finishing pieces selected to give an outdoor space its character.',
+    types: [],
+    materials: [],
+  },
+  {
+    key: 'statues',
+    label: 'Statues',
+    title: 'Statues',
+    copy: 'Sculptural accents for gardens, terraces and considered outdoor settings.',
+    types: [],
+    materials: [],
+  },
 ]
 
 export const CATEGORY_ALIASES = {
@@ -85,6 +109,11 @@ export const CATEGORY_ALIASES = {
   puffs: 'lounge',
   sofa: 'lounge',
   glatz: 'shade',
+  rug: 'carpets',
+  rugs: 'carpets',
+  sculpture: 'statues',
+  sculptures: 'statues',
+  vases: 'decor',
 }
 
 const CATEGORY_KEYS = new Set(PRODUCT_CATEGORIES.map((category) => category.key))

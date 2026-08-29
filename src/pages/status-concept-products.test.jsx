@@ -61,17 +61,21 @@ describe("product catalogue helpers", () => {
 
   it("separates modular and built-in kitchen navigation", () => {
     const kitchenTabs = PRODUCT_MENU.filter((item) => item.key.includes("kitchen"));
-    const modular = kitchenTabs.find((item) => item.key === "modular-kitchens");
-    const builtIn = kitchenTabs.find((item) => item.key === "built-in-kitchens");
+    const outdoorKitchens = kitchenTabs.find((item) => item.key === "kitchen");
 
-    expect(modular?.items.map((item) => item.name)).toEqual([
-      "Black Stainless Steel",
-      "Carbon Line Teak",
-      "Teak",
-      "Attachments & Accessories",
-      "BBQs",
+    expect(outdoorKitchens?.items.map((item) => item.name)).toEqual([
+      "Modular Kitchens",
+      "Built-in Kitchens",
     ]);
-    expect(builtIn?.to).toContain("mode=built-in");
-    expect(modular?.items.some((item) => item.name.toLowerCase().includes("built-in"))).toBe(false);
+    expect(outdoorKitchens?.items.find((item) => item.name === "Modular Kitchens")?.to).toBe("/products?cat=kitchen");
+    expect(outdoorKitchens?.items.find((item) => item.name === "Built-in Kitchens")?.to).toContain("mode=built-in");
+  });
+
+  it("adds carpets, decor and statues as product categories", () => {
+    expect(PRODUCT_MENU.filter((item) => ["carpets", "decor", "statues"].includes(item.key)).map((item) => item.label)).toEqual([
+      "Carpets",
+      "Decor",
+      "Statues",
+    ]);
   });
 });

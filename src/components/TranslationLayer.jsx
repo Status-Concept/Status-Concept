@@ -268,6 +268,8 @@ const translations = {
     'Dining Tables': 'Mesas de refeição',
     'Dining Chairs': 'Cadeiras de refeição',
     Carpets: 'Tapetes',
+    Decor: 'Decoração',
+    Statues: 'Estátuas',
     'Vases & Statues': 'Vasos e estátuas',
     Leisure: 'Lazer',
     'Sound Systems': 'Sistemas de som',

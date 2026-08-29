@@ -72,21 +72,21 @@ const STATUS_CONCEPT_GLATZ = () => {
       </div>
 
       {/* INTRO STATEMENT */}
-      <section id="glatz-intro" data-animate style={{ padding: "var(--section-padding) 48px", textAlign: "center", ...S("glatz-intro") }}>
-        <div className="la" style={{ margin: "0 auto 28px" }} />
-        <p className="ff" style={{ fontSize: "clamp(20px,2.6vw,30px)", fontWeight: 300, lineHeight: 1.6, maxWidth: 760, margin: "0 auto", color: "var(--stone-l)" }}>
+      <section id="glatz-intro" data-animate style={{ padding: "clamp(48px, 5vw, 68px) clamp(20px, 4vw, 48px)", textAlign: "center", ...S("glatz-intro") }}>
+        <div className="la" style={{ margin: "0 auto 18px" }} />
+        <p className="ff" style={{ fontSize: "clamp(18px, 2vw, 25px)", fontWeight: 300, lineHeight: 1.4, maxWidth: 680, margin: "0 auto", color: "var(--stone-l)" }}>
           Every Glatz parasol is designed and engineered in Switzerland. Production and assembly under one roof, every detail optimised for ergonomics, every model proven in the wind tunnel.
         </p>
-        <div style={{ display: "flex", justifyContent: "center", gap: 24, marginTop: 36, flexWrap: "wrap" }}>
+        <div style={{ display: "flex", justifyContent: "center", gap: 16, marginTop: 24, flexWrap: "wrap" }}>
           <span className="mb">SWISSMADE</span><span className="mb">Wind-Tunnel Tested</span><span className="mb">UV Protection SPF 50</span><span className="mb">PFAS-Free Fabrics</span>
         </div>
       </section>
 
       {/* CATEGORY TILES — Glatz's flyout method */}
-      <section id="glatz-cats" data-animate style={{ padding: "0 48px var(--section-padding)", ...S("glatz-cats") }}>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(170px, 1fr))", gap: 14, maxWidth: 1240, margin: "0 auto" }}>
+      <section id="glatz-cats" data-animate style={{ padding: "0 clamp(20px, 4vw, 48px) 28px", ...S("glatz-cats") }}>
+        <div className="glatz-category-rail" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(170px, 1fr))", gap: 14, maxWidth: 1240, margin: "0 auto" }}>
           {CATEGORIES.map((c) => (
-            <button key={c.key} type="button" aria-pressed={activeCat === c.key} onClick={() => setActiveCat(c.key)}
+            <button className="glatz-category-tile" key={c.key} type="button" aria-pressed={activeCat === c.key} onClick={() => setActiveCat(c.key)}
               style={{ position: "relative", height: 230, cursor: "pointer", overflow: "hidden", borderRadius: 4,
                 border: "none", padding: 0, background: "none", font: "inherit", textAlign: "left",
                 outline: activeCat === c.key ? "2px solid var(--gold)" : "1px solid var(--sand-l)", outlineOffset: -2,
@@ -105,9 +105,9 @@ const STATUS_CONCEPT_GLATZ = () => {
       </section>
 
       {/* ACTIVE CATEGORY — MODEL SHOWCASE */}
-      <section style={{ padding: "var(--section-padding) 48px", background: "var(--cream-w)", borderTop: "1px solid var(--sand-l)", borderBottom: "1px solid var(--sand-l)" }}>
+      <section style={{ padding: "clamp(44px, 5vw, 64px) clamp(20px, 4vw, 48px) var(--section-padding)", background: "var(--cream-w)", borderTop: "1px solid var(--sand-l)", borderBottom: "1px solid var(--sand-l)" }}>
         <div style={{ maxWidth: 1240, margin: "0 auto" }}>
-          <div style={{ textAlign: "center", marginBottom: 44 }}>
+          <div style={{ textAlign: "center", marginBottom: 28 }}>
             <span className="fs sl">{current.sub}</span>
             <h2 className="ff" style={{ fontSize: "clamp(28px,3.6vw,44px)", fontWeight: 300, marginTop: 12, letterSpacing: "-0.01em" }}>{current.label}</h2>
             <p className="fs" style={{ fontSize: 14, color: "var(--sand-d)", maxWidth: 520, margin: "16px auto 0", lineHeight: 1.7, fontWeight: 300 }}>{current.blurb}</p>
