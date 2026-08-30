@@ -82,7 +82,7 @@ export const filterKitchenProducts = (products, collection, subcategory) => prod
 // Kitchen and shade products keep their supplied catalogue imagery. Their main
 // shots are intentionally contextual, so the white-background classifier should
 // not replace them with a showroom placeholder.
-export const productHasImage = (product) => product.category === "kitchen" || product.category === "shade" || !noImageProducts.has(product.id);
+export const productHasImage = (product) => product.hasApprovedImage === true || product.category === "kitchen" || product.category === "shade" || !noImageProducts.has(product.id);
 
 const CATEGORY_LABELS = {
   lounge: "Lounge",
@@ -184,7 +184,7 @@ function CategoryCarousel({ categories, onOpen }) {
   );
 }
 
-const PRODUCTS_PAGE = ({ productCatalog = allProducts, localProducts = [] }) => {
+const PRODUCTS_PAGE = ({ productCatalog = allProducts, localProducts = [], categoryHeroOverrides = {} }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const [searchParams] = useSearchParams();
@@ -208,14 +208,14 @@ const PRODUCTS_PAGE = ({ productCatalog = allProducts, localProducts = [] }) => 
   const catalogImg = (category) => catalogProducts.find((product) => product.category === category)?.img || furnitureSeriesImg;
 
   const categories = [
-    { key: "lounge", label: "Lounge", chip: sicilyCornerImg, banner: sicilyModularSetFullImg, title: "Lounge", copy: "Sofas, lounge sets and armchairs made for long Algarve afternoons." },
-    { key: "dining", label: "Dining", chip: catalogImg("dining"), banner: catalogImg("dining"), title: "Dining", copy: "Outdoor dining sets, tables and chairs for terrace meals from breakfast to late dinner." },
-    { key: "sunlounger", label: "Sun Loungers", chip: catalogImg("sunlounger"), banner: catalogImg("sunlounger"), title: "Sun Loungers & Day Beds", copy: "Poolside loungers and day beds built for Algarve summers." },
-    { key: "shade", label: "Shade Solutions", chip: shadeChipImg, banner: shadeHeroLifestyleImg, bannerPosition: "center 34%", title: "Shade Solutions", copy: "Pergolas, parasols and awnings for gardens, terraces and outdoor rooms." },
-    { key: "kitchen", label: "Outdoor Kitchens", chip: kitchenHeroImg, banner: kitchenHeroImg, title: "Modular Outdoor Kitchen", copy: "Modular kitchens, built-in kitchens, BBQs and the accessories that make outdoor cooking work." },
-    { key: "carpets", label: "Carpets", chip: topicDecorBgImg, banner: topicDecorBgImg, title: "Carpets", copy: "Outdoor rugs that bring warmth, texture and definition to an open-air room." },
-    { key: "decor", label: "Decor", chip: topicDecorImg, banner: topicDecorImg, title: "Decor", copy: "Finishing pieces selected to give an outdoor space its character." },
-    { key: "statues", label: "Statues", chip: topicDecorImg, banner: topicDecorImg, title: "Statues", copy: "Sculptural accents for gardens, terraces and considered outdoor settings." },
+    { key: "lounge", label: "Lounge", chip: sicilyCornerImg, banner: categoryHeroOverrides.lounge || sicilyModularSetFullImg, title: "Lounge", copy: "Sofas, lounge sets and armchairs made for long Algarve afternoons." },
+    { key: "dining", label: "Dining", chip: catalogImg("dining"), banner: categoryHeroOverrides.dining || catalogImg("dining"), title: "Dining", copy: "Outdoor dining sets, tables and chairs for terrace meals from breakfast to late dinner." },
+    { key: "sunlounger", label: "Sun Loungers", chip: catalogImg("sunlounger"), banner: categoryHeroOverrides.sunlounger || catalogImg("sunlounger"), title: "Sun Loungers & Day Beds", copy: "Poolside loungers and day beds built for Algarve summers." },
+    { key: "shade", label: "Shade Solutions", chip: shadeChipImg, banner: categoryHeroOverrides.shade || shadeHeroLifestyleImg, bannerPosition: "center 34%", title: "Shade Solutions", copy: "Pergolas, parasols and awnings for gardens, terraces and outdoor rooms." },
+    { key: "kitchen", label: "Outdoor Kitchens", chip: kitchenHeroImg, banner: categoryHeroOverrides.kitchen || kitchenHeroImg, title: "Modular Outdoor Kitchen", copy: "Modular kitchens, built-in kitchens, BBQs and the accessories that make outdoor cooking work." },
+    { key: "carpets", label: "Carpets", chip: topicDecorBgImg, banner: categoryHeroOverrides.carpets || topicDecorBgImg, title: "Carpets", copy: "Outdoor rugs that bring warmth, texture and definition to an open-air room." },
+    { key: "decor", label: "Decor", chip: topicDecorImg, banner: categoryHeroOverrides.decor || topicDecorImg, title: "Decor", copy: "Finishing pieces selected to give an outdoor space its character." },
+    { key: "statues", label: "Statues", chip: topicDecorImg, banner: categoryHeroOverrides.statues || topicDecorImg, title: "Statues", copy: "Sculptural accents for gardens, terraces and considered outdoor settings." },
   ];
 
   const kitchenCollections = kitchenCollectionMeta.map((collection) => ({

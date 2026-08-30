@@ -8,7 +8,7 @@ const CATEGORY_MAP = {
   'Accessories & Décor': 'decor',
 }
 
-function privateImageUrl(image) {
+export function privateImageUrl(image) {
   const value = typeof image === 'string' ? image : image?.path || image?.src || image?.url || ''
   if (!value) return ''
   if (value.startsWith('.catalog-private/')) return `/__status-private/${value.slice('.catalog-private/'.length)}`
@@ -68,4 +68,21 @@ export function buildNormalLocalCatalog(products = []) {
     .filter((product) => Boolean(CATEGORY_MAP[product.category]))
     .map(toNormalProduct)
     .filter((product) => product.images.length > 0)
+}
+
+export function applyLegacyImageOverrides(products = [], overrides = {}) {
+  return products.map((product) => {
+    const override = overrides[product.id]
+    if (!override) return product
+    const images = (override.images || []).map(privateImageUrl).filter(Boolean)
+    if (images.length === 0) return product
+    return {
+      ...product,
+      img: images[0],
+      images,
+      fit: 'contain',
+      hasApprovedImage: true,
+      localCatalogImage: true,
+    }
+  })
 }

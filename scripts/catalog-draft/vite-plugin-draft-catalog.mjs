@@ -39,12 +39,16 @@ export default function draftCatalogDevPlugin() {
   const draftPath = path.resolve(process.cwd(), '.catalog-private', 'generated', 'draft-products.json')
   const localProductsPath = path.resolve(process.cwd(), '.catalog-private', 'generated', 'local-products.json')
   const inventoryPreviewPath = path.resolve(process.cwd(), '.catalog-private', 'generated', 'inventory-preview.json')
+  const legacyOverridesPath = path.resolve(process.cwd(), '.catalog-private', 'generated', 'legacy-image-overrides.json')
+  const heroOverridesPath = path.resolve(process.cwd(), '.catalog-private', 'generated', 'category-hero-overrides.json')
   const privateRoot = path.resolve(process.cwd(), '.catalog-private')
   const source = () => {
     const approvedDrafts = fs.existsSync(draftPath) ? JSON.parse(fs.readFileSync(draftPath, 'utf8')) : []
     const localProducts = fs.existsSync(localProductsPath) ? JSON.parse(fs.readFileSync(localProductsPath, 'utf8')) : []
     const inventoryPreview = fs.existsSync(inventoryPreviewPath) ? JSON.parse(fs.readFileSync(inventoryPreviewPath, 'utf8')) : []
-    return 'export default ' + JSON.stringify(composeDraftCatalog({ approvedDrafts, localProducts, inventoryPreview })) + ';'
+    const legacyImageOverrides = fs.existsSync(legacyOverridesPath) ? JSON.parse(fs.readFileSync(legacyOverridesPath, 'utf8')) : {}
+    const categoryHeroOverrides = fs.existsSync(heroOverridesPath) ? JSON.parse(fs.readFileSync(heroOverridesPath, 'utf8')) : {}
+    return `export const categoryHeroOverrides = ${JSON.stringify(categoryHeroOverrides)}; export const legacyImageOverrides = ${JSON.stringify(legacyImageOverrides)}; export default ${JSON.stringify(composeDraftCatalog({ approvedDrafts, localProducts, inventoryPreview }))};`
   }
   return {
     name: 'status-concept-draft-catalog-dev',
@@ -59,6 +63,8 @@ export default function draftCatalogDevPlugin() {
       server.watcher.add(draftPath)
       server.watcher.add(localProductsPath)
       server.watcher.add(inventoryPreviewPath)
+      server.watcher.add(legacyOverridesPath)
+      server.watcher.add(heroOverridesPath)
       server.middlewares.use('/__status-private', (request, response, next) => {
         const requestPath = decodeURIComponent(String(request.url || '').split('?')[0]).replace(/^\/+/, '')
         const filePath = resolvePrivateAssetPath(privateRoot, requestPath)
@@ -74,7 +80,7 @@ export default function draftCatalogDevPlugin() {
       })
       server.watcher.on('change', (changedPath) => {
         const resolvedChangedPath = path.resolve(changedPath)
-        if (resolvedChangedPath !== draftPath && resolvedChangedPath !== localProductsPath && resolvedChangedPath !== inventoryPreviewPath) return
+        if (resolvedChangedPath !== draftPath && resolvedChangedPath !== localProductsPath && resolvedChangedPath !== inventoryPreviewPath && resolvedChangedPath !== legacyOverridesPath && resolvedChangedPath !== heroOverridesPath) return
         const module = server.moduleGraph.getModuleById(resolvedVirtualModuleId)
         if (module) server.moduleGraph.invalidateModule(module)
         server.ws.send({ type: 'full-reload', path: '*' })

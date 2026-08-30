@@ -1,9 +1,11 @@
 import ProductDetailPage from '../../pages/status-concept-product-detail'
-import draftProducts from 'virtual:status-concept-draft-catalog'
-import { buildNormalLocalCatalog } from './normalProductAdapter'
+import { allProducts } from '../../data/productCatalog'
+import draftProducts, { legacyImageOverrides } from 'virtual:status-concept-draft-catalog'
+import { applyLegacyImageOverrides, buildNormalLocalCatalog } from './normalProductAdapter'
 
 const localProducts = buildNormalLocalCatalog(draftProducts)
+const legacyProducts = applyLegacyImageOverrides(allProducts, legacyImageOverrides)
 
 export default function NormalProductDetailPage() {
-  return <ProductDetailPage additionalProducts={localProducts} />
+  return <ProductDetailPage additionalProducts={[...legacyProducts, ...localProducts]} />
 }

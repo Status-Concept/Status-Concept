@@ -13,7 +13,7 @@ export default defineConfig({
         return id === virtualDraftCatalogId ? resolvedVirtualDraftCatalogId : null
       },
       load(id) {
-        return id === resolvedVirtualDraftCatalogId ? 'export default []' : null
+        return id === resolvedVirtualDraftCatalogId ? 'export const categoryHeroOverrides = {}; export const legacyImageOverrides = {}; export default []' : null
       },
     },
   ],
