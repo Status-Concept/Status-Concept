@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { resolvePrivateAssetPath, isAllowedPrivateAssetPath } from './vite-plugin-draft-catalog.mjs'
+import { composeDraftCatalog, resolvePrivateAssetPath, isAllowedPrivateAssetPath } from './vite-plugin-draft-catalog.mjs'
 
 describe('draft asset boundary', () => {
   it('allows only image assets in the two private image collections', () => {
@@ -14,5 +14,23 @@ describe('draft asset boundary', () => {
     expect(isAllowedPrivateAssetPath('../outside.webp')).toBe(false)
     expect(isAllowedPrivateAssetPath('reference-images/../generated/draft.json')).toBe(false)
     expect(resolvePrivateAssetPath('C:/private-catalogue', 'generated/draft-products.json')).toBeNull()
+  })
+})
+
+describe('draft catalogue composition', () => {
+  it('uses grouped local products instead of duplicate raw inventory rows', () => {
+    expect(composeDraftCatalog({
+      approvedDrafts: [{ id: 'approved' }],
+      localProducts: [{ id: 'local' }],
+      inventoryPreview: [{ id: 'inventory' }],
+    })).toEqual([{ id: 'approved' }, { id: 'local' }])
+  })
+
+  it('falls back to the inventory preview before local products are generated', () => {
+    expect(composeDraftCatalog({
+      approvedDrafts: [],
+      localProducts: [],
+      inventoryPreview: [{ id: 'inventory' }],
+    })).toEqual([{ id: 'inventory' }])
   })
 })

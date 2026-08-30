@@ -1,8 +1,9 @@
-import { useEffect } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Link, useParams, useSearchParams } from 'react-router-dom'
 import Layout from '../../components/Layout'
 import draftProducts from 'virtual:status-concept-draft-catalog'
 import DraftImagePlaceholder, { privateAssetPath } from './DraftImagePlaceholder'
+import { draftProductImages } from './draftProductMedia'
 import VariantSelector from './VariantSelector'
 import './draft-catalog.css'
 
@@ -34,7 +35,13 @@ export default function DraftProductPage() {
   const variants = product?.variants || []
   const requestedSku = searchParams.get('variant')
   const variant = variants.find((item) => item.sku === requestedSku) || variants[0] || null
+  const [selectedImageIndex, setSelectedImageIndex] = useState(0)
+  const galleryImages = useMemo(() => draftProductImages(product, variant), [product, variant])
   usePrivateRobots(product?.canonicalName || 'Product')
+
+  useEffect(() => {
+    setSelectedImageIndex(0)
+  }, [product?.id, variant?.sku])
 
   if (!product) {
     return (
@@ -48,10 +55,9 @@ export default function DraftProductPage() {
     )
   }
 
-  const variantImage = variant?.images?.[0]
-  const referenceImage = variantImage || product.finalImages?.[0] || product.referenceImages?.[0]
-  const imageSrc = privateAssetPath(referenceImage)
-  const isReference = Boolean(imageSrc && !variantImage && product.imageStatus !== 'final-approved')
+  const selectedImage = galleryImages[selectedImageIndex] || galleryImages[0]
+  const imageSrc = privateAssetPath(selectedImage)
+  const isReference = Boolean(imageSrc && product.imageStatus !== 'final-approved')
   const dimensions = valueRows(product.dimensions)
   const specs = valueRows(product.specs)
   const materials = product.materials || []
@@ -70,9 +76,25 @@ export default function DraftProductPage() {
         <div className="draft-product-layout">
           <section className="draft-product-gallery" aria-label="Draft product gallery">
             <div className="draft-product-image">
-              {imageSrc ? <img src={imageSrc} alt="" /> : <DraftImagePlaceholder label="Awaiting final product images" />}
+              {imageSrc ? <img src={imageSrc} alt={selectedImage?.alt || product.canonicalName} /> : <DraftImagePlaceholder label="Awaiting final product images" />}
               {isReference && <span className="draft-image-label">Reference image — not approved</span>}
             </div>
+            {galleryImages.length > 1 && (
+              <div className="draft-product-thumbnails" aria-label="Product image views">
+                {galleryImages.map((image, index) => (
+                  <button
+                    key={privateAssetPath(image)}
+                    type="button"
+                    className={index === selectedImageIndex ? 'is-selected' : ''}
+                    aria-label={`Show product view ${index + 1}`}
+                    aria-pressed={index === selectedImageIndex}
+                    onClick={() => setSelectedImageIndex(index)}
+                  >
+                    <img src={privateAssetPath(image)} alt="" loading="lazy" />
+                  </button>
+                ))}
+              </div>
+            )}
           </section>
           <section className="draft-product-content">
             <span className="rd-kicker fs">{product.collection} · {product.category}</span>
@@ -86,6 +108,12 @@ export default function DraftProductPage() {
                 <strong>{variant.sku}</strong>
                 <span>{variant.sourceDescription}</span>
                 <span>Stock in private preview: {variant.stockQuantity ?? 'Not available'}</span>
+              </div>
+            )}
+            {!variant && (
+              <div className="draft-selected-variant fs">
+                <strong>SKU association pending</strong>
+                <span>No inventory reference was invented for this product. It remains available for visual review.</span>
               </div>
             )}
             {!!specs.length && <InfoList title="Specs" rows={specs} />}

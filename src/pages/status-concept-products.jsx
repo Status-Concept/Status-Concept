@@ -184,7 +184,7 @@ function CategoryCarousel({ categories, onOpen }) {
   );
 }
 
-const PRODUCTS_PAGE = () => {
+const PRODUCTS_PAGE = ({ productCatalog = allProducts, localProducts = [] }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const [searchParams] = useSearchParams();
@@ -228,10 +228,11 @@ const PRODUCTS_PAGE = () => {
     : "";
   const isKitchenCategory = activeCategory === "kitchen";
   const isBuiltInKitchen = isKitchenCategory && kitchenModeParam === "built-in";
+  const hasLocalKitchenProducts = localProducts.some((product) => product.category === 'kitchen');
   const activeKitchenCollection = isKitchenCategory && !isBuiltInKitchen
     ? (kitchenCollections.some((collection) => collection.key === collectionParam)
         ? collectionParam
-        : (kitchenCollections[0]?.key || null))
+        : (hasLocalKitchenProducts ? null : (kitchenCollections[0]?.key || null)))
     : null;
 
   const hasSearch = Boolean(queryParam);
@@ -242,7 +243,7 @@ const PRODUCTS_PAGE = () => {
   const kitchenPageCopy = isBuiltInKitchen
     ? "Built-in outdoor kitchen solutions for seamless, permanent installations."
     : selectedCategory?.copy;
-  const searchMatches = useMemo(() => searchProducts(allProducts, queryParam), [queryParam]);
+  const searchMatches = useMemo(() => searchProducts(productCatalog, queryParam), [productCatalog, queryParam]);
 
   const filteredProducts = (() => {
     if (hasSearch) {
@@ -255,9 +256,16 @@ const PRODUCTS_PAGE = () => {
     }
 
     if (!activeCategory) return [];
+    const localKitchenProducts = localProducts
+      .filter((product) => product.category === 'kitchen')
+      .filter((product) => !activeKitchenCollection || slug(product.collectionName || product.collection) === activeKitchenCollection)
+      .filter((product) => !activeSubcategory || matchesSubcategory(product, activeSubcategory));
     let base = activeCategory === "kitchen"
-      ? (isBuiltInKitchen ? [] : filterKitchenProducts(kitchenProducts, activeKitchenCollection, activeSubcategory))
-      : allProducts.filter((product) => product.category === activeCategory);
+      ? (isBuiltInKitchen ? [] : [
+          ...filterKitchenProducts(kitchenProducts, activeKitchenCollection, activeSubcategory),
+          ...localKitchenProducts,
+        ])
+      : productCatalog.filter((product) => product.category === activeCategory);
 
     if (collectionParam && activeCategory !== "kitchen") {
       base = base.filter((product) => slug(product.collectionName || product.collection) === collectionParam);
@@ -289,7 +297,7 @@ const PRODUCTS_PAGE = () => {
     }
     if (activeCategory === "kitchen") return isBuiltInKitchen ? kitchenPageLabel : null;
     if (collectionParam) {
-      const match = allProducts.find(
+      const match = productCatalog.find(
         (product) => product.category === activeCategory && slug(product.collectionName || product.collection) === collectionParam,
       );
       return match ? (match.collectionName || match.collection) : null;

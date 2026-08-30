@@ -10,6 +10,8 @@
     "dev": "vite",
     "build": "vite build",
     "generate:demo-products": "node scripts/generate-demo-products.mjs",
+    "build:inventory-preview": "node scripts/catalog-draft/build-inventory-preview.mjs",
+    "build:local-products": "node scripts/catalog-draft/build-local-products.mjs",
     "lint": "eslint .",
     "preview": "vite preview",
     "test": "vitest run",

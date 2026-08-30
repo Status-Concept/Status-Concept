@@ -20,7 +20,7 @@ const displayDimension = (value) => /^(todo:|see source sheet)/i.test(String(val
   ? 'Available on request'
   : value;
 
-const PRODUCT_DETAIL = () => {
+const PRODUCT_DETAIL = ({ additionalProducts = [] }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const { id } = useParams();
@@ -59,11 +59,25 @@ const PRODUCT_DETAIL = () => {
 
   const demoKitchenProductDetails = Object.fromEntries(demoKitchenProducts.map((product) => [product.id, kitchenProductDetails[product.id]]).filter(([, product]) => product));
   const demoGlatzProductDetails = Object.fromEntries(demoGlatzProducts.map((product) => [product.id, glatzProductDetails[product.id]]).filter(([, product]) => product));
+  const additionalProductDetails = Object.fromEntries(additionalProducts.map((rawProduct) => {
+    const product = normalizeProduct(rawProduct);
+    return [product.id, {
+      ...product,
+      collection: product.collectionName,
+      collectionSlug: product.collection,
+      tagline: product.tagline || product.desc,
+      images: rawProduct.images || product.images,
+      specs: product.specs,
+      dims: product.dimensions,
+      materials: product.materials,
+    }];
+  }));
 
   const allProducts = {
     ...catalogProductDetails,
     ...demoKitchenProductDetails,
     ...demoGlatzProductDetails,
+    ...additionalProductDetails,
     "sicily-modular-set": {
       id: "sicily-modular-set",
       name: "Sicily Modular Set",
@@ -93,7 +107,8 @@ const PRODUCT_DETAIL = () => {
   };
 
   const passedProduct = location.state?.product;
-  if (!demoProductIds.has(id)) return <NotFound />;
+  const allowedProductIds = new Set([...demoProductIds, ...additionalProducts.map((product) => product.id)]);
+  if (!allowedProductIds.has(id)) return <NotFound />;
   const product = allProducts[id];
   if (!product) return <NotFound />;
   const images = limitPageImages(product.images?.length ? product.images : [product.image || sicilyCornerImg], product);
@@ -123,8 +138,14 @@ const PRODUCT_DETAIL = () => {
   const effectiveActiveTab = availableTabs.some((tab) => tab.key === activeTab)
     ? activeTab
     : availableTabs[0]?.key || "specs";
-  const isSameCollection = product.category === "kitchen" || product.category === "shade" || product.id === "sicily-modular-set";
+  const isSameCollection = Boolean(additionalProductDetails[product.id]) || product.category === "kitchen" || product.category === "shade" || product.id === "sicily-modular-set";
   const relatedProducts = (() => {
+    if (additionalProductDetails[product.id]) {
+      return additionalProducts
+        .filter((item) => item.id !== product.id && item.category === product.category)
+        .sort((a, b) => (a.collectionName === product.collection ? -1 : 0) - (b.collectionName === product.collection ? -1 : 0))
+        .slice(0, 6);
+    }
     if (catalogProductDetails[product.id]) {
       const currentFacets = getProductFacets(product);
       return [...demoCatalogProducts, ...demoKitchenProducts, ...demoGlatzProducts]
@@ -229,7 +250,7 @@ const PRODUCT_DETAIL = () => {
         </button>
       </div>
 
-      <main className="rd-detail-layout">
+      <main className={`rd-detail-layout ${product.localCatalog ? "local-catalog-product" : ""}`}>
         <section className="rd-gallery-sticky" aria-label="Product gallery">
           <div className="rd-thumbs">
             {images.map((image, index) => (

@@ -11,8 +11,12 @@ import RouteMetadata from './components/RouteMetadata'
 import { SITE_FEATURES } from './config/sitePhase'
 
 // Route-level code splitting: only the homepage ships in the entry chunk.
-const Products = lazy(() => import('./pages/status-concept-products'))
-const ProductDetail = lazy(() => import('./pages/status-concept-product-detail'))
+const Products = import.meta.env.DEV
+  ? lazy(() => import('./dev/catalog-draft/NormalProductsPage'))
+  : lazy(() => import('./pages/status-concept-products'))
+const ProductDetail = import.meta.env.DEV
+  ? lazy(() => import('./dev/catalog-draft/NormalProductDetailPage'))
+  : lazy(() => import('./pages/status-concept-product-detail'))
 const Glatz = lazy(() => import('./pages/status-concept-glatz'))
 const Projects = lazy(() => import('./pages/status-concept-projects'))
 const AfterCare = lazy(() => import('./pages/status-concept-aftercare'))
@@ -23,21 +27,8 @@ const Login = lazy(() => import('./pages/Login'))
 const Register = lazy(() => import('./pages/Register'))
 const FuturePhase = lazy(() => import('./pages/FuturePhase'))
 const NotFound = lazy(() => import('./pages/NotFound'))
-const DraftCataloguePage = import.meta.env.DEV
-  ? lazy(() => import('./dev/catalog-draft/DraftCataloguePage'))
-  : null
-const DraftProductPage = import.meta.env.DEV
-  ? lazy(() => import('./dev/catalog-draft/DraftProductPage'))
-  : null
-
 const routesFor = (prefix = '') => (
   <>
-    {import.meta.env.DEV && DraftCataloguePage && DraftProductPage ? (
-      <>
-        <Route path={(prefix || '') + '/__dev/catalog-draft'} element={<DraftCataloguePage />} />
-        <Route path={(prefix || '') + '/__dev/catalog-draft/:id'} element={<DraftProductPage />} />
-      </>
-    ) : null}
     <Route path={prefix || '/'} element={<Homepage />} />
     {SITE_FEATURES.products && <Route path={`${prefix}/products`} element={<Products />} />}
     {SITE_FEATURES.products && <Route path={`${prefix}/product/:id`} element={<ProductDetail />} />}

@@ -31,13 +31,20 @@ export function resolvePrivateAssetPath(privateRoot, requestPath) {
   return filePath
 }
 
+export function composeDraftCatalog({ approvedDrafts = [], localProducts = [], inventoryPreview = [] }) {
+  return [...approvedDrafts, ...(localProducts.length ? localProducts : inventoryPreview)]
+}
+
 export default function draftCatalogDevPlugin() {
   const draftPath = path.resolve(process.cwd(), '.catalog-private', 'generated', 'draft-products.json')
+  const localProductsPath = path.resolve(process.cwd(), '.catalog-private', 'generated', 'local-products.json')
+  const inventoryPreviewPath = path.resolve(process.cwd(), '.catalog-private', 'generated', 'inventory-preview.json')
   const privateRoot = path.resolve(process.cwd(), '.catalog-private')
   const source = () => {
-    if (!fs.existsSync(draftPath)) return 'export default [];'
-    const value = JSON.parse(fs.readFileSync(draftPath, 'utf8'))
-    return 'export default ' + JSON.stringify(value) + ';'
+    const approvedDrafts = fs.existsSync(draftPath) ? JSON.parse(fs.readFileSync(draftPath, 'utf8')) : []
+    const localProducts = fs.existsSync(localProductsPath) ? JSON.parse(fs.readFileSync(localProductsPath, 'utf8')) : []
+    const inventoryPreview = fs.existsSync(inventoryPreviewPath) ? JSON.parse(fs.readFileSync(inventoryPreviewPath, 'utf8')) : []
+    return 'export default ' + JSON.stringify(composeDraftCatalog({ approvedDrafts, localProducts, inventoryPreview })) + ';'
   }
   return {
     name: 'status-concept-draft-catalog-dev',
@@ -50,6 +57,8 @@ export default function draftCatalogDevPlugin() {
     },
     configureServer(server) {
       server.watcher.add(draftPath)
+      server.watcher.add(localProductsPath)
+      server.watcher.add(inventoryPreviewPath)
       server.middlewares.use('/__status-private', (request, response, next) => {
         const requestPath = decodeURIComponent(String(request.url || '').split('?')[0]).replace(/^\/+/, '')
         const filePath = resolvePrivateAssetPath(privateRoot, requestPath)
@@ -64,7 +73,8 @@ export default function draftCatalogDevPlugin() {
         createReadStream(filePath).pipe(response)
       })
       server.watcher.on('change', (changedPath) => {
-        if (path.resolve(changedPath) !== draftPath) return
+        const resolvedChangedPath = path.resolve(changedPath)
+        if (resolvedChangedPath !== draftPath && resolvedChangedPath !== localProductsPath && resolvedChangedPath !== inventoryPreviewPath) return
         const module = server.moduleGraph.getModuleById(resolvedVirtualModuleId)
         if (module) server.moduleGraph.invalidateModule(module)
         server.ws.send({ type: 'full-reload', path: '*' })

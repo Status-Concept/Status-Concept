@@ -10,7 +10,7 @@ export default function VariantSelector({ variants = [], selectedSku, onChange }
       <div className="draft-variant-options">
         {variants.map((variant) => {
           const selected = variant.sku === selectedSku
-          const unavailable = variant.reviewStatus === 'needs_review'
+          const unavailable = variant.isAvailable === false || variant.disabled === true
           return (
             <button
               key={variant.sku}

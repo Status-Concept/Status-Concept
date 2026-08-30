@@ -844,6 +844,10 @@
   object-fit: contain;
   display: block;
 }
+.local-catalog-product .rd-main-photo,
+.local-catalog-product .rd-thumb {
+  background: var(--white);
+}
 .rd-product-panel { position: sticky; top: calc(var(--header-h) + 11px); }
 .rd-tabs { display: flex; gap: 6px; border-bottom: 1px solid var(--mid-grey); margin-top: 28px; }
 .rd-tab-btn {

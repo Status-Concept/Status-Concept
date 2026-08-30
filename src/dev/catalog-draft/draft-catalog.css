@@ -132,6 +132,55 @@
   gap: 32px 20px;
 }
 
+.draft-catalog-toolbar {
+  display: grid;
+  grid-template-columns: auto minmax(240px, 480px) auto;
+  gap: 14px;
+  align-items: center;
+  margin: 0 0 30px;
+}
+
+.draft-catalog-toolbar label {
+  color: var(--text-muted, #716e68);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.draft-catalog-toolbar input {
+  min-height: 46px;
+  padding: 0 14px;
+  border: 1px solid var(--border, #dedbd4);
+  background: #fff;
+  color: inherit;
+  font: inherit;
+}
+
+.draft-catalog-toolbar span {
+  color: var(--text-muted, #716e68);
+}
+
+.draft-pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 18px;
+  margin-top: 48px;
+}
+
+.draft-pagination button {
+  min-height: 44px;
+  padding: 0 16px;
+  border: 1px solid var(--border, #dedbd4);
+  background: #fff;
+  color: inherit;
+  cursor: pointer;
+}
+
+.draft-pagination button:disabled {
+  cursor: not-allowed;
+  opacity: .45;
+}
+
 .draft-product-card {
   min-width: 0;
 }
@@ -139,7 +188,7 @@
 .draft-product-card-media {
   display: block;
   aspect-ratio: 1;
-  background: #f1f0ed;
+  background: #fff;
 }
 
 .draft-product-card-media img,
@@ -147,6 +196,7 @@
   display: block;
   width: 100%;
   height: 100%;
+  background: #fff;
   object-fit: contain;
 }
 
@@ -194,7 +244,37 @@
 .draft-product-image {
   position: relative;
   min-height: 580px;
-  background: #f1f0ed;
+  background: #fff;
+}
+
+.draft-product-thumbnails {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.draft-product-thumbnails button {
+  min-height: 88px;
+  padding: 0;
+  border: 1px solid transparent;
+  background: #fff;
+  cursor: pointer;
+}
+
+.draft-product-thumbnails button:hover,
+.draft-product-thumbnails button:focus-visible,
+.draft-product-thumbnails button.is-selected {
+  border-color: var(--accent, #9b825a);
+  outline: none;
+}
+
+.draft-product-thumbnails img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-height: 150px;
+  object-fit: contain;
 }
 
 .draft-image-label {
@@ -370,6 +450,11 @@
   .draft-product-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 24px 12px;
+  }
+
+  .draft-catalog-toolbar {
+    grid-template-columns: 1fr;
+    gap: 8px;
   }
 
   .draft-product-card-copy h2 {
