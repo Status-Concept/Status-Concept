@@ -82,7 +82,7 @@ export const filterKitchenProducts = (products, collection, subcategory) => prod
 // Kitchen and shade products keep their supplied catalogue imagery. Their main
 // shots are intentionally contextual, so the white-background classifier should
 // not replace them with a showroom placeholder.
-export const productHasImage = (product) => product.category === "kitchen" || product.category === "shade" || !noImageProducts.has(product.id);
+export const productHasImage = (product) => product.publishedCorrection || product.category === "kitchen" || product.category === "shade" || !noImageProducts.has(product.id);
 
 const CATEGORY_LABELS = {
   lounge: "Lounge",
@@ -256,7 +256,7 @@ const PRODUCTS_PAGE = () => {
 
     if (!activeCategory) return [];
     let base = activeCategory === "kitchen"
-      ? (isBuiltInKitchen ? [] : filterKitchenProducts(kitchenProducts, activeKitchenCollection, activeSubcategory))
+      ? (isBuiltInKitchen ? [] : filterKitchenProducts(allProducts.filter((product) => product.category === "kitchen"), activeKitchenCollection, activeSubcategory))
       : allProducts.filter((product) => product.category === activeCategory);
 
     if (collectionParam && activeCategory !== "kitchen") {
