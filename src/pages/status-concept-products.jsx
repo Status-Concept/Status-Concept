@@ -154,6 +154,7 @@ function CategoryCarousel({ categories, onOpen }) {
             key={`${category.key}-${i}`}
             type="button"
             className="cat-chip"
+            data-category-key={category.key}
             aria-label={category.title}
             aria-hidden={isClone || undefined}
             tabIndex={isClone ? -1 : 0}
