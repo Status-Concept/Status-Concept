@@ -15,6 +15,9 @@ import { getLangFromPath, withLang } from "../utils/language";
 import kitchenHeroImg from "../assets/images/kitchen/kitchen-hero.webp";
 import furnitureSeriesImg from "../assets/images/enhanced/furniture-series-golf-hero.webp";
 import shadeHeroLifestyleImg from "../assets/images/enhanced/shade-glatz-realistic-hero.webp";
+import carpetsCategoryImg from "../assets/images/enhanced/category-carpets-studio.webp";
+import decorCategoryImg from "../assets/images/enhanced/category-decor-studio.webp";
+import statuesCategoryImg from "../assets/images/enhanced/category-statues-studio.webp";
 import sicilyModularSetFullImg from "../assets/images/sicily-modular-set-full.webp";
 import sicilyCornerImg from "../assets/images/sicily-corner.jpg";
 
@@ -211,9 +214,9 @@ const PRODUCTS_PAGE = () => {
     { key: "sunlounger", label: "Sun Loungers", chip: catalogImg("sunlounger"), banner: catalogImg("sunlounger"), title: "Sun Loungers & Day Beds", copy: "Poolside loungers and day beds built for Algarve summers." },
     { key: "shade", label: "Shade Solutions", chip: shadeChipImg, banner: shadeHeroLifestyleImg, bannerPosition: "center 34%", title: "Shade Solutions", copy: "Pergolas, parasols and awnings for gardens, terraces and outdoor rooms." },
     { key: "kitchen", label: "Outdoor Kitchens", chip: kitchenHeroImg, banner: kitchenHeroImg, title: "Modular Outdoor Kitchen", copy: "Modular kitchens, built-in kitchens, BBQs and the accessories that make outdoor cooking work." },
-    { key: "carpets", label: "Carpets", title: "Carpets", copy: "Outdoor rugs that bring warmth, texture and definition to an open-air room." },
-    { key: "decor", label: "Decor", title: "Decor", copy: "Finishing pieces selected to give an outdoor space its character." },
-    { key: "statues", label: "Statues", title: "Statues", copy: "Sculptural accents for gardens, terraces and considered outdoor settings." },
+    { key: "carpets", label: "Carpets", chip: carpetsCategoryImg, banner: carpetsCategoryImg, title: "Carpets", copy: "Outdoor rugs that bring warmth, texture and definition to an open-air room." },
+    { key: "decor", label: "Decor", chip: decorCategoryImg, banner: decorCategoryImg, title: "Decor", copy: "Finishing pieces selected to give an outdoor space its character." },
+    { key: "statues", label: "Statues", chip: statuesCategoryImg, banner: statuesCategoryImg, title: "Statues", copy: "Sculptural accents for gardens, terraces and considered outdoor settings." },
   ];
 
   const kitchenCollections = kitchenCollectionMeta.map((collection) => ({
@@ -360,7 +363,7 @@ const PRODUCTS_PAGE = () => {
             <p className="rd-lede fs">Explore furniture, shade and outdoor kitchens selected for the Algarve lifestyle.</p>
           </div>
           <main className="rd-products-layout">
-            <CategoryCarousel categories={categories.filter((category) => category.chip)} onOpen={openCategory} />
+            <CategoryCarousel categories={categories} onOpen={openCategory} />
           </main>
         </>
       ) : (

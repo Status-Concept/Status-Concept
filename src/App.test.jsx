@@ -56,21 +56,27 @@ describe('routing', () => {
     expect(await screen.findByText('This page does not exist.')).toBeTruthy()
   })
 
-  it('does not show unsupported decor imagery in the category carousel', async () => {
+  it('keeps carpets, decor and statues visible with their own category photos', async () => {
     const { container } = renderAt('/en/products')
     expect(await screen.findByRole('heading', { name: 'Products', level: 1 })).toBeTruthy()
 
     const carousel = container.querySelector('.cat-carousel')
     expect(carousel).toBeTruthy()
-    expect(within(carousel).queryByRole('button', { name: 'Carpets' })).toBeNull()
-    expect(within(carousel).queryByRole('button', { name: 'Decor' })).toBeNull()
-    expect(within(carousel).queryByRole('button', { name: 'Statues' })).toBeNull()
-    expect(within(carousel).getByRole('button', { name: 'Lounge' })).toBeTruthy()
+    const categoryImages = []
+    for (const name of ['Carpets', 'Decor', 'Statues']) {
+      const category = within(carousel).getByRole('button', { name })
+      const image = category.querySelector('img')
+      expect(image).toBeTruthy()
+      expect(image.getAttribute('src')).toContain(`category-${name.toLowerCase()}-studio`)
+      categoryImages.push(image.getAttribute('src'))
+    }
+    expect(new Set(categoryImages).size).toBe(3)
+    expect(within(carousel).getByRole('button', { name: 'Lounge' }).querySelector('img')).toBeTruthy()
   })
 
-  it('keeps the statues URL available without a borrowed category image', async () => {
+  it('keeps the statues URL available with its own category image', async () => {
     const { container } = renderAt('/en/products?cat=statues')
     expect(await screen.findByRole('heading', { name: 'Statues', level: 1 })).toBeTruthy()
-    expect(container.querySelector('.prod-banner img')).toBeNull()
+    expect(container.querySelector('.prod-banner img')?.getAttribute('src')).toContain('category-statues-studio')
   })
 })
