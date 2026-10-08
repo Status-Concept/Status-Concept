@@ -1,5 +1,5 @@
 import { describe, it, expect, afterEach } from 'vitest'
-import { render, screen, cleanup } from '@testing-library/react'
+import { render, screen, cleanup, within } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import App from './App'
 
@@ -54,5 +54,23 @@ describe('routing', () => {
   it('does not expose unknown public product ids', async () => {
     renderAt('/en/product/private-draft-that-must-not-exist')
     expect(await screen.findByText('This page does not exist.')).toBeTruthy()
+  })
+
+  it('does not show unsupported decor imagery in the category carousel', async () => {
+    const { container } = renderAt('/en/products')
+    expect(await screen.findByRole('heading', { name: 'Products', level: 1 })).toBeTruthy()
+
+    const carousel = container.querySelector('.cat-carousel')
+    expect(carousel).toBeTruthy()
+    expect(within(carousel).queryByRole('button', { name: 'Carpets' })).toBeNull()
+    expect(within(carousel).queryByRole('button', { name: 'Decor' })).toBeNull()
+    expect(within(carousel).queryByRole('button', { name: 'Statues' })).toBeNull()
+    expect(within(carousel).getByRole('button', { name: 'Lounge' })).toBeTruthy()
+  })
+
+  it('keeps the statues URL available without a borrowed category image', async () => {
+    const { container } = renderAt('/en/products?cat=statues')
+    expect(await screen.findByRole('heading', { name: 'Statues', level: 1 })).toBeTruthy()
+    expect(container.querySelector('.prod-banner img')).toBeNull()
   })
 })
