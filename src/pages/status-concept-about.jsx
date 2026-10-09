@@ -1,6 +1,6 @@
 import Layout from "../components/Layout";
 import LocalizedLink from "../components/LocalizedLink";
-import showroomQuintaImg from "../assets/images/enhanced/showroom-quinta-ai.webp";
+const showroomQuintaImg = "/photography/showroom-quinta-1440.webp";
 import whyStatusImg from "../assets/images/why-status.jpg";
 
 const ABOUT_PAGE = () => {

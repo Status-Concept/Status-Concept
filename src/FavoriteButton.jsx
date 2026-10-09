@@ -3,6 +3,7 @@ import { useLocation } from "react-router-dom";
 import { useEffect, useRef } from "react";
 import { useFavorites } from "./FavoritesContext";
 import { getLangFromPath } from "./utils/language";
+import { SITE_FEATURES } from "./config/sitePhase";
 
 export default function FavoriteButton({ product, size = 20, style = {} }) {
   const { isFavorite, toggleFavorite } = useFavorites();
@@ -14,6 +15,8 @@ export default function FavoriteButton({ product, size = 20, style = {} }) {
   const buttonSize = Math.max(44, size + 16);
 
   useEffect(() => () => clearTimeout(animationTimer.current), []);
+
+  if (!SITE_FEATURES.favourites) return null;
 
   const handleClick = (e) => {
     e.stopPropagation();
@@ -28,6 +31,7 @@ export default function FavoriteButton({ product, size = 20, style = {} }) {
     <button
       type="button"
       onClick={handleClick}
+      aria-pressed={active}
       aria-label={active
         ? (isPortuguese ? "Remover dos favoritos" : "Remove from favorites")
         : (isPortuguese ? "Adicionar aos favoritos" : "Add to favorites")}

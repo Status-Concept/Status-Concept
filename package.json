@@ -10,6 +10,7 @@
     "dev": "vite",
     "build": "vite build",
     "generate:demo-products": "node scripts/generate-demo-products.mjs",
+    "generate:image-library": "node scripts/build-public-image-library.mjs",
     "lint": "eslint .",
     "preview": "vite preview",
     "test": "vitest run",

@@ -1,5 +1,6 @@
 import { describe, it, expect, afterEach } from 'vitest'
-import { render, screen, cleanup } from '@testing-library/react'
+import { render, screen, cleanup, fireEvent, within } from '@testing-library/react'
+import { vi } from 'vitest'
 import { MemoryRouter } from 'react-router-dom'
 import App from './App'
 
@@ -20,6 +21,25 @@ afterEach(() => {
 })
 
 describe('routing', () => {
+  it('keeps the kitchen range and Browse by choice together when searching', async () => {
+    renderAt('/en/products?cat=kitchen&collection=carbon-line-teak&subcat=accessories&q=cabinet')
+    const articles = await screen.findAllByRole('article')
+    expect(articles.length).toBeGreaterThan(0)
+    expect(articles.every((article) => article.textContent.includes('Teak Carbon Line'))).toBe(true)
+    fireEvent.click(screen.getByRole('button', { name: 'Teak', exact: true }))
+    expect(screen.getByRole('button', { name: 'Attachments & accessories', exact: true }).getAttribute('aria-pressed')).toBe('true')
+    expect(screen.getAllByRole('article').every((article) => !article.textContent.includes('Teak Carbon Line'))).toBe(true)
+  })
+
+  it('loads the image library in batches and resets the batch when filtering', async () => {
+    renderAt('/en/images')
+    const gallery = await screen.findByRole('region', { name: 'Image gallery' })
+    expect(within(gallery).getAllByRole('article')).toHaveLength(36)
+    fireEvent.click(screen.getByRole('button', { name: 'Load more images' }))
+    expect(within(gallery).getAllByRole('article')).toHaveLength(72)
+    fireEvent.change(screen.getByRole('searchbox'), { target: { value: 'Sicily' } })
+    expect(within(gallery).getAllByRole('article').length).toBeLessThanOrEqual(36)
+  })
   it('mounts the homepage at the root', async () => {
     renderAt('/')
     expect(await screen.findAllByText(/TVS/i)).not.toHaveLength(0)
@@ -28,6 +48,11 @@ describe('routing', () => {
   it('mounts the contact page under /en', async () => {
     renderAt('/en/contact')
     expect(await screen.findByText('Tell us what you need')).toBeTruthy()
+    expect(screen.getByLabelText('Name').tagName).toBe('INPUT')
+    expect(screen.getByLabelText('Email').type).toBe('email')
+    expect(screen.getByLabelText('Phone').type).toBe('tel')
+    expect(screen.getByLabelText('Interest').tagName).toBe('SELECT')
+    expect(screen.getByLabelText('Message').tagName).toBe('TEXTAREA')
   })
 
   it('mounts the contact page under /pt', async () => {
@@ -46,9 +71,21 @@ describe('routing', () => {
     expect(await screen.findByText('This feature is planned for a future phase.')).toBeTruthy()
   })
 
-  it('mounts the registration page from the login flow', async () => {
+  it('keeps disabled accounts out of the public registration flow', async () => {
     renderAt('/en/register')
-    expect(await screen.findByText('Create your client account')).toBeTruthy()
+    expect(await screen.findByText('This feature is planned for a future phase.')).toBeTruthy()
+    expect(screen.queryByText('Create your client account')).toBeNull()
+  })
+
+  it('focuses content without changing the route when using the skip link', async () => {
+    const { container } = renderAt('/en/contact')
+    await screen.findByText('Tell us what you need')
+    const content = container.querySelector('#main')
+    content.scrollIntoView = vi.fn()
+    const skip = screen.getByText('Skip to content')
+    expect(fireEvent.click(skip)).toBe(false)
+    expect(document.activeElement).toBe(content)
+    expect(content.scrollIntoView).toHaveBeenCalled()
   })
 
   it('does not expose unknown public product ids', async () => {

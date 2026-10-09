@@ -1,10 +1,26 @@
 import { describe, expect, it } from "vitest";
-import { filterKitchenProducts, matchesSubcategory, productBrandLabel, productHasImage } from "./status-concept-products";
+import { filterKitchenProducts, matchesSubcategory, productBrandLabel, productHasImage, refineProductResults } from "./status-concept-products";
 import { kitchenCollectionHeroes, kitchenProducts } from "../data/kitchenProducts";
 import { PRODUCT_MENU } from "../data/productMenu";
 import { productCollectionLabel } from "../utils/productLabels";
 
 describe("product catalogue helpers", () => {
+  it("does not turn a sink into a BBQ because its description mentions grills", () => {
+    const sink = { category: "kitchen", name: "Sink Cabinet", description: "Works with the Draco Grills barbecue kitchen" };
+    expect(matchesSubcategory(sink, "bbq")).toBe(false);
+    expect(matchesSubcategory(sink, "accessories")).toBe(true);
+  });
+
+  it("combines search results with range and product-type filters", () => {
+    const results = refineProductResults(kitchenProducts, { category: "kitchen", collection: "carbon-line-teak", subcategory: "accessories" });
+    expect(results.length).toBeGreaterThan(0);
+    expect(results.every((product) => product.collection === "carbon-line-teak" && matchesSubcategory(product, "accessories"))).toBe(true);
+    expect(refineProductResults(kitchenProducts, { category: "kitchen", builtIn: true })).toEqual([]);
+  });
+
+  it("does not classify a bioclimatic pergola as a parasol just because it provides shade", () => {
+    expect(matchesSubcategory({ name: "Bioclimatic Pergola", description: "Shade solution" }, "parasols")).toBe(false);
+  });
   it("keeps Sicily's isolated studio image visible", () => {
     expect(productHasImage({ id: "sicily-modular-set", category: "lounge" })).toBe(true);
   });

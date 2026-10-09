@@ -4,6 +4,7 @@ import { getLangFromPath, stripLangFromPath } from '../utils/language'
 
 const PAGE_TITLES = {
   '/products': ['Products', 'Produtos'],
+  '/images': ['Images', 'Imagens'],
   '/glatz-parasols': ['Glatz Parasols', 'Chapéus de sol Glatz'],
   '/projects': ['Projects', 'Projetos'],
   '/after-care': ['After Care', 'After Care'],

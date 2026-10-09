@@ -7,7 +7,7 @@ import FavoriteButton from "../FavoriteButton";
 import { productSrcSet } from "../utils/imageVariants";
 import { kitchenCollectionHeroes, kitchenCollectionMeta, kitchenProducts } from "../data/kitchenProducts";
 import { catalogProducts } from "../data/catalogProducts";
-import { allProducts } from "../data/productCatalog";
+import { demoProducts as allProducts } from "../data/demoProducts";
 import { noImageProducts } from "../data/productImageStatus";
 import { searchProducts } from "../utils/productSearch";
 import { productCollectionLabel } from "../utils/productLabels";
@@ -25,6 +25,7 @@ const shadeChipImg = "/product-images/glatz/sombrano-s-plus/05.webp";
 const slug = (value) => value.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
 const VALID_CATEGORIES = ["lounge", "dining", "sunlounger", "shade", "kitchen", "carpets", "decor", "statues"];
 const CATEGORY_ALIASES = { daybed: "sunlounger", coffee: "dining", side: "dining", bar: "lounge", puffs: "lounge" };
+const LEGACY_CATEGORY_TYPES = { daybed: "daybed", coffee: "coffee", side: "side", bar: "bar", puffs: "pouf" };
 const SUBCATEGORIES = {
   lounge: [
     { key: "upholstered", label: "Upholstered" },
@@ -58,17 +59,21 @@ const productSearchText = (product) => JSON.stringify({
 
 export const matchesSubcategory = (product, key) => {
   if (product.subcategories?.includes(key)) return true;
-  const haystack = productSearchText(product);
+  // Kitchen descriptions mention the entire range, so a sink cabinet's
+  // description mentioning a grill must not classify it as a BBQ.
+  const haystack = product.category === "kitchen"
+    ? product.name.toLowerCase()
+    : productSearchText(product);
   const terms = {
     upholstered: ["upholster", "cushion", "fabric", "textile"],
     rope: ["rope", "cord"],
     aluminium: ["aluminium", "aluminum"],
     pergolas: ["pergola", "bioclimatic"],
-    parasols: ["parasol", "shade", "glatz"],
+    parasols: ["parasol", "umbrella"],
     awnings: ["awning", "retractable"],
     modular: ["modular", "draco", "kitchen"],
     "built-in": ["built-in", "built in", "integrated"],
-    accessories: ["accessor", "attachment", "sink", "drawer", "shelf"],
+    accessories: ["accessor", "attachment", "sink", "drawer", "shelf", "hook", "cover", "waste bin"],
     bbq: ["bbq", "grill", "barbecue"],
   }[key] || [key];
   return terms.some((term) => haystack.includes(term));
@@ -78,6 +83,16 @@ export const filterKitchenProducts = (products, collection, subcategory) => prod
   (!collection || product.collection === collection)
   && (!subcategory || matchesSubcategory(product, subcategory))
 ));
+
+export const refineProductResults = (products, { category, collection, subcategory, type, builtIn = false }) => {
+  if (category === "kitchen" && builtIn) return [];
+  return products.filter((product) => (
+    (!category || product.category === category)
+    && (!collection || slug(product.collectionName || product.collection) === collection)
+    && (!subcategory || matchesSubcategory(product, subcategory))
+    && (!type || `${product.name} ${product.collectionName || ""}`.toLowerCase().includes(type.replace(/-/g, " ")))
+  ));
+};
 
 // Kitchen and shade products keep their supplied catalogue imagery. Their main
 // shots are intentionally contextual, so the white-background classifier should
@@ -191,7 +206,7 @@ const PRODUCTS_PAGE = () => {
   const catParam = searchParams.get("cat");
   const queryParam = searchParams.get("q")?.trim() || "";
   const collectionParam = searchParams.get("collection")?.trim() || "";
-  const typeParam = searchParams.get("type")?.trim().toLowerCase() || "";
+  const typeParam = searchParams.get("type")?.trim().toLowerCase() || LEGACY_CATEGORY_TYPES[catParam] || "";
   const subcategoryParam = searchParams.get("subcat")?.trim().toLowerCase() || "";
   const kitchenModeParam = searchParams.get("mode")?.trim().toLowerCase() || "";
   const currentLang = getLangFromPath(location.pathname);
@@ -200,6 +215,8 @@ const PRODUCTS_PAGE = () => {
   const viewMode = searchParams.get("view") === "list" ? "list" : "grid";
   const sortBy = searchParams.get("sort") === "name" ? "name" : "featured";
   const [searchInput, setSearchInput] = useState(queryParam);
+  const [shareStatus, setShareStatus] = useState("");
+  const [shareUrl, setShareUrl] = useState("");
 
   useEffect(() => {
     setSearchInput(queryParam);
@@ -231,7 +248,7 @@ const PRODUCTS_PAGE = () => {
   const activeKitchenCollection = isKitchenCategory && !isBuiltInKitchen
     ? (kitchenCollections.some((collection) => collection.key === collectionParam)
         ? collectionParam
-        : (kitchenCollections[0]?.key || null))
+        : (queryParam ? null : (kitchenCollections[0]?.key || null)))
     : null;
 
   const hasSearch = Boolean(queryParam);
@@ -245,32 +262,11 @@ const PRODUCTS_PAGE = () => {
   const searchMatches = useMemo(() => searchProducts(allProducts, queryParam), [queryParam]);
 
   const filteredProducts = (() => {
-    if (hasSearch) {
-      const scoped = activeCategory
-        ? searchMatches.filter((product) => product.category === activeCategory)
-        : searchMatches;
-      return sortBy === "name"
-        ? [...scoped].sort((a, b) => a.name.localeCompare(b.name))
-        : scoped;
-    }
-
-    if (!activeCategory) return [];
-    let base = activeCategory === "kitchen"
-      ? (isBuiltInKitchen ? [] : filterKitchenProducts(kitchenProducts, activeKitchenCollection, activeSubcategory))
-      : allProducts.filter((product) => product.category === activeCategory);
-
-    if (collectionParam && activeCategory !== "kitchen") {
-      base = base.filter((product) => slug(product.collectionName || product.collection) === collectionParam);
-    }
-
-    if (activeSubcategory) {
-      base = base.filter((product) => matchesSubcategory(product, activeSubcategory));
-    }
-
-    if (typeParam && activeCategory !== "kitchen") {
-      const needle = typeParam.replace(/-/g, " ");
-      base = base.filter((product) => `${product.name} ${product.collectionName || ""}`.toLowerCase().includes(needle));
-    }
+    if (!activeCategory && !hasSearch) return [];
+    const base = refineProductResults(hasSearch ? searchMatches : allProducts, {
+      category: activeCategory, collection: isKitchenCategory ? activeKitchenCollection : collectionParam,
+      subcategory: activeSubcategory, type: typeParam, builtIn: isBuiltInKitchen,
+    });
 
     return [...base].sort((a, b) => {
       // Products without a clean white-bg image always sink to the bottom.
@@ -278,6 +274,7 @@ const PRODUCTS_PAGE = () => {
       const bi = productHasImage(b) ? 0 : 1;
       if (ai !== bi) return ai - bi;
       if (sortBy === "name") return a.name.localeCompare(b.name);
+      if (hasSearch) return 0;
       return (b.tag ? 1 : 0) - (a.tag ? 1 : 0);
     });
   })();
@@ -309,6 +306,8 @@ const PRODUCTS_PAGE = () => {
   const favPayload = (product) => ({ id: product.id || slug(product.name), name: product.name, collection: product.collectionName || product.collection, img: product.img, category: product.category, route: productRoute(product) });
   const goTo = (path, state) => navigate(withLang(path, currentLang), state ? { state } : undefined);
   const updateProductQuery = (changes) => {
+    setShareStatus("");
+    setShareUrl("");
     const params = new URLSearchParams(searchParams);
     Object.entries(changes).forEach(([key, value]) => {
       if (value === null || value === undefined || value === "") params.delete(key);
@@ -329,7 +328,7 @@ const PRODUCTS_PAGE = () => {
   const openCategory = (key) => goTo(`/products?cat=${key}`);
   const backToLanding = () => goTo(`/products`);
   const selectKitchenCollection = (key) => {
-    updateProductQuery({ cat: "kitchen", mode: null, collection: key, subcat: null, type: null });
+    updateProductQuery({ cat: "kitchen", mode: null, collection: key, type: null });
     requestAnimationFrame(scrollToProducts);
   };
   const setSearchScope = (key) => {
@@ -339,9 +338,22 @@ const PRODUCTS_PAGE = () => {
   const submitResultsSearch = (event) => {
     event.preventDefault();
     const cleanQuery = searchInput.trim();
-    if (!cleanQuery) return;
-    goTo(`/products?q=${encodeURIComponent(cleanQuery)}`);
+    updateProductQuery({ q: cleanQuery || null });
   };
+
+  const shareSelection = async () => {
+    const url = window.location.href;
+    try {
+      await navigator.clipboard.writeText(url);
+      setShareStatus(currentLang === "pt" ? "Ligação copiada" : "Link copied");
+    } catch {
+      setShareUrl(url);
+      setShareStatus(currentLang === "pt" ? "Selecione e copie a ligação abaixo." : "Select and copy the link below.");
+    }
+  };
+
+  const collections = [...new Set(allProducts.filter((product) => product.category === activeCategory)
+    .map((product) => product.collectionName || product.collection).filter(Boolean))];
 
   const hasImage = productHasImage;
   const activeRange = kitchenCollections.find((collection) => collection.key === activeKitchenCollection);
@@ -444,7 +456,7 @@ const PRODUCTS_PAGE = () => {
                 </div>
               )}
 
-              {!hasSearch && isKitchenCategory && !isBuiltInKitchen && (
+              {isKitchenCategory && !isBuiltInKitchen && (
                 <div className="rd-range-strip" role="group" aria-label="Kitchen ranges">
                   {kitchenCollections.map((collection) => (
                     <button key={collection.key} type="button" data-no-translate className={`rd-range-chip ${activeKitchenCollection === collection.key ? "active" : ""}`} aria-pressed={activeKitchenCollection === collection.key} onClick={() => selectKitchenCollection(collection.key)}>
@@ -454,7 +466,7 @@ const PRODUCTS_PAGE = () => {
                 </div>
               )}
 
-              {!hasSearch && activeSubcategories.length > 0 && (
+              {activeSubcategories.length > 0 && !isBuiltInKitchen && (
                 <div className="rd-filter-strip" role="group" aria-label="Filter by product type or material">
                   <span className="rd-filter-label fs">Browse by</span>
                   {activeSubcategories.map((item) => (
@@ -466,7 +478,7 @@ const PRODUCTS_PAGE = () => {
                       onClick={() => updateProductQuery({
                         cat: activeCategory,
                         subcat: activeSubcategory === item.key ? null : item.key,
-                        collection: activeCategory === "kitchen" ? activeKitchenCollection : null,
+                        collection: activeCategory === "kitchen" ? activeKitchenCollection : collectionParam,
                         type: null,
                       })}
                     >
@@ -475,6 +487,21 @@ const PRODUCTS_PAGE = () => {
                   ))}
                 </div>
               )}
+
+              <div className="rd-discovery-tools fs">
+                {!isKitchenCategory && collections.length > 1 && (
+                  <label> {currentLang === "pt" ? "Coleção" : "Collection"}
+                    <select className="rd-select fs" value={collectionParam} onChange={(event) => updateProductQuery({ collection: event.target.value })}>
+                      <option value="">{currentLang === "pt" ? "Todas as coleções" : "All collections"}</option>
+                      {collections.map((name) => <option key={name} value={slug(name)}>{name}</option>)}
+                    </select>
+                  </label>
+                )}
+                {(collectionParam || activeSubcategory || typeParam) && <button type="button" className="rd-filter-chip" onClick={() => updateProductQuery({ collection: null, subcat: null, type: null })}>{currentLang === "pt" ? "Limpar filtros" : "Clear filters"}</button>}
+                <button type="button" className="rd-filter-chip" onClick={shareSelection}>{currentLang === "pt" ? "Partilhar seleção" : "Share selection"}</button>
+                <span role="status">{shareStatus}</span>
+                {shareUrl && <input aria-label={currentLang === "pt" ? "Ligação para partilhar" : "Link to share"} readOnly value={shareUrl} onFocus={(event) => event.target.select()} />}
+              </div>
 
               <div className="rd-products-toolbar">
                 <div>
@@ -494,7 +521,7 @@ const PRODUCTS_PAGE = () => {
                               type="button"
                               className="rd-clear-filter"
                               aria-label={currentLang === "pt" ? "Limpar filtro" : "Clear filter"}
-                              onClick={() => updateProductQuery({ collection: null, type: null, subcat: null })}
+                              onClick={() => updateProductQuery(activeSubcategory || typeParam ? { type: null, subcat: null } : { collection: null })}
                             >×</button>
                           </span>
                         )}

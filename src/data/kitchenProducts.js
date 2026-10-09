@@ -857,6 +857,7 @@ export const kitchenProductDetails = Object.fromEntries(kitchenProducts.map((pro
   tag: product.tag,
   tagline: product.description,
   images: [product.image],
+  sizeOptions: product.sizeOptions,
   specs: Object.entries(product.specs).map(([label, value]) => ({
     label: label.replace(/([A-Z])/g, ' $1').replace(/^./, (c) => c.toUpperCase()),
     value,

@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react'
 import { useLocation } from 'react-router-dom'
 import LocalizedLink from './LocalizedLink'
 import { getLangFromPath } from '../utils/language'
+import { SITE_FEATURES } from '../config/sitePhase'
 
 const NAV_ROUTES = {
   "Products": "/products",
@@ -31,6 +32,7 @@ const NAV_ROUTES = {
   "Attachments & Accessories": "/products?cat=kitchen&subcat=accessories",
   "BBQs": "/products?cat=kitchen&subcat=bbq",
   "Projects": "/projects",
+  "Images": "/images",
   "Why Us": "/about",
   "After Care": "/after-care",
   "Contact": "/contact",
@@ -90,10 +92,10 @@ export default function MobileMenu({ open, onClose }) {
             {l:"Carpets",s:[]},
             {l:"Decor",s:[]},
             {l:"Statues",s:[]},
-            {l:"Leisure",s:["Sound Systems"]},
-            {l:"Projects",s:[]},
+            ...(SITE_FEATURES.projects ? [{l:"Projects",s:[]}] : []),
+            {l:"Images",s:[]},
             {l:"Why Us",s:[]},
-            {l:"After Care",s:[]},
+            ...(SITE_FEATURES.afterCare ? [{l:"After Care",s:[]}] : []),
             {l:"Contact",s:[]},
           ].map(item => (
             <div key={item.l} style={{borderBottom:"1px solid var(--sand-l)",padding:"16px 0"}}>

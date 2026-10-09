@@ -1,13 +1,14 @@
 import { useState } from 'react'
 import LocalizedLink from './LocalizedLink'
+import { readPreference, savePreference } from '../utils/browserStorage'
 
 const CONSENT_KEY = 'cookie_consent'
 
 export default function ConsentNotice() {
-  const [visible, setVisible] = useState(() => !localStorage.getItem(CONSENT_KEY))
+  const [visible, setVisible] = useState(() => !readPreference(CONSENT_KEY))
 
   const choose = (value) => {
-    localStorage.setItem(CONSENT_KEY, value)
+    savePreference(CONSENT_KEY, value)
     setVisible(false)
   }
 

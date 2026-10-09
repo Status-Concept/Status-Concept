@@ -1,6 +1,7 @@
 import { createContext, useCallback, useContext, useRef, useState, useEffect } from "react";
 import { useAuth } from "./context/AuthContext";
 import { getSupabase } from "./lib/supabase";
+import { readJsonPreference, removePreference, savePreference } from "./utils/browserStorage";
 
 const FavoritesContext = createContext();
 
@@ -8,12 +9,7 @@ const STORAGE_KEY = "status_concept_favorites";
 const DETAILS_KEY = "status_concept_favorite_details";
 
 function readStorage(key, fallback) {
-  try {
-    const stored = localStorage.getItem(key);
-    return stored ? JSON.parse(stored) : fallback;
-  } catch {
-    return fallback;
-  }
+  return readJsonPreference(key, fallback);
 }
 
 function favoriteId(product) {
@@ -37,8 +33,8 @@ export function FavoritesProvider({ children }) {
     prevUserRef.current = user;
     if (wasLoggedIn && !user) {
       loggingOutRef.current = true;
-      localStorage.removeItem(STORAGE_KEY);
-      localStorage.removeItem(DETAILS_KEY);
+      removePreference(STORAGE_KEY);
+      removePreference(DETAILS_KEY);
       setFavorites([]);
       setFavoriteDetails({});
     }
@@ -51,12 +47,12 @@ export function FavoritesProvider({ children }) {
       if (favorites.length === 0) loggingOutRef.current = false;
       return;
     }
-    if (!user) localStorage.setItem(STORAGE_KEY, JSON.stringify(favorites));
+    if (!user) savePreference(STORAGE_KEY, JSON.stringify(favorites));
   }, [favorites, user]);
 
   useEffect(() => {
     if (loggingOutRef.current) return;
-    localStorage.setItem(DETAILS_KEY, JSON.stringify(favoriteDetails));
+    savePreference(DETAILS_KEY, JSON.stringify(favoriteDetails));
   }, [favoriteDetails]);
 
   const loadSupabaseFavorites = useCallback(async () => {

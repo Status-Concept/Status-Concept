@@ -12,6 +12,7 @@ import { SITE_FEATURES } from './config/sitePhase'
 
 // Route-level code splitting: only the homepage ships in the entry chunk.
 const Products = lazy(() => import('./pages/status-concept-products'))
+const Images = lazy(() => import('./pages/status-concept-images'))
 const ProductDetail = lazy(() => import('./pages/status-concept-product-detail'))
 const Glatz = lazy(() => import('./pages/status-concept-glatz'))
 const Projects = lazy(() => import('./pages/status-concept-projects'))
@@ -40,6 +41,7 @@ const routesFor = (prefix = '') => (
     ) : null}
     <Route path={prefix || '/'} element={<Homepage />} />
     {SITE_FEATURES.products && <Route path={`${prefix}/products`} element={<Products />} />}
+    <Route path={`${prefix}/images`} element={<Images />} />
     {SITE_FEATURES.products && <Route path={`${prefix}/product/:id`} element={<ProductDetail />} />}
     {SITE_FEATURES.products && <Route path={`${prefix}/glatz-parasols`} element={<Glatz />} />}
     {SITE_FEATURES.projects
@@ -50,9 +52,9 @@ const routesFor = (prefix = '') => (
       : <Route path={`${prefix}/after-care`} element={<FuturePhase />} />}
     {SITE_FEATURES.showrooms && <Route path={`${prefix}/about`} element={<About />} />}
     <Route path={`${prefix}/contact`} element={<Contact />} />
-    <Route path={`${prefix}/login`} element={<Login />} />
-    <Route path={`${prefix}/register`} element={<Register />} />
-    <Route path={`${prefix}/registar`} element={<Register />} />
+    <Route path={`${prefix}/login`} element={SITE_FEATURES.accounts ? <Login /> : <FuturePhase />} />
+    <Route path={`${prefix}/register`} element={SITE_FEATURES.accounts ? <Register /> : <FuturePhase />} />
+    <Route path={`${prefix}/registar`} element={SITE_FEATURES.accounts ? <Register /> : <FuturePhase />} />
     <Route path={`${prefix}/privacy`} element={<Legal doc="privacy" />} />
     <Route path={`${prefix}/privacidade`} element={<Legal doc="privacy" />} />
     <Route path={`${prefix}/cookies`} element={<Legal doc="cookies" />} />

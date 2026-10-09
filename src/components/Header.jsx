@@ -7,6 +7,7 @@ import SocialLinks from './SocialIcons'
 import { CONTACT } from '../data/showrooms'
 import { PRODUCT_MENU } from '../data/productMenu'
 import BrandLogo from './BrandLogo'
+import { SITE_FEATURES } from '../config/sitePhase'
 
 const SearchPanel = lazy(() => import('./SearchPanel'))
 
@@ -67,7 +68,7 @@ export default function Header({ onOpenMenu }) {
           <a href={CONTACT.emailHref} data-no-translate style={{ color: "inherit", textDecoration: "none" }}>{CONTACT.email}</a>
         </div>
         <div style={{ display: "flex", gap: "12px", alignItems: "center" }}>
-          <LocalizedLink
+          {SITE_FEATURES.accounts && <LocalizedLink
             className="fs"
             data-no-translate={isAuthenticated ? true : undefined}
             to={isAuthenticated ? "/cliente" : "/login"}
@@ -90,7 +91,7 @@ export default function Header({ onOpenMenu }) {
             }}
           >
             {isAuthenticated ? (firstName || "A Minha Conta") : "Login"}
-          </LocalizedLink>
+          </LocalizedLink>}
           <div style={{ display: "flex", gap: "2px", alignItems: "center" }}>
             <SocialLinks linkStyle={{ color: "var(--text-dark)" }} />
           </div>
@@ -170,7 +171,7 @@ export default function Header({ onOpenMenu }) {
               </div>
             )}
           </div>
-          {[["Projects", "/projects"], ["Showrooms", "/about"], ["Contact", "/contact"]].map(([label, path]) => (
+          {[["Images", "/images"], ...(SITE_FEATURES.projects ? [["Projects", "/projects"]] : []), ["Showrooms", "/about"], ["Contact", "/contact"]].map(([label, path]) => (
             <LocalizedLink key={label} className="nl" to={path} style={{ color: "inherit" }}>{label}</LocalizedLink>
           ))}
         </nav>

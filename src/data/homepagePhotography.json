@@ -1,0 +1,170 @@
+[
+  {
+    "name": "sicily",
+    "source": "https://statusconcept.com/wp-content/uploads/2025/07/SC_0033_5.Sicily-Modular-Set.jpg",
+    "width": 1440,
+    "height": 808,
+    "originalBytes": 157621,
+    "variants": [
+      {
+        "src": "/photography/sicily-480.webp",
+        "width": 480,
+        "bytes": 22290
+      },
+      {
+        "src": "/photography/sicily-800.webp",
+        "width": 800,
+        "bytes": 58656
+      },
+      {
+        "src": "/photography/sicily-1440.webp",
+        "width": 1440,
+        "bytes": 147818
+      }
+    ]
+  },
+  {
+    "name": "berlin",
+    "source": "https://statusconcept.com/wp-content/uploads/2025/07/SC_0008_30.Berlin-Modular-sofa.jpg",
+    "width": 1440,
+    "height": 808,
+    "originalBytes": 132159,
+    "variants": [
+      {
+        "src": "/photography/berlin-480.webp",
+        "width": 480,
+        "bytes": 18962
+      },
+      {
+        "src": "/photography/berlin-800.webp",
+        "width": 800,
+        "bytes": 49348
+      },
+      {
+        "src": "/photography/berlin-1440.webp",
+        "width": 1440,
+        "bytes": 122578
+      }
+    ]
+  },
+  {
+    "name": "florida-orlando",
+    "source": "https://statusconcept.com/wp-content/uploads/2025/07/SC_0013_25.Florida-dining-table-with-Orlando-Dining-Armchairs.jpg",
+    "width": 1440,
+    "height": 808,
+    "originalBytes": 216494,
+    "variants": [
+      {
+        "src": "/photography/florida-orlando-480.webp",
+        "width": 480,
+        "bytes": 34410
+      },
+      {
+        "src": "/photography/florida-orlando-800.webp",
+        "width": 800,
+        "bytes": 95756
+      },
+      {
+        "src": "/photography/florida-orlando-1440.webp",
+        "width": 1440,
+        "bytes": 235714
+      }
+    ]
+  },
+  {
+    "name": "bella",
+    "source": "https://statusconcept.com/wp-content/uploads/2025/09/SC_0002_Bellasofaset.jpg",
+    "width": 1440,
+    "height": 808,
+    "originalBytes": 216991,
+    "variants": [
+      {
+        "src": "/photography/bella-480.webp",
+        "width": 480,
+        "bytes": 30074
+      },
+      {
+        "src": "/photography/bella-800.webp",
+        "width": 800,
+        "bytes": 71288
+      },
+      {
+        "src": "/photography/bella-1440.webp",
+        "width": 1440,
+        "bytes": 184658
+      }
+    ]
+  },
+  {
+    "name": "reno",
+    "source": "https://statusconcept.com/wp-content/uploads/2025/07/SC_0014_24.Reno-Sofa-set.jpg",
+    "width": 1440,
+    "height": 808,
+    "originalBytes": 254235,
+    "variants": [
+      {
+        "src": "/photography/reno-480.webp",
+        "width": 480,
+        "bytes": 35772
+      },
+      {
+        "src": "/photography/reno-800.webp",
+        "width": 800,
+        "bytes": 105366
+      },
+      {
+        "src": "/photography/reno-1440.webp",
+        "width": 1440,
+        "bytes": 300978
+      }
+    ]
+  },
+  {
+    "name": "showroom-quinta",
+    "source": "https://statusconcept.com/wp-content/uploads/2025/09/SC_0003_SHOWRROMQDL1.jpg",
+    "width": 1440,
+    "height": 808,
+    "originalBytes": 298912,
+    "variants": [
+      {
+        "src": "/photography/showroom-quinta-480.webp",
+        "width": 480,
+        "bytes": 42746
+      },
+      {
+        "src": "/photography/showroom-quinta-800.webp",
+        "width": 800,
+        "bytes": 110290
+      },
+      {
+        "src": "/photography/showroom-quinta-1440.webp",
+        "width": 1440,
+        "bytes": 277168
+      }
+    ]
+  },
+  {
+    "name": "showroom-quinta-2",
+    "source": "https://statusconcept.com/wp-content/uploads/2025/09/SC_0004_ShowroomQDL.jpg",
+    "width": 1440,
+    "height": 808,
+    "originalBytes": 346789,
+    "variants": [
+      {
+        "src": "/photography/showroom-quinta-2-480.webp",
+        "width": 480,
+        "bytes": 46518
+      },
+      {
+        "src": "/photography/showroom-quinta-2-800.webp",
+        "width": 800,
+        "bytes": 120636
+      },
+      {
+        "src": "/photography/showroom-quinta-2-1440.webp",
+        "width": 1440,
+        "bytes": 327160
+      }
+    ]
+  }
+]

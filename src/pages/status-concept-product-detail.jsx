@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import Layout from "../components/Layout";
 import LocalizedLink from "../components/LocalizedLink";
+import ImageDialog from "../components/ImageDialog";
 import NotFound from "./NotFound";
 import { whatsappUrl } from "../utils/whatsapp";
 import { productSrcSet } from "../utils/imageVariants";
@@ -28,6 +29,13 @@ const PRODUCT_DETAIL = () => {
   const [activeImg, setActiveImg] = useState(0);
   const [activeTab, setActiveTab] = useState("specs");
   const [lightboxOpen, setLightboxOpen] = useState(false);
+  const [selectedSizeSku, setSelectedSizeSku] = useState(null);
+  useEffect(() => {
+    setActiveImg(0);
+    setActiveTab("specs");
+    setLightboxOpen(false);
+    setSelectedSizeSku(null);
+  }, [id]);
 
   const demoCatalogProducts = demoProducts.filter((rawProduct) => rawProduct.category !== "kitchen" && rawProduct.category !== "shade");
   const demoKitchenProducts = demoProducts.filter((rawProduct) => rawProduct.category === "kitchen");
@@ -100,7 +108,7 @@ const PRODUCT_DETAIL = () => {
   const safeActiveImg = activeImg < images.length ? activeImg : 0;
   const goTo = (path) => navigate(withLang(path, currentLang));
   const goBack = () => {
-    if (window.history.length > 1) {
+    if (window.history.state?.idx > 0) {
       navigate(-1);
       return;
     }
@@ -109,7 +117,9 @@ const PRODUCT_DETAIL = () => {
 
   // Carry the product (and a sensible interest) into the enquiry form.
   const INTEREST_BY_CATEGORY = { shade: "Shade Solutions", kitchen: "Outdoor Kitchens", lounge: "Outdoor Furniture", dining: "Outdoor Furniture", sunlounger: "Outdoor Furniture", decor: "Decor & Leisure", leisure: "Decor & Leisure" };
-  const enquireState = { product: product.name, interest: INTEREST_BY_CATEGORY[product.category] || "" };
+  const selectedSize = product.sizeOptions?.find((option) => option.sku === selectedSizeSku) || product.sizeOptions?.[0];
+  const enquiryName = selectedSize ? `${product.name} (${selectedSize.label}, SKU: ${selectedSize.sku})` : product.name;
+  const enquireState = { product: enquiryName, interest: INTEREST_BY_CATEGORY[product.category] || "" };
 
   const kitchenHero = product.category === "kitchen"
     ? kitchenCollectionHeroes[product.collectionSlug || passedProduct?.collection]
@@ -237,7 +247,7 @@ const PRODUCT_DETAIL = () => {
                 key={image + index}
                 type="button"
                 aria-label={`View image ${index + 1}`}
-                aria-pressed={activeImg === index}
+                aria-pressed={safeActiveImg === index}
                 onClick={() => setActiveImg(index)}
                 style={{ padding: 0, border: "none", background: "none", cursor: "pointer", display: "block" }}
               >
@@ -287,15 +297,15 @@ const PRODUCT_DETAIL = () => {
             <div style={{ marginBottom: 28 }}>
               <span className="fs" style={{ display: "block", fontSize: 11, letterSpacing: 2, textTransform: "uppercase", color: "var(--sand-d)", marginBottom: 14 }}>Select Size</span>
               <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-                {product.sizeOptions.map((opt, i) => (
-                  <button key={opt.sku} type="button" className="fs" style={{
+                {product.sizeOptions.map((opt) => (
+                  <button key={opt.sku} type="button" className="fs" aria-pressed={selectedSize?.sku === opt.sku} onClick={() => setSelectedSizeSku(opt.sku)} style={{
                     display: "flex", justifyContent: "space-between", alignItems: "center",
-                    padding: "16px 20px", border: i === 0 ? "2px solid var(--accent)" : "1px solid var(--mid-grey)",
-                    background: i === 0 ? "var(--accent-light)" : "transparent", borderRadius: 2, cursor: "pointer",
+                    padding: "16px 20px", border: selectedSize?.sku === opt.sku ? "2px solid var(--accent)" : "1px solid var(--mid-grey)",
+                    background: selectedSize?.sku === opt.sku ? "var(--accent-light)" : "transparent", borderRadius: 2, cursor: "pointer",
                     transition: "all .3s", textAlign: "left",
                   }}
                   onMouseEnter={e => { e.currentTarget.style.borderColor = "var(--accent)"; e.currentTarget.style.background = "var(--accent-light)"; }}
-                  onMouseLeave={e => { if (i !== 0) { e.currentTarget.style.borderColor = "var(--mid-grey)"; e.currentTarget.style.background = "transparent"; } }}
+                  onMouseLeave={e => { if (selectedSize?.sku !== opt.sku) { e.currentTarget.style.borderColor = "var(--mid-grey)"; e.currentTarget.style.background = "transparent"; } }}
                   >
                     <div>
                       <span style={{ fontSize: 14, fontWeight: 500, color: "var(--text-dark)", display: "block" }}>{opt.label}</span>
@@ -311,7 +321,7 @@ const PRODUCT_DETAIL = () => {
           <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginBottom: 28 }}>
             <LocalizedLink className="cb cg" to="/contact" state={enquireState}>Request a proposal</LocalizedLink>
             <LocalizedLink className="cb cd" to="/contact" state={enquireState}>Book a showroom visit</LocalizedLink>
-            <a className="cb cd" href={whatsappUrl(`Hello STATVS, I'm interested in the ${product.name}.`)} target="_blank" rel="noopener noreferrer">WhatsApp us</a>
+            <a className="cb cd" href={whatsappUrl(`Hello STATVS, I'm interested in the ${enquiryName}.`)} target="_blank" rel="noopener noreferrer">WhatsApp us</a>
           </div>
 
           {availableTabs.length > 0 && <div className="rd-tabs">
@@ -367,10 +377,10 @@ const PRODUCT_DETAIL = () => {
       </div>
 
       {lightboxOpen && (
-        <div className="rd-lightbox" onClick={() => setLightboxOpen(false)}>
+        <ImageDialog className="rd-lightbox" label={`${product.name} full-size image`} onClose={() => setLightboxOpen(false)}>
           <button type="button" aria-label="Close" onClick={() => setLightboxOpen(false)}>×</button>
           <img src={images[safeActiveImg]} alt={product.name} />
-        </div>
+        </ImageDialog>
       )}
     </Layout>
   );

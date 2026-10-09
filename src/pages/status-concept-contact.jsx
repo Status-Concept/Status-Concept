@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import { useLocation, useSearchParams } from "react-router-dom";
 import Layout from "../components/Layout";
-import { getSupabase } from "../lib/supabase";
+import { getSupabase, isSupabaseConfigured } from "../lib/supabase";
 import { sanitizePhone, sanitizeText } from "../utils/sanitize";
 import { SHOWROOMS, CONTACT } from "../data/showrooms";
 import { whatsappUrl } from "../utils/whatsapp";
-import showroomQuintaImg from "../assets/images/enhanced/showroom-quinta-ai.webp";
-import showroomAlmancilImg from "../assets/images/enhanced/showroom-almancil-ai.webp";
+import showroomAlmancilImg from "../assets/images/showroom-almancil.jpg";
+const showroomQuintaImg = "/photography/showroom-quinta-1440.webp";
 
 const telHref = (n) => "tel:" + n.replace(/[^\d+]/g, "");
 
@@ -45,6 +45,10 @@ const CONTACT_PAGE = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (!canSubmit || status === "sending") return;
+    if (!isSupabaseConfigured) {
+      window.location.assign(mailtoFallback);
+      return;
+    }
     setStatus("sending");
 
     const payload = {
@@ -152,33 +156,33 @@ const CONTACT_PAGE = () => {
                 </div>
               )}
               <div className="rd-field">
-                <label>Name</label>
-                <input value={formData.name} onChange={(event) => setFormData({ ...formData, name: event.target.value })} autoComplete="name" required />
+                <label htmlFor="enquiry-name">Name</label>
+                <input id="enquiry-name" name="name" maxLength={200} value={formData.name} onChange={(event) => setFormData({ ...formData, name: event.target.value })} autoComplete="name" required />
               </div>
               <div className="rd-field">
-                <label>Email</label>
-                <input type="email" value={formData.email} onChange={(event) => setFormData({ ...formData, email: event.target.value })} autoComplete="email" required />
+                <label htmlFor="enquiry-email">Email</label>
+                <input id="enquiry-email" name="email" maxLength={320} type="email" value={formData.email} onChange={(event) => setFormData({ ...formData, email: event.target.value })} autoComplete="email" required />
               </div>
               <div className="rd-field">
-                <label>Phone</label>
-                <input value={formData.phone} onChange={(event) => setFormData({ ...formData, phone: event.target.value })} autoComplete="tel" />
+                <label htmlFor="enquiry-phone">Phone</label>
+                <input id="enquiry-phone" name="phone" type="tel" maxLength={40} value={formData.phone} onChange={(event) => setFormData({ ...formData, phone: event.target.value })} autoComplete="tel" />
               </div>
               <div className="rd-field">
-                <label>Interest</label>
-                <select value={formData.interest} onChange={(event) => setFormData({ ...formData, interest: event.target.value })}>
+                <label htmlFor="enquiry-interest">Interest</label>
+                <select id="enquiry-interest" name="interest" value={formData.interest} onChange={(event) => setFormData({ ...formData, interest: event.target.value })}>
                   <option value="">Choose an option</option>
                   {interests.map((interest) => <option key={interest} value={interest}>{interest}</option>)}
                 </select>
               </div>
               <div className="rd-field">
-                <label>Message</label>
-                <textarea value={formData.message} onChange={(event) => setFormData({ ...formData, message: event.target.value })} required />
+                <label htmlFor="enquiry-message">Message</label>
+                <textarea id="enquiry-message" name="message" maxLength={4000} value={formData.message} onChange={(event) => setFormData({ ...formData, message: event.target.value })} required />
               </div>
               <button type="submit" className="cb cg" style={{ alignSelf: "start", opacity: canSubmit && status !== "sending" ? 1 : 0.6 }} disabled={!canSubmit || status === "sending"}>
-                {status === "sending" ? "Sending…" : "Send enquiry"}
+                {status === "sending" ? "Sending…" : (isSupabaseConfigured ? "Send enquiry" : "Prepare email enquiry")}
               </button>
               <p className="fs" style={{ fontSize: 12, color: "var(--text-grey)", marginTop: 4, lineHeight: 1.6 }}>
-                The showroom team replies within one business day. Your details are only used to respond to this enquiry.
+                {isSupabaseConfigured ? "The showroom team replies within one business day. Your details are only used to respond to this enquiry." : "This opens your email app with your enquiry. Review it and press Send there."}
               </p>
             </form>
           )}
