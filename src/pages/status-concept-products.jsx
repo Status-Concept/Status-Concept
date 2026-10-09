@@ -7,7 +7,7 @@ import FavoriteButton from "../FavoriteButton";
 import { productSrcSet } from "../utils/imageVariants";
 import { kitchenCollectionHeroes, kitchenCollectionMeta, kitchenProducts } from "../data/kitchenProducts";
 import { catalogProducts } from "../data/catalogProducts";
-import { demoProducts as allProducts } from "../data/demoProducts";
+import { publicSearchProducts as allProducts } from "../data/productCatalog";
 import { noImageProducts } from "../data/productImageStatus";
 import { searchProducts } from "../utils/productSearch";
 import { productCollectionLabel } from "../utils/productLabels";
@@ -15,8 +15,9 @@ import { getLangFromPath, withLang } from "../utils/language";
 import kitchenHeroImg from "../assets/images/kitchen/kitchen-hero.webp";
 import furnitureSeriesImg from "../assets/images/enhanced/furniture-series-golf-hero.webp";
 import shadeHeroLifestyleImg from "../assets/images/enhanced/shade-glatz-realistic-hero.webp";
-import topicDecorImg from "../assets/images/enhanced/topic-decor-real.webp";
-import topicDecorBgImg from "../assets/images/enhanced/topic-decor-bg-ai.webp";
+import carpetsCategoryImg from "../assets/images/enhanced/category-carpets-studio.webp";
+import decorCategoryImg from "../assets/images/enhanced/category-decor-studio.webp";
+import statuesCategoryImg from "../assets/images/enhanced/category-statues-studio.webp";
 import sicilyModularSetFullImg from "../assets/images/sicily-modular-set-full.webp";
 import sicilyCornerImg from "../assets/images/sicily-corner.jpg";
 
@@ -97,7 +98,7 @@ export const refineProductResults = (products, { category, collection, subcatego
 // Kitchen and shade products keep their supplied catalogue imagery. Their main
 // shots are intentionally contextual, so the white-background classifier should
 // not replace them with a showroom placeholder.
-export const productHasImage = (product) => product.category === "kitchen" || product.category === "shade" || !noImageProducts.has(product.id);
+export const productHasImage = (product) => product.publishedCorrection || product.category === "kitchen" || product.category === "shade" || !noImageProducts.has(product.id);
 
 const CATEGORY_LABELS = {
   lounge: "Lounge",
@@ -168,6 +169,7 @@ function CategoryCarousel({ categories, onOpen }) {
             key={`${category.key}-${i}`}
             type="button"
             className="cat-chip"
+            data-category-key={category.key}
             aria-label={category.title}
             aria-hidden={isClone || undefined}
             tabIndex={isClone ? -1 : 0}
@@ -230,9 +232,9 @@ const PRODUCTS_PAGE = () => {
     { key: "sunlounger", label: "Sun Loungers", chip: catalogImg("sunlounger"), banner: catalogImg("sunlounger"), title: "Sun Loungers & Day Beds", copy: "Poolside loungers and day beds built for Algarve summers." },
     { key: "shade", label: "Shade Solutions", chip: shadeChipImg, banner: shadeHeroLifestyleImg, bannerPosition: "center 34%", title: "Shade Solutions", copy: "Pergolas, parasols and awnings for gardens, terraces and outdoor rooms." },
     { key: "kitchen", label: "Outdoor Kitchens", chip: kitchenHeroImg, banner: kitchenHeroImg, title: "Modular Outdoor Kitchen", copy: "Modular kitchens, built-in kitchens, BBQs and the accessories that make outdoor cooking work." },
-    { key: "carpets", label: "Carpets", chip: topicDecorBgImg, banner: topicDecorBgImg, title: "Carpets", copy: "Outdoor rugs that bring warmth, texture and definition to an open-air room." },
-    { key: "decor", label: "Decor", chip: topicDecorImg, banner: topicDecorImg, title: "Decor", copy: "Finishing pieces selected to give an outdoor space its character." },
-    { key: "statues", label: "Statues", chip: topicDecorImg, banner: topicDecorImg, title: "Statues", copy: "Sculptural accents for gardens, terraces and considered outdoor settings." },
+    { key: "carpets", label: "Carpets", chip: carpetsCategoryImg, banner: carpetsCategoryImg, title: "Carpets", copy: "Outdoor rugs that bring warmth, texture and definition to an open-air room." },
+    { key: "decor", label: "Decor", chip: decorCategoryImg, banner: decorCategoryImg, title: "Decor", copy: "Finishing pieces selected to give an outdoor space its character." },
+    { key: "statues", label: "Statues", chip: statuesCategoryImg, banner: statuesCategoryImg, title: "Statues", copy: "Sculptural accents for gardens, terraces and considered outdoor settings." },
   ];
 
   const kitchenCollections = kitchenCollectionMeta.map((collection) => ({
@@ -379,7 +381,7 @@ const PRODUCTS_PAGE = () => {
         </>
       ) : (
         <>
-          {!hasSearch && (
+          {!hasSearch && activeBanner && (
             <section className="prod-banner">
               <img src={activeBanner} alt="" decoding="async" fetchPriority="high" style={{ objectPosition: selectedCategory.bannerPosition || "center" }} />
             </section>

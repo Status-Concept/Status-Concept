@@ -10,6 +10,7 @@ import { productCollectionLabel } from "../utils/productLabels";
 import { glatzProductDetails } from "../data/glatzProducts";
 import { kitchenProductDetails, kitchenCollectionHeroes } from "../data/kitchenProducts";
 import { demoProducts, demoProductIds } from "../data/demoProducts";
+import { publishedCorrectionProducts } from "../data/productCatalog";
 import { limitPageImages } from "../config/contentLimits";
 import { getProductFacets, normalizeProduct } from "../data/productTaxonomy";
 import { getLangFromPath, withLang } from "../utils/language";
@@ -101,8 +102,20 @@ const PRODUCT_DETAIL = () => {
   };
 
   const passedProduct = location.state?.product;
-  if (!demoProductIds.has(id)) return <NotFound />;
-  const product = allProducts[id];
+  const correction = publishedCorrectionProducts.find((item) => item.id === id);
+  if (!demoProductIds.has(id) && !correction) return <NotFound />;
+  const product = correction
+    ? {
+        ...(allProducts[id] || {}),
+        id: correction.id,
+        name: correction.name,
+        category: correction.category,
+        collection: correction.collectionName || correction.collection,
+        images: correction.images,
+        image: correction.img,
+        publishedCorrection: true,
+      }
+    : allProducts[id];
   if (!product) return <NotFound />;
   const images = limitPageImages(product.images?.length ? product.images : [product.image || sicilyCornerImg], product);
   const safeActiveImg = activeImg < images.length ? activeImg : 0;
@@ -282,7 +295,10 @@ const PRODUCT_DETAIL = () => {
           <span className="rd-kicker fs" style={{ marginTop: 28 }}>{product.collection} Collection</span>
           <h1 className="rd-title ff" data-no-translate style={{ color: "var(--text-dark)", fontSize: "clamp(32px, 4vw, 48px)", fontWeight: 400 }}>{product.name}</h1>
           <div className="la" style={{ marginBottom: 20 }} />
-          <p className="rd-lede fs">{product.tagline}</p>
+          {product.tagline && <p className="rd-lede fs">{product.tagline}</p>}
+          {product.publishedCorrection && <p className="rd-lede fs">{currentLang === "pt"
+            ? "Imagem ilustrativa; confirme o modelo e os acabamentos com a nossa equipa."
+            : "Illustrative image; please confirm the model and finishes with our team."}</p>}
 
           <div className="rd-swatch-row" aria-label={product.colorLabel || "Colours"}>
             {(product.colors || []).map((colour) => (
