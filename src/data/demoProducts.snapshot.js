@@ -3,7 +3,6 @@
 export const approvedDemoProductIds = [
   'sicily-modular-set',
   'barcelona-able',
-  'bonaire-able',
   'hawaii-able',
   'ibiza-able',
   'glatz-sombrano-s-plus',

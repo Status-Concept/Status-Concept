@@ -1,6 +1,7 @@
 import { allProducts } from './productCatalog'
 import { noImageProducts } from './productImageStatus'
 import { limitDemoProducts } from '../config/contentLimits'
+import { approvedDemoProductIds } from './demoProducts.snapshot'
 
 // This source selection is used only by the generation script. The browser
 // imports demoProducts.generated.js so the public bundle never imports the
@@ -27,6 +28,7 @@ const demoOrder = (products) => {
   })
 }
 
-export const demoProducts = limitDemoProducts(demoOrder(allProducts))
+const approvedIds = new Set(approvedDemoProductIds)
+export const demoProducts = limitDemoProducts(demoOrder(allProducts.filter((product) => approvedIds.has(product.id))))
 
 export const demoProductIds = new Set(demoProducts.map((product) => product.id).filter(Boolean))

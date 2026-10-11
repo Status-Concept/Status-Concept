@@ -583,7 +583,7 @@ const PRODUCTS_PAGE = () => {
                           ? (product.heroImage ? (
                             <>
                               <img className="rd-product-image rd-product-image-isolated" src={product.img} srcSet={productSrcSet(product.img)} sizes="(max-width: 760px) calc(100vw - 48px), (max-width: 1100px) 50vw, 33vw" alt={product.name} loading={index < 3 ? "eager" : "lazy"} fetchPriority={index < 3 ? "high" : "auto"} decoding="async" />
-                              <img className="rd-product-image rd-product-image-hero" src={product.heroImage} sizes="(max-width: 760px) calc(100vw - 48px), (max-width: 1100px) 50vw, 33vw" alt="" aria-hidden="true" loading="lazy" decoding="async" />
+                              <img className="rd-product-image rd-product-image-hero" src={product.heroImage} srcSet={productSrcSet(product.heroImage)} sizes="(max-width: 760px) calc(100vw - 48px), (max-width: 1100px) 50vw, 33vw" alt="" aria-hidden="true" loading="lazy" decoding="async" />
                             </>
                           ) : <img src={product.img} srcSet={productSrcSet(product.img)} sizes="(max-width: 760px) calc(100vw - 48px), (max-width: 1100px) 50vw, 33vw" alt={product.name} loading={index < 3 ? "eager" : "lazy"} fetchPriority={index < 3 ? "high" : "auto"} decoding="async" />)
                           : <NoImagePlaceholder />}
