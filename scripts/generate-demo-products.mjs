@@ -10,7 +10,7 @@ try {
   const { demoProducts } = await server.ssrLoadModule('/src/data/demoProducts.source.js')
   const imports = new Map()
   for (const product of demoProducts) {
-    for (const image of [product.img, ...(product.images || [])]) {
+    for (const image of [product.img, product.heroImage, ...(product.images || [])]) {
       if (!image?.startsWith('/src/')) continue
       if (!imports.has(image)) imports.set(image, `image${imports.size}`)
     }
