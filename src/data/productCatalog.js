@@ -4,6 +4,7 @@ import { kitchenProducts } from './kitchenProducts'
 import { demoProducts } from './demoProducts'
 import { publishedCorrectionImages, publishedLocalProducts } from './publishedCorrections.generated'
 import { isRattanProduct } from './productExclusions'
+import { minimalProductHeroes } from './minimalProductHeroes.generated'
 import sicilyModularSetFullImg from '../assets/images/sicily-modular-set-full.webp'
 import sicilyCornerImg from '../assets/images/sicily-corner.jpg'
 import sicilyCentreImg from '../assets/images/sicily-centre.jpg'
@@ -41,9 +42,9 @@ const localProducts = publishedLocalProducts.filter((product) => !isRattanProduc
 const withCorrectionImage = (product) => {
   const image = publishedCorrectionImages[product.id]
   const corrected = image ? { ...product, img: image, images: [image], fit: 'contain', publishedCorrection: true } : product
-  const heroImage = corrected.fit === 'contain' && corrected.id
+  const heroImage = minimalProductHeroes[corrected.id] || (corrected.fit === 'contain' && corrected.id
     ? `/product-images/hero/${corrected.id}.webp`
-    : corrected.heroImage || null
+    : corrected.heroImage || null)
   return heroImage ? { ...corrected, heroImage } : corrected
 }
 

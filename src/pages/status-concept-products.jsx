@@ -123,7 +123,6 @@ function CategoryCarousel({ categories, onOpen }) {
   const [animate, setAnimate] = useState(true);
   const prefersReducedMotion = typeof window !== "undefined"
     && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
-  const [paused, setPaused] = useState(Boolean(prefersReducedMotion)); // explicit pause (WCAG 2.2.2)
   const [hovered, setHovered] = useState(false); // pause while the pointer is over it
   const items = [...categories, ...categories]; // duplicated for a seamless loop
   const stepPct = 100 / items.length; // one tile as a percentage of the whole track
@@ -140,12 +139,12 @@ function CategoryCarousel({ categories, onOpen }) {
       const t = setTimeout(() => setAnimate(true), 20);
       return () => clearTimeout(t);
     }
-    // Don't schedule the next advance while paused or hovered.
-    if (paused || hovered) return;
+    // Don't schedule the next advance while the pointer or keyboard focus is over it.
+    if (hovered) return;
     // Normal cadence: advance one tile every 5s.
     const t = setTimeout(() => setIdx((i) => i + 1), 5000);
     return () => clearTimeout(t);
-  }, [idx, animate, categories.length, paused, hovered, prefersReducedMotion]);
+  }, [idx, animate, categories.length, hovered, prefersReducedMotion]);
 
   return (
     <div
@@ -183,20 +182,6 @@ function CategoryCarousel({ categories, onOpen }) {
           );
         })}
       </div>
-      <button
-        type="button"
-        className="cat-carousel-toggle fs"
-        aria-label={prefersReducedMotion ? "Category slideshow disabled by reduced motion preference" : (paused ? "Play category slideshow" : "Pause category slideshow")}
-        aria-pressed={paused}
-        disabled={prefersReducedMotion}
-        onClick={() => setPaused((p) => !p)}
-      >
-        {paused ? (
-          <svg aria-hidden="true" viewBox="0 0 24 24"><path d="m9 7 8 5-8 5Z" /></svg>
-        ) : (
-          <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M8 6v12M16 6v12" /></svg>
-        )}
-      </button>
     </div>
   );
 }

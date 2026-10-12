@@ -3,12 +3,23 @@ import { existsSync } from 'node:fs'
 import { allProducts, publicSearchProducts, publishedCorrectionProducts, isRattanProduct } from './productCatalog'
 import { demoProductIds } from './demoProducts'
 import { publishedCorrectionImages, publishedLocalProducts } from './publishedCorrections.generated'
+import { minimalProductHeroes } from './minimalProductHeroes.generated'
 
 describe('public correction release', () => {
+  it('maps every hover product to an existing minimal photo and responsive variants', () => {
+    const hoverProducts = publicSearchProducts.filter((product) => product.heroImage)
+    expect(Object.keys(minimalProductHeroes).sort()).toEqual(hoverProducts.map((product) => product.id).sort())
+    for (const product of hoverProducts) {
+      expect(product.heroImage, product.id).toBe(minimalProductHeroes[product.id])
+      for (const suffix of ['', '-w400', '-w800']) {
+        expect(existsSync(`public${product.heroImage.replace(/\.webp$/, `${suffix}.webp`)}`), `${product.id}${suffix}`).toBe(true)
+      }
+    }
+  })
   it('provides existing primary and individual hover images for every studio product, including local records', () => {
     for (const product of publicSearchProducts.filter((item) => item.fit === 'contain')) {
       expect(existsSync(`public${product.img}`), product.id).toBe(true)
-      expect(product.heroImage, product.id).toBe(`/product-images/hero/${product.id}.webp`)
+      expect(product.heroImage, product.id).toBe(minimalProductHeroes[product.id] || `/product-images/hero/${product.id}.webp`)
       expect(existsSync(`public${product.heroImage}`), product.id).toBe(true)
     }
   })
