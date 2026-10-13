@@ -27,9 +27,9 @@ describe('public correction release', () => {
     const ids = Object.keys(publishedCorrectionImages)
     expect(ids).toHaveLength(139)
     expect(new Set(ids).size).toBe(139)
-    expect(publishedCorrectionProducts).toHaveLength(138)
+    expect(publishedCorrectionProducts).toHaveLength(137)
     for (const id of ids) {
-      if (id === 'bonaire-able') {
+      if (isRattanProduct({ id })) {
         expect(publishedCorrectionProducts.some((item) => item.id === id)).toBe(false)
         expect(publicSearchProducts.some((item) => item.id === id)).toBe(false)
         continue

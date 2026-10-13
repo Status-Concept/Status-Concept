@@ -61,8 +61,8 @@ export const publicSearchProducts = [
   ...publishedCorrectionProducts.filter((product) => !demoProducts.some((demo) => demo.id === product.id)),
 ]
 
-if (import.meta.env.DEV && correctedIds.size !== 138) {
-  throw new Error(`Expected 138 corrected public products, found ${correctedIds.size}`)
+if (import.meta.env.DEV && correctedIds.size !== 137) {
+  throw new Error(`Expected 137 corrected public products, found ${correctedIds.size}`)
 }
 
 export { isRattanProduct } from './productExclusions'

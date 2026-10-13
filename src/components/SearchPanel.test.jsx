@@ -31,6 +31,15 @@ describe('SearchPanel', () => {
     expect((await screen.findAllByRole('option')).length).toBeGreaterThan(0)
   })
 
+  it('shows Bermuda as a collection result that opens its collection page', async () => {
+    renderSearch()
+    fireEvent.change(screen.getByRole('combobox'), { target: { value: 'bermuda' } })
+
+    const result = await screen.findByRole('option', { name: /BERMUDA.*3 products.*Open collection/i })
+    expect(result.getAttribute('href')).toContain('/products?cat=lounge&collection=bermuda')
+    expect(screen.queryByRole('option', { name: /BERMUDA \(Divano\)/i })).toBeNull()
+  })
+
   it('submits search with Enter', async () => {
     const onClose = renderSearch()
     const input = screen.getByRole('combobox')

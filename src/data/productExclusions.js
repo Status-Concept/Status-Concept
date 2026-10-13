@@ -9,6 +9,8 @@ export const excludedRattanIds = new Set([
   'st-tropez-low-side-table',
   'st-malo-swivel-daybed',
   'st-malo-yacht-daybed',
+  // The Calia sofa-set photo shows woven/rattan armchair sides and is a combined set.
+  'local-product-1d8e527f1fa3',
 ])
 
 export const isRattanProduct = (product) => {

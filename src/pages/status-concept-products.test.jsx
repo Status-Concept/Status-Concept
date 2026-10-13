@@ -1,8 +1,9 @@
 import { describe, expect, it } from "vitest";
-import { filterKitchenProducts, matchesSubcategory, productBrandLabel, productHasImage, refineProductResults } from "./status-concept-products";
+import { expandProductCollection, filterKitchenProducts, matchesSubcategory, productBrandLabel, productHasImage, refineProductResults } from "./status-concept-products";
 import { kitchenCollectionHeroes, kitchenProducts } from "../data/kitchenProducts";
 import { PRODUCT_MENU } from "../data/productMenu";
 import { productCollectionLabel } from "../utils/productLabels";
+import { isRattanProduct } from "../data/productExclusions";
 
 describe("product catalogue helpers", () => {
   it("does not turn a sink into a BBQ because its description mentions grills", () => {
@@ -23,6 +24,48 @@ describe("product catalogue helpers", () => {
   });
   it("keeps Sicily's isolated studio image visible", () => {
     expect(productHasImage({ id: "sicily-modular-set", category: "lounge" })).toBe(true);
+  });
+
+  it("shows Sicily's three gallery pieces as separate products in its collection", () => {
+    const products = expandProductCollection([
+      { id: "sicily-modular-set", name: "Sicily Modular Set", category: "lounge" },
+    ], "sicily");
+
+    expect(products.map((product) => product.name)).toEqual([
+      "Sicily Corner Module",
+      "Sicily Centre Module",
+      "Sicily Ottoman",
+    ]);
+    expect(products.map((product) => product.route)).toEqual([
+      "/product/sicily-modular-set?part=corner",
+      "/product/sicily-modular-set?part=centre",
+      "/product/sicily-modular-set?part=ottoman",
+    ]);
+    expect(new Set(products.map((product) => product.img)).size).toBe(3);
+    expect(expandProductCollection([{ id: "sicily-modular-set" }], "")).toHaveLength(1);
+  });
+
+  it("lists Bermuda's photographed chair and ottoman pieces separately", () => {
+    const products = expandProductCollection([
+      { id: "bermuda-divano", name: "BERMUDA (Divano)", img: "/product-images/corrections/229-bermuda-divano.webp", category: "lounge" },
+    ], "bermuda");
+
+    expect(products.map((product) => product.name)).toEqual([
+      "Bermuda Left Lounge Chair",
+      "Bermuda Ottoman",
+      "Bermuda Right Lounge Chair",
+    ]);
+    expect(products.map((product) => product.imageCrop)).toEqual(["left", "center", "right"]);
+    expect(products.every((product) => product.img.includes("229-bermuda-divano"))).toBe(true);
+    expect(products.map((product) => product.route)).toEqual([
+      "/product/bermuda-divano?part=left",
+      "/product/bermuda-divano?part=center",
+      "/product/bermuda-divano?part=right",
+    ]);
+  });
+
+  it("excludes the photographed Celia rattan lounge set", () => {
+    expect(isRattanProduct({ id: "local-product-1d8e527f1fa3", name: "Calia Sofa Set + Coffee Tables Set" })).toBe(true);
   });
 
   it("keeps shade imagery visible and shows its supplier brand", () => {

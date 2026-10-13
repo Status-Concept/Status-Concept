@@ -125,7 +125,6 @@ export const minimalProductHeroes = {
   "local-product-96f4b2caff9b": "/product-images/hero-minimal/local-product-96f4b2caff9b.webp",
   "local-product-curated-berlin-modular-sofa-lead-chine-white-aluminium": "/product-images/hero-minimal/local-product-curated-berlin-modular-sofa-lead-chine-white-aluminium.webp",
   "local-product-f92f7fef8d9a": "/product-images/hero-minimal/local-product-f92f7fef8d9a.webp",
-  "local-product-1d8e527f1fa3": "/product-images/hero-minimal/local-product-1d8e527f1fa3.webp",
   "local-product-5f459e1cdd5c": "/product-images/hero-minimal/local-product-5f459e1cdd5c.webp",
   "local-product-76d9292a9635": "/product-images/hero-minimal/local-product-76d9292a9635.webp",
   "local-product-7da0a684f1ff": "/product-images/hero-minimal/local-product-7da0a684f1ff.webp",

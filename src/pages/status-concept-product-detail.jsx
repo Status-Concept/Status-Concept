@@ -12,7 +12,7 @@ import { kitchenProductDetails, kitchenCollectionHeroes } from "../data/kitchenP
 import { demoProducts, demoProductIds } from "../data/demoProducts";
 import { publishedCorrectionProducts } from "../data/productCatalog";
 import { limitPageImages } from "../config/contentLimits";
-import { getProductFacets, normalizeProduct } from "../data/productTaxonomy";
+import { formatFacetLabel, getProductFacets, normalizeProduct } from "../data/productTaxonomy";
 import { getLangFromPath, withLang } from "../utils/language";
 import sicilyCornerImg from "../assets/images/sicily-corner.jpg";
 import sicilyCentreImg from "../assets/images/sicily-centre.jpg";
@@ -26,17 +26,23 @@ const PRODUCT_DETAIL = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { id } = useParams();
+  const selectedPart = new URLSearchParams(location.search).get("part");
   const currentLang = getLangFromPath(location.pathname);
   const [activeImg, setActiveImg] = useState(0);
   const [activeTab, setActiveTab] = useState("specs");
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [selectedSizeSku, setSelectedSizeSku] = useState(null);
+  const [activeRelatedFilter, setActiveRelatedFilter] = useState(null);
   useEffect(() => {
-    setActiveImg(0);
+    const partIndex = id === "sicily-modular-set"
+      ? ({ corner: 0, centre: 1, ottoman: 2 }[selectedPart] ?? 0)
+      : 0;
+    setActiveImg(partIndex);
     setActiveTab("specs");
     setLightboxOpen(false);
     setSelectedSizeSku(null);
-  }, [id]);
+    setActiveRelatedFilter(null);
+  }, [id, selectedPart]);
 
   const demoCatalogProducts = demoProducts.filter((rawProduct) => rawProduct.category !== "kitchen" && rawProduct.category !== "shade");
   const demoKitchenProducts = demoProducts.filter((rawProduct) => rawProduct.category === "kitchen");
@@ -119,6 +125,11 @@ const PRODUCT_DETAIL = () => {
   if (!product) return <NotFound />;
   const images = limitPageImages(product.images?.length ? product.images : [product.image || sicilyCornerImg], product);
   const safeActiveImg = activeImg < images.length ? activeImg : 0;
+  const displayName = product.id === "sicily-modular-set"
+    ? ({ corner: "Sicily Corner Module", centre: "Sicily Centre Module", ottoman: "Sicily Ottoman" }[selectedPart] || product.name)
+    : product.id === "bermuda-divano"
+      ? ({ left: "Bermuda Left Lounge Chair", center: "Bermuda Ottoman", right: "Bermuda Right Lounge Chair" }[selectedPart] || product.name)
+    : product.name;
   const goTo = (path) => navigate(withLang(path, currentLang));
   const goBack = () => {
     if (window.history.state?.idx > 0) {
@@ -131,7 +142,7 @@ const PRODUCT_DETAIL = () => {
   // Carry the product (and a sensible interest) into the enquiry form.
   const INTEREST_BY_CATEGORY = { shade: "Shade Solutions", kitchen: "Outdoor Kitchens", lounge: "Outdoor Furniture", dining: "Outdoor Furniture", sunlounger: "Outdoor Furniture", decor: "Decor & Leisure", leisure: "Decor & Leisure" };
   const selectedSize = product.sizeOptions?.find((option) => option.sku === selectedSizeSku) || product.sizeOptions?.[0];
-  const enquiryName = selectedSize ? `${product.name} (${selectedSize.label}, SKU: ${selectedSize.sku})` : product.name;
+  const enquiryName = selectedSize ? `${displayName} (${selectedSize.label}, SKU: ${selectedSize.sku})` : displayName;
   const enquireState = { product: enquiryName, interest: INTEREST_BY_CATEGORY[product.category] || "" };
 
   const kitchenHero = product.category === "kitchen"
@@ -148,41 +159,62 @@ const PRODUCT_DETAIL = () => {
     : availableTabs[0]?.key || "specs";
   const isSameCollection = product.category === "kitchen" || product.category === "shade" || product.id === "sicily-modular-set";
   const relatedProducts = (() => {
-    if (catalogProductDetails[product.id]) {
-      const currentFacets = getProductFacets(product);
-      return [...demoCatalogProducts, ...demoKitchenProducts, ...demoGlatzProducts]
-        .map((item) => ({ raw: item, facets: getProductFacets(item) }))
-        .filter(({ raw, facets }) => raw.id !== product.id && facets.category === currentFacets.category)
-        .sort((a, b) => {
-          const score = (item) => (item.facets.collection === currentFacets.collection ? 3 : 0)
-            + item.facets.materialFamilies.filter((material) => currentFacets.materialFamilies.includes(material)).length;
-          return score(b) - score(a);
-        })
-        .map(({ raw }) => raw)
-        .slice(0, 6);
-    }
-    if (product.category === "kitchen") {
-      return demoKitchenProducts
-        .filter((item) => item.id !== product.id && (item.collection === product.collectionSlug || item.collectionName === product.collection))
-        .slice(0, 6);
-    }
-    if (product.category === "shade") {
-      return demoGlatzProducts
-        .filter((item) => item.id !== product.id)
-        .slice(0, 6);
-    }
     if (product.id === "sicily-modular-set") {
       return [
-        { id: "sicily-modular-set", name: "Sicily Modular Set", collectionName: "Sicily", img: sicilyCornerImg, route: "/product/sicily-modular-set" },
-        { id: "sicily-centre-module", name: "Sicily Centre Module", collectionName: "Sicily", img: sicilyCentreImg, route: "/product/sicily-modular-set" },
-        { id: "sicily-ottoman", name: "Sicily Ottoman", collectionName: "Sicily", img: sicilyOttomanImg, route: "/product/sicily-modular-set" },
+        { id: "sicily-centre-module", name: "Sicily Centre Module", collectionName: "Sicily", category: "lounge", productType: ["modular"], img: sicilyCentreImg, route: "/product/sicily-modular-set" },
+        { id: "sicily-ottoman", name: "Sicily Ottoman", collectionName: "Sicily", category: "lounge", productType: ["pouf"], img: sicilyOttomanImg, route: "/product/sicily-modular-set" },
       ];
     }
-    return [
-      { id: "sicily-modular-set", name: "Sicily Modular Set", collectionName: "Sicily", img: sicilyCornerImg, route: "/product/sicily-modular-set" },
-      ...demoGlatzProducts.slice(0, 3),
-    ].filter((item) => item.id !== product.id).slice(0, 4);
+    const correctedProducts = publishedCorrectionProducts.map((item) => normalizeProduct({
+      ...item,
+      img: item.img || item.images?.[0],
+      images: item.images?.length ? item.images : [item.img].filter(Boolean),
+    }));
+    const candidates = [...Object.values(catalogProductDetails), ...correctedProducts, ...demoKitchenProducts, ...demoGlatzProducts];
+    const currentFacets = getProductFacets(product);
+    return [...new Map(candidates
+      .filter((item) => item.id !== product.id && getProductFacets(item).category === currentFacets.category)
+      .map((item) => [item.id, item])).values()]
+      .map((item) => ({ item, facets: getProductFacets(item) }))
+      .sort((a, b) => {
+        const score = ({ facets }) => (facets.collection === currentFacets.collection ? 5 : 0)
+          + (facets.productType.some((type) => currentFacets.productType.includes(type)) ? 3 : 0)
+          + facets.materialFamilies.filter((material) => currentFacets.materialFamilies.includes(material)).length;
+        return score(b) - score(a);
+      })
+      .map(({ item }) => item);
   })();
+  const currentFacets = getProductFacets(product);
+  const isCornerProduct = /\bcorner\b|\bsectional\b|\bl[- ]shaped\b/i.test([
+    product.name, product.tagline, product.desc, ...(product.specs || []).map((spec) => `${spec.label} ${spec.value}`),
+  ].join(" "));
+  const relatedFilterOptions = [
+    ...(isCornerProduct ? [{ key: "corner", label: currentLang === "pt" ? "Sofás de canto" : "Corner sofas" }] : []),
+    ...currentFacets.productType.map((type) => ({
+      key: `type:${type}`,
+      label: currentLang === "pt"
+        ? (type === "modular" && currentFacets.category === "lounge" ? "Sofás modulares" : formatFacetLabel(type))
+        : (type === "modular" && currentFacets.category === "lounge" ? "Modular sofas" : formatFacetLabel(type)),
+    })),
+    ...currentFacets.materialFamilies.map((material) => ({
+      key: `material:${material}`,
+      label: currentLang === "pt" ? `Material: ${formatFacetLabel(material)}` : formatFacetLabel(material),
+    })),
+  ].filter((option) => relatedProducts.some((item) => {
+    const facets = getProductFacets(item);
+    if (option.key === "corner") return /\bcorner\b|\bsectional\b|\bl[- ]shaped\b/i.test(`${item.name} ${item.tagline || ""} ${item.desc || ""}`);
+    if (option.key.startsWith("type:")) return facets.productType.includes(option.key.slice(5));
+    if (option.key.startsWith("material:")) return facets.materialFamilies.includes(option.key.slice(9));
+    return false;
+  }));
+  const visibleRelatedProducts = relatedProducts.filter((item) => {
+    if (!activeRelatedFilter) return true;
+    const facets = getProductFacets(item);
+    if (activeRelatedFilter === "corner") return /\bcorner\b|\bsectional\b|\bl[- ]shaped\b/i.test(`${item.name} ${item.tagline || ""} ${item.desc || ""}`);
+    if (activeRelatedFilter.startsWith("type:")) return facets.productType.includes(activeRelatedFilter.slice(5));
+    if (activeRelatedFilter.startsWith("material:")) return facets.materialFamilies.includes(activeRelatedFilter.slice(9));
+    return true;
+  }).slice(0, 6);
   const renderTab = () => {
     if (effectiveActiveTab === "dimensions") {
       return (
@@ -268,7 +300,7 @@ const PRODUCT_DETAIL = () => {
                   src={image}
                   srcSet={productSrcSet(image)}
                   sizes="72px"
-                  alt={`${product.name} view ${index + 1}`}
+                  alt={`${displayName} view ${index + 1}`}
                   className={`rd-thumb ${activeImg === index ? "active" : ""}`}
                   loading="lazy"
                   decoding="async"
@@ -281,19 +313,19 @@ const PRODUCT_DETAIL = () => {
             <div className="rd-mobile-gallery-track" aria-label="Swipe through product images">
               {images.map((image, index) => (
                 <button key={`${image}-mobile-${index}`} type="button" onClick={() => { setActiveImg(index); setLightboxOpen(true) }} aria-label={`Open image ${index + 1}`}>
-                  <img src={image} srcSet={productSrcSet(image)} sizes="88vw" alt={`${product.name} view ${index + 1}`} loading={index === 0 ? "eager" : "lazy"} decoding="async" />
+                  <img src={image} srcSet={productSrcSet(image)} sizes="88vw" alt={`${displayName} view ${index + 1}`} loading={index === 0 ? "eager" : "lazy"} decoding="async" />
                 </button>
               ))}
             </div>
             <button className="rd-desktop-main-image" type="button" aria-label="Open full-size image" onClick={() => setLightboxOpen(true)} style={{ padding: 0, border: "none", background: "none", cursor: "zoom-in", display: "block", width: "100%" }}>
-              <img src={images[safeActiveImg]} alt={product.name} />
+              <img src={images[safeActiveImg]} alt={displayName} />
             </button>
           </div>
         </section>
 
         <aside className="rd-product-panel">
           <span className="rd-kicker fs" style={{ marginTop: 28 }}>{product.collection} Collection</span>
-          <h1 className="rd-title ff" data-no-translate style={{ color: "var(--text-dark)", fontSize: "clamp(32px, 4vw, 48px)", fontWeight: 400 }}>{product.name}</h1>
+          <h1 className="rd-title ff" data-no-translate style={{ color: "var(--text-dark)", fontSize: "clamp(32px, 4vw, 48px)", fontWeight: 400 }}>{displayName}</h1>
           <div className="la" style={{ marginBottom: 20 }} />
           {product.tagline && <p className="rd-lede fs">{product.tagline}</p>}
           {product.publishedCorrection && <p className="rd-lede fs">{currentLang === "pt"
@@ -351,16 +383,37 @@ const PRODUCT_DETAIL = () => {
         </aside>
       </main>
 
-      <section className="rd-section alt">
+      <section className="rd-section alt" aria-labelledby="related-products-heading">
         <div className="rd-section-head">
           <div>
             <span className="rd-kicker fs">{isSameCollection ? "Related products" : "From the catalogue"}</span>
-            <h2 className="ff">{isSameCollection ? "Pieces that work together" : "You may also like"}</h2>
+            <h2 id="related-products-heading" className="ff">{isSameCollection ? "Pieces that work together" : "You may also like"}</h2>
           </div>
           <button type="button" className="rd-back-link" onClick={() => goTo("/products")}>View all</button>
         </div>
+        {relatedFilterOptions.length > 0 && (
+          <div className="rd-related-filters" role="group" aria-label={currentLang === "pt" ? "Filtrar recomendações por característica" : "Filter recommendations by feature"}>
+            <span className="rd-related-filters-label fs">{currentLang === "pt" ? "Explorar por" : "Explore by"}</span>
+            {relatedFilterOptions.map((option) => (
+              <button
+                key={option.key}
+                type="button"
+                className={`rd-filter-chip ${activeRelatedFilter === option.key ? "active" : ""}`}
+                aria-pressed={activeRelatedFilter === option.key}
+                onClick={() => setActiveRelatedFilter(activeRelatedFilter === option.key ? null : option.key)}
+              >
+                {option.label}
+              </button>
+            ))}
+            {activeRelatedFilter && (
+              <button type="button" className="rd-related-clear fs" onClick={() => setActiveRelatedFilter(null)}>
+                {currentLang === "pt" ? "Limpar" : "Clear"}
+              </button>
+            )}
+          </div>
+        )}
         <div className="rd-horizontal-scroll">
-          {relatedProducts.map((item) => {
+          {visibleRelatedProducts.map((item) => {
             const openItem = () => navigate(withLang(item.route || `/product/${item.id}`, currentLang), { state: { product: item } });
             return (
             <article
@@ -386,6 +439,11 @@ const PRODUCT_DETAIL = () => {
             );
           })}
         </div>
+        {visibleRelatedProducts.length === 0 && (
+          <p className="rd-related-empty fs" role="status">
+            {currentLang === "pt" ? "Não encontrámos recomendações com esta característica." : "No recommendations match this feature."}
+          </p>
+        )}
       </section>
 
       <div className="rd-mobile-cta">
@@ -395,7 +453,7 @@ const PRODUCT_DETAIL = () => {
       {lightboxOpen && (
         <ImageDialog className="rd-lightbox" label={`${product.name} full-size image`} onClose={() => setLightboxOpen(false)}>
           <button type="button" aria-label="Close" onClick={() => setLightboxOpen(false)}>×</button>
-          <img src={images[safeActiveImg]} alt={product.name} />
+          <img src={images[safeActiveImg]} alt={displayName} />
         </ImageDialog>
       )}
     </Layout>
