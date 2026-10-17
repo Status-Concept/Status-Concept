@@ -3,9 +3,10 @@ import { useLocation, useSearchParams } from "react-router-dom";
 import Layout from "../components/Layout";
 import { getSupabase, isSupabaseConfigured } from "../lib/supabase";
 import { sanitizePhone, sanitizeText } from "../utils/sanitize";
-import { SHOWROOMS, CONTACT } from "../data/showrooms";
+import { SHOWROOMS, CONTACT, HOURS } from "../data/showrooms";
 import { whatsappUrl } from "../utils/whatsapp";
-import showroomAlmancilImg from "../assets/images/showroom-almancil.jpg";
+import "../styles/contact.css";
+const showroomAlmancilImg = "/photography/showroom-almancil-original-clean-1440.webp";
 const showroomQuintaImg = "/photography/showroom-quinta-1440.webp";
 
 const telHref = (n) => "tel:" + n.replace(/[^\d+]/g, "");
@@ -79,65 +80,60 @@ const CONTACT_PAGE = () => {
 
   return (
     <Layout>
-      <section className="rd-page-hero">
-        <img className="rd-hero-img" src={showroomQuintaImg} alt="" />
-      </section>
-      <div className="rd-page-head">
-        <span className="rd-kicker fs">Contact</span>
-        <h1 className="rd-title ff">Visit, call or start a proposal</h1>
-        <p className="rd-lede fs">Choose a showroom, send an enquiry or speak with the team about your outdoor space.</p>
-      </div>
-
-      <section className="rd-section">
-        <div className="rd-quick-grid">
-          {[
-            { label: "Call", value: CONTACT.phone, sub: "Quinta do Lago", href: CONTACT.phoneHref },
-            { label: "WhatsApp", value: "+351 937 573 600", sub: "Direct message", href: whatsappUrl("Hello STATVS, I'd like to enquire about"), external: true },
-            { label: "Email", value: CONTACT.email, sub: "Replies within 24h", href: CONTACT.emailHref },
-            { label: "Showrooms", value: "2 locations", sub: "Almancil and Quinta do Lago", href: showrooms[0].maps, external: true },
-          ].map((item) => (
-            <a
-              key={item.label}
-              className="rd-quick-card"
-              href={item.href}
-              data-no-translate
-              {...(item.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-              style={{ display: "block", textDecoration: "none", color: "inherit" }}
-            >
-              <span className="rd-kicker fs">{item.label}</span>
-              <h3 className="ff" style={{ fontSize: 24, fontWeight: 400, margin: "8px 0" }}>{item.value}</h3>
-              <p className="fs rd-count">{item.sub}</p>
-            </a>
-          ))}
-        </div>
-      </section>
-
-      <section className="rd-contact-split">
-        <aside className="rd-showroom-panel">
-          <img src={active.img} alt={`Showroom ${active.name}`} />
-          <span className="rd-kicker fs" style={{ color: "rgba(255,255,255,.72)" }}>Showroom</span>
-          <h2 className="ff" style={{ fontSize: "clamp(34px, 4vw, 54px)", fontWeight: 300, lineHeight: 1.05 }}>{active.name}</h2>
-          <p className="fs" style={{ maxWidth: 560, color: "rgba(255,255,255,.72)", lineHeight: 1.75, marginTop: 14 }}>{active.desc}</p>
-
-          <div className="rd-showroom-tabs">
-            {showrooms.map((showroom, index) => (
-              <button key={showroom.name} type="button" className={`rd-showroom-tab ${activeShowroom === index ? "active" : ""}`} onClick={() => setActiveShowroom(index)}>
-                <span className="fs" style={{ fontSize: 10, letterSpacing: 2, textTransform: "uppercase", color: "rgba(255,255,255,.58)" }}>Showroom {index + 1}</span>
-                <strong className="ff" style={{ display: "block", fontSize: 21, fontWeight: 400, marginTop: 4 }}>{showroom.name}</strong>
-              </button>
-            ))}
+      <div className="contact-page">
+        <section className="contact-intro" aria-labelledby="contact-title">
+          <div className="contact-intro-copy">
+            <span className="rd-kicker fs">Contact & showrooms</span>
+            <h1 id="contact-title" className="ff">Good spaces start<br />with a conversation.</h1>
+            <p className="fs">Come and see the textures, try the furniture and find what feels right for your outdoor space.</p>
+            <button className="cb cd" type="button" onClick={() => document.getElementById("contact-enquiry").scrollIntoView({ behavior: window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth", block: "start" })}>Start an enquiry <span aria-hidden="true">↗</span></button>
+            <a className="contact-text-link fs" href={whatsappUrl("Hello STATVS, I'd like help with my outdoor space.")} target="_blank" rel="noopener noreferrer">Or speak to us on WhatsApp <span aria-hidden="true">↗</span></a>
           </div>
+          <figure className="contact-hero-photo">
+            <img src={showroomQuintaImg} srcSet="/photography/showroom-quinta-800.webp 800w, /photography/showroom-quinta-1440.webp 1440w" sizes="(max-width: 760px) 100vw, 62vw" width="1440" height="808" fetchPriority="high" alt="Outdoor lounge, dining and shade displays at our Quinta do Lago showroom" />
+            <figcaption className="fs"><span>Visit us in the Algarve</span><span>Quinta do Lago · Almancil</span></figcaption>
+          </figure>
+        </section>
 
-          <a className="rd-map-card fs" href={active.maps} target="_blank" rel="noopener noreferrer" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16, textDecoration: "none", color: "inherit" }}>
-            <span>{active.address}</span>
-            <span style={{ whiteSpace: "nowrap", letterSpacing: 1.5, textTransform: "uppercase", fontSize: 11 }}>Get directions →</span>
-          </a>
-        </aside>
+        <section className="contact-visit" aria-labelledby="visit-heading">
+          <div className="contact-visit-details">
+            <span className="rd-kicker fs">See it. Feel it. Make it yours.</span>
+            <h2 id="visit-heading" className="ff">Two showrooms.<br />A personal welcome.</h2>
+            <div className="contact-location-picker" role="group" aria-label="Choose a showroom">
+              {showrooms.map((showroom, index) => (
+                <button key={showroom.name} type="button" aria-pressed={activeShowroom === index} aria-controls="contact-location" onClick={() => setActiveShowroom(index)}>{showroom.name}</button>
+              ))}
+            </div>
+            <div id="contact-location" className="contact-location" aria-live="polite" aria-atomic="true">
+              <h3 className="ff">{active.name}</h3>
+              <p className="fs">{active.desc}</p>
+              <address className="fs" data-no-translate>{active.address}</address>
+              <a className="contact-text-link fs" href={active.maps} target="_blank" rel="noopener noreferrer">Get directions <span aria-hidden="true">↗</span></a>
+              <a className="contact-location-phone fs" href={telHref(active.phone)} data-no-translate>{active.phone}</a>
+            </div>
+            <dl className="contact-hours fs">{HOURS.map((hour) => <div key={hour.label}><dt>{hour.label}</dt><dd>{hour.value}</dd></div>)}</dl>
+          </div>
+          <figure className={`contact-visit-photo${activeShowroom === 1 ? " contact-visit-photo--almancil" : ""}`}>
+            <img src={activeShowroom === 0 ? "/photography/showroom-quinta-2-1440.webp" : active.img} srcSet={activeShowroom === 1 ? "/photography/showroom-almancil-original-clean-800.webp 800w, /photography/showroom-almancil-original-clean-1440.webp 1440w" : undefined} sizes="(max-width: 760px) 100vw, 55vw" alt={`Showroom ${active.name}`} loading="lazy" width="1440" height={activeShowroom === 1 ? "481" : "808"} />
+            <figcaption className="fs"><span>{active.name}</span>{activeShowroom === 1 && <span>AI-retouched photograph</span>}</figcaption>
+          </figure>
+        </section>
 
-        <div className="rd-form-panel">
+        <section id="contact-enquiry" className="contact-enquiry" aria-labelledby="enquiry-heading">
+          <div className="contact-enquiry-copy">
+            <span className="rd-kicker fs">Your outdoor space</span>
+            <h2 className="ff">A little inspiration.<br />A helping hand.</h2>
+            <p className="fs">A single piece or a complete outdoor setting. Tell us what you have in mind and we will help you explore the options.</p>
+            <div className="contact-direct fs">
+              <a href={CONTACT.phoneHref}><span>Call the team</span><span data-no-translate>{CONTACT.phone}</span></a>
+              <a href={CONTACT.emailHref}><span>Email us</span><span data-no-translate>{CONTACT.email}</span></a>
+              <a href={whatsappUrl("Hello STATVS, I'd like help with my outdoor space.")} target="_blank" rel="noopener noreferrer"><span>WhatsApp</span><span>Send a message ↗</span></a>
+            </div>
+          </div>
+        <div className="contact-form-panel">
           <span className="rd-kicker fs">Enquiry</span>
-              <h2 className="ff" style={{ fontSize: "clamp(32px, 4vw, 46px)", fontWeight: 300, marginBottom: 14 }}>{enquiryProduct ? `Enquire about ${enquiryProduct}` : "Tell us what you need"}</h2>
-          <p className="rd-lede fs" style={{ marginBottom: 34 }}>Share the type of space, the product family you are interested in and the best way to contact you.</p>
+              <h2 id="enquiry-heading" className="ff">{enquiryProduct ? `Enquire about ${enquiryProduct}` : "Tell us what you need"}</h2>
+          <p className="contact-form-intro fs">Share the type of space, the product family you are interested in and the best way to contact you.</p>
 
           {status === "sent" ? (
             <div className="rd-form-success" style={{ padding: "32px 0" }}>
@@ -189,27 +185,7 @@ const CONTACT_PAGE = () => {
         </div>
       </section>
 
-      <section className="rd-section alt">
-        <div className="rd-section-head">
-          <div>
-            <span className="rd-kicker fs">Showroom details</span>
-            <h2 className="ff">Current selection</h2>
-          </div>
-        </div>
-        <div className="rd-material-grid">
-          {[
-            { label: "Address", value: active.address, href: active.maps, external: true },
-            { label: "Phone", value: active.phone, href: telHref(active.phone) },
-            { label: "Mobile", value: active.mobile, href: telHref(active.mobile) },
-            { label: "GPS", value: active.gps, href: active.maps, external: true },
-          ].map((item) => (
-            <a key={item.label} className="rd-material-card" href={item.href} data-no-translate {...(item.external ? { target: "_blank", rel: "noopener noreferrer" } : {})} style={{ display: "block", textDecoration: "none", color: "inherit" }}>
-              <span className="rd-kicker fs">{item.label}</span>
-              <p className="fs rd-lede" style={{ fontSize: 14, marginTop: 10 }}>{item.value}</p>
-            </a>
-          ))}
-        </div>
-      </section>
+      </div>
     </Layout>
   );
 };
