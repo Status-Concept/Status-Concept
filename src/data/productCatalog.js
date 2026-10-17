@@ -5,6 +5,7 @@ import { demoProducts } from './demoProducts'
 import { publishedCorrectionImages, publishedLocalProducts } from './publishedCorrections.generated'
 import { isRattanProduct } from './productExclusions'
 import { minimalProductHeroes } from './minimalProductHeroes.generated'
+import { baliProducts, baliProductById, retiredBaliProductIds } from './baliCollection'
 import sicilyModularSetFullImg from '../assets/images/sicily-modular-set-full.webp'
 import sicilyCornerImg from '../assets/images/sicily-corner.jpg'
 import sicilyCentreImg from '../assets/images/sicily-centre.jpg'
@@ -37,9 +38,10 @@ const sourceProducts = [
 ]
 
 const catalogueProducts = sourceProducts.filter((product) => !isRattanProduct(product))
-const localProducts = publishedLocalProducts.filter((product) => !isRattanProduct(product))
+const localProducts = publishedLocalProducts.filter((product) => !isRattanProduct(product) && !retiredBaliProductIds.has(product.id))
 
 const withCorrectionImage = (product) => {
+  if (baliProductById.has(product.id)) return baliProductById.get(product.id)
   const image = publishedCorrectionImages[product.id]
   const corrected = image ? { ...product, img: image, images: [image], fit: 'contain', publishedCorrection: true } : product
   const heroImage = minimalProductHeroes[corrected.id] || (corrected.fit === 'contain' && corrected.id
@@ -57,12 +59,14 @@ export const allProducts = [...catalogueProducts.map(withCorrectionImage), ...lo
 
 const correctedIds = new Set(publishedCorrectionProducts.map((product) => product.id))
 export const publicSearchProducts = [
-  ...demoProducts.filter((product) => !isRattanProduct(product)).map(withCorrectionImage),
+  ...demoProducts.filter((product) => !isRattanProduct(product) && !retiredBaliProductIds.has(product.id) && !baliProductById.has(product.id)).map(withCorrectionImage),
   ...publishedCorrectionProducts.filter((product) => !demoProducts.some((demo) => demo.id === product.id)),
+  ...baliProducts,
 ]
 
-if (import.meta.env.DEV && correctedIds.size !== 137) {
-  throw new Error(`Expected 137 corrected public products, found ${correctedIds.size}`)
+const expectedCorrectionCount = Object.keys(publishedCorrectionImages).filter((id) => !isRattanProduct({ id }) && !retiredBaliProductIds.has(id)).length
+if (import.meta.env.DEV && correctedIds.size !== expectedCorrectionCount) {
+  throw new Error(`Expected ${expectedCorrectionCount} corrected public products, found ${correctedIds.size}`)
 }
 
 export { isRattanProduct } from './productExclusions'

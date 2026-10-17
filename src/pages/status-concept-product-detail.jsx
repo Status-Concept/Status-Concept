@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { Navigate, useLocation, useNavigate, useParams } from "react-router-dom";
 import Layout from "../components/Layout";
 import LocalizedLink from "../components/LocalizedLink";
 import ImageDialog from "../components/ImageDialog";
@@ -11,6 +11,7 @@ import { glatzProductDetails } from "../data/glatzProducts";
 import { kitchenProductDetails, kitchenCollectionHeroes } from "../data/kitchenProducts";
 import { demoProducts, demoProductIds } from "../data/demoProducts";
 import { publishedCorrectionProducts } from "../data/productCatalog";
+import { baliProductById, retiredBaliProductIds } from "../data/baliCollection";
 import { limitPageImages } from "../config/contentLimits";
 import { formatFacetLabel, getProductFacets, normalizeProduct } from "../data/productTaxonomy";
 import { getLangFromPath, withLang } from "../utils/language";
@@ -108,11 +109,14 @@ const PRODUCT_DETAIL = () => {
   };
 
   const passedProduct = location.state?.product;
-  const correction = publishedCorrectionProducts.find((item) => item.id === id);
+  if (retiredBaliProductIds.has(id)) return <Navigate to={withLang("/products?cat=lounge&collection=bali", currentLang)} replace />;
+  const curatedBaliProduct = baliProductById.get(id);
+  const correction = curatedBaliProduct || publishedCorrectionProducts.find((item) => item.id === id);
   if (!demoProductIds.has(id) && !correction) return <NotFound />;
   const product = correction
     ? {
         ...(allProducts[id] || {}),
+        ...(curatedBaliProduct || {}),
         id: correction.id,
         name: correction.name,
         category: correction.category,

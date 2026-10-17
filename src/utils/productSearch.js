@@ -137,7 +137,7 @@ export function findProductCollectionMatch(products, query) {
     const normalizedName = normalizeSearchText(name)
     if (!name || normalizedName !== normalizedQuery) return
 
-    const key = `${product.category || ''}:${normalizedName}`
+    const key = normalizedName === 'bali' ? normalizedName : `${product.category || ''}:${normalizedName}`
     const group = groups.get(key) || { key: normalizedName.replace(/\s+/g, '-'), name, category: product.category, products: [] }
     if (!group.products.some((item) => item.id === product.id)) group.products.push(product)
     groups.set(key, group)

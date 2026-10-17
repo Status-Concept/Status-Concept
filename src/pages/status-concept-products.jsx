@@ -8,6 +8,7 @@ import { productSrcSet } from "../utils/imageVariants";
 import { kitchenCollectionHeroes, kitchenCollectionMeta, kitchenProducts } from "../data/kitchenProducts";
 import { catalogProducts } from "../data/catalogProducts";
 import { publicSearchProducts as allProducts } from "../data/productCatalog";
+import { baliCollectionHero } from "../data/baliCollection";
 import { noImageProducts } from "../data/productImageStatus";
 import { findProductCollectionMatch, searchProducts } from "../utils/productSearch";
 import { productCollectionLabel } from "../utils/productLabels";
@@ -96,7 +97,7 @@ export const filterKitchenProducts = (products, collection, subcategory) => prod
 export const refineProductResults = (products, { category, collection, subcategory, type, builtIn = false }) => {
   if (category === "kitchen" && builtIn) return [];
   return products.filter((product) => (
-    (!category || product.category === category)
+    (!category || product.category === category || (collection === "bali" && product.collectionName === "Bali"))
     && (!collection || slug(product.collectionName || product.collection) === collection
       || slug(product.collectionName || product.collection).startsWith(`${collection}-`))
     && (!subcategory || matchesSubcategory(product, subcategory))
@@ -107,7 +108,7 @@ export const refineProductResults = (products, { category, collection, subcatego
 // Kitchen and shade products keep their supplied catalogue imagery. Their main
 // shots are intentionally contextual, so the white-background classifier should
 // not replace them with a showroom placeholder.
-export const productHasImage = (product) => product.publishedCorrection || product.category === "kitchen" || product.category === "shade" || !noImageProducts.has(product.id);
+export const productHasImage = (product) => product.curatedImages || product.publishedCorrection || product.category === "kitchen" || product.category === "shade" || !noImageProducts.has(product.id);
 
 const SICILY_MODULES = [
   { id: "sicily-corner-module", name: "Sicily Corner Module", part: "corner", img: sicilyCornerImg, productType: ["modular", "corner"] },
@@ -340,9 +341,10 @@ const PRODUCTS_PAGE = () => {
     return null;
   })();
 
+  const searchCountProducts = collectionSearchMatch?.key === "bali" ? collectionSearchMatch.products : searchMatches;
   const searchCategoryCounts = categories.map((category) => ({
     ...category,
-    count: searchMatches.filter((product) => product.category === category.key).length,
+    count: searchCountProducts.filter((product) => product.category === category.key).length,
   })).filter((category) => category.count > 0);
 
   const productRoute = (product) => product.route || `/product/${product.id || slug(product.name)}`;
@@ -420,7 +422,7 @@ const PRODUCTS_PAGE = () => {
   })).values()]
     .map((collection) => ({
       ...collection,
-      count: categoryCollectionProducts.filter((product) => slug(product.collectionName || product.collection) === collection.key
+      count: (collection.key === "bali" ? allProducts : categoryCollectionProducts).filter((product) => slug(product.collectionName || product.collection) === collection.key
         || slug(product.collectionName || product.collection).startsWith(`${collection.key}-`)).length
         + (activeCategory === "lounge" && ["sicily", "bermuda"].includes(collection.key) ? 2 : 0),
     }));
@@ -431,7 +433,7 @@ const PRODUCTS_PAGE = () => {
   const activeRange = kitchenCollections.find((collection) => collection.key === activeKitchenCollection);
   const activeBanner = isKitchenCategory && activeKitchenCollection
     ? (kitchenCollectionHeroes[activeKitchenCollection] || selectedCategory.banner)
-    : selectedCategory?.banner;
+    : collectionParam === "bali" ? baliCollectionHero : selectedCategory?.banner;
   const collectionHeroVideo = activeCategory === "lounge" && !hasSearch
     ? COLLECTION_VIDEOS[collectionParam]
     : null;
@@ -531,7 +533,7 @@ const PRODUCTS_PAGE = () => {
                   </form>
                   <div className="rd-search-scopes" role="group" aria-label={currentLang === "pt" ? "Filtrar resultados por categoria" : "Filter search results by category"}>
                     <button type="button" className={!activeCategory ? "active" : ""} aria-pressed={!activeCategory} onClick={() => setSearchScope(null)}>
-                      <span>All</span><small data-no-translate>{searchMatches.length}</small>
+                      <span>All</span><small data-no-translate>{searchCountProducts.length}</small>
                     </button>
                     {searchCategoryCounts.map((category) => (
                       <button key={category.key} type="button" className={activeCategory === category.key ? "active" : ""} aria-pressed={activeCategory === category.key} onClick={() => setSearchScope(category.key)}>
@@ -618,7 +620,7 @@ const PRODUCTS_PAGE = () => {
                   ) : (
                     <>
                       <span className="rd-kicker fs">
-                        {isKitchenCategory ? (activeRange?.label || selectedCategory.label) : selectedCategory.label}
+                        {collectionParam === "bali" ? "Bali" : isKitchenCategory ? (activeRange?.label || selectedCategory.label) : selectedCategory.label}
                         {activeRefinementLabel && !isSpecificCollectionPage && (
                           <span data-no-translate style={{ display: "inline-flex", alignItems: "center", gap: 6, marginLeft: 10, padding: "2px 6px 2px 10px", background: "var(--light-grey)", borderRadius: 2, textTransform: "none", letterSpacing: 0 }}>
                             {activeRefinementLabel}
