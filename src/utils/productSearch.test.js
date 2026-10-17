@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { normalizeSearchText, searchProducts } from './productSearch'
+import { findProductCollectionMatch, normalizeSearchText, searchProducts } from './productSearch'
 
 const products = [
   {
@@ -22,6 +22,14 @@ const products = [
     category: 'kitchen',
     materials: ['Natural teak', 'Ceramic top'],
     specs: { sku: 'DRAK-TEAK-01' },
+  },
+  {
+    id: 'bermuda-divano',
+    name: 'BERMUDA (Divano)',
+    category: 'lounge',
+    collection: 'bermuda',
+    collectionName: 'BERMUDA',
+    img: '/bermuda.webp',
   },
 ]
 
@@ -46,6 +54,16 @@ describe('product search', () => {
       { id: 'secondary', name: 'Outdoor Chair', description: 'Works with the Sicily Modular Sofa' },
     ], 'Sicily Modular Sofa')
     expect(results[0]?.id).toBe('sicily-sofa')
+  })
+
+  it('resolves exact collection queries to the collection page and split-item count', () => {
+    expect(findProductCollectionMatch(products, 'bermuda')).toMatchObject({
+      key: 'bermuda',
+      name: 'BERMUDA',
+      count: 3,
+      path: '/products?cat=lounge&collection=bermuda',
+    })
+    expect(findProductCollectionMatch(products, 'bermuda collection')?.key).toBe('bermuda')
   })
 
   it('returns no results for an empty or unrelated query', () => {

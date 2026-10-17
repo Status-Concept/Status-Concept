@@ -888,6 +888,18 @@
 .site-search-product-grid > a:last-child:nth-child(odd) { grid-column: 1 / -1; }
 .site-search-product-grid > a:hover,
 .site-search-product-grid > a.is-active { background: var(--off-white); }
+.site-search-collection-result {
+  display: grid;
+  grid-template-columns: 88px minmax(0, 1fr);
+  min-height: 88px;
+  border: 1px solid var(--mid-grey);
+  background: var(--white);
+  color: var(--text-dark);
+  text-decoration: none;
+  transition: background .2s ease;
+}
+.site-search-collection-result:hover,
+.site-search-collection-result.is-active { background: var(--off-white); }
 .site-search-thumb {
   display: grid;
   place-items: center;

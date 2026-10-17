@@ -1,15 +1,39 @@
 import { describe, expect, it } from 'vitest'
-import { allProducts, publicSearchProducts, publishedCorrectionProducts } from './productCatalog'
+import { existsSync } from 'node:fs'
+import { allProducts, publicSearchProducts, publishedCorrectionProducts, isRattanProduct } from './productCatalog'
 import { demoProductIds } from './demoProducts'
 import { publishedCorrectionImages, publishedLocalProducts } from './publishedCorrections.generated'
+import { minimalProductHeroes } from './minimalProductHeroes.generated'
 
 describe('public correction release', () => {
+  it('maps every hover product to an existing minimal photo and responsive variants', () => {
+    const hoverProducts = publicSearchProducts.filter((product) => product.heroImage)
+    expect(Object.keys(minimalProductHeroes).sort()).toEqual(hoverProducts.map((product) => product.id).sort())
+    for (const product of hoverProducts) {
+      expect(product.heroImage, product.id).toBe(minimalProductHeroes[product.id])
+      for (const suffix of ['', '-w400', '-w800']) {
+        expect(existsSync(`public${product.heroImage.replace(/\.webp$/, `${suffix}.webp`)}`), `${product.id}${suffix}`).toBe(true)
+      }
+    }
+  })
+  it('provides existing primary and individual hover images for every studio product, including local records', () => {
+    for (const product of publicSearchProducts.filter((item) => item.fit === 'contain')) {
+      expect(existsSync(`public${product.img}`), product.id).toBe(true)
+      expect(product.heroImage, product.id).toBe(minimalProductHeroes[product.id] || `/product-images/hero/${product.id}.webp`)
+      expect(existsSync(`public${product.heroImage}`), product.id).toBe(true)
+    }
+  })
   it('maps every corrected image to one searchable, routable product', () => {
     const ids = Object.keys(publishedCorrectionImages)
     expect(ids).toHaveLength(139)
     expect(new Set(ids).size).toBe(139)
-    expect(publishedCorrectionProducts).toHaveLength(139)
+    expect(publishedCorrectionProducts).toHaveLength(137)
     for (const id of ids) {
+      if (isRattanProduct({ id })) {
+        expect(publishedCorrectionProducts.some((item) => item.id === id)).toBe(false)
+        expect(publicSearchProducts.some((item) => item.id === id)).toBe(false)
+        continue
+      }
       const product = publishedCorrectionProducts.find((item) => item.id === id)
       expect(product?.img).toBe(publishedCorrectionImages[id])
       expect(product?.images).toEqual([publishedCorrectionImages[id]])
@@ -17,6 +41,20 @@ describe('public correction release', () => {
       expect(publicSearchProducts.filter((item) => item.id === id)).toHaveLength(1)
       expect(product.img).toMatch(/^\/product-images\/corrections\/\d+-[a-z0-9-]+\.webp$/)
     }
+  })
+
+  it('excludes the rattan products from catalogue and public search', () => {
+    const excluded = [
+      'bonaire-able', 'monaco-side-table', 'pietra-dining-armchair',
+      'pietra-dining-chair', 'st-tropez-high-side-table',
+      'st-tropez-low-side-table', 'st-malo-swivel-daybed', 'st-malo-yacht-daybed',
+    ]
+    for (const id of excluded) {
+      expect(allProducts.some((item) => item.id === id)).toBe(false)
+      expect(publicSearchProducts.some((item) => item.id === id)).toBe(false)
+      expect(demoProductIds.has(id)).toBe(false)
+    }
+    expect(allProducts.some(isRattanProduct)).toBe(false)
   })
 
   it('adds only minimal public fields for the 66 formerly local-only product records', () => {

@@ -3,7 +3,7 @@ import { useLocation } from 'react-router-dom'
 import LocalizedLink from './LocalizedLink'
 import { publicSearchProducts } from '../data/productCatalog'
 import { useLocalizedNavigate } from '../hooks/useLocalizedNavigate'
-import { normalizeSearchText, searchProducts } from '../utils/productSearch'
+import { findProductCollectionMatch, normalizeSearchText, searchProducts } from '../utils/productSearch'
 import { getLangFromPath } from '../utils/language'
 
 const POPULAR_SEARCHES = ['Modular sofas', 'Parasols', 'Outdoor kitchens', 'Sun loungers']
@@ -49,8 +49,9 @@ export default function SearchPanel({ open, onClose }) {
   const isPortuguese = getLangFromPath(location.pathname) === 'pt'
   const searchPlaceholder = isPortuguese ? 'Pesquisar produtos, coleções ou materiais' : 'Search products, collections or materials'
 
+  const collectionMatch = useMemo(() => findProductCollectionMatch(publicSearchProducts, query), [query])
   const fullProductResults = useMemo(() => searchProducts(publicSearchProducts, query), [query])
-  const productResults = useMemo(() => fullProductResults.slice(0, 6), [fullProductResults])
+  const productResults = useMemo(() => collectionMatch ? [] : fullProductResults.slice(0, 6), [collectionMatch, fullProductResults])
   const categoryResults = useMemo(
     () => (query ? CATEGORY_LINKS.filter((item) => matchesQuery(item, query)).slice(0, 3) : []),
     [query],
@@ -61,10 +62,11 @@ export default function SearchPanel({ open, onClose }) {
   )
 
   const suggestions = useMemo(() => [
+    ...(collectionMatch ? [{ key: `collection-${collectionMatch.key}`, path: collectionMatch.path }] : []),
     ...productResults.map((product) => ({ key: `product-${product.id || product.name}`, path: productPath(product) })),
     ...categoryResults.map((item) => ({ key: `category-${item.key}`, path: item.path })),
     ...pageResults.map((item) => ({ key: `page-${item.key}`, path: item.path })),
-  ], [categoryResults, pageResults, productResults])
+  ], [categoryResults, collectionMatch, pageResults, productResults])
 
   const suggestionIndexes = useMemo(
     () => new Map(suggestions.map((item, index) => [item.key, index])),
@@ -160,7 +162,7 @@ export default function SearchPanel({ open, onClose }) {
     }
   }
 
-  const hasAnyResults = productResults.length > 0 || categoryResults.length > 0 || pageResults.length > 0
+  const hasAnyResults = Boolean(collectionMatch) || productResults.length > 0 || categoryResults.length > 0 || pageResults.length > 0
 
   return (
     <div className="site-search-layer">
@@ -225,6 +227,31 @@ export default function SearchPanel({ open, onClose }) {
             ) : (
               <div id="site-search-results" className="site-search-results" role="listbox" aria-label={isPortuguese ? 'Sugestões de pesquisa' : 'Search suggestions'}>
                 <p className="sr-only" aria-live="polite">{fullProductResults.length} products found</p>
+
+                {collectionMatch && (
+                  <div className="site-search-group" role="group" aria-label="Collections">
+                    <div className="site-search-group-head">
+                      <span className="site-search-label fs">Collection</span>
+                      <span className="fs">{collectionMatch.count} products</span>
+                    </div>
+                    <LocalizedLink
+                      className="site-search-collection-result"
+                      to={collectionMatch.path}
+                      role="option"
+                      {...renderOptionState(`collection-${collectionMatch.key}`)}
+                      onClick={onClose}
+                    >
+                      <span className="site-search-thumb">
+                        {collectionMatch.image ? <img src={collectionMatch.image} alt="" loading="eager" decoding="async" /> : <span aria-hidden="true">S</span>}
+                      </span>
+                      <span className="site-search-product-copy">
+                        <span className="fs">{collectionMatch.category || 'Outdoor living'}</span>
+                        <strong className="ff" data-no-translate>{collectionMatch.name}</strong>
+                        <small className="fs">{collectionMatch.count} products · Open collection →</small>
+                      </span>
+                    </LocalizedLink>
+                  </div>
+                )}
 
                 {productResults.length > 0 && (
                   <div className="site-search-group" role="group" aria-label="Products">

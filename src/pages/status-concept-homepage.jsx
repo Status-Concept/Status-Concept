@@ -1,6 +1,7 @@
-import { useEffect, useState } from "react";
+import { lazy, Suspense, useRef, useState } from "react";
 import Layout from "../components/Layout";
 import LocalizedLink from "../components/LocalizedLink";
+import Magnet from "../components/Magnet";
 import photography from "../data/homepagePhotography.json";
 import shadeImg from "../assets/images/shade-parasols.jpg";
 import kitchenImg from "../assets/images/kitchen/kitchen-hero.webp";
@@ -33,25 +34,11 @@ const heroImages = [
   { ...photograph("reno"), alt: "Reno sofa set with matching armchairs" },
 ];
 
+const HomeMotion = lazy(() => import("../components/HomeMotion"));
+
 export default function Homepage() {
+  const pageRef = useRef(null);
   const [heroSlide, setHeroSlide] = useState(0);
-  const [paused, setPaused] = useState(false);
-  const [hidden, setHidden] = useState(() => document.hidden);
-
-  useEffect(() => {
-    const updateVisibility = () => setHidden(document.hidden);
-    document.addEventListener("visibilitychange", updateVisibility);
-    return () => document.removeEventListener("visibilitychange", updateVisibility);
-  }, []);
-
-  useEffect(() => {
-    if (paused || hidden) return undefined;
-    // Restart the full viewing period after an arrow/dot selection too.
-    const timer = window.setTimeout(() => {
-      setHeroSlide((current) => (current + 1) % heroImages.length);
-    }, 5000);
-    return () => window.clearTimeout(timer);
-  }, [heroSlide, paused, hidden]);
 
   const moveHero = (direction) => {
     setHeroSlide((current) => (current + direction + heroImages.length) % heroImages.length);
@@ -59,7 +46,8 @@ export default function Homepage() {
 
   return (
     <Layout>
-      <main className="home-minimal home-authentic-photography">
+      <main ref={pageRef} className="home-minimal home-authentic-photography">
+        <Suspense fallback={null}><HomeMotion pageRef={pageRef} /></Suspense>
         <section className="home-hero" aria-labelledby="home-title" aria-roledescription="carousel" aria-label="Featured outdoor settings">
           <div className="home-hero-slides">
             {heroImages.map((image, index) => (
@@ -82,7 +70,7 @@ export default function Homepage() {
           <div className="home-hero-copy">
             <span className="home-kicker fs">Outdoor living / Algarve</span>
             <h1 id="home-title" className="ff">Outdoor spaces,<br />made to stay outside.</h1>
-            <LocalizedLink className="home-hero-link fs" to="/products">Explore the collection <span aria-hidden="true">↗</span></LocalizedLink>
+            <Magnet><LocalizedLink className="home-hero-link fs" to="/products">Explore the collection <span aria-hidden="true">↗</span></LocalizedLink></Magnet>
           </div>
           <button type="button" className="home-hero-control home-hero-control-prev" onClick={() => moveHero(-1)} aria-label="Previous slide">‹</button>
           <button type="button" className="home-hero-control home-hero-control-next" onClick={() => moveHero(1)} aria-label="Next slide">›</button>
@@ -97,7 +85,6 @@ export default function Homepage() {
                 onClick={() => setHeroSlide(index)}
               />
             ))}
-            <button type="button" className="home-hero-pause fs" aria-label={paused ? "Play slideshow" : "Pause slideshow"} aria-pressed={paused} onClick={() => setPaused((current) => !current)}>{paused ? "▶ Play" : "Ⅱ Pause"}</button>
           </div>
         </section>
 

@@ -7,12 +7,12 @@ import Layout from "../components/Layout";
 import LocalizedLink from "../components/LocalizedLink";
 import NoImagePlaceholder from "../components/NoImagePlaceholder";
 import { productCollectionLabel } from "../utils/productLabels";
-import { demoProducts } from "../data/demoProducts";
+import { publicSearchProducts } from "../data/productCatalog";
 import { noImageProducts } from "../data/productImageStatus";
 import { productSrcSet } from "../utils/imageVariants";
 
 const slug = (value) => value.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
-const hasImage = (product) => product.category === "kitchen" || !noImageProducts.has(product.id);
+const hasImage = (product) => product.publishedCorrection || product.category === "kitchen" || product.category === "shade" || !noImageProducts.has(product.id);
 const productRoute = (product) => product.route || `/product/${product.id || slug(product.name)}`;
 
 // Fixed category order for the index; label falls back to the data's own.
@@ -24,7 +24,7 @@ const CATEGORY_ORDER = [
   { key: "kitchen", label: "Outdoor Kitchens" },
 ];
 
-const ALL = demoProducts;
+const ALL = publicSearchProducts;
 
 export default function Catalogue() {
   const sectionsRef = useRef({});

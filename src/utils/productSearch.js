@@ -127,3 +127,32 @@ export function searchProducts(products, query, { limit = Number.POSITIVE_INFINI
     .map(({ product }) => product)
 }
 
+export function findProductCollectionMatch(products, query) {
+  const normalizedQuery = normalizeSearchText(query).replace(/\s+collection$/, '').trim()
+  if (!normalizedQuery) return null
+
+  const groups = new Map()
+  products.forEach((product) => {
+    const name = product.collectionName || product.collection
+    const normalizedName = normalizeSearchText(name)
+    if (!name || normalizedName !== normalizedQuery) return
+
+    const key = `${product.category || ''}:${normalizedName}`
+    const group = groups.get(key) || { key: normalizedName.replace(/\s+/g, '-'), name, category: product.category, products: [] }
+    if (!group.products.some((item) => item.id === product.id)) group.products.push(product)
+    groups.set(key, group)
+  })
+
+  const [match] = groups.values()
+  if (!match) return null
+
+  const slug = match.key
+  const splitCount = ['sicily', 'bermuda'].includes(slug) ? 3 : match.products.length
+  return {
+    ...match,
+    count: splitCount,
+    image: match.products[0].heroImage || match.products[0].img,
+    path: `/products?cat=${encodeURIComponent(match.category || 'lounge')}&collection=${encodeURIComponent(slug)}`,
+  }
+}
+

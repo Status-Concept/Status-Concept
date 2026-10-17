@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
 import { getLangFromPath, stripLangFromPath } from '../utils/language'
+import { excludedRattanIds } from '../data/productExclusions'
 
 const PAGE_TITLES = {
   '/products': ['Products', 'Produtos'],
@@ -41,7 +42,10 @@ export default function RouteMetadata() {
 
     if (path === '/') pageTitle = lang === 'pt' ? 'Especialistas em mobiliário de exterior no Algarve' : 'Outdoor Furniture Specialists · Algarve'
     else if (path === '/products' && query) pageTitle = lang === 'pt' ? `Pesquisa: ${query}` : `Search: ${query}`
-    else if (path.startsWith('/product/')) pageTitle = titleizeSlug(path.slice('/product/'.length))
+    else if (path.startsWith('/product/')) {
+      const productId = path.slice('/product/'.length)
+      if (!excludedRattanIds.has(productId)) pageTitle = titleizeSlug(productId)
+    }
     else pageTitle = PAGE_TITLES[path]?.[lang === 'pt' ? 1 : 0]
 
     const title = `${pageTitle || (lang === 'pt' ? 'Página não encontrada' : 'Page Not Found')} | STATVS`

@@ -9,7 +9,7 @@ import { kitchenCollectionHeroes, kitchenCollectionMeta, kitchenProducts } from 
 import { catalogProducts } from "../data/catalogProducts";
 import { publicSearchProducts as allProducts } from "../data/productCatalog";
 import { noImageProducts } from "../data/productImageStatus";
-import { searchProducts } from "../utils/productSearch";
+import { findProductCollectionMatch, searchProducts } from "../utils/productSearch";
 import { productCollectionLabel } from "../utils/productLabels";
 import { getLangFromPath, withLang } from "../utils/language";
 import kitchenHeroImg from "../assets/images/kitchen/kitchen-hero.webp";
@@ -20,8 +20,16 @@ import decorCategoryImg from "../assets/images/enhanced/category-decor-studio.we
 import statuesCategoryImg from "../assets/images/enhanced/category-statues-studio.webp";
 import sicilyModularSetFullImg from "../assets/images/sicily-modular-set-full.webp";
 import sicilyCornerImg from "../assets/images/sicily-corner.jpg";
+import sicilyCentreImg from "../assets/images/sicily-centre.jpg";
+import sicilyOttomanImg from "../assets/images/sicily-ottoman.jpg";
 
 const shadeChipImg = "/product-images/glatz/sombrano-s-plus/05.webp";
+const COLLECTION_VIDEOS = {
+  sicily: "sicily-collection-hero",
+  ibiza: "ibiza-collection-hero",
+  luanda: "luanda-collection-hero",
+  miami: "miami-collection-hero",
+};
 
 const slug = (value) => value.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
 const VALID_CATEGORIES = ["lounge", "dining", "sunlounger", "shade", "kitchen", "carpets", "decor", "statues"];
@@ -89,7 +97,8 @@ export const refineProductResults = (products, { category, collection, subcatego
   if (category === "kitchen" && builtIn) return [];
   return products.filter((product) => (
     (!category || product.category === category)
-    && (!collection || slug(product.collectionName || product.collection) === collection)
+    && (!collection || slug(product.collectionName || product.collection) === collection
+      || slug(product.collectionName || product.collection).startsWith(`${collection}-`))
     && (!subcategory || matchesSubcategory(product, subcategory))
     && (!type || `${product.name} ${product.collectionName || ""}`.toLowerCase().includes(type.replace(/-/g, " ")))
   ));
@@ -99,6 +108,41 @@ export const refineProductResults = (products, { category, collection, subcatego
 // shots are intentionally contextual, so the white-background classifier should
 // not replace them with a showroom placeholder.
 export const productHasImage = (product) => product.publishedCorrection || product.category === "kitchen" || product.category === "shade" || !noImageProducts.has(product.id);
+
+const SICILY_MODULES = [
+  { id: "sicily-corner-module", name: "Sicily Corner Module", part: "corner", img: sicilyCornerImg, productType: ["modular", "corner"] },
+  { id: "sicily-centre-module", name: "Sicily Centre Module", part: "centre", img: sicilyCentreImg, productType: ["modular", "centre"] },
+  { id: "sicily-ottoman", name: "Sicily Ottoman", part: "ottoman", img: sicilyOttomanImg, imageScale: 0.82, productType: ["ottoman", "pouf"] },
+].map((piece) => ({
+  ...piece,
+  collection: "Sicily",
+  collectionName: "Sicily",
+  category: "lounge",
+  categoryLabel: "Lounge",
+  fit: "contain",
+  route: `/product/sicily-modular-set?part=${piece.part}`,
+}));
+
+export const expandProductCollection = (products, collection) => {
+  if (collection === "sicily") {
+    return products.flatMap((product) => product.id === "sicily-modular-set" ? SICILY_MODULES : [product]);
+  }
+  if (collection === "bermuda") {
+    return products.flatMap((product) => product.id === "bermuda-divano"
+      ? [
+          { id: "bermuda-left-chair", name: "Bermuda Left Lounge Chair", imageCrop: "left" },
+          { id: "bermuda-ottoman", name: "Bermuda Ottoman", imageCrop: "center" },
+          { id: "bermuda-right-chair", name: "Bermuda Right Lounge Chair", imageCrop: "right" },
+        ].map((piece) => ({
+          ...product,
+          ...piece,
+          heroImage: null,
+          route: `/product/bermuda-divano?part=${piece.imageCrop}`,
+        }))
+      : [product]);
+  }
+  return products;
+};
 
 const CATEGORY_LABELS = {
   lounge: "Lounge",
@@ -123,7 +167,6 @@ function CategoryCarousel({ categories, onOpen }) {
   const [animate, setAnimate] = useState(true);
   const prefersReducedMotion = typeof window !== "undefined"
     && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
-  const [paused, setPaused] = useState(Boolean(prefersReducedMotion)); // explicit pause (WCAG 2.2.2)
   const [hovered, setHovered] = useState(false); // pause while the pointer is over it
   const items = [...categories, ...categories]; // duplicated for a seamless loop
   const stepPct = 100 / items.length; // one tile as a percentage of the whole track
@@ -140,12 +183,12 @@ function CategoryCarousel({ categories, onOpen }) {
       const t = setTimeout(() => setAnimate(true), 20);
       return () => clearTimeout(t);
     }
-    // Don't schedule the next advance while paused or hovered.
-    if (paused || hovered) return;
+    // Don't schedule the next advance while the pointer or keyboard focus is over it.
+    if (hovered) return;
     // Normal cadence: advance one tile every 5s.
     const t = setTimeout(() => setIdx((i) => i + 1), 5000);
     return () => clearTimeout(t);
-  }, [idx, animate, categories.length, paused, hovered, prefersReducedMotion]);
+  }, [idx, animate, categories.length, hovered, prefersReducedMotion]);
 
   return (
     <div
@@ -183,20 +226,6 @@ function CategoryCarousel({ categories, onOpen }) {
           );
         })}
       </div>
-      <button
-        type="button"
-        className="cat-carousel-toggle fs"
-        aria-label={prefersReducedMotion ? "Category slideshow disabled by reduced motion preference" : (paused ? "Play category slideshow" : "Pause category slideshow")}
-        aria-pressed={paused}
-        disabled={prefersReducedMotion}
-        onClick={() => setPaused((p) => !p)}
-      >
-        {paused ? (
-          <svg aria-hidden="true" viewBox="0 0 24 24"><path d="m9 7 8 5-8 5Z" /></svg>
-        ) : (
-          <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M8 6v12M16 6v12" /></svg>
-        )}
-      </button>
     </div>
   );
 }
@@ -219,6 +248,7 @@ const PRODUCTS_PAGE = () => {
   const [searchInput, setSearchInput] = useState(queryParam);
   const [shareStatus, setShareStatus] = useState("");
   const [shareUrl, setShareUrl] = useState("");
+  const [mobileLifestyleModes, setMobileLifestyleModes] = useState({});
 
   useEffect(() => {
     setSearchInput(queryParam);
@@ -254,6 +284,7 @@ const PRODUCTS_PAGE = () => {
     : null;
 
   const hasSearch = Boolean(queryParam);
+  const isSpecificCollectionPage = Boolean(collectionParam) && !hasSearch;
   const isLanding = !activeCategory && !hasSearch;
   const selectedCategory = categories.find((category) => category.key === activeCategory);
   const kitchenPageLabel = isBuiltInKitchen ? "Built-in Kitchens" : "Modular Kitchens";
@@ -262,6 +293,7 @@ const PRODUCTS_PAGE = () => {
     ? "Built-in outdoor kitchen solutions for seamless, permanent installations."
     : selectedCategory?.copy;
   const searchMatches = useMemo(() => searchProducts(allProducts, queryParam), [queryParam]);
+  const collectionSearchMatch = useMemo(() => findProductCollectionMatch(allProducts, queryParam), [queryParam]);
 
   const filteredProducts = (() => {
     if (!activeCategory && !hasSearch) return [];
@@ -280,6 +312,9 @@ const PRODUCTS_PAGE = () => {
       return (b.tag ? 1 : 0) - (a.tag ? 1 : 0);
     });
   })();
+  const displayedProducts = collectionSearchMatch && hasSearch
+    ? []
+    : expandProductCollection(filteredProducts, activeCategory === "lounge" ? collectionParam : "");
 
   const activeRefinementLabel = (() => {
     if (!activeCategory) return null;
@@ -289,9 +324,15 @@ const PRODUCTS_PAGE = () => {
     if (activeCategory === "kitchen") return isBuiltInKitchen ? kitchenPageLabel : null;
     if (collectionParam) {
       const match = allProducts.find(
-        (product) => product.category === activeCategory && slug(product.collectionName || product.collection) === collectionParam,
+        (product) => product.category === activeCategory
+          && (slug(product.collectionName || product.collection) === collectionParam
+            || slug(product.collectionName || product.collection).startsWith(`${collectionParam}-`)),
       );
-      return match ? (match.collectionName || match.collection) : null;
+      return match
+        ? (slug(match.collectionName || match.collection) === collectionParam
+            ? (match.collectionName || match.collection)
+            : (match.collectionName || match.collection).trim().split(/\s+/)[0])
+        : null;
     }
     if (typeParam) {
       return typeParam.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
@@ -328,7 +369,13 @@ const PRODUCTS_PAGE = () => {
   };
 
   const openCategory = (key) => goTo(`/products?cat=${key}`);
-  const backToLanding = () => goTo(`/products`);
+  const goBackFromProducts = () => {
+    if (window.history.state?.idx > 0) {
+      navigate(-1);
+      return;
+    }
+    goTo(collectionParam && activeCategory ? `/products?cat=${activeCategory}` : "/products");
+  };
   const selectKitchenCollection = (key) => {
     updateProductQuery({ cat: "kitchen", mode: null, collection: key, type: null });
     requestAnimationFrame(scrollToProducts);
@@ -354,14 +401,43 @@ const PRODUCTS_PAGE = () => {
     }
   };
 
-  const collections = [...new Set(allProducts.filter((product) => product.category === activeCategory)
-    .map((product) => product.collectionName || product.collection).filter(Boolean))];
+  const categoryCollectionProducts = activeCategory && activeCategory !== "kitchen"
+    ? allProducts.filter((product) => product.category === activeCategory && (product.collectionName || product.collection))
+    : [];
+  const collectionNames = [...new Set(categoryCollectionProducts.map((product) => product.collectionName || product.collection))];
+  const collectionPrefixes = collectionNames.reduce((counts, name) => {
+    const prefix = name.trim().split(/\s+/)[0];
+    counts[prefix] = (counts[prefix] || 0) + 1;
+    return counts;
+  }, {});
+  const collectionGroups = [...new Map(categoryCollectionProducts.map((product) => {
+    const originalName = product.collectionName || product.collection;
+    const prefix = originalName.trim().split(/\s+/)[0];
+    const grouped = collectionPrefixes[prefix] > 1;
+    const name = grouped ? prefix : originalName;
+    const key = slug(name);
+    return [key, { key, name, image: product.heroImage || product.img }];
+  })).values()]
+    .map((collection) => ({
+      ...collection,
+      count: categoryCollectionProducts.filter((product) => slug(product.collectionName || product.collection) === collection.key
+        || slug(product.collectionName || product.collection).startsWith(`${collection.key}-`)).length
+        + (activeCategory === "lounge" && ["sicily", "bermuda"].includes(collection.key) ? 2 : 0),
+    }));
+  const collections = collectionGroups.map((collection) => collection.name);
+  const showCollectionChooser = !hasSearch && !isKitchenCategory && !collectionParam && collectionGroups.length > 1;
 
   const hasImage = productHasImage;
   const activeRange = kitchenCollections.find((collection) => collection.key === activeKitchenCollection);
   const activeBanner = isKitchenCategory && activeKitchenCollection
     ? (kitchenCollectionHeroes[activeKitchenCollection] || selectedCategory.banner)
     : selectedCategory?.banner;
+  const collectionHeroVideo = activeCategory === "lounge" && !hasSearch
+    ? COLLECTION_VIDEOS[collectionParam]
+    : null;
+  const collectionHeroPoster = collectionHeroVideo ? `/videos/${collectionHeroVideo}-poster.jpg` : activeBanner;
+  const prefersReducedMotion = typeof window !== "undefined"
+    && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
 
   return (
     <Layout>
@@ -382,12 +458,18 @@ const PRODUCTS_PAGE = () => {
       ) : (
         <>
           {!hasSearch && activeBanner && (
-            <section className="prod-banner">
-              <img src={activeBanner} alt="" decoding="async" fetchPriority="high" style={{ objectPosition: selectedCategory.bannerPosition || "center" }} />
+            <section className={`prod-banner ${isSpecificCollectionPage ? "collection-hero-banner" : ""}`}>
+              {collectionHeroVideo && !prefersReducedMotion ? (
+                <video key={collectionHeroVideo} autoPlay loop muted playsInline preload="metadata" poster={collectionHeroPoster} aria-hidden="true">
+                  <source src={`/videos/${collectionHeroVideo}.mp4`} type="video/mp4" />
+                </video>
+              ) : (
+                <img src={collectionHeroPoster} alt="" decoding="async" fetchPriority="high" style={{ objectPosition: selectedCategory.bannerPosition || "center" }} />
+              )}
             </section>
           )}
-          <div className={`rd-page-head ${hasSearch ? "search-head" : ""} ${isKitchenCategory && !hasSearch ? "kitchen-page-head" : ""}`}>
-            <button type="button" className="rd-back-to-cats" onClick={backToLanding}>
+          <div className={`rd-page-head ${hasSearch ? "search-head" : ""} ${isKitchenCategory && !hasSearch ? "kitchen-page-head" : ""} ${isSpecificCollectionPage ? "collection-page-head" : ""}`}>
+            <button type="button" className="rd-back-to-cats" onClick={goBackFromProducts}>
               <span aria-hidden="true">←</span> Products
             </button>
             {hasSearch ? (
@@ -405,7 +487,28 @@ const PRODUCTS_PAGE = () => {
             )}
           </div>
 
-          <main className={`rd-products-layout ${isKitchenCategory && !hasSearch ? "kitchen-products-layout" : ""}`}>
+          {showCollectionChooser ? (
+            <main className="rd-products-layout">
+              <section className="rd-collection-choice" aria-label={currentLang === "pt" ? "Coleções" : "Collections"}>
+                {collectionGroups.map((collection) => (
+                  <button
+                    key={collection.key}
+                    type="button"
+                    className="rd-collection-choice-card"
+                    onClick={() => goTo(`/products?cat=${activeCategory}&collection=${encodeURIComponent(collection.key)}`)}
+                  >
+                    {collection.image && <img src={collection.image} alt="" loading="lazy" decoding="async" />}
+                    <div>
+                      <span className="rd-kicker fs">{currentLang === "pt" ? "Coleção" : "Collection"}</span>
+                      <h3 className="ff">{collection.name}</h3>
+                      <p className="fs">{collection.count} {currentLang === "pt" ? "produtos" : "products"}</p>
+                    </div>
+                  </button>
+                ))}
+              </section>
+            </main>
+          ) : (
+          <main className={`rd-products-layout ${isKitchenCategory && !hasSearch ? "kitchen-products-layout" : ""} ${isSpecificCollectionPage ? "collection-products-layout" : ""}`}>
             <section>
               {hasSearch && (
                 <>
@@ -468,7 +571,7 @@ const PRODUCTS_PAGE = () => {
                 </div>
               )}
 
-              {activeSubcategories.length > 0 && !isBuiltInKitchen && (
+              {activeSubcategories.length > 0 && !isBuiltInKitchen && !isSpecificCollectionPage && (
                 <div className="rd-filter-strip" role="group" aria-label="Filter by product type or material">
                   <span className="rd-filter-label fs">Browse by</span>
                   {activeSubcategories.map((item) => (
@@ -490,7 +593,7 @@ const PRODUCTS_PAGE = () => {
                 </div>
               )}
 
-              <div className="rd-discovery-tools fs">
+              {!isSpecificCollectionPage && <div className="rd-discovery-tools fs">
                 {!isKitchenCategory && collections.length > 1 && (
                   <label> {currentLang === "pt" ? "Coleção" : "Collection"}
                     <select className="rd-select fs" value={collectionParam} onChange={(event) => updateProductQuery({ collection: event.target.value })}>
@@ -503,20 +606,20 @@ const PRODUCTS_PAGE = () => {
                 <button type="button" className="rd-filter-chip" onClick={shareSelection}>{currentLang === "pt" ? "Partilhar seleção" : "Share selection"}</button>
                 <span role="status">{shareStatus}</span>
                 {shareUrl && <input aria-label={currentLang === "pt" ? "Ligação para partilhar" : "Link to share"} readOnly value={shareUrl} onFocus={(event) => event.target.select()} />}
-              </div>
+              </div>}
 
               <div className="rd-products-toolbar">
                 <div>
                   {hasSearch ? (
                     <>
                       <span className="rd-kicker fs" data-no-translate>“{queryParam}”</span>
-                      <p className="rd-count fs" aria-live="polite">{filteredProducts.length} results</p>
+                      <p className="rd-count fs" aria-live="polite">{collectionSearchMatch ? "1 collection" : `${displayedProducts.length} results`}</p>
                     </>
                   ) : (
                     <>
                       <span className="rd-kicker fs">
                         {isKitchenCategory ? (activeRange?.label || selectedCategory.label) : selectedCategory.label}
-                        {activeRefinementLabel && (
+                        {activeRefinementLabel && !isSpecificCollectionPage && (
                           <span data-no-translate style={{ display: "inline-flex", alignItems: "center", gap: 6, marginLeft: 10, padding: "2px 6px 2px 10px", background: "var(--light-grey)", borderRadius: 2, textTransform: "none", letterSpacing: 0 }}>
                             {activeRefinementLabel}
                             <button
@@ -528,7 +631,7 @@ const PRODUCTS_PAGE = () => {
                           </span>
                         )}
                       </span>
-                      <p className="rd-count fs" aria-live="polite">{filteredProducts.length} products shown</p>
+                      <p className="rd-count fs" aria-live="polite">{displayedProducts.length} products shown</p>
                     </>
                   )}
                 </div>
@@ -549,7 +652,22 @@ const PRODUCTS_PAGE = () => {
                 </div>
               </div>
 
-              {filteredProducts.length === 0 ? (
+              {hasSearch && collectionSearchMatch ? (
+                <section className="rd-collection-choice search-collection-choice" aria-label="Matching collection">
+                  <button
+                    type="button"
+                    className="rd-collection-choice-card"
+                    onClick={() => goTo(collectionSearchMatch.path)}
+                  >
+                    {collectionSearchMatch.image && <img src={collectionSearchMatch.image} alt="" loading="lazy" decoding="async" />}
+                    <div>
+                      <span className="rd-kicker fs">Collection</span>
+                      <h3 className="ff">{collectionSearchMatch.name}</h3>
+                      <p className="fs">{collectionSearchMatch.count} products · Open collection</p>
+                    </div>
+                  </button>
+                </section>
+              ) : displayedProducts.length === 0 ? (
                 hasSearch ? (
                   <div className="rd-search-empty" role="status">
                     <span className="rd-kicker fs">No results for</span>
@@ -571,8 +689,8 @@ const PRODUCTS_PAGE = () => {
                 )
               ) : viewMode === "grid" ? (
                 <div className="rd-product-grid editorial">
-                  {filteredProducts.map((product, index) => (
-                    <article key={product.id || product.name} className={`rd-product-card ${product.category === "kitchen" && !product.fit ? "kitchen-product" : ""} ${product.category === "shade" && !product.fit ? "shade-product" : ""} ${product.fit === "contain" ? "studio-product" : ""} ${product.fit === "wide" ? "wide-product" : ""} ${product.id === "sicily-modular-set" ? "contain-media" : ""}`}>
+                  {displayedProducts.map((product, index) => (
+                    <article key={product.id || product.name} style={product.imageScale ? { "--product-image-scale": product.imageScale } : undefined} className={`rd-product-card ${product.category === "kitchen" && !product.fit ? "kitchen-product" : ""} ${product.category === "shade" && !product.fit ? "shade-product" : ""} ${product.fit === "contain" ? "studio-product" : ""} ${product.fit === "wide" ? "wide-product" : ""} ${product.id === "sicily-modular-set" ? "contain-media" : ""} ${product.imageScale ? "image-scale-adjusted" : ""} ${mobileLifestyleModes[product.id] ? "mobile-lifestyle-visible" : ""}`}>
                       <div className="rd-product-media">
                         <FavoriteButton
                           product={favPayload(product)}
@@ -583,10 +701,26 @@ const PRODUCTS_PAGE = () => {
                           ? (product.heroImage ? (
                             <>
                               <img className="rd-product-image rd-product-image-isolated" src={product.img} srcSet={productSrcSet(product.img)} sizes="(max-width: 760px) calc(100vw - 48px), (max-width: 1100px) 50vw, 33vw" alt={product.name} loading={index < 3 ? "eager" : "lazy"} fetchPriority={index < 3 ? "high" : "auto"} decoding="async" />
-                              <img className="rd-product-image rd-product-image-hero" src={product.heroImage} sizes="(max-width: 760px) calc(100vw - 48px), (max-width: 1100px) 50vw, 33vw" alt="" aria-hidden="true" loading="lazy" decoding="async" />
+                              <img className="rd-product-image rd-product-image-hero" src={product.heroImage} srcSet={productSrcSet(product.heroImage)} sizes="(max-width: 760px) calc(100vw - 48px), (max-width: 1100px) 50vw, 33vw" alt="" aria-hidden="true" loading="lazy" decoding="async" />
                             </>
-                          ) : <img src={product.img} srcSet={productSrcSet(product.img)} sizes="(max-width: 760px) calc(100vw - 48px), (max-width: 1100px) 50vw, 33vw" alt={product.name} loading={index < 3 ? "eager" : "lazy"} fetchPriority={index < 3 ? "high" : "auto"} decoding="async" />)
+                          ) : <img className={product.imageCrop ? "rd-product-image-part" : undefined} style={product.imageCrop ? { transform: "scaleX(3)", transformOrigin: `${({ left: 0, center: 50, right: 100 })[product.imageCrop]}% 50%` } : undefined} src={product.img} srcSet={productSrcSet(product.img)} sizes="(max-width: 760px) calc(100vw - 48px), (max-width: 1100px) 50vw, 33vw" alt={product.name} loading={index < 3 ? "eager" : "lazy"} fetchPriority={index < 3 ? "high" : "auto"} decoding="async" />)
                           : <NoImagePlaceholder />}
+                        {product.heroImage && (
+                          <button
+                            type="button"
+                            className="rd-mobile-image-toggle fs"
+                            aria-pressed={Boolean(mobileLifestyleModes[product.id])}
+                            onClick={(event) => {
+                              event.preventDefault();
+                              event.stopPropagation();
+                              setMobileLifestyleModes((modes) => ({ ...modes, [product.id]: !modes[product.id] }));
+                            }}
+                          >
+                            {mobileLifestyleModes[product.id]
+                              ? (currentLang === "pt" ? "Ver foto de estúdio" : "View studio photo")
+                              : (currentLang === "pt" ? "Ver em ambiente" : "View in setting")}
+                          </button>
+                        )}
                         <span className="rd-product-view fs">View product <span aria-hidden="true">↗</span></span>
                       </div>
                       <div className="rd-product-info">
@@ -598,10 +732,10 @@ const PRODUCTS_PAGE = () => {
                 </div>
               ) : (
                 <div className="rd-product-list">
-                  {filteredProducts.map((product) => (
-                    <article key={product.id || product.name} className={`rd-product-row ${product.category === "kitchen" && !product.fit ? "kitchen-product" : ""} ${product.fit === "contain" ? "studio-product" : ""}`}>
+                  {displayedProducts.map((product) => (
+                    <article key={product.id || product.name} style={product.imageScale ? { "--product-image-scale": product.imageScale } : undefined} className={`rd-product-row ${product.category === "kitchen" && !product.fit ? "kitchen-product" : ""} ${product.fit === "contain" ? "studio-product" : ""} ${product.imageScale ? "image-scale-adjusted" : ""}`}>
                       {hasImage(product)
-                        ? <img src={product.img} srcSet={productSrcSet(product.img)} sizes="(max-width: 760px) calc(100vw - 48px), 220px" alt={product.name} loading="lazy" decoding="async" />
+                        ? <img className={product.imageCrop ? "rd-product-image-part" : undefined} style={product.imageCrop ? { transform: "scaleX(3)", transformOrigin: `${({ left: 0, center: 50, right: 100 })[product.imageCrop]}% 50%` } : undefined} src={product.img} srcSet={productSrcSet(product.img)} sizes="(max-width: 760px) calc(100vw - 48px), 220px" alt={product.name} loading="lazy" decoding="async" />
                         : <NoImagePlaceholder list />}
                       <div>
                         <span className="rd-kicker fs">{productBrandLabel(product)}</span>
@@ -619,6 +753,7 @@ const PRODUCTS_PAGE = () => {
               )}
             </section>
           </main>
+          )}
         </>
       )}
     </Layout>

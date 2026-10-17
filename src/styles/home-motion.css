@@ -1,0 +1,24 @@
+.home-magnet,
+.home-magnet-inner {
+  display: inline-block;
+}
+
+.home-magnet-inner {
+  transition: transform 450ms cubic-bezier(.4, 0, .2, 1);
+}
+
+.home-magnet .home-hero-link:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 5px;
+}
+
+.home-authentic-photography .home-visit-image img {
+  transform-origin: center center;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-magnet-inner {
+    transform: none !important;
+    transition: none;
+  }
+}
