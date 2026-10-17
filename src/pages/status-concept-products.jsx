@@ -24,6 +24,10 @@ import sicilyCentreImg from "../assets/images/sicily-centre.jpg";
 import sicilyOttomanImg from "../assets/images/sicily-ottoman.jpg";
 
 const shadeChipImg = "/product-images/glatz/sombrano-s-plus/05.webp";
+const COLLECTION_VIDEOS = {
+  sicily: "sicily-collection-hero",
+  ibiza: "ibiza-collection-hero",
+};
 
 const slug = (value) => value.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
 const VALID_CATEGORIES = ["lounge", "dining", "sunlounger", "shade", "kitchen", "carpets", "decor", "statues"];
@@ -426,7 +430,10 @@ const PRODUCTS_PAGE = () => {
   const activeBanner = isKitchenCategory && activeKitchenCollection
     ? (kitchenCollectionHeroes[activeKitchenCollection] || selectedCategory.banner)
     : selectedCategory?.banner;
-  const isSicilyCollectionHero = activeCategory === "lounge" && collectionParam === "sicily" && !hasSearch;
+  const collectionHeroVideo = activeCategory === "lounge" && !hasSearch
+    ? COLLECTION_VIDEOS[collectionParam]
+    : null;
+  const collectionHeroPoster = collectionHeroVideo ? `/videos/${collectionHeroVideo}-poster.jpg` : activeBanner;
   const prefersReducedMotion = typeof window !== "undefined"
     && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
 
@@ -450,12 +457,12 @@ const PRODUCTS_PAGE = () => {
         <>
           {!hasSearch && activeBanner && (
             <section className={`prod-banner ${isSpecificCollectionPage ? "collection-hero-banner" : ""}`}>
-              {isSicilyCollectionHero && !prefersReducedMotion ? (
-                <video autoPlay loop muted playsInline preload="metadata" poster="/videos/sicily-collection-hero-poster.jpg" aria-hidden="true">
-                  <source src="/videos/sicily-collection-hero.mp4" type="video/mp4" />
+              {collectionHeroVideo && !prefersReducedMotion ? (
+                <video key={collectionHeroVideo} autoPlay loop muted playsInline preload="metadata" poster={collectionHeroPoster} aria-hidden="true">
+                  <source src={`/videos/${collectionHeroVideo}.mp4`} type="video/mp4" />
                 </video>
               ) : (
-                <img src={isSicilyCollectionHero ? "/videos/sicily-collection-hero-poster.jpg" : activeBanner} alt="" decoding="async" fetchPriority="high" style={{ objectPosition: selectedCategory.bannerPosition || "center" }} />
+                <img src={collectionHeroPoster} alt="" decoding="async" fetchPriority="high" style={{ objectPosition: selectedCategory.bannerPosition || "center" }} />
               )}
             </section>
           )}
