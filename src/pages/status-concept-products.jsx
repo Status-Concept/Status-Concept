@@ -27,6 +27,7 @@ const shadeChipImg = "/product-images/glatz/sombrano-s-plus/05.webp";
 const COLLECTION_VIDEOS = {
   sicily: "sicily-collection-hero",
   ibiza: "ibiza-collection-hero",
+  luanda: "luanda-collection-hero",
 };
 
 const slug = (value) => value.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
