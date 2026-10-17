@@ -1,11 +1,15 @@
 import { describe, expect, it } from 'vitest'
 import { existsSync } from 'node:fs'
-import { baliProducts, retiredBaliProductIds } from './baliCollection'
+import { baliCollectionHero, baliProducts, retiredBaliProductIds } from './baliCollection'
 import { allProducts, publicSearchProducts } from './productCatalog'
 import { refineProductResults, productHasImage } from '../pages/status-concept-products'
 import { findProductCollectionMatch } from '../utils/productSearch'
 
 describe('reference-based Bali collection', () => {
+  it('uses a dedicated collection hero rather than a product hover photo', () => {
+    expect(baliProducts.some((product) => product.heroImage === baliCollectionHero)).toBe(false)
+    expect(existsSync(`public${baliCollectionHero}`)).toBe(true)
+  })
   it('publishes only the three referenced models with distinct identities', () => {
     expect(baliProducts.map((product) => product.name)).toEqual([
       'Bali Lounge Armchair & Footstool', 'Bali Sun Lounger', 'Bali Double Sun Lounger',
@@ -30,8 +34,9 @@ describe('reference-based Bali collection', () => {
     expect(new Set(baliProducts.map((product) => product.heroImage)).size).toBe(3)
     for (const product of baliProducts) {
       expect(productHasImage(product)).toBe(true)
-      expect(product.images).toEqual([product.img, product.heroImage])
-      for (const image of product.images) {
+      expect(product.images).toEqual([product.img])
+      expect(product.hoverOnly).toBe(true)
+      for (const image of [product.img, product.heroImage]) {
         expect(image).toContain('/product-images/bali-reference-v2/')
         for (const suffix of ['', '-w400', '-w800']) {
           expect(existsSync(`public${image.replace(/\.webp$/, `${suffix}.webp`)}`), image + suffix).toBe(true)

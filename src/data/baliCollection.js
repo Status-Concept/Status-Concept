@@ -8,7 +8,7 @@ export const retiredBaliProductIds = new Set([
 ])
 
 const imageRoot = '/product-images/bali-reference-v2'
-export const baliCollectionHero = `${imageRoot}/armchair-minimal.webp`
+export const baliCollectionHero = `${imageRoot}/collection-hero-coastal-v3.webp`
 export const baliProducts = [
   { id: 'bali-lounge-2', name: 'Bali Lounge Armchair & Footstool', category: 'lounge', categoryLabel: 'Lounge', imageKey: 'armchair', productType: ['armchair', 'footstool'] },
   { id: 'bali', name: 'Bali Sun Lounger', category: 'sunlounger', categoryLabel: 'Sun Loungers', imageKey: 'single', productType: ['sunlounger'] },
@@ -19,7 +19,8 @@ export const baliProducts = [
   collectionName: 'Bali',
   img: `${imageRoot}/${imageKey}-studio.webp`,
   heroImage: `${imageRoot}/${imageKey}-minimal.webp`,
-  images: [`${imageRoot}/${imageKey}-studio.webp`, `${imageRoot}/${imageKey}-minimal.webp`],
+  images: [`${imageRoot}/${imageKey}-studio.webp`],
+  hoverOnly: true,
   fit: 'contain',
   curatedImages: true,
 }))

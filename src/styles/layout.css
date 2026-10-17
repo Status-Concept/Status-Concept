@@ -494,6 +494,8 @@
 .rd-product-card:focus-within .rd-product-image-hero { opacity: 1; transform: scale(1); }
 .rd-product-card:hover .rd-product-image-isolated,
 .rd-product-card:focus-within .rd-product-image-isolated { opacity: 0; transform: scale(.985); }
+.rd-product-card.hover-only-setting:not(:hover) .rd-product-image-hero { opacity: 0; }
+.rd-product-card.hover-only-setting:not(:hover) .rd-product-image-isolated { opacity: 1; transform: none; }
 .rd-product-card:has(.rd-product-image-hero) .rd-product-view { z-index: 2; }
 .rd-product-view {
   position: absolute;
@@ -1309,6 +1311,10 @@
 .prod-banner.collection-hero-banner {
   height: min(50vw, 84svh);
   overflow: hidden;
+}
+.prod-banner.collection-hero-banner.bali-collection-hero {
+  height: auto;
+  aspect-ratio: 1672 / 941;
 }
 .prod-banner.collection-hero-banner > img,
 .prod-banner.collection-hero-banner > video {

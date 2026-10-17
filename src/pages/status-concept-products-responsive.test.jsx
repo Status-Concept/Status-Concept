@@ -15,9 +15,9 @@ function renderProductsAt(path) {
 
 describe('responsive collection presentation', () => {
   it('shows a touch-friendly setting toggle for products with a lifestyle image', async () => {
-    renderProductsAt('/en/products?cat=lounge&collection=bali')
-    const heading = await screen.findByRole('heading', { name: 'Bali Sun Lounger' })
-    const card = heading.closest('article')
+    renderProductsAt('/en/products?cat=lounge&collection=miami')
+    await screen.findAllByRole('article')
+    const card = screen.getAllByRole('article').find((item) => item.querySelector('.rd-product-image-hero'))
     const toggle = within(card).getByRole('button', { name: 'View in setting' })
 
     expect(toggle.getAttribute('aria-pressed')).toBe('false')
@@ -38,6 +38,19 @@ describe('responsive collection presentation', () => {
   ])('opens the curated product page for %s', async (id, name) => {
     renderProductsAt(`/en/product/${id}`)
     expect(await screen.findByRole('heading', { level: 1, name })).toBeTruthy()
+    const gallery = screen.getByRole('region', { name: 'Product gallery' })
+    expect(within(gallery).getAllByRole('button', { name: /^View image / })).toHaveLength(1)
+    expect(gallery.querySelector('img[src$="-minimal.webp"]')).toBeNull()
+  })
+
+  it('keeps Bali setting photos hover-only, without an extra toggle', async () => {
+    renderProductsAt('/en/products?cat=lounge&collection=bali')
+    await screen.findByRole('heading', { name: 'Bali Sun Lounger' })
+    for (const card of screen.getAllByRole('article')) {
+      expect(card.classList.contains('hover-only-setting')).toBe(true)
+      expect(card.querySelector('.rd-product-image-hero')).toBeTruthy()
+      expect(within(card).queryByRole('button', { name: 'View in setting' })).toBeNull()
+    }
   })
 
   it('keeps retired Bali links useful by opening the corrected collection', async () => {

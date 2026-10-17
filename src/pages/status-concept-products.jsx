@@ -460,7 +460,7 @@ const PRODUCTS_PAGE = () => {
       ) : (
         <>
           {!hasSearch && activeBanner && (
-            <section className={`prod-banner ${isSpecificCollectionPage ? "collection-hero-banner" : ""}`}>
+            <section className={`prod-banner ${isSpecificCollectionPage ? "collection-hero-banner" : ""} ${collectionParam === "bali" ? "bali-collection-hero" : ""}`}>
               {collectionHeroVideo && !prefersReducedMotion ? (
                 <video key={collectionHeroVideo} autoPlay loop muted playsInline preload="metadata" poster={collectionHeroPoster} aria-hidden="true">
                   <source src={`/videos/${collectionHeroVideo}.mp4`} type="video/mp4" />
@@ -692,7 +692,7 @@ const PRODUCTS_PAGE = () => {
               ) : viewMode === "grid" ? (
                 <div className="rd-product-grid editorial">
                   {displayedProducts.map((product, index) => (
-                    <article key={product.id || product.name} style={product.imageScale ? { "--product-image-scale": product.imageScale } : undefined} className={`rd-product-card ${product.category === "kitchen" && !product.fit ? "kitchen-product" : ""} ${product.category === "shade" && !product.fit ? "shade-product" : ""} ${product.fit === "contain" ? "studio-product" : ""} ${product.fit === "wide" ? "wide-product" : ""} ${product.id === "sicily-modular-set" ? "contain-media" : ""} ${product.imageScale ? "image-scale-adjusted" : ""} ${mobileLifestyleModes[product.id] ? "mobile-lifestyle-visible" : ""}`}>
+                    <article key={product.id || product.name} style={product.imageScale ? { "--product-image-scale": product.imageScale } : undefined} className={`rd-product-card ${product.category === "kitchen" && !product.fit ? "kitchen-product" : ""} ${product.category === "shade" && !product.fit ? "shade-product" : ""} ${product.fit === "contain" ? "studio-product" : ""} ${product.fit === "wide" ? "wide-product" : ""} ${product.id === "sicily-modular-set" ? "contain-media" : ""} ${product.imageScale ? "image-scale-adjusted" : ""} ${product.hoverOnly ? "hover-only-setting" : ""} ${mobileLifestyleModes[product.id] ? "mobile-lifestyle-visible" : ""}`}>
                       <div className="rd-product-media">
                         <FavoriteButton
                           product={favPayload(product)}
@@ -707,7 +707,7 @@ const PRODUCTS_PAGE = () => {
                             </>
                           ) : <img className={product.imageCrop ? "rd-product-image-part" : undefined} style={product.imageCrop ? { transform: "scaleX(3)", transformOrigin: `${({ left: 0, center: 50, right: 100 })[product.imageCrop]}% 50%` } : undefined} src={product.img} srcSet={productSrcSet(product.img)} sizes="(max-width: 760px) calc(100vw - 48px), (max-width: 1100px) 50vw, 33vw" alt={product.name} loading={index < 3 ? "eager" : "lazy"} fetchPriority={index < 3 ? "high" : "auto"} decoding="async" />)
                           : <NoImagePlaceholder />}
-                        {product.heroImage && (
+                        {product.heroImage && !product.hoverOnly && (
                           <button
                             type="button"
                             className="rd-mobile-image-toggle fs"
