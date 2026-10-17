@@ -1,0 +1,67 @@
+.contact-page {
+  --contact-paper: oklch(98.5% .005 85);
+  --contact-sand: oklch(95% .009 85);
+  --contact-ink: oklch(25% .008 75);
+  --contact-rule: oklch(83% .012 85);
+  color: var(--contact-ink);
+  background: var(--contact-paper);
+}
+.contact-page h1, .contact-page h2, .contact-page h3 { font-weight: 300; letter-spacing: -.035em; }
+.contact-intro { display: grid; grid-template-columns: 40% 60%; }
+.contact-intro-copy { padding: clamp(32px, 5vw, 76px) clamp(24px, 3.5vw, 56px); align-self: center; }
+.contact-intro h1 { font-size: clamp(34px, 3.3vw, 54px); line-height: 1.12; margin: 18px 0; }
+.contact-intro-copy > p { font-size: 15px; line-height: 1.85; max-width: 38ch; margin-bottom: 25px; }
+.contact-intro .cb { gap: 24px; }
+.contact-text-link { display: inline-flex; gap: 12px; align-items: center; color: inherit; font-size: 13px; text-underline-offset: 6px; text-decoration-thickness: 1px; padding: 12px 0; }
+.contact-intro-copy > .contact-text-link { display: flex; margin-top: 10px; }
+.contact-hero-photo { margin: 0; position: relative; min-width: 0; }
+.contact-hero-photo img { width: 100%; height: 100%; min-height: 460px; max-height: 600px; object-fit: cover; object-position: 55% center; display: block; }
+.contact-hero-photo figcaption { position: absolute; bottom: 18px; left: 20px; right: 20px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; padding: 12px 16px; color: var(--contact-ink); background: var(--contact-paper); font-size: 11px; letter-spacing: .04em; }
+.contact-visit { display: grid; grid-template-columns: .85fr 1.15fr; gap: clamp(28px, 5vw, 80px); padding: clamp(40px, 5vw, 76px) clamp(24px, 4vw, 64px); align-items: center; max-width: 1600px; margin: auto; }
+.contact-visit h2, .contact-enquiry-copy h2 { font-size: clamp(30px, 3vw, 44px); line-height: 1.15; margin: 14px 0 24px; }
+.contact-location-picker { display: flex; gap: 8px; margin-bottom: 22px; flex-wrap: wrap; }
+.contact-location-picker button { min-height: 44px; font: inherit; font-size: 13px; border: 1px solid var(--contact-rule); padding: 10px 18px; color: inherit; background: transparent; cursor: pointer; }
+.contact-location-picker button[aria-pressed="true"] { color: var(--contact-paper); border-color: var(--contact-ink); background: var(--contact-ink); }
+.contact-location h3 { font-size: 23px; margin: 0 0 10px; }
+.contact-location p { font-size: 14px; line-height: 1.8; max-width: 45ch; }
+.contact-location address { font-size: 13px; font-style: normal; line-height: 1.7; margin-top: 16px; }
+.contact-location-phone { display: block; color: inherit; font-size: 14px; width: fit-content; padding: 8px 0; }
+.contact-hours { border-top: 1px solid var(--contact-rule); padding-top: 16px; margin-top: 18px; max-width: 340px; font-size: 12px; }
+.contact-hours > div { display: flex; justify-content: space-between; gap: 24px; padding: 4px 0; }
+.contact-hours dd { margin: 0; }
+.contact-visit-photo { margin: 0; min-width: 0; }
+.contact-visit-photo img { width: 100%; height: auto; aspect-ratio: 1.25; object-fit: cover; display: block; }
+.contact-visit-photo figcaption { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; font-size: 12px; margin-top: 10px; color: var(--text-grey); }
+.contact-visit-photo--almancil img { aspect-ratio: auto; object-fit: contain; background: var(--contact-sand); }
+.contact-enquiry { display: grid; grid-template-columns: .85fr 1.15fr; gap: clamp(28px, 6vw, 96px); background: var(--contact-sand); padding: clamp(36px, 5vw, 72px) clamp(24px, 5vw, 80px); scroll-margin-top: 130px; }
+.contact-enquiry-copy > p { font-size: 14px; line-height: 1.85; max-width: 40ch; }
+.contact-direct { margin-top: 30px; max-width: 390px; }
+.contact-direct a { color: inherit; text-decoration: none; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 20px; padding: 17px 0; border-top: 1px solid var(--contact-rule); font-size: 13px; }
+.contact-direct a:hover { text-decoration: underline; text-underline-offset: 5px; }
+.contact-form-panel { min-width: 0; }
+.contact-form-panel h2 { font-size: clamp(26px, 2.5vw, 36px); line-height: 1.2; margin: 10px 0 12px; }
+.contact-form-intro { font-size: 13px; line-height: 1.8; max-width: 60ch; margin-bottom: 24px; }
+.contact-form-panel .rd-floating-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px 24px; }
+.contact-form-panel .rd-field:has(textarea), .contact-form-panel .rd-form-error, .contact-form-panel form > p { grid-column: 1 / -1; }
+.contact-form-panel .rd-field input, .contact-form-panel .rd-field select, .contact-form-panel .rd-field textarea { min-height: 48px; border-color: var(--contact-rule); }
+.contact-form-panel .rd-field label { color: var(--contact-ink); }
+.contact-form-panel button[type="submit"] { grid-column: 1 / -1; justify-self: start; }
+.contact-page :is(a, button, input, textarea, select):focus-visible { outline: 2px solid var(--accent); outline-offset: 5px; }
+@media (max-width: 1000px) and (min-width: 761px) {
+  .contact-intro { grid-template-columns: 46% 54%; }
+  .contact-intro h1 { font-size: 34px; }
+}
+@media (max-width: 760px) {
+  .contact-intro, .contact-visit, .contact-enquiry { grid-template-columns: 1fr; }
+  .contact-intro-copy { padding-top: 32px; padding-bottom: 28px; }
+  .contact-intro h1 { font-size: clamp(32px, 7.5vw, 44px); }
+  .contact-intro-copy > p { max-width: 45ch; }
+  .contact-hero-photo img { min-height: 0; max-height: none; height: auto; aspect-ratio: 1.4; }
+  .contact-hero-photo figcaption { left: 12px; right: 12px; bottom: 12px; font-size: 10px; }
+  .contact-visit-photo:not(.contact-visit-photo--almancil) img { aspect-ratio: 1.5; }
+  .contact-enquiry { scroll-margin-top: 95px; }
+}
+@media (max-width: 420px) {
+  .contact-form-panel .rd-floating-grid { grid-template-columns: 1fr; }
+  .contact-form-panel .rd-field input, .contact-form-panel .rd-field select, .contact-form-panel .rd-field textarea { font-size: 16px; }
+}

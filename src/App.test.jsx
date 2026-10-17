@@ -62,6 +62,26 @@ describe('routing', () => {
     expect(await screen.findAllByText(/Almancil/i)).not.toHaveLength(0)
   })
 
+  it('switches showroom details and photography without losing an enquiry', async () => {
+    renderAt('/en/contact?product=Sicily%20Modular%20Set')
+    expect(await screen.findByRole('heading', { name: 'Enquire about Sicily Modular Set' })).toBeTruthy()
+    expect(screen.getByLabelText('Message').value).toContain('Sicily Modular Set')
+    const picker = screen.getByRole('group', { name: 'Choose a showroom' })
+    fireEvent.click(within(picker).getByRole('button', { name: 'Almancil' }))
+    expect(within(picker).getByRole('button', { name: 'Almancil' }).getAttribute('aria-pressed')).toBe('true')
+    const location = document.getElementById('contact-location')
+    expect(within(location).getByText('Avenida 5 de Outubro 298, 8135-103 Almancil')).toBeTruthy()
+    expect(within(location).getByRole('link', { name: 'Get directions' }).getAttribute('href')).toContain('Avenida')
+    expect(within(location).getByRole('link', { name: '+351 289 092 890' }).getAttribute('href')).toBe('tel:+351289092890')
+    expect(screen.getByRole('img', { name: 'Showroom Almancil' })).toBeTruthy()
+    expect(screen.getByRole('img', { name: 'Showroom Almancil' }).getAttribute('src')).toContain('showroom-almancil-original-clean')
+    expect(screen.getByText('AI-retouched photograph')).toBeTruthy()
+    expect(screen.getByLabelText('Message').value).toContain('Sicily Modular Set')
+    fireEvent.change(screen.getByLabelText('Name'), { target: { value: 'Test Visitor' } })
+    fireEvent.change(screen.getByLabelText('Email'), { target: { value: 'visitor@example.com' } })
+    expect(screen.getByRole('button', { name: /Prepare email enquiry|Send enquiry/ }).disabled).toBe(false)
+  })
+
   it('resolves disabled future-phase links without a 404', async () => {
     renderAt('/en/projects')
     expect(await screen.findByText('This feature is planned for a future phase.')).toBeTruthy()
