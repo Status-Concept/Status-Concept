@@ -33,6 +33,7 @@ const COLLECTION_VIDEOS = {
   luanda: "luanda-collection-hero",
   miami: "miami-collection-hero",
   florida: "florida-collection-hero",
+  berlin: "berlin-collection-hero",
 };
 
 const slug = (value) => value.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
