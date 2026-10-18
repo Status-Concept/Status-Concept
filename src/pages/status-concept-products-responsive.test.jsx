@@ -14,6 +14,33 @@ function renderProductsAt(path) {
 }
 
 describe('responsive collection presentation', () => {
+  it.each([
+    '/en/products?cat=lounge&collection=florida',
+    '/en/products?cat=dining&collection=florida',
+    '/en/products?cat=dining&collection=florida-dining',
+  ])('opens only the five reference Florida products from %s', async (path) => {
+    renderProductsAt(path)
+    await screen.findByRole('heading', { name: 'Florida Dining Set', exact: true })
+    expect(screen.getAllByRole('article')).toHaveLength(5)
+    expect(screen.queryByRole('heading', { name: /Florida Modular Sofa/ })).toBeNull()
+  })
+
+  it.each([
+    ['florida-dining', 1], ['florida-dining-armchair', 1],
+    ['florida-dining-table-with-miami-dining-armchairs', 2],
+    ['florida-dining-table-with-orlando-dining-armchairs', 1], ['florida-dining-set', 1],
+  ])('keeps reference finishes, not hover settings, in the gallery for %s', async (id, count) => {
+    renderProductsAt(`/en/product/${id}`)
+    const gallery = await screen.findByRole('region', { name: 'Product gallery' })
+    expect(within(gallery).getAllByRole('button', { name: /^View image / })).toHaveLength(count)
+    expect(gallery.querySelector('img[src$="-minimal.webp"]')).toBeNull()
+  })
+
+  it('redirects a retired Florida sofa URL to the reference Dining collection', async () => {
+    renderProductsAt('/en/product/local-product-76d9292a9635')
+    await screen.findByRole('heading', { name: 'Florida Dining Set', exact: true })
+    expect(screen.getAllByRole('article')).toHaveLength(5)
+  })
   it.each(['lounge', 'sunlounger'])('uses the neutral Bali cover in the %s collection grid', async (category) => {
     renderProductsAt(`/en/products?cat=${category}`)
     const collections = await screen.findByRole('region', { name: 'Collections' })

@@ -12,6 +12,7 @@ import { kitchenProductDetails, kitchenCollectionHeroes } from "../data/kitchenP
 import { demoProducts, demoProductIds } from "../data/demoProducts";
 import { publishedCorrectionProducts } from "../data/productCatalog";
 import { baliProductById, retiredBaliProductIds } from "../data/baliCollection";
+import { floridaProductById, retiredFloridaProductIds } from "../data/floridaCollection";
 import { limitPageImages } from "../config/contentLimits";
 import { formatFacetLabel, getProductFacets, normalizeProduct } from "../data/productTaxonomy";
 import { getLangFromPath, withLang } from "../utils/language";
@@ -110,13 +111,14 @@ const PRODUCT_DETAIL = () => {
 
   const passedProduct = location.state?.product;
   if (retiredBaliProductIds.has(id)) return <Navigate to={withLang("/products?cat=lounge&collection=bali", currentLang)} replace />;
-  const curatedBaliProduct = baliProductById.get(id);
-  const correction = curatedBaliProduct || publishedCorrectionProducts.find((item) => item.id === id);
+  if (retiredFloridaProductIds.has(id)) return <Navigate to={withLang("/products?cat=dining&collection=florida", currentLang)} replace />;
+  const curatedProduct = baliProductById.get(id) || floridaProductById.get(id);
+  const correction = curatedProduct || publishedCorrectionProducts.find((item) => item.id === id);
   if (!demoProductIds.has(id) && !correction) return <NotFound />;
   const product = correction
     ? {
         ...(allProducts[id] || {}),
-        ...(curatedBaliProduct || {}),
+        ...(curatedProduct || {}),
         id: correction.id,
         name: correction.name,
         category: correction.category,

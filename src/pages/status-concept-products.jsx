@@ -9,6 +9,7 @@ import { kitchenCollectionHeroes, kitchenCollectionMeta, kitchenProducts } from 
 import { catalogProducts } from "../data/catalogProducts";
 import { publicSearchProducts as allProducts } from "../data/productCatalog";
 import { baliCollectionCover, baliCollectionHero } from "../data/baliCollection";
+import { floridaCollectionCover, floridaCollectionHero } from "../data/floridaCollection";
 import { noImageProducts } from "../data/productImageStatus";
 import { findProductCollectionMatch, searchProducts } from "../utils/productSearch";
 import { productCollectionLabel } from "../utils/productLabels";
@@ -237,12 +238,12 @@ const PRODUCTS_PAGE = () => {
   const [searchParams] = useSearchParams();
   const catParam = searchParams.get("cat");
   const queryParam = searchParams.get("q")?.trim() || "";
-  const collectionParam = searchParams.get("collection")?.trim() || "";
+  const collectionParam = (searchParams.get("collection")?.trim() || "").replace(/^florida-dining$/, "florida");
   const typeParam = searchParams.get("type")?.trim().toLowerCase() || LEGACY_CATEGORY_TYPES[catParam] || "";
   const subcategoryParam = searchParams.get("subcat")?.trim().toLowerCase() || "";
   const kitchenModeParam = searchParams.get("mode")?.trim().toLowerCase() || "";
   const currentLang = getLangFromPath(location.pathname);
-  const resolvedCategory = CATEGORY_ALIASES[catParam] || catParam;
+  const resolvedCategory = collectionParam === "florida" ? "dining" : CATEGORY_ALIASES[catParam] || catParam;
   const activeCategory = VALID_CATEGORIES.includes(resolvedCategory) ? resolvedCategory : null;
   const viewMode = searchParams.get("view") === "list" ? "list" : "grid";
   const sortBy = searchParams.get("sort") === "name" ? "name" : "featured";
@@ -418,7 +419,7 @@ const PRODUCTS_PAGE = () => {
     const grouped = collectionPrefixes[prefix] > 1;
     const name = grouped ? prefix : originalName;
     const key = slug(name);
-    return [key, { key, name, image: key === "bali" ? baliCollectionCover : product.heroImage || product.img }];
+    return [key, { key, name, image: key === "bali" ? baliCollectionCover : key === "florida" ? floridaCollectionCover : product.heroImage || product.img }];
   })).values()]
     .map((collection) => ({
       ...collection,
@@ -433,7 +434,7 @@ const PRODUCTS_PAGE = () => {
   const activeRange = kitchenCollections.find((collection) => collection.key === activeKitchenCollection);
   const activeBanner = isKitchenCategory && activeKitchenCollection
     ? (kitchenCollectionHeroes[activeKitchenCollection] || selectedCategory.banner)
-    : collectionParam === "bali" ? baliCollectionHero : selectedCategory?.banner;
+    : collectionParam === "bali" ? baliCollectionHero : collectionParam === "florida" ? floridaCollectionHero : selectedCategory?.banner;
   const collectionHeroVideo = activeCategory === "lounge" && !hasSearch
     ? COLLECTION_VIDEOS[collectionParam]
     : null;
@@ -460,7 +461,7 @@ const PRODUCTS_PAGE = () => {
       ) : (
         <>
           {!hasSearch && activeBanner && (
-            <section className={`prod-banner ${isSpecificCollectionPage ? "collection-hero-banner" : ""} ${collectionParam === "bali" ? "bali-collection-hero" : ""}`}>
+            <section className={`prod-banner ${isSpecificCollectionPage ? "collection-hero-banner" : ""} ${collectionParam === "bali" ? "bali-collection-hero" : ""} ${collectionParam === "florida" ? "florida-collection-hero" : ""}`}>
               {collectionHeroVideo && !prefersReducedMotion ? (
                 <video key={collectionHeroVideo} autoPlay loop muted playsInline preload="metadata" poster={collectionHeroPoster} aria-hidden="true">
                   <source src={`/videos/${collectionHeroVideo}.mp4`} type="video/mp4" />
@@ -620,7 +621,7 @@ const PRODUCTS_PAGE = () => {
                   ) : (
                     <>
                       <span className="rd-kicker fs">
-                        {collectionParam === "bali" ? "Bali" : isKitchenCategory ? (activeRange?.label || selectedCategory.label) : selectedCategory.label}
+                        {collectionParam === "bali" ? "Bali" : collectionParam === "florida" ? "Florida" : isKitchenCategory ? (activeRange?.label || selectedCategory.label) : selectedCategory.label}
                         {activeRefinementLabel && !isSpecificCollectionPage && (
                           <span data-no-translate style={{ display: "inline-flex", alignItems: "center", gap: 6, marginLeft: 10, padding: "2px 6px 2px 10px", background: "var(--light-grey)", borderRadius: 2, textTransform: "none", letterSpacing: 0 }}>
                             {activeRefinementLabel}
