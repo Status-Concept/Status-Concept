@@ -31,6 +31,7 @@ const COLLECTION_VIDEOS = {
   ibiza: "ibiza-collection-hero",
   luanda: "luanda-collection-hero",
   miami: "miami-collection-hero",
+  florida: "florida-collection-hero",
 };
 
 const slug = (value) => value.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
@@ -435,7 +436,7 @@ const PRODUCTS_PAGE = () => {
   const activeBanner = isKitchenCategory && activeKitchenCollection
     ? (kitchenCollectionHeroes[activeKitchenCollection] || selectedCategory.banner)
     : collectionParam === "bali" ? baliCollectionHero : collectionParam === "florida" ? floridaCollectionHero : selectedCategory?.banner;
-  const collectionHeroVideo = activeCategory === "lounge" && !hasSearch
+  const collectionHeroVideo = (activeCategory === "lounge" || collectionParam === "florida") && !hasSearch
     ? COLLECTION_VIDEOS[collectionParam]
     : null;
   const collectionHeroPoster = collectionHeroVideo ? `/videos/${collectionHeroVideo}-poster.jpg` : activeBanner;

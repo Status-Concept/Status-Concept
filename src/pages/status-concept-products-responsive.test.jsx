@@ -1,9 +1,12 @@
-import { afterEach, describe, expect, it } from 'vitest'
+import { afterEach, describe, expect, it, vi } from 'vitest'
 import { cleanup, fireEvent, render, screen, within } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import App from '../App'
 
-afterEach(cleanup)
+afterEach(() => {
+  cleanup()
+  vi.unstubAllGlobals()
+})
 
 function renderProductsAt(path) {
   return render(
@@ -14,6 +17,28 @@ function renderProductsAt(path) {
 }
 
 describe('responsive collection presentation', () => {
+  it('retains a still poster when reduced motion is preferred', async () => {
+    vi.stubGlobal('matchMedia', () => ({ matches: true }))
+    renderProductsAt('/en/products?cat=dining&collection=florida')
+    await screen.findByRole('heading', { name: 'Florida Dining Set', exact: true }, { timeout: 5000 })
+    expect(document.querySelector('.florida-collection-hero video')).toBeNull()
+    expect(document.querySelector('.florida-collection-hero img').getAttribute('src')).toBe('/videos/florida-collection-hero-poster.jpg')
+  })
+  it.each([
+    '/en/products?cat=dining&collection=florida',
+    '/en/products?cat=lounge&collection=florida',
+    '/en/products?cat=dining&collection=florida-dining',
+  ])('plays the Florida hero film from %s', async (path) => {
+    renderProductsAt(path)
+    await screen.findByRole('heading', { name: 'Florida Dining Set', exact: true }, { timeout: 5000 })
+    const video = document.querySelector('.florida-collection-hero video')
+    expect(video).toBeTruthy()
+    expect(video.querySelector('source').getAttribute('src')).toBe('/videos/florida-collection-hero.mp4')
+    expect(video.getAttribute('poster')).toBe('/videos/florida-collection-hero-poster.jpg')
+    expect(video.autoplay && video.loop && video.muted).toBe(true)
+    expect(video.hasAttribute('playsinline')).toBe(true)
+    expect(video.hasAttribute('controls')).toBe(false)
+  })
   it.each([
     '/en/products?cat=lounge&collection=florida',
     '/en/products?cat=dining&collection=florida',
