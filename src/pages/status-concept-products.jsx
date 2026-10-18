@@ -8,7 +8,7 @@ import { productSrcSet } from "../utils/imageVariants";
 import { kitchenCollectionHeroes, kitchenCollectionMeta, kitchenProducts } from "../data/kitchenProducts";
 import { catalogProducts } from "../data/catalogProducts";
 import { publicSearchProducts as allProducts } from "../data/productCatalog";
-import { baliCollectionHero } from "../data/baliCollection";
+import { baliCollectionCover, baliCollectionHero } from "../data/baliCollection";
 import { noImageProducts } from "../data/productImageStatus";
 import { findProductCollectionMatch, searchProducts } from "../utils/productSearch";
 import { productCollectionLabel } from "../utils/productLabels";
@@ -418,7 +418,7 @@ const PRODUCTS_PAGE = () => {
     const grouped = collectionPrefixes[prefix] > 1;
     const name = grouped ? prefix : originalName;
     const key = slug(name);
-    return [key, { key, name, image: product.heroImage || product.img }];
+    return [key, { key, name, image: key === "bali" ? baliCollectionCover : product.heroImage || product.img }];
   })).values()]
     .map((collection) => ({
       ...collection,

@@ -9,6 +9,7 @@ export const retiredBaliProductIds = new Set([
 
 const imageRoot = '/product-images/bali-reference-v2'
 export const baliCollectionHero = `${imageRoot}/collection-hero-coastal-v3.webp`
+export const baliCollectionCover = `${imageRoot}/collection-cover-neutral-v4.webp`
 export const baliProducts = [
   { id: 'bali-lounge-2', name: 'Bali Lounge Armchair & Footstool', category: 'lounge', categoryLabel: 'Lounge', imageKey: 'armchair', productType: ['armchair', 'footstool'] },
   { id: 'bali', name: 'Bali Sun Lounger', category: 'sunlounger', categoryLabel: 'Sun Loungers', imageKey: 'single', productType: ['sunlounger'] },

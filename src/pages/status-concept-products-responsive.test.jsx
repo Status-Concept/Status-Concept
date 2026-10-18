@@ -14,6 +14,12 @@ function renderProductsAt(path) {
 }
 
 describe('responsive collection presentation', () => {
+  it.each(['lounge', 'sunlounger'])('uses the neutral Bali cover in the %s collection grid', async (category) => {
+    renderProductsAt(`/en/products?cat=${category}`)
+    const collections = await screen.findByRole('region', { name: 'Collections' })
+    const cover = within(collections).getByRole('button', { name: /^Collection Bali 3 products$/i })
+    expect(cover.querySelector('img').getAttribute('src')).toBe('/product-images/bali-reference-v2/collection-cover-neutral-v4.webp')
+  })
   it('shows a touch-friendly setting toggle for products with a lifestyle image', async () => {
     renderProductsAt('/en/products?cat=lounge&collection=miami')
     await screen.findAllByRole('article')
