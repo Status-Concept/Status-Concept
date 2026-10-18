@@ -10,6 +10,7 @@ import { catalogProducts } from "../data/catalogProducts";
 import { publicSearchProducts as allProducts } from "../data/productCatalog";
 import { baliCollectionCover, baliCollectionHero } from "../data/baliCollection";
 import { floridaCollectionCover, floridaCollectionHero } from "../data/floridaCollection";
+import { berlinCollectionCover, berlinCollectionHero } from "../data/berlinCollection";
 import { noImageProducts } from "../data/productImageStatus";
 import { findProductCollectionMatch, searchProducts } from "../utils/productSearch";
 import { productCollectionLabel } from "../utils/productLabels";
@@ -239,7 +240,7 @@ const PRODUCTS_PAGE = () => {
   const [searchParams] = useSearchParams();
   const catParam = searchParams.get("cat");
   const queryParam = searchParams.get("q")?.trim() || "";
-  const collectionParam = (searchParams.get("collection")?.trim() || "").replace(/^florida-dining$/, "florida");
+  const collectionParam = (searchParams.get("collection")?.trim() || "").replace(/^florida-dining$/, "florida").replace(/^berlin-modular$/, "berlin");
   const typeParam = searchParams.get("type")?.trim().toLowerCase() || LEGACY_CATEGORY_TYPES[catParam] || "";
   const subcategoryParam = searchParams.get("subcat")?.trim().toLowerCase() || "";
   const kitchenModeParam = searchParams.get("mode")?.trim().toLowerCase() || "";
@@ -420,7 +421,7 @@ const PRODUCTS_PAGE = () => {
     const grouped = collectionPrefixes[prefix] > 1;
     const name = grouped ? prefix : originalName;
     const key = slug(name);
-    return [key, { key, name, image: key === "bali" ? baliCollectionCover : key === "florida" ? floridaCollectionCover : product.heroImage || product.img }];
+    return [key, { key, name, image: key === "bali" ? baliCollectionCover : key === "florida" ? floridaCollectionCover : key === "berlin" ? berlinCollectionCover : product.heroImage || product.img }];
   })).values()]
     .map((collection) => ({
       ...collection,
@@ -435,7 +436,7 @@ const PRODUCTS_PAGE = () => {
   const activeRange = kitchenCollections.find((collection) => collection.key === activeKitchenCollection);
   const activeBanner = isKitchenCategory && activeKitchenCollection
     ? (kitchenCollectionHeroes[activeKitchenCollection] || selectedCategory.banner)
-    : collectionParam === "bali" ? baliCollectionHero : collectionParam === "florida" ? floridaCollectionHero : selectedCategory?.banner;
+    : collectionParam === "bali" ? baliCollectionHero : collectionParam === "florida" ? floridaCollectionHero : collectionParam === "berlin" ? berlinCollectionHero : selectedCategory?.banner;
   const collectionHeroVideo = (activeCategory === "lounge" || collectionParam === "florida") && !hasSearch
     ? COLLECTION_VIDEOS[collectionParam]
     : null;
@@ -462,7 +463,7 @@ const PRODUCTS_PAGE = () => {
       ) : (
         <>
           {!hasSearch && activeBanner && (
-            <section className={`prod-banner ${isSpecificCollectionPage ? "collection-hero-banner" : ""} ${collectionParam === "bali" ? "bali-collection-hero" : ""} ${collectionParam === "florida" ? "florida-collection-hero" : ""}`}>
+            <section className={`prod-banner ${isSpecificCollectionPage ? "collection-hero-banner" : ""} ${collectionParam === "bali" ? "bali-collection-hero" : ""} ${collectionParam === "florida" ? "florida-collection-hero" : ""} ${collectionParam === "berlin" ? "berlin-collection-hero" : ""}`}>
               {collectionHeroVideo && !prefersReducedMotion ? (
                 <video key={collectionHeroVideo} autoPlay loop muted playsInline preload="metadata" poster={collectionHeroPoster} aria-hidden="true">
                   <source src={`/videos/${collectionHeroVideo}.mp4`} type="video/mp4" />

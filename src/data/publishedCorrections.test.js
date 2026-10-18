@@ -6,11 +6,12 @@ import { publishedCorrectionImages, publishedLocalProducts } from './publishedCo
 import { minimalProductHeroes } from './minimalProductHeroes.generated'
 import { retiredBaliProductIds } from './baliCollection'
 import { retiredFloridaProductIds, floridaProductById } from './floridaCollection'
+import { retiredBerlinProductIds, berlinProductById } from './berlinCollection'
 
 describe('public correction release', () => {
   it('maps every hover product to an existing minimal photo and responsive variants', () => {
     const hoverProducts = publicSearchProducts.filter((product) => product.heroImage && !product.curatedImages)
-    expect(Object.keys(minimalProductHeroes).filter((id) => !retiredBaliProductIds.has(id) && !retiredFloridaProductIds.has(id) && !floridaProductById.has(id)).sort()).toEqual(hoverProducts.map((product) => product.id).sort())
+    expect(Object.keys(minimalProductHeroes).filter((id) => !retiredBaliProductIds.has(id) && !retiredFloridaProductIds.has(id) && !floridaProductById.has(id) && !retiredBerlinProductIds.has(id) && !berlinProductById.has(id)).sort()).toEqual(hoverProducts.map((product) => product.id).sort())
     for (const product of hoverProducts) {
       expect(product.heroImage, product.id).toBe(minimalProductHeroes[product.id])
       for (const suffix of ['', '-w400', '-w800']) {
@@ -29,9 +30,9 @@ describe('public correction release', () => {
     const ids = Object.keys(publishedCorrectionImages)
     expect(ids).toHaveLength(139)
     expect(new Set(ids).size).toBe(139)
-    expect(publishedCorrectionProducts).toHaveLength(137 - retiredBaliProductIds.size - retiredFloridaProductIds.size)
+    expect(publishedCorrectionProducts).toHaveLength(ids.filter((id) => !isRattanProduct({ id }) && !retiredBaliProductIds.has(id) && !retiredFloridaProductIds.has(id) && !retiredBerlinProductIds.has(id)).length)
     for (const id of ids) {
-      if (isRattanProduct({ id }) || retiredBaliProductIds.has(id) || retiredFloridaProductIds.has(id)) {
+      if (isRattanProduct({ id }) || retiredBaliProductIds.has(id) || retiredFloridaProductIds.has(id) || retiredBerlinProductIds.has(id)) {
         expect(publishedCorrectionProducts.some((item) => item.id === id)).toBe(false)
         expect(publicSearchProducts.some((item) => item.id === id)).toBe(false)
         continue

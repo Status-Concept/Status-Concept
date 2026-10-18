@@ -13,6 +13,7 @@ import { demoProducts, demoProductIds } from "../data/demoProducts";
 import { publishedCorrectionProducts } from "../data/productCatalog";
 import { baliProductById, retiredBaliProductIds } from "../data/baliCollection";
 import { floridaProductById, retiredFloridaProductIds } from "../data/floridaCollection";
+import { berlinProductById, retiredBerlinProductIds } from "../data/berlinCollection";
 import { limitPageImages } from "../config/contentLimits";
 import { formatFacetLabel, getProductFacets, normalizeProduct } from "../data/productTaxonomy";
 import { getLangFromPath, withLang } from "../utils/language";
@@ -112,7 +113,8 @@ const PRODUCT_DETAIL = () => {
   const passedProduct = location.state?.product;
   if (retiredBaliProductIds.has(id)) return <Navigate to={withLang("/products?cat=lounge&collection=bali", currentLang)} replace />;
   if (retiredFloridaProductIds.has(id)) return <Navigate to={withLang("/products?cat=dining&collection=florida", currentLang)} replace />;
-  const curatedProduct = baliProductById.get(id) || floridaProductById.get(id);
+  if (retiredBerlinProductIds.has(id)) return <Navigate to={withLang("/products?cat=lounge&collection=berlin", currentLang)} replace />;
+  const curatedProduct = baliProductById.get(id) || floridaProductById.get(id) || berlinProductById.get(id);
   const correction = curatedProduct || publishedCorrectionProducts.find((item) => item.id === id);
   if (!demoProductIds.has(id) && !correction) return <NotFound />;
   const product = correction
@@ -176,7 +178,7 @@ const PRODUCT_DETAIL = () => {
       img: item.img || item.images?.[0],
       images: item.images?.length ? item.images : [item.img].filter(Boolean),
     }));
-    const candidates = [...Object.values(catalogProductDetails), ...correctedProducts, ...demoKitchenProducts, ...demoGlatzProducts];
+    const candidates = [...Object.values(catalogProductDetails), ...correctedProducts, ...berlinProductById.values(), ...demoKitchenProducts, ...demoGlatzProducts];
     const currentFacets = getProductFacets(product);
     return [...new Map(candidates
       .filter((item) => item.id !== product.id && getProductFacets(item).category === currentFacets.category)
