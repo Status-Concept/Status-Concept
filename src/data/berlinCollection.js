@@ -5,7 +5,7 @@ export const retiredBerlinProductIds = new Set([
   'local-product-f92f7fef8d9a',
 ])
 
-const root = '/product-images/berlin-reference-v2'
+const root = '/product-images/berlin-tailored-v3'
 export const berlinCollectionCover = `${root}/collection-cover.webp`
 export const berlinCollectionHero = `${root}/collection-hero.webp`
 export const berlinProducts = [

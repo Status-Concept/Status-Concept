@@ -17,25 +17,25 @@ function renderProductsAt(path) {
 }
 
 describe('responsive collection presentation', () => {
-  it.each(['berlin', 'berlin-modular'])('plays the Berlin hero film for %s', async (collection) => {
+  it.each(['berlin', 'berlin-modular'])('plays the tailored Berlin replacement, not the rejected film, for %s', async (collection) => {
     renderProductsAt(`/en/products?cat=lounge&collection=${collection}`)
     await screen.findByRole('heading', { name: 'Berlin Modular Sofa', exact: true }, { timeout: 5000 })
     const video = document.querySelector('.berlin-collection-hero video')
     expect(video).toBeTruthy()
-    expect(video.querySelector('source').getAttribute('src')).toBe('/videos/berlin-collection-hero.mp4')
-    expect(video.getAttribute('poster')).toBe('/videos/berlin-collection-hero-poster.jpg')
+    expect(video.querySelector('source').getAttribute('src')).toBe('/videos/berlin-tailored-hero-v3.mp4')
+    expect(video.getAttribute('poster')).toBe('/videos/berlin-tailored-hero-v3-poster.jpg')
     expect(video.autoplay && video.loop && video.muted).toBe(true)
     expect(video.hasAttribute('playsinline')).toBe(true)
     expect(video.hasAttribute('controls')).toBe(false)
     expect(screen.getAllByRole('article')).toHaveLength(2)
   })
 
-  it('uses the Berlin poster instead of motion for reduced-motion visitors', async () => {
+  it('keeps the corrected Berlin still for reduced-motion visitors', async () => {
     vi.stubGlobal('matchMedia', () => ({ matches: true }))
     renderProductsAt('/en/products?cat=lounge&collection=berlin')
     await screen.findByRole('heading', { name: 'Berlin Modular Sofa', exact: true }, { timeout: 5000 })
     expect(document.querySelector('.berlin-collection-hero video')).toBeNull()
-    expect(document.querySelector('.berlin-collection-hero img').getAttribute('src')).toBe('/videos/berlin-collection-hero-poster.jpg')
+    expect(document.querySelector('.berlin-collection-hero img').getAttribute('src')).toBe('/videos/berlin-tailored-hero-v3-poster.jpg')
   })
 
   it('retains a still poster when reduced motion is preferred', async () => {
