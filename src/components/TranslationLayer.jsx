@@ -47,6 +47,7 @@ const translations = {
     'O nome e obrigatorio.': 'Name is required.',
   },
   pt: {
+    Sales: 'Sales',
     'Outdoor living / Algarve': 'Vida ao ar livre / Algarve',
     'Outdoor spaces,': 'Espaços exteriores,',
     'made to stay outside.': 'feitos para viver ao ar livre.',

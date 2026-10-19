@@ -6,6 +6,7 @@ import { excludedRattanIds } from '../data/productExclusions'
 const PAGE_TITLES = {
   '/products': ['Products', 'Produtos'],
   '/images': ['Images', 'Imagens'],
+  '/sales': ['Sales 2026', 'Sales 2026'],
   '/glatz-parasols': ['Glatz Parasols', 'Chapéus de sol Glatz'],
   '/projects': ['Projects', 'Projetos'],
   '/after-care': ['After Care', 'After Care'],
