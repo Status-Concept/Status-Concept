@@ -4,7 +4,7 @@ import draftCatalogDevPlugin from './scripts/catalog-draft/vite-plugin-draft-cat
 
 // https://vite.dev/config/
 export default defineConfig(({ command }) => ({
-  base: './',
+  base: '/',
   plugins: [
     react(),
     ...(command === 'serve' ? [draftCatalogDevPlugin()] : []),

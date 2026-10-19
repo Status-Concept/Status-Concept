@@ -8,7 +8,7 @@
   },
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build && node scripts/build-route-pages.mjs",
     "generate:demo-products": "node scripts/generate-demo-products.mjs",
     "generate:image-library": "node scripts/build-public-image-library.mjs",
     "lint": "eslint .",

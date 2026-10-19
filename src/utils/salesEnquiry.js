@@ -8,7 +8,7 @@ export const salesPrice = value => new Intl.NumberFormat('pt-PT', {
 export function salesEnquiry(offer, { pt = false, optionIndex = 0, contact = {}, origin = '' } = {}) {
   const option = offer.options[optionIndex] || offer.options[0]
   const subject = `${pt ? 'Disponibilidade Sales 2026' : 'Sales 2026 availability'} — ${offer.name} · ${offer.subtitle}`
-  const productUrl = `${origin}/#/${pt ? 'pt' : 'en'}/sales?offer=${encodeURIComponent(offer.id)}`
+  const productUrl = `${origin}/${pt ? 'pt' : 'en'}/sales?offer=${encodeURIComponent(offer.id)}`
   const details = offer.details.join('\n')
   const body = pt
     ? `Olá equipa Status Concept,\n\nGostaria de confirmar a disponibilidade desta oferta:\n\n${offer.name} — ${offer.subtitle}\n${option.quantity ? `Opção: ${option.quantity} cadeiras\n` : ''}Preço de saldo: ${salesPrice(option.sale)}\nPreço original: ${salesPrice(option.original)}\nDesconto: ${offer.discount}%\nReferência: catálogo Sales 2026, página ${offer.page}\n${productUrl}\n\nArtigos e acabamentos (catálogo original):\n${details}\n\nOs meus dados de contacto:\nNome: ${contact.name?.trim() || ''}\nEmail: ${contact.email?.trim() || ''}\nTelefone: ${contact.phone?.trim() || ''}\n\nObrigado/a.`

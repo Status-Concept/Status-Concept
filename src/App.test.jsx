@@ -5,7 +5,7 @@ import { MemoryRouter } from 'react-router-dom'
 import App from './App'
 
 // App renders <Routes> and brings its own providers, but expects an ambient
-// Router (main.jsx supplies HashRouter). Tests supply MemoryRouter instead.
+// Router (main.jsx supplies BrowserRouter). Tests supply MemoryRouter instead.
 // Pages are React.lazy, so assertions use findBy* to await the chunk.
 function renderAt(path) {
   return render(

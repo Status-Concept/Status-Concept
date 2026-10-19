@@ -26,8 +26,8 @@ npm run dev
 
 ## Architecture
 
-- **Stack:** Vite 8, React 19, react-router-dom 7 (`HashRouter` — URLs are
-  `/#/en/...`), Supabase. No TypeScript.
+- **Stack:** Vite 8, React 19, react-router-dom 7 (`BrowserRouter` — URLs are
+  `/en/...`), Supabase. No TypeScript.
 - **Routing & i18n:** `src/App.jsx` renders every route three times via
   `routesFor('')` / `('/en')` / `('/pt')`. Language comes from the URL prefix.
   Translation is a DOM layer (`src/components/TranslationLayer.jsx`) that swaps
@@ -52,8 +52,12 @@ site), `subscribers` (newsletter, insert-only). Contact-info is also mirrored in
 
 ## Deployment
 
-`npm run build` emits a static `dist/`. Because the app uses `HashRouter`, it
-works on any static host with no server-side routing config.
+`npm run build` emits a static `dist/`, including directory entry pages for
+public routes and catalogue products via `scripts/build-route-pages.mjs`.
+These let GitHub Pages serve direct clean links and refreshes without rewrites.
+Keep its static route list aligned with `routesFor` in `src/App.jsx`.
+Previously shared `/#/en/...` links are migrated in place before React mounts.
+`404.html` loads the app's not-found page; assets use root-relative URLs.
 
 ## Working in this repo
 

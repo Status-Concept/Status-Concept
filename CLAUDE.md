@@ -5,16 +5,20 @@ Always run `npm run lint` and `npm test` before declaring work done.
 
 ## Architecture
 
-Vite 8 + React 19 SPA, `HashRouter` (URLs are `/#/en/...`). Routes render three
+Vite 8 + React 19 SPA, `BrowserRouter` (URLs are `/en/...`). Routes render three
 times in `src/App.jsx` via `routesFor('')` / `('/en')` / `('/pt')`. Every page
 is `React.lazy` except the homepage; the Supabase SDK is dynamic-imported too,
 so the entry chunk stays small.
+
+`scripts/build-route-pages.mjs` generates static route entry pages for GitHub
+Pages. Keep its route list aligned with App.jsx. Legacy hash links migrate
+before mounting via `src/utils/legacyUrl.js`; preserve query strings.
 
 ## Rules
 
 - **Internal links:** use `src/components/LocalizedLink.jsx`. Imperative
   navigation: `useLocalizedNavigate`. Never a raw `<a href="/...">` for an
-  internal route (it full-reloads under HashRouter). There is no text-matching
+  internal route (it causes a full reload). There is no text-matching
   nav interceptor anymore — links carry their own destination.
 - **i18n:** `src/components/TranslationLayer.jsx` translates by **exact trimmed
   string match** against the `pt` dictionary. Consequences:

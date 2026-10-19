@@ -88,7 +88,7 @@ describe('Sales catalogue', () => {
     expect(message).toContain(`Sale price: ${salesPrice(offer.options[2].sale)}`)
     const email = new URL(salesEnquiry(offer, { optionIndex: 2, origin: 'https://statusconcept.site' }).emailHref)
     expect(email.pathname).toBe('info@statusconcept.com')
-    expect(email.searchParams.get('body')).toContain(`https://statusconcept.site/#/en/sales?offer=${offer.id}`)
+    expect(email.searchParams.get('body')).toContain(`https://statusconcept.site/en/sales?offer=${offer.id}`)
   })
 
   it('searches the catalogue, handles no matches and resets the filters', async () => {
