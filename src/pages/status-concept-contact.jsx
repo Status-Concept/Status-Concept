@@ -31,10 +31,10 @@ const CONTACT_PAGE = () => {
   }, [enquiryProduct, enquiryInterest]);
 
   // Shared name/address/phone/maps come from the single-source data module;
-  // the contact-page-specific fields (mobile, gps, image, description) stay here.
+  // the contact-page-specific fields (mobile, gps and image) stay here.
   const showroomExtra = {
-    "quinta-do-lago": { mobile: "+351 937 573 600", gps: "37.062229, -8.038336", img: showroomQuintaImg, desc: "Our flagship showroom between Quinta do Lago and Vale do Lobo, created for seeing complete outdoor settings in person." },
-    "almancil": { mobile: "+351 937 573 600", gps: "37.0927, -8.0400", img: showroomAlmancilImg, desc: "A central showroom on the main avenue, with outdoor furniture, shade systems and kitchen displays." },
+    "quinta-do-lago": { mobile: "+351 937 573 600", gps: "37.062229, -8.038336", img: showroomQuintaImg },
+    "almancil": { mobile: "+351 937 573 600", gps: "37.0927, -8.0400", img: showroomAlmancilImg },
   };
   const showrooms = SHOWROOMS.map((s) => ({ name: s.name, address: s.address, phone: s.phone, maps: s.maps, ...showroomExtra[s.key] }));
 
@@ -83,11 +83,8 @@ const CONTACT_PAGE = () => {
       <div className="contact-page">
         <section className="contact-intro" aria-labelledby="contact-title">
           <div className="contact-intro-copy">
-            <span className="rd-kicker fs">Contact & showrooms</span>
-            <h1 id="contact-title" className="ff">Good spaces start<br />with a conversation.</h1>
-            <p className="fs">Come and see the textures, try the furniture and find what feels right for your outdoor space.</p>
+            <h1 id="contact-title" className="ff">Let's plan outside.</h1>
             <button className="cb cd" type="button" onClick={() => document.getElementById("contact-enquiry").scrollIntoView({ behavior: window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth", block: "start" })}>Start an enquiry <span aria-hidden="true">↗</span></button>
-            <a className="contact-text-link fs" href={whatsappUrl("Hello STATVS, I'd like help with my outdoor space.")} target="_blank" rel="noopener noreferrer">Or speak to us on WhatsApp <span aria-hidden="true">↗</span></a>
           </div>
           <figure className="contact-hero-photo">
             <img src={showroomQuintaImg} srcSet="/photography/showroom-quinta-800.webp 800w, /photography/showroom-quinta-1440.webp 1440w" sizes="(max-width: 760px) 100vw, 62vw" width="1440" height="808" fetchPriority="high" alt="Outdoor lounge, dining and shade displays at our Quinta do Lago showroom" />
@@ -97,8 +94,7 @@ const CONTACT_PAGE = () => {
 
         <section className="contact-visit" aria-labelledby="visit-heading">
           <div className="contact-visit-details">
-            <span className="rd-kicker fs">See it. Feel it. Make it yours.</span>
-            <h2 id="visit-heading" className="ff">Two showrooms.<br />A personal welcome.</h2>
+            <h2 id="visit-heading" className="ff">Our showrooms</h2>
             <div className="contact-location-picker" role="group" aria-label="Choose a showroom">
               {showrooms.map((showroom, index) => (
                 <button key={showroom.name} type="button" aria-pressed={activeShowroom === index} aria-controls="contact-location" onClick={() => setActiveShowroom(index)}>{showroom.name}</button>
@@ -106,7 +102,6 @@ const CONTACT_PAGE = () => {
             </div>
             <div id="contact-location" className="contact-location" aria-live="polite" aria-atomic="true">
               <h3 className="ff">{active.name}</h3>
-              <p className="fs">{active.desc}</p>
               <address className="fs" data-no-translate>{active.address}</address>
               <a className="contact-text-link fs" href={active.maps} target="_blank" rel="noopener noreferrer">Get directions <span aria-hidden="true">↗</span></a>
               <a className="contact-location-phone fs" href={telHref(active.phone)} data-no-translate>{active.phone}</a>
@@ -121,9 +116,7 @@ const CONTACT_PAGE = () => {
 
         <section id="contact-enquiry" className="contact-enquiry" aria-labelledby="enquiry-heading">
           <div className="contact-enquiry-copy">
-            <span className="rd-kicker fs">Your outdoor space</span>
-            <h2 className="ff">A little inspiration.<br />A helping hand.</h2>
-            <p className="fs">A single piece or a complete outdoor setting. Tell us what you have in mind and we will help you explore the options.</p>
+            <h2 className="ff">Get in touch</h2>
             <div className="contact-direct fs">
               <a href={CONTACT.phoneHref}><span>Call the team</span><span data-no-translate>{CONTACT.phone}</span></a>
               <a href={CONTACT.emailHref}><span>Email us</span><span data-no-translate>{CONTACT.email}</span></a>
@@ -131,9 +124,8 @@ const CONTACT_PAGE = () => {
             </div>
           </div>
         <div className="contact-form-panel">
-          <span className="rd-kicker fs">Enquiry</span>
-              <h2 id="enquiry-heading" className="ff">{enquiryProduct ? `Enquire about ${enquiryProduct}` : "Tell us what you need"}</h2>
-          <p className="contact-form-intro fs">Share the type of space, the product family you are interested in and the best way to contact you.</p>
+          {enquiryProduct && <p className="contact-form-context fs" data-no-translate title={enquiryProduct}>{enquiryProduct}</p>}
+          <h2 id="enquiry-heading" className="ff">Tell us what you need</h2>
 
           {status === "sent" ? (
             <div className="rd-form-success" style={{ padding: "32px 0" }}>
@@ -178,7 +170,7 @@ const CONTACT_PAGE = () => {
                 {status === "sending" ? "Sending…" : (isSupabaseConfigured ? "Send enquiry" : "Prepare email enquiry")}
               </button>
               <p className="fs" style={{ fontSize: 12, color: "var(--text-grey)", marginTop: 4, lineHeight: 1.6 }}>
-                {isSupabaseConfigured ? "The showroom team replies within one business day. Your details are only used to respond to this enquiry." : "This opens your email app with your enquiry. Review it and press Send there."}
+                {isSupabaseConfigured ? "We reply within one business day. Your details are only used for this enquiry." : "Review the prepared email and press Send."}
               </p>
             </form>
           )}

@@ -64,7 +64,8 @@ describe('routing', () => {
 
   it('switches showroom details and photography without losing an enquiry', async () => {
     renderAt('/en/contact?product=Sicily%20Modular%20Set')
-    expect(await screen.findByRole('heading', { name: 'Enquire about Sicily Modular Set' })).toBeTruthy()
+    expect(await screen.findByRole('heading', { name: 'Tell us what you need' })).toBeTruthy()
+    expect(screen.getByText('Sicily Modular Set')).toBeTruthy()
     expect(screen.getByLabelText('Message').value).toContain('Sicily Modular Set')
     const picker = screen.getByRole('group', { name: 'Choose a showroom' })
     fireEvent.click(within(picker).getByRole('button', { name: 'Almancil' }))
