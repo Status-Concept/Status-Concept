@@ -34,6 +34,7 @@ const COLLECTION_VIDEOS = {
   miami: "miami-collection-hero",
   florida: "florida-collection-hero",
   berlin: "berlin-editorial-full-v4",
+  maya: "maya-collection-hero",
 };
 
 const slug = (value) => value.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
@@ -464,7 +465,7 @@ const PRODUCTS_PAGE = () => {
       ) : (
         <>
           {!hasSearch && activeBanner && (
-            <section className={`prod-banner ${isSpecificCollectionPage ? "collection-hero-banner" : ""} ${collectionParam === "bali" ? "bali-collection-hero" : ""} ${collectionParam === "florida" ? "florida-collection-hero" : ""} ${collectionParam === "berlin" ? "berlin-collection-hero" : ""}`}>
+            <section className={`prod-banner ${isSpecificCollectionPage ? "collection-hero-banner" : ""} ${collectionParam === "bali" ? "bali-collection-hero" : ""} ${collectionParam === "florida" ? "florida-collection-hero" : ""} ${collectionParam === "berlin" ? "berlin-collection-hero" : ""}`} style={collectionParam === "maya" ? { height: "auto", aspectRatio: "720 / 481" } : undefined}>
               {collectionHeroVideo && !prefersReducedMotion ? (
                 <video key={collectionHeroVideo} autoPlay loop muted playsInline preload="metadata" poster={collectionHeroPoster} aria-hidden="true">
                   <source src={`/videos/${collectionHeroVideo}.mp4`} type="video/mp4" />
