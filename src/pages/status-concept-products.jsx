@@ -17,6 +17,7 @@ import { productCollectionLabel } from "../utils/productLabels";
 import { getLangFromPath, withLang } from "../utils/language";
 import kitchenHeroImg from "../assets/images/kitchen/kitchen-hero.webp";
 import furnitureSeriesImg from "../assets/images/enhanced/furniture-series-golf-hero.webp";
+import productsOverviewImg from "../assets/images/enhanced/products-overview-algarve-v1.webp";
 import shadeHeroLifestyleImg from "../assets/images/enhanced/shade-glatz-realistic-hero.webp";
 import carpetsCategoryImg from "../assets/images/enhanced/category-carpets-studio.webp";
 import decorCategoryImg from "../assets/images/enhanced/category-decor-studio.webp";
@@ -451,7 +452,7 @@ const PRODUCTS_PAGE = () => {
       {isLanding ? (
         <>
           <section className="prod-banner">
-            <img src={furnitureSeriesImg} alt="" decoding="async" fetchPriority="high" style={{ objectPosition: "center 40%" }} />
+            <img src={productsOverviewImg} alt="" decoding="async" fetchPriority="high" style={{ objectPosition: "center 40%" }} />
           </section>
           <div className="rd-page-head">
             <span className="rd-kicker fs">Products</span>
