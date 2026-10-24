@@ -171,7 +171,7 @@ export default function Header({ onOpenMenu }) {
               </div>
             )}
           </div>
-          {[["Sales", "/sales"], ["Images", "/images"], ...(SITE_FEATURES.projects ? [["Projects", "/projects"]] : []), ["Showrooms", "/about"], ["Contact", "/contact"]].map(([label, path]) => (
+          {[["Fabric Library", "/fabric-library"], ["Sales", "/sales"], ["Images", "/images"], ...(SITE_FEATURES.projects ? [["Projects", "/projects"]] : []), ["Showrooms", "/about"], ["Contact", "/contact"]].map(([label, path]) => (
             <LocalizedLink key={label} className="nl" to={path} style={{ color: "inherit" }}>{label}</LocalizedLink>
           ))}
         </nav>

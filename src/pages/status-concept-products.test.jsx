@@ -6,6 +6,10 @@ import { productCollectionLabel } from "../utils/productLabels";
 import { isRattanProduct } from "../data/productExclusions";
 
 describe("product catalogue helpers", () => {
+  it("keeps the fabric library outside product categories", () => {
+    expect(PRODUCT_MENU.some(category => category.to === "/fabric-library")).toBe(false);
+  });
+
   it("retains the parent material classifications on each Sicily module", () => {
     const pieces = expandProductCollection([{ id: "sicily-modular-set", subcategories: ["upholstered", "aluminium"] }], "sicily");
     expect(pieces).toHaveLength(3);

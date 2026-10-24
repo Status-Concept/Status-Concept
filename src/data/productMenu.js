@@ -4,7 +4,6 @@
 // ranges use ?collection=<key>. Hand-authored — keep the type keywords in sync
 // with the catalogue so every leaf returns products.
 export const PRODUCT_MENU = [
-  { key: 'fabric-library', label: 'Fabric Library', to: '/fabric-library', items: [] },
   {
     key: 'lounge',
     label: 'Lounge',
