@@ -35,7 +35,8 @@ describe('combined catalogue search filters', () => {
       expect(screen.queryByRole('region', { name: 'Collections' })).toBeNull()
       expect(screen.queryAllByRole('article')).toHaveLength(0)
       fireEvent.click(screen.getByRole('button', { name: 'Clear filters', exact: true }))
-      expect(await screen.findByRole('region', { name: 'Collections' })).toBeTruthy()
+      expect(await screen.findByRole('heading', { name: 'Macau Lounge', exact: true })).toBeTruthy()
+      expect(screen.queryByRole('region', { name: 'Collections' })).toBeNull()
     },
   )
 

@@ -10,6 +10,7 @@ import { productCollectionLabel } from "../utils/productLabels";
 import { publicSearchProducts } from "../data/productCatalog";
 import { noImageProducts } from "../data/productImageStatus";
 import { productSrcSet } from "../utils/imageVariants";
+import { productThumbnail } from "../utils/productThumbnail";
 
 const slug = (value) => value.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
 const hasImage = (product) => product.publishedCorrection || product.category === "kitchen" || product.category === "shade" || !noImageProducts.has(product.id);
@@ -62,7 +63,7 @@ export default function Catalogue() {
                 <article key={product.id || product.name} className="rd-product-card">
                   <div className="rd-product-media">
                     {hasImage(product)
-                      ? <img src={product.img} srcSet={productSrcSet(product.img)} sizes="(max-width: 640px) 50vw, (max-width: 1100px) 33vw, 300px" alt={product.name} loading="lazy" decoding="async" />
+                      ? <img src={productThumbnail(product)} srcSet={productSrcSet(productThumbnail(product))} sizes="(max-width: 640px) 50vw, (max-width: 1100px) 33vw, 300px" alt={product.name} loading="lazy" decoding="async" />
                       : <NoImagePlaceholder />}
                   </div>
                   <div className="rd-product-info">

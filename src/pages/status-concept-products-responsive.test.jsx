@@ -28,15 +28,56 @@ describe('responsive collection presentation', () => {
   })
   it('opens Macau directly as a product from Lounge', async () => {
     renderProductsAt('/en/products?cat=lounge')
-    const collections = await screen.findByRole('region', { name: 'Collections' })
-    fireEvent.click(within(collections).getByRole('button', { name: /^Lounge Macau Lounge$/ }))
+    const product = await screen.findByRole('heading', { name: 'Macau Lounge', exact: true })
+    expect(screen.queryByRole('region', { name: 'Collections' })).toBeNull()
+    fireEvent.click(within(product).getByRole('link'))
     expect(await screen.findByRole('region', { name: 'Product gallery' })).toBeTruthy()
     expect(screen.getByRole('heading', { name: 'Macau Lounge', exact: true })).toBeTruthy()
+  })
+
+  it('separates editorial collections from single products and keeps filters available', async () => {
+    renderProductsAt('/en/products?cat=lounge')
+    const browse = await screen.findByRole('navigation', { name: 'Browse catalogue' })
+    expect(within(browse).getByRole('button', { name: 'Products', exact: true }).getAttribute('aria-pressed')).toBe('true')
+    fireEvent.click(within(browse).getByRole('button', { name: 'Collections', exact: true }))
+    const collections = await screen.findByRole('region', { name: 'Collections' })
+    expect(within(collections).getByRole('heading', { name: 'Sicily', exact: true })).toBeTruthy()
+    expect(within(collections).queryByText('Macau Lounge')).toBeNull()
+    expect(within(collections).queryByText('BARCELONA')).toBeNull()
+    expect(within(collections).queryByText(/\d+ products/)).toBeNull()
+    expect(within(collections).queryByText('Explore collection')).toBeNull()
+    expect(screen.queryByText('Explore families and coordinated spaces.')).toBeNull()
+    expect(screen.queryByRole('combobox', { name: 'Collection' })).toBeNull()
+    expect(screen.getByRole('button', { name: 'Share selection' })).toBeTruthy()
+    expect(screen.getByRole('group', { name: 'Filter by product type or material' })).toBeTruthy()
+    fireEvent.click(within(collections).getByRole('link', { name: /Sicily/ }))
+    expect(await screen.findByRole('heading', { name: 'Sicily Centre Module', exact: true })).toBeTruthy()
+    expect(screen.getAllByRole('article')).toHaveLength(3)
+  })
+
+  it('preserves material and type filters when switching catalogue views', async () => {
+    renderProductsAt('/en/products?cat=lounge&type=armchair&subcat=aluminium')
+    const browse = await screen.findByRole('navigation', { name: 'Browse catalogue' })
+    const before = screen.getAllByRole('article').map(article => within(article).getByRole('heading').textContent)
+    fireEvent.click(within(browse).getByRole('button', { name: 'Collections', exact: true }))
+    expect(await screen.findByRole('region', { name: 'Collections' })).toBeTruthy()
+    fireEvent.click(within(browse).getByRole('button', { name: 'Products', exact: true }))
+    expect(screen.getAllByRole('article').map(article => within(article).getByRole('heading').textContent)).toEqual(before)
   })
 
   it('keeps old Macau collection links working as a product page', async () => {
     renderProductsAt('/pt/products?cat=lounge&collection=macau-lounge')
     expect(await screen.findByRole('region', { name: 'Product gallery' })).toBeTruthy()
+  })
+  it('skips a legacy single-product collection page without deleting its URL', async () => {
+    renderProductsAt('/en/products?cat=lounge&collection=barcelona')
+    expect(await screen.findByRole('region', { name: 'Product gallery' })).toBeTruthy()
+    expect(screen.getByRole('heading', { name: 'BARCELONA (Able)', exact: true })).toBeTruthy()
+  })
+  it('returns the product rather than an intermediary collection card for singleton searches', async () => {
+    renderProductsAt('/en/products?q=Macau')
+    expect(await screen.findByRole('heading', { name: 'Macau Lounge', exact: true })).toBeTruthy()
+    expect(screen.queryByRole('region', { name: 'Matching collection' })).toBeNull()
   })
   it.each(['berlin', 'berlin-modular'])('plays the tailored Berlin replacement, not the rejected film, for %s', async (collection) => {
     renderProductsAt(`/en/products?cat=lounge&collection=${collection}`)
@@ -109,26 +150,21 @@ describe('responsive collection presentation', () => {
     expect(screen.getAllByRole('article')).toHaveLength(5)
   })
   it.each(['lounge', 'sunlounger'])('uses the neutral Bali cover in the %s collection grid', async (category) => {
-    renderProductsAt(`/en/products?cat=${category}`)
+    renderProductsAt(`/en/products?cat=${category}&browse=collections`)
     const collections = await screen.findByRole('region', { name: 'Collections' })
-    const cover = within(collections).getByRole('button', { name: /^Collection Bali 3 products$/i })
+    const cover = within(collections).getByRole('link', { name: 'Bali', exact: true })
     expect(cover.querySelector('img').getAttribute('src')).toBe('/product-images/bali-reference-v2/collection-cover-neutral-v4.webp')
   })
-  it('shows a touch-friendly setting toggle for products with a lifestyle image', async () => {
+  it('keeps individual product cards on white without lifestyle swaps or shrinking transforms', async () => {
     renderProductsAt('/en/products?cat=lounge&collection=miami')
-    await screen.findAllByRole('article')
-    const card = screen.getAllByRole('article').find((item) => item.querySelector('.rd-product-image-hero'))
-    const toggle = within(card).getByRole('button', { name: 'View in setting' })
-
-    expect(toggle.getAttribute('aria-pressed')).toBe('false')
-    fireEvent.click(toggle)
-    expect(card.classList.contains('mobile-lifestyle-visible')).toBe(true)
-    expect(toggle.getAttribute('aria-pressed')).toBe('true')
-    expect(toggle.textContent).toBe('View studio photo')
-
-    fireEvent.click(toggle)
-    expect(card.classList.contains('mobile-lifestyle-visible')).toBe(false)
-    expect(toggle.textContent).toBe('View in setting')
+    const cards = await screen.findAllByRole('article')
+    expect(screen.queryByRole('button', { name: 'View in setting' })).toBeNull()
+    for (const card of cards) {
+      expect(card.classList.contains('product-white-card')).toBe(true)
+      expect(card.querySelector('.rd-product-image-hero')).toBeNull()
+      expect(card.querySelector('.rd-product-media img').getAttribute('src')).toContain('/cards-white-v1/')
+      expect(card.querySelector('.rd-product-media img').style.transform).toBe('')
+    }
   })
 
   it.each([
@@ -143,12 +179,12 @@ describe('responsive collection presentation', () => {
     expect(gallery.querySelector('img[src$="-minimal.webp"]')).toBeNull()
   })
 
-  it('keeps Bali setting photos hover-only, without an extra toggle', async () => {
+  it('keeps Bali product cards on white rather than swapping to scenery', async () => {
     renderProductsAt('/en/products?cat=lounge&collection=bali')
     await screen.findByRole('heading', { name: 'Bali Sun Lounger' })
     for (const card of screen.getAllByRole('article')) {
-      expect(card.classList.contains('hover-only-setting')).toBe(true)
-      expect(card.querySelector('.rd-product-image-hero')).toBeTruthy()
+      expect(card.classList.contains('product-white-card')).toBe(true)
+      expect(card.querySelector('.rd-product-image-hero')).toBeNull()
       expect(within(card).queryByRole('button', { name: 'View in setting' })).toBeNull()
     }
   })
@@ -171,7 +207,7 @@ describe('responsive collection presentation', () => {
     const heading = await screen.findByRole('heading', { name: 'Sicily Ottoman' })
     const card = heading.closest('article')
 
-    expect(card.classList.contains('image-scale-adjusted')).toBe(true)
-    expect(card.style.getPropertyValue('--product-image-scale')).toBe('0.82')
+    expect(card.classList.contains('image-scale-adjusted')).toBe(false)
+    expect(card.querySelector('img').getAttribute('src')).toContain('/cards-white-v1/sicily-ottoman.webp')
   })
 })

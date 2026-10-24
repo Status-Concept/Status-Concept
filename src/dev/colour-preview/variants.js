@@ -2,7 +2,7 @@ import { fabricOptionsByModel, fabrics } from '../../data/fabrics'
 import { colourTargets } from './targets'
 
 const images = import.meta.glob('./images/*.webp', { eager: true, query: '?url', import: 'default' })
-const revisedConfigurations = new Set(['antigua', 'antigua-xl', 'oxford', 'oxford-modular', 'oxford-daybed', 'gibraltar', 'crete', 'luanda', 'sicily', 'sicily-centre'])
+const revisedConfigurations = new Set(['antigua', 'antigua-xl', 'oxford', 'oxford-modular', 'oxford-daybed', 'gibraltar', 'crete', 'luanda', 'luanda-lounge', 'sicily', 'sicily-centre'])
 const modelNames = { berlin: 'Berlin', sicily: 'Sicily', luanda: 'Luanda', antigua: 'Antigua', oxford: 'Oxford', bali: 'Bali', gibraltar: 'Gibraltar', crete: 'Crete Daybed' }
 export const colourConfigurations = colourTargets.map(target => ({
   ...target, name: modelNames[target.model],

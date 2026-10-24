@@ -4,6 +4,7 @@ import LocalizedLink from "../components/LocalizedLink";
 import { useFavorites } from "../FavoritesContext";
 import { whatsappUrl, whatsappShortlistMessage } from "../utils/whatsapp";
 import sicilyCornerImg from "../assets/images/sicily-corner.jpg";
+import { productThumbnail } from "../utils/productThumbnail";
 
 const FAVORITES_PAGE = () => {
   const { favorites, removeFavorite, clearFavorites } = useFavorites();
@@ -73,7 +74,7 @@ const FAVORITES_PAGE = () => {
                 >
                   <button type="button" className="rd-remove-x" onClick={(event) => removeWithMotion(event, item.id)}>x</button>
                   <div className="rd-product-media">
-                    <img src={item.img || item.image || sicilyCornerImg} alt={item.name || item.id} />
+                    <img src={productThumbnail(item) || sicilyCornerImg} alt={item.name || item.id} />
                     <div className="rd-product-overlay">
                       <span className="rd-overlay-pill fs">View details</span>
                     </div>

@@ -5,6 +5,7 @@ import { publicSearchProducts } from '../data/productCatalog'
 import { useLocalizedNavigate } from '../hooks/useLocalizedNavigate'
 import { findProductCollectionMatch, normalizeSearchText, searchProducts } from '../utils/productSearch'
 import { getLangFromPath } from '../utils/language'
+import { productThumbnail } from '../utils/productThumbnail'
 
 const POPULAR_SEARCHES = ['Modular sofas', 'Parasols', 'Outdoor kitchens', 'Sun loungers']
 
@@ -267,7 +268,7 @@ export default function SearchPanel({ open, onClose }) {
                           <LocalizedLink key={key} to={productPath(product)} role="option" {...optionState} onClick={onClose}>
                             <span className="site-search-thumb">
                               {product.img
-                                ? <img src={product.img} alt="" loading="eager" decoding="async" />
+                                ? <img src={productThumbnail(product)} alt="" loading="eager" decoding="async" />
                                 : <span aria-hidden="true">S</span>}
                             </span>
                             <span className="site-search-product-copy">

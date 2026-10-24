@@ -6,6 +6,7 @@ import ImageDialog from "../components/ImageDialog";
 import NotFound from "./NotFound";
 import { whatsappUrl } from "../utils/whatsapp";
 import { productSrcSet } from "../utils/imageVariants";
+import { productThumbnail } from "../utils/productThumbnail";
 import { productCollectionLabel } from "../utils/productLabels";
 import { glatzProductDetails } from "../data/glatzProducts";
 import { kitchenProductDetails, kitchenCollectionHeroes } from "../data/kitchenProducts";
@@ -496,7 +497,7 @@ const PRODUCT_DETAIL = () => {
               onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openItem(); } }}
             >
               <div className="rd-product-media">
-                <img src={item.img} srcSet={productSrcSet(item.img)} sizes="(max-width: 640px) 60vw, 280px" alt={item.name} loading="lazy" decoding="async" />
+                <img src={productThumbnail(item)} srcSet={productSrcSet(productThumbnail(item))} sizes="(max-width: 640px) 60vw, 280px" alt={item.name} loading="lazy" decoding="async" />
               </div>
               <div className="rd-product-info">
                 <h3 className="ff" data-no-translate>{item.name}</h3>

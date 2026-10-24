@@ -5,6 +5,7 @@ import LocalizedLink from "../components/LocalizedLink";
 import NoImagePlaceholder from "../components/NoImagePlaceholder";
 import FavoriteButton from "../FavoriteButton";
 import { productSrcSet } from "../utils/imageVariants";
+import { productThumbnail } from "../utils/productThumbnail";
 import { kitchenCollectionHeroes, kitchenCollectionMeta, kitchenProducts } from "../data/kitchenProducts";
 import { catalogProducts } from "../data/catalogProducts";
 import { publicSearchProducts as allProducts } from "../data/productCatalog";
@@ -39,6 +40,8 @@ const COLLECTION_VIDEOS = {
   maya: "maya-collection-hero",
 };
 
+// Reviewed families with distinct published pieces/configurations, not colour/photo counts.
+const EDITORIAL_COLLECTION_KEYS = new Set(["sicily", "bermuda", "berlin", "bali", "luanda", "antigua", "oxford", "florida", "maya"]);
 const slug = (value) => value.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
 const VALID_CATEGORIES = PRODUCT_CATEGORIES.map(category => category.key);
 const LEGACY_CATEGORY_TYPES = { daybed: "daybed", coffee: "coffee", side: "side", bar: "bar", puffs: "pouf" };
@@ -126,7 +129,7 @@ export const productHasImage = (product) => product.curatedImages || product.pub
 const SICILY_MODULES = [
   { id: "sicily-corner-module", name: "Sicily Corner Module", part: "corner", img: sicilyCornerImg, productType: ["modular", "corner"] },
   { id: "sicily-centre-module", name: "Sicily Centre Module", part: "centre", img: sicilyCentreImg, productType: ["modular", "centre"] },
-  { id: "sicily-ottoman", name: "Sicily Ottoman", part: "ottoman", img: sicilyOttomanImg, imageScale: 0.82, productType: ["ottoman", "pouf"] },
+  { id: "sicily-ottoman", name: "Sicily Ottoman", part: "ottoman", img: sicilyOttomanImg, productType: ["ottoman", "pouf"] },
 ].map((piece) => ({
   ...piece,
   collection: "Sicily",
@@ -268,10 +271,10 @@ const PRODUCTS_PAGE = () => {
   const activeCategory = VALID_CATEGORIES.includes(resolvedCategory) ? resolvedCategory : null;
   const viewMode = searchParams.get("view") === "list" ? "list" : "grid";
   const sortBy = searchParams.get("sort") === "name" ? "name" : "featured";
+  const collectionView = searchParams.get("browse") === "collections";
   const [searchInput, setSearchInput] = useState(queryParam);
   const [shareStatus, setShareStatus] = useState("");
   const [shareUrl, setShareUrl] = useState("");
-  const [mobileLifestyleModes, setMobileLifestyleModes] = useState({});
 
   useEffect(() => {
     setSearchInput(queryParam);
@@ -319,6 +322,7 @@ const PRODUCTS_PAGE = () => {
   const searchMatches = useMemo(() => searchProducts(allProducts, queryParam), [queryParam]);
   const unfilteredCollectionMatch = useMemo(() => findProductCollectionMatch(allProducts, queryParam), [queryParam]);
   const collectionSearchMatch = activeCategory || collectionParam || activeSubcategory || typeParam
+    || !EDITORIAL_COLLECTION_KEYS.has(unfilteredCollectionMatch?.key)
     ? null
     : unfilteredCollectionMatch;
   const searchCountProducts = expandProductCollection(
@@ -378,7 +382,7 @@ const PRODUCTS_PAGE = () => {
   })).filter((category) => category.count > 0);
 
   const productRoute = (product) => product.route || `/product/${product.id || slug(product.name)}`;
-  const favPayload = (product) => ({ id: product.id || slug(product.name), name: product.name, collection: product.collectionName || product.collection, img: product.img, category: product.category, route: productRoute(product) });
+  const favPayload = (product) => ({ id: product.id || slug(product.name), name: product.name, collection: product.collectionName || product.collection, img: productThumbnail(product), category: product.category, route: productRoute(product) });
   const goTo = (path, state) => navigate(withLang(path, currentLang), state ? { state } : undefined);
   const updateProductQuery = (changes) => {
     setShareStatus("");
@@ -457,8 +461,11 @@ const PRODUCTS_PAGE = () => {
         + (activeCategory === "lounge" && ["sicily", "bermuda"].includes(collection.key) ? 2 : 0),
     }));
   const collections = collectionGroups.map((collection) => collection.name);
-  const showCollectionChooser = !hasSearch && !isKitchenCategory && !collectionParam
-    && !activeSubcategory && !typeParam && collectionGroups.length > 1;
+  const hasBrowseViews = ["lounge", "dining", "sunlounger"].includes(activeCategory) && !hasSearch && !collectionParam;
+  const editorialCollections = collectionGroups.filter(collection => !collection.productId
+    && EDITORIAL_COLLECTION_KEYS.has(collection.key)
+    && refineProductResults(categoryCollectionProducts, { category: activeCategory, collection: collection.key, subcategory: activeSubcategory, type: typeParam }).length > 0);
+  const showCollectionChooser = hasBrowseViews && collectionView;
 
   const hasImage = productHasImage;
   const activeRange = kitchenCollections.find((collection) => collection.key === activeKitchenCollection);
@@ -474,6 +481,9 @@ const PRODUCTS_PAGE = () => {
 
   const standaloneProduct = allProducts.find((product) => product.standalone && product.collection === collectionParam);
   if (standaloneProduct) return <Navigate to={withLang(`/product/${standaloneProduct.id}`, currentLang)} replace />;
+  const singletonCollection = collectionParam && !hasSearch && !typeParam && !activeSubcategory && !EDITORIAL_COLLECTION_KEYS.has(collectionParam)
+    ? refineProductResults(allProducts, { category: activeCategory, collection: collectionParam }) : [];
+  if (singletonCollection.length === 1) return <Navigate to={withLang(`/product/${singletonCollection[0].id}`, currentLang)} replace />;
 
   return (
     <Layout>
@@ -494,7 +504,7 @@ const PRODUCTS_PAGE = () => {
       ) : (
         <>
           {!hasSearch && activeBanner && (
-            <section className={`prod-banner ${isSpecificCollectionPage ? "collection-hero-banner" : ""} ${collectionParam === "bali" ? "bali-collection-hero" : ""} ${collectionParam === "florida" ? "florida-collection-hero" : ""} ${collectionParam === "berlin" ? "berlin-collection-hero" : ""}`} style={collectionParam === "maya" ? { height: "auto", aspectRatio: "720 / 481" } : undefined}>
+            <section className={`prod-banner ${hasBrowseViews ? "catalogue-category-banner" : ""} ${isSpecificCollectionPage ? "collection-hero-banner" : ""} ${collectionParam === "bali" ? "bali-collection-hero" : ""} ${collectionParam === "florida" ? "florida-collection-hero" : ""} ${collectionParam === "berlin" ? "berlin-collection-hero" : ""}`} style={collectionParam === "maya" ? { height: "auto", aspectRatio: "720 / 481" } : undefined}>
               {collectionHeroVideo && !prefersReducedMotion ? (
                 <video key={collectionHeroVideo} autoPlay loop muted playsInline preload="metadata" poster={collectionHeroPoster} aria-hidden="true">
                   <source src={`/videos/${collectionHeroVideo}.mp4`} type="video/mp4" />
@@ -504,7 +514,7 @@ const PRODUCTS_PAGE = () => {
               )}
             </section>
           )}
-          <div className={`rd-page-head ${hasSearch ? "search-head" : ""} ${isKitchenCategory && !hasSearch ? "kitchen-page-head" : ""} ${isSpecificCollectionPage ? "collection-page-head" : ""}`}>
+          <div className={`rd-page-head ${hasBrowseViews ? "catalogue-category-head" : ""} ${hasSearch ? "search-head" : ""} ${isKitchenCategory && !hasSearch ? "kitchen-page-head" : ""} ${isSpecificCollectionPage ? "collection-page-head" : ""}`}>
             <button type="button" className="rd-back-to-cats" onClick={goBackFromProducts}>
               <span aria-hidden="true">←</span> Products
             </button>
@@ -516,36 +526,21 @@ const PRODUCTS_PAGE = () => {
               </>
             ) : (
               <>
-                <span className="rd-kicker fs">Products / {isKitchenCategory ? kitchenPageLabel : selectedCategory.label}</span>
+                {!hasBrowseViews && <span className="rd-kicker fs">Products / {isKitchenCategory ? kitchenPageLabel : selectedCategory.label}</span>}
                 <h1 className="rd-title ff">{isKitchenCategory ? kitchenPageTitle : selectedCategory.title}</h1>
-                <p className="rd-lede fs">{isKitchenCategory ? kitchenPageCopy : selectedCategory.copy}</p>
+                {!hasBrowseViews && <p className="rd-lede fs">{isKitchenCategory ? kitchenPageCopy : selectedCategory.copy}</p>}
               </>
             )}
           </div>
 
-          {showCollectionChooser ? (
-            <main className="rd-products-layout">
-              <section className="rd-collection-choice" aria-label={currentLang === "pt" ? "Coleções" : "Collections"}>
-                {collectionGroups.map((collection) => (
-                  <button
-                    key={collection.key}
-                    type="button"
-                    className="rd-collection-choice-card"
-                    onClick={() => goTo(collection.productId ? `/product/${collection.productId}` : `/products?cat=${activeCategory}&collection=${encodeURIComponent(collection.key)}`)}
-                  >
-                    {collection.image && <img src={collection.image} alt="" loading="lazy" decoding="async" />}
-                    <div>
-                      <span className="rd-kicker fs">{collection.productId ? "Lounge" : currentLang === "pt" ? "Coleção" : "Collection"}</span>
-                      <h3 className="ff">{collection.name}</h3>
-                      {!collection.productId && <p className="fs">{collection.count} {currentLang === "pt" ? "produtos" : "products"}</p>}
-                    </div>
-                  </button>
-                ))}
-              </section>
-            </main>
-          ) : (
           <main className={`rd-products-layout ${isKitchenCategory && !hasSearch ? "kitchen-products-layout" : ""} ${isSpecificCollectionPage ? "collection-products-layout" : ""}`}>
             <section>
+              {hasBrowseViews && <div className="rd-catalogue-browse">
+                <nav aria-label={currentLang === "pt" ? "Explorar catálogo" : "Browse catalogue"}>
+                  <button type="button" aria-pressed={!collectionView} onClick={() => updateProductQuery({ browse: null })}>{currentLang === "pt" ? "Produtos" : "Products"}</button>
+                  <button type="button" aria-pressed={collectionView} onClick={() => updateProductQuery({ browse: "collections" })}>{currentLang === "pt" ? "Coleções" : "Collections"}</button>
+                </nav>
+              </div>}
               {hasSearch && (
                 <>
                   <form className="rd-results-search" role="search" onSubmit={submitResultsSearch}>
@@ -609,7 +604,7 @@ const PRODUCTS_PAGE = () => {
 
               {activeSubcategories.length > 0 && !isBuiltInKitchen && !isSpecificCollectionPage && (
                 <div className="rd-filter-strip" role="group" aria-label="Filter by product type or material">
-                  <span className="rd-filter-label fs">Browse by</span>
+                  {!hasBrowseViews && <span className="rd-filter-label fs">Browse by</span>}
                   {activeSubcategories.map((item) => (
                     <button
                       key={item.key}
@@ -630,7 +625,7 @@ const PRODUCTS_PAGE = () => {
               )}
 
               {!isSpecificCollectionPage && <div className="rd-discovery-tools fs">
-                {!isKitchenCategory && collections.length > 1 && (
+                {!showCollectionChooser && !isKitchenCategory && collections.length > 1 && (
                   <label> {currentLang === "pt" ? "Coleção" : "Collection"}
                     <select className="rd-select fs" value={collectionParam} onChange={(event) => updateProductQuery({ collection: event.target.value })}>
                       <option value="">{currentLang === "pt" ? "Todas as coleções" : "All collections"}</option>
@@ -639,7 +634,10 @@ const PRODUCTS_PAGE = () => {
                   </label>
                 )}
                 {(collectionParam || activeSubcategory || typeParam) && <button type="button" className="rd-filter-chip" onClick={() => updateProductQuery({ collection: null, subcat: null, type: null })}>{currentLang === "pt" ? "Limpar filtros" : "Clear filters"}</button>}
-                <button type="button" className="rd-filter-chip" onClick={shareSelection}>{currentLang === "pt" ? "Partilhar seleção" : "Share selection"}</button>
+                <button type="button" className="rd-filter-chip" onClick={shareSelection} title={currentLang === "pt" ? "Partilhar seleção" : "Share selection"}>
+                  {hasBrowseViews && <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M12 16V3m-4 4 4-4 4 4M5 13v7h14v-7" /></svg>}
+                  <span className={hasBrowseViews ? "sr-only" : undefined}>{currentLang === "pt" ? "Partilhar seleção" : "Share selection"}</span>
+                </button>
                 <span role="status">{shareStatus}</span>
                 {shareUrl && <input aria-label={currentLang === "pt" ? "Ligação para partilhar" : "Link to share"} readOnly value={shareUrl} onFocus={(event) => event.target.select()} />}
               </div>}
@@ -653,8 +651,8 @@ const PRODUCTS_PAGE = () => {
                     </>
                   ) : (
                     <>
-                      <span className="rd-kicker fs">
-                        {collectionParam === "bali" ? "Bali" : collectionParam === "florida" ? "Florida" : isKitchenCategory ? (activeRange?.label || selectedCategory.label) : selectedCategory.label}
+                      {(!hasBrowseViews || activeRefinementLabel) && <span className="rd-kicker fs">
+                        {!hasBrowseViews && (collectionParam === "bali" ? "Bali" : collectionParam === "florida" ? "Florida" : isKitchenCategory ? (activeRange?.label || selectedCategory.label) : selectedCategory.label)}
                         {activeRefinementLabel && !isSpecificCollectionPage && (
                           <span data-no-translate style={{ display: "inline-flex", alignItems: "center", gap: 6, marginLeft: 10, padding: "2px 6px 2px 10px", background: "var(--light-grey)", borderRadius: 2, textTransform: "none", letterSpacing: 0 }}>
                             {activeRefinementLabel}
@@ -666,12 +664,14 @@ const PRODUCTS_PAGE = () => {
                             >×</button>
                           </span>
                         )}
-                      </span>
-                      <p className="rd-count fs" aria-live="polite">{displayedProducts.length} products shown</p>
+                      </span>}
+                      <p className="rd-count fs" aria-live="polite">{showCollectionChooser
+                        ? `${editorialCollections.length} ${currentLang === "pt" ? "coleções" : "collections"}`
+                        : `${displayedProducts.length} products shown`}</p>
                     </>
                   )}
                 </div>
-                <div className="rd-toolbar-actions">
+                {!showCollectionChooser && <div className="rd-toolbar-actions">
                   {isSpecificCollectionPage && (activeSubcategory || typeParam) && (
                     <button type="button" className="rd-filter-chip" onClick={() => updateProductQuery({ subcat: null, type: null })}>
                       {currentLang === "pt" ? "Limpar filtros" : "Clear filters"}
@@ -690,10 +690,23 @@ const PRODUCTS_PAGE = () => {
                       <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M5 7h14M5 12h14M5 17h14" /></svg>
                     </button>
                   </div>
-                </div>
+                </div>}
               </div>
 
-              {hasSearch && collectionSearchMatch ? (
+              {showCollectionChooser ? (
+                <section className="rd-collection-choice rd-editorial-collections" aria-label={currentLang === "pt" ? "Coleções" : "Collections"}>
+                  {editorialCollections.map(collection => <LocalizedLink key={collection.key}
+                    className="rd-collection-choice-card"
+                    to={`/products?${new URLSearchParams({ ...Object.fromEntries(searchParams), collection: collection.key, browse: "products" })}`}>
+                    {collection.image && <img src={collection.image} alt="" loading="lazy" decoding="async" />}
+                    <div>
+                      <h3 className="ff">{collection.name}</h3>
+                      <span className="rd-collection-arrow" aria-hidden="true">↗</span>
+                    </div>
+                  </LocalizedLink>)}
+                  {!editorialCollections.length && <p className="rd-empty-state">{currentLang === "pt" ? "Nenhuma coleção corresponde aos filtros. Experimente a vista Produtos ou limpe os filtros." : "No collections match these filters. Try Products or clear the filters."}</p>}
+                </section>
+              ) : hasSearch && collectionSearchMatch ? (
                 <section className="rd-collection-choice search-collection-choice" aria-label="Matching collection">
                   <button
                     type="button"
@@ -733,7 +746,7 @@ const PRODUCTS_PAGE = () => {
               ) : viewMode === "grid" ? (
                 <div className="rd-product-grid editorial">
                   {displayedProducts.map((product, index) => (
-                    <article key={product.id || product.name} style={product.imageScale ? { "--product-image-scale": product.imageScale } : undefined} className={`rd-product-card ${product.category === "kitchen" && !product.fit ? "kitchen-product" : ""} ${product.category === "shade" && !product.fit ? "shade-product" : ""} ${product.fit === "contain" ? "studio-product" : ""} ${product.fit === "wide" ? "wide-product" : ""} ${product.id === "sicily-modular-set" ? "contain-media" : ""} ${product.imageScale ? "image-scale-adjusted" : ""} ${product.hoverOnly ? "hover-only-setting" : ""} ${mobileLifestyleModes[product.id] ? "mobile-lifestyle-visible" : ""}`}>
+                    <article key={product.id || product.name} className="rd-product-card studio-product product-white-card">
                       <div className="rd-product-media">
                         <FavoriteButton
                           product={favPayload(product)}
@@ -741,29 +754,8 @@ const PRODUCTS_PAGE = () => {
                           style={{ position: "absolute", top: 12, right: 12 }}
                         />
                         {hasImage(product)
-                          ? (product.heroImage ? (
-                            <>
-                              <img className="rd-product-image rd-product-image-isolated" src={product.img} srcSet={productSrcSet(product.img)} sizes="(max-width: 760px) calc(100vw - 48px), (max-width: 1100px) 50vw, 33vw" alt={product.name} loading={index < 3 ? "eager" : "lazy"} fetchPriority={index < 3 ? "high" : "auto"} decoding="async" />
-                              <img className="rd-product-image rd-product-image-hero" src={product.heroImage} srcSet={productSrcSet(product.heroImage)} sizes="(max-width: 760px) calc(100vw - 48px), (max-width: 1100px) 50vw, 33vw" alt="" aria-hidden="true" loading="lazy" decoding="async" />
-                            </>
-                          ) : <img className={product.imageCrop ? "rd-product-image-part" : undefined} style={product.imageCrop ? { transform: "scaleX(3)", transformOrigin: `${({ left: 0, center: 50, right: 100 })[product.imageCrop]}% 50%` } : undefined} src={product.img} srcSet={productSrcSet(product.img)} sizes="(max-width: 760px) calc(100vw - 48px), (max-width: 1100px) 50vw, 33vw" alt={product.name} loading={index < 3 ? "eager" : "lazy"} fetchPriority={index < 3 ? "high" : "auto"} decoding="async" />)
+                          ? <img src={productThumbnail(product)} srcSet={productSrcSet(productThumbnail(product))} sizes="(max-width: 760px) calc(100vw - 48px), (max-width: 1100px) 50vw, 33vw" alt={product.name} loading={index < 3 ? "eager" : "lazy"} fetchPriority={index < 3 ? "high" : "auto"} decoding="async" />
                           : <NoImagePlaceholder />}
-                        {product.heroImage && !product.hoverOnly && (
-                          <button
-                            type="button"
-                            className="rd-mobile-image-toggle fs"
-                            aria-pressed={Boolean(mobileLifestyleModes[product.id])}
-                            onClick={(event) => {
-                              event.preventDefault();
-                              event.stopPropagation();
-                              setMobileLifestyleModes((modes) => ({ ...modes, [product.id]: !modes[product.id] }));
-                            }}
-                          >
-                            {mobileLifestyleModes[product.id]
-                              ? (currentLang === "pt" ? "Ver foto de estúdio" : "View studio photo")
-                              : (currentLang === "pt" ? "Ver em ambiente" : "View in setting")}
-                          </button>
-                        )}
                         <span className="rd-product-view fs">View product <span aria-hidden="true">↗</span></span>
                       </div>
                       <div className="rd-product-info">
@@ -776,9 +768,9 @@ const PRODUCTS_PAGE = () => {
               ) : (
                 <div className="rd-product-list">
                   {displayedProducts.map((product) => (
-                    <article key={product.id || product.name} style={product.imageScale ? { "--product-image-scale": product.imageScale } : undefined} className={`rd-product-row ${product.category === "kitchen" && !product.fit ? "kitchen-product" : ""} ${product.fit === "contain" ? "studio-product" : ""} ${product.imageScale ? "image-scale-adjusted" : ""}`}>
+                    <article key={product.id || product.name} className="rd-product-row studio-product product-white-card">
                       {hasImage(product)
-                        ? <img className={product.imageCrop ? "rd-product-image-part" : undefined} style={product.imageCrop ? { transform: "scaleX(3)", transformOrigin: `${({ left: 0, center: 50, right: 100 })[product.imageCrop]}% 50%` } : undefined} src={product.img} srcSet={productSrcSet(product.img)} sizes="(max-width: 760px) calc(100vw - 48px), 220px" alt={product.name} loading="lazy" decoding="async" />
+                        ? <img src={productThumbnail(product)} srcSet={productSrcSet(productThumbnail(product))} sizes="(max-width: 760px) calc(100vw - 48px), 220px" alt={product.name} loading="lazy" decoding="async" />
                         : <NoImagePlaceholder list />}
                       <div>
                         <span className="rd-kicker fs">{productBrandLabel(product)}</span>
@@ -796,7 +788,6 @@ const PRODUCTS_PAGE = () => {
               )}
             </section>
           </main>
-          )}
         </>
       )}
     </Layout>

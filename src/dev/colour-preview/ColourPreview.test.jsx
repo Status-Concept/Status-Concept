@@ -133,7 +133,7 @@ it.each([
 ])('uses its own matching image for product %s', async (productId, prefix) => {
   render(<MemoryRouter initialEntries={[`/en/product/${productId}`]}><App /></MemoryRouter>)
   fireEvent.click(await screen.findByRole('button', { name: 'Lead Chine', exact: true }))
-  await waitFor(() => expect(screen.getByRole('button', { name: 'Open full-size image' }).querySelector('img').getAttribute('src')).toContain(`${prefix}-lead-chine.webp`))
+  await waitFor(() => expect(screen.getByRole('button', { name: 'Open full-size image' }).querySelector('img').getAttribute('src')).toContain(`${prefix}-lead-chine${prefix === 'luanda-lounge' ? '-v3' : ''}.webp`))
 })
 
 it('does not apply the main image colours to unprepared views, excluded models or fixed colour combinations', () => {
