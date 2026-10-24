@@ -84,8 +84,8 @@ it('uses only the requested models, excludes Cannes, Fiji and Ibiza, and include
     expect(model.colours.some(colour => colour.name === 'Lead Chine')).toBe(true)
     expect(model.colours.every(colour => colour.image)).toBe(true)
   }
-  expect(colourConfigurations).toHaveLength(21)
-  expect(colourConfigurations.flatMap(target => target.colours)).toHaveLength(54)
+  expect(colourConfigurations).toHaveLength(22)
+  expect(colourConfigurations.flatMap(target => target.colours)).toHaveLength(56)
   expect(colourConfigurations.every(target => target.colours.every(colour => colour.image))).toBe(true)
 })
 

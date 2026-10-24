@@ -3,7 +3,7 @@ import { colourTargets } from './targets'
 
 const images = import.meta.glob('./images/*.webp', { eager: true, query: '?url', import: 'default' })
 const revisedConfigurations = new Set(['antigua', 'antigua-xl', 'oxford', 'oxford-modular', 'oxford-daybed', 'gibraltar', 'crete', 'luanda', 'sicily', 'sicily-centre'])
-// Approximate preview tones approved for local review only, not supplier swatches.
+// Illustrative preview tones, not calibrated supplier swatches.
 export const previewColours = {
   'Lead Chine': '#666765', 'Sooty': '#343536', 'Nature Grey': '#b6b1a7',
   'Savane Whisper': '#ded8ca', 'Lungo 002': '#d4cfbf',
@@ -13,7 +13,7 @@ export const colourConfigurations = colourTargets.map(target => ({
   ...target, name: modelNames[target.model],
   colours: fabricOptionsByModel[target.model].map(name => ({
     name, hex: previewColours[name],
-    image: images[`./images/${target.key}-${(name === 'Savane Whisper' ? 'Savanna Whisper' : name).toLowerCase().replaceAll(' ', '-')}${target.key === 'gibraltar' ? '-v4' : revisedConfigurations.has(target.key) ? '-v3' : ''}.webp`],
+    image: images[`./images/${target.key}-${(name === 'Savane Whisper' ? 'Savanna Whisper' : name).toLowerCase().replaceAll(' ', '-')}${target.key === 'luanda-armchair' ? '-v1' : target.key === 'gibraltar' ? '-v4' : revisedConfigurations.has(target.key) ? '-v3' : ''}.webp`],
   })),
 }))
 
