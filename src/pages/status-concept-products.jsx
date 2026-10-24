@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import { Navigate, useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import Layout from "../components/Layout";
 import LocalizedLink from "../components/LocalizedLink";
 import NoImagePlaceholder from "../components/NoImagePlaceholder";
@@ -75,7 +75,7 @@ const productSearchText = (product) => JSON.stringify({
 }).toLowerCase();
 
 export const matchesSubcategory = (product, key) => {
-  if (product.subcategories?.includes(key)) return true;
+  if (product.subcategories?.includes(key) || getProductFacets(product).materialFamilies.includes(key)) return true;
   // Kitchen descriptions mention the entire range, so a sink cabinet's
   // description mentioning a grill must not classify it as a BBQ.
   const haystack = product.category === "kitchen"
@@ -134,7 +134,13 @@ const SICILY_MODULES = [
 
 export const expandProductCollection = (products, collection) => {
   if (collection === "sicily") {
-    return products.flatMap((product) => product.id === "sicily-modular-set" ? SICILY_MODULES : [product]);
+    return products.flatMap((product) => product.id === "sicily-modular-set"
+      ? SICILY_MODULES.map((piece) => ({
+          ...piece,
+          subcategories: product.subcategories,
+          materialFamilies: getProductFacets(product).materialFamilies,
+        }))
+      : [product]);
   }
   if (collection === "bermuda") {
     return products.flatMap((product) => product.id === "bermuda-divano"
@@ -302,11 +308,18 @@ const PRODUCTS_PAGE = () => {
     ? "Built-in outdoor kitchen solutions for seamless, permanent installations."
     : selectedCategory?.copy;
   const searchMatches = useMemo(() => searchProducts(allProducts, queryParam), [queryParam]);
-  const collectionSearchMatch = useMemo(() => findProductCollectionMatch(allProducts, queryParam), [queryParam]);
+  const unfilteredCollectionMatch = useMemo(() => findProductCollectionMatch(allProducts, queryParam), [queryParam]);
+  const collectionSearchMatch = activeCategory || collectionParam || activeSubcategory || typeParam
+    ? null
+    : unfilteredCollectionMatch;
+  const searchCountProducts = expandProductCollection(
+    unfilteredCollectionMatch?.key === "bali" ? unfilteredCollectionMatch.products : searchMatches,
+    unfilteredCollectionMatch?.key || "",
+  );
 
   const filteredProducts = (() => {
     if (!activeCategory && !hasSearch) return [];
-    const candidates = expandProductCollection(hasSearch ? searchMatches : allProducts, activeCategory === "lounge" ? collectionParam : "");
+    const candidates = expandProductCollection(hasSearch ? searchCountProducts : allProducts, activeCategory === "lounge" ? collectionParam : "");
     const base = refineProductResults(candidates, {
       category: activeCategory, collection: isKitchenCategory ? activeKitchenCollection : collectionParam,
       subcategory: activeSubcategory, type: typeParam, builtIn: isBuiltInKitchen,
@@ -350,7 +363,6 @@ const PRODUCTS_PAGE = () => {
     return null;
   })();
 
-  const searchCountProducts = collectionSearchMatch?.key === "bali" ? collectionSearchMatch.products : searchMatches;
   const searchCategoryCounts = categories.map((category) => ({
     ...category,
     count: searchCountProducts.filter((product) => product.category === category.key).length,
@@ -427,7 +439,7 @@ const PRODUCTS_PAGE = () => {
     const grouped = collectionPrefixes[prefix] > 1;
     const name = grouped ? prefix : originalName;
     const key = slug(name);
-    return [key, { key, name, image: key === "bali" ? baliCollectionCover : key === "florida" ? floridaCollectionCover : key === "berlin" ? berlinCollectionCover : product.heroImage || product.img }];
+    return [key, { key, name, productId: product.standalone ? product.id : null, image: product.standalone ? product.img : key === "bali" ? baliCollectionCover : key === "florida" ? floridaCollectionCover : key === "berlin" ? berlinCollectionCover : product.heroImage || product.img }];
   })).values()]
     .map((collection) => ({
       ...collection,
@@ -436,7 +448,8 @@ const PRODUCTS_PAGE = () => {
         + (activeCategory === "lounge" && ["sicily", "bermuda"].includes(collection.key) ? 2 : 0),
     }));
   const collections = collectionGroups.map((collection) => collection.name);
-  const showCollectionChooser = !hasSearch && !isKitchenCategory && !collectionParam && collectionGroups.length > 1;
+  const showCollectionChooser = !hasSearch && !isKitchenCategory && !collectionParam
+    && !activeSubcategory && !typeParam && collectionGroups.length > 1;
 
   const hasImage = productHasImage;
   const activeRange = kitchenCollections.find((collection) => collection.key === activeKitchenCollection);
@@ -449,6 +462,9 @@ const PRODUCTS_PAGE = () => {
   const collectionHeroPoster = collectionHeroVideo ? `/videos/${collectionHeroVideo}-poster.jpg` : activeBanner;
   const prefersReducedMotion = typeof window !== "undefined"
     && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+
+  const standaloneProduct = allProducts.find((product) => product.standalone && product.collection === collectionParam);
+  if (standaloneProduct) return <Navigate to={withLang(`/product/${standaloneProduct.id}`, currentLang)} replace />;
 
   return (
     <Layout>
@@ -506,13 +522,13 @@ const PRODUCTS_PAGE = () => {
                     key={collection.key}
                     type="button"
                     className="rd-collection-choice-card"
-                    onClick={() => goTo(`/products?cat=${activeCategory}&collection=${encodeURIComponent(collection.key)}`)}
+                    onClick={() => goTo(collection.productId ? `/product/${collection.productId}` : `/products?cat=${activeCategory}&collection=${encodeURIComponent(collection.key)}`)}
                   >
                     {collection.image && <img src={collection.image} alt="" loading="lazy" decoding="async" />}
                     <div>
-                      <span className="rd-kicker fs">{currentLang === "pt" ? "Coleção" : "Collection"}</span>
+                      <span className="rd-kicker fs">{collection.productId ? "Lounge" : currentLang === "pt" ? "Coleção" : "Collection"}</span>
                       <h3 className="ff">{collection.name}</h3>
-                      <p className="fs">{collection.count} {currentLang === "pt" ? "produtos" : "products"}</p>
+                      {!collection.productId && <p className="fs">{collection.count} {currentLang === "pt" ? "produtos" : "products"}</p>}
                     </div>
                   </button>
                 ))}

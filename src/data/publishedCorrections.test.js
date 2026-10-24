@@ -11,7 +11,7 @@ import { retiredBerlinProductIds, berlinProductById } from './berlinCollection'
 describe('public correction release', () => {
   it('maps every hover product to an existing minimal photo and responsive variants', () => {
     const hoverProducts = publicSearchProducts.filter((product) => product.heroImage && !product.curatedImages)
-    expect(Object.keys(minimalProductHeroes).filter((id) => !retiredBaliProductIds.has(id) && !retiredFloridaProductIds.has(id) && !floridaProductById.has(id) && !retiredBerlinProductIds.has(id) && !berlinProductById.has(id)).sort()).toEqual(hoverProducts.map((product) => product.id).sort())
+    expect(Object.keys(minimalProductHeroes).filter((id) => !publicSearchProducts.some((product) => product.id === id && product.originalPhotos) && !retiredBaliProductIds.has(id) && !retiredFloridaProductIds.has(id) && !floridaProductById.has(id) && !retiredBerlinProductIds.has(id) && !berlinProductById.has(id)).sort()).toEqual(hoverProducts.map((product) => product.id).sort())
     for (const product of hoverProducts) {
       expect(product.heroImage, product.id).toBe(minimalProductHeroes[product.id])
       for (const suffix of ['', '-w400', '-w800']) {
@@ -38,6 +38,18 @@ describe('public correction release', () => {
         continue
       }
       const product = publishedCorrectionProducts.find((item) => item.id === id)
+      expect(allProducts.filter((item) => item.id === id)).toHaveLength(1)
+      expect(publicSearchProducts.filter((item) => item.id === id)).toHaveLength(1)
+      if (product?.originalPhotos) {
+        expect(product.id).toBe('macau-lounge')
+        expect(product.images).toHaveLength(4)
+        for (const image of product.images) {
+          for (const suffix of ['', '-w400', '-w800']) {
+            expect(existsSync(`public${image.replace(/\.webp$/, `${suffix}.webp`)}`)).toBe(true)
+          }
+        }
+        continue
+      }
       expect(product?.img).toBe(publishedCorrectionImages[id])
       expect(product?.images).toEqual([publishedCorrectionImages[id]])
       expect(allProducts.filter((item) => item.id === id)).toHaveLength(1)

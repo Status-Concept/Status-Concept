@@ -6,6 +6,18 @@ import { productCollectionLabel } from "../utils/productLabels";
 import { isRattanProduct } from "../data/productExclusions";
 
 describe("product catalogue helpers", () => {
+  it("retains the parent material classifications on each Sicily module", () => {
+    const pieces = expandProductCollection([{ id: "sicily-modular-set", subcategories: ["upholstered", "aluminium"] }], "sicily");
+    expect(pieces).toHaveLength(3);
+    expect(pieces.every(piece => matchesSubcategory(piece, "upholstered") && matchesSubcategory(piece, "aluminium"))).toBe(true);
+  });
+
+  it("honours explicitly recorded material families and descriptions", () => {
+    expect(matchesSubcategory({ name: "Fixture", materialFamilies: ["rope"] }, "rope")).toBe(true);
+    expect(matchesSubcategory({ name: "Fixture", description: "Upholstered seating" }, "upholstered")).toBe(true);
+    expect(matchesSubcategory({ name: "Fixture" }, "rope")).toBe(false);
+  });
+
   it("does not turn a sink into a BBQ because its description mentions grills", () => {
     const sink = { category: "kitchen", name: "Sink Cabinet", description: "Works with the Draco Grills barbecue kitchen" };
     expect(matchesSubcategory(sink, "bbq")).toBe(false);

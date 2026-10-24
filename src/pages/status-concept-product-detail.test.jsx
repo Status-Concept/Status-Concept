@@ -20,6 +20,18 @@ const renderProduct = (id) => render(
 
 afterEach(cleanup)
 
+it('shows all four original Macau photos in one product gallery', () => {
+  renderProduct('macau-lounge')
+  const gallery = screen.getByRole('region', { name: 'Product gallery' })
+  const thumbnails = within(gallery).getAllByRole('button', { name: /View image/ })
+  expect(thumbnails).toHaveLength(4)
+  for (const [index, name] of ['sofa', 'setting-white', 'setting-grey', 'detail'].entries()) {
+    fireEvent.click(thumbnails[index])
+    expect(within(gallery).getByRole('img', { name: 'Macau Lounge', exact: true }).getAttribute('src'))
+      .toBe(`/product-images/macau-original/${name}.webp`)
+  }
+  expect(screen.queryByText('Macau Lounge Collection')).toBeNull()
+})
 
 describe('Berlin reference galleries and legacy links', () => {
   it.each(berlinProducts)('shows only studio gallery images for $name', (product) => {

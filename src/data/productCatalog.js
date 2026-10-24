@@ -46,6 +46,14 @@ const localProducts = publishedLocalProducts.filter((product) => !isRattanProduc
 const withCorrectionImage = (product) => {
   const configuredProduct = getLocalColourProduct(product.id)
   if (configuredProduct) return { ...product, ...configuredProduct }
+  if (product.id === 'macau-lounge') return {
+    ...product,
+    standalone: true, originalPhotos: true, curatedImages: true, fit: 'contain',
+    img: '/product-images/macau-original/sofa.webp',
+    heroImage: '/product-images/macau-original/setting-white.webp',
+    images: ['sofa', 'setting-white', 'setting-grey', 'detail']
+      .map((name) => `/product-images/macau-original/${name}.webp`),
+  }
   if (baliProductById.has(product.id)) return baliProductById.get(product.id)
   if (floridaProductById.has(product.id)) return floridaProductById.get(product.id)
   if (berlinProductById.has(product.id)) return berlinProductById.get(product.id)

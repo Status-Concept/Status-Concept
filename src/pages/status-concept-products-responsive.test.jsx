@@ -26,7 +26,18 @@ describe('responsive collection presentation', () => {
     expect(await screen.findByRole('heading', { name: 'Sicily Centre Module', exact: true })).toBeTruthy()
     expect(screen.getAllByRole('article')).toHaveLength(3)
   })
+  it('opens Macau directly as a product from Lounge', async () => {
+    renderProductsAt('/en/products?cat=lounge')
+    const collections = await screen.findByRole('region', { name: 'Collections' })
+    fireEvent.click(within(collections).getByRole('button', { name: /^Lounge Macau Lounge$/ }))
+    expect(await screen.findByRole('region', { name: 'Product gallery' })).toBeTruthy()
+    expect(screen.getByRole('heading', { name: 'Macau Lounge', exact: true })).toBeTruthy()
+  })
 
+  it('keeps old Macau collection links working as a product page', async () => {
+    renderProductsAt('/pt/products?cat=lounge&collection=macau-lounge')
+    expect(await screen.findByRole('region', { name: 'Product gallery' })).toBeTruthy()
+  })
   it.each(['berlin', 'berlin-modular'])('plays the tailored Berlin replacement, not the rejected film, for %s', async (collection) => {
     renderProductsAt(`/en/products?cat=lounge&collection=${collection}`)
     await screen.findByRole('heading', { name: 'Berlin Modular Sofa', exact: true }, { timeout: 5000 })
