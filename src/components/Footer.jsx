@@ -8,8 +8,8 @@ const ROUTES = {
   "Dining": "/products?cat=dining",
   "Sun Loungers": "/products?cat=sunlounger",
   "Day Beds": "/products?cat=daybed",
-  "Coffee Tables": "/products?cat=coffee",
-  "Bar & Patio": "/products?cat=bar",
+  "Coffee & Side Tables": "/products?cat=tables",
+  "Bar Stools": "/products?cat=dining&type=bar",
   "Glatz Parasols": "/glatz-parasols",
   "Bioclimatic Pergolas": "/products?cat=shade",
   "Outdoor Kitchens": "/products?cat=kitchen",
@@ -38,7 +38,7 @@ export default function Footer() {
           </div>
         </div>
         {[
-          {t:"Products",ls:["Lounge","Dining","Sun Loungers","Day Beds","Coffee Tables","Bar & Patio"]},
+          {t:"Products",ls:["Lounge","Dining","Sun Loungers","Day Beds","Coffee & Side Tables","Bar Stools"]},
           {t:"Solutions",ls:["Glatz Parasols","Bioclimatic Pergolas","Outdoor Kitchens"]},
           {t:"Company",ls:["Why Us"]},
           {t:"Contact",ls:["Showroom Quinta do Lago","Showroom Almancil",CONTACT.phone,CONTACT.email]},

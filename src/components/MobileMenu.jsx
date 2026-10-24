@@ -3,16 +3,18 @@ import { useLocation } from 'react-router-dom'
 import LocalizedLink from './LocalizedLink'
 import { getLangFromPath } from '../utils/language'
 import { SITE_FEATURES } from '../config/sitePhase'
+import { PRODUCT_MENU } from '../data/productMenu'
 
 const NAV_ROUTES = {
   "Products": "/products",
   "Furniture": "/products",
   "Lounge": "/products?cat=lounge",
   "Dining": "/products?cat=dining",
+  "Coffee & Side Tables": "/products?cat=tables",
   "Sun Loungers": "/products?cat=sunlounger",
   "Day Beds": "/products?cat=daybed",
-  "Coffee Tables": "/products?cat=coffee",
-  "Bar & Patio": "/products?cat=bar",
+  "Coffee Tables": "/products?cat=tables&type=coffee-table",
+  "Bar & Patio": "/products?cat=dining&type=bar",
   "Shade Solutions": "/products?cat=shade",
   "Upholstered": "/products?cat=lounge&subcat=upholstered",
   "Rope": "/products?cat=lounge&subcat=rope",
@@ -88,13 +90,9 @@ export default function MobileMenu({ open, onClose }) {
         <button type="button" ref={closeRef} onClick={onClose} aria-label={isPortuguese ? 'Fechar menu' : 'Close menu'} style={{position:"absolute",top:28,right:28,background:"none",border:"none",fontSize:28,cursor:"pointer",color:"var(--stone)",fontWeight:300}}>×</button>
         <nav style={{display:"flex",flexDirection:"column"}}>
           {[
-            {l:"Products",s:["Lounge","Upholstered","Rope","Aluminium","Dining","Sun Loungers","Day Beds","Coffee Tables","Bar & Patio"]},
+            {l:"Products",s:[]},
             {l:"Fabric Library",s:[]},
-            {l:"Shade Solutions",s:["Pergolas","Glatz Parasols","Awnings"]},
-            {l:"Outdoor Kitchens",s:["Modular Kitchens","Built-in Kitchens"]},
-            {l:"Carpets",s:[]},
-            {l:"Decor",s:[]},
-            {l:"Statues",s:[]},
+            ...PRODUCT_MENU.map(category => ({l:category.label,to:category.to,s:category.items})),
             ...(SITE_FEATURES.projects ? [{l:"Projects",s:[]}] : []),
             {l:"Images",s:[]},
             {l:"Sales",s:[]},
@@ -103,8 +101,8 @@ export default function MobileMenu({ open, onClose }) {
             {l:"Contact",s:[]},
           ].map(item => (
             <div key={item.l} style={{borderBottom:"1px solid var(--sand-l)",padding:"16px 0"}}>
-              {NAV_ROUTES[item.l] ? (
-                <LocalizedLink className="ff" to={NAV_ROUTES[item.l]} onClick={onClose}
+              {item.to || NAV_ROUTES[item.l] ? (
+                <LocalizedLink className="ff" to={item.to || NAV_ROUTES[item.l]} onClick={onClose}
                   style={{font:"inherit",fontSize:22,fontWeight:400,color:"var(--stone)",cursor:"pointer",textDecoration:"none",display:"inline-block"}}
                 >{item.l}</LocalizedLink>
               ) : (
@@ -112,12 +110,10 @@ export default function MobileMenu({ open, onClose }) {
               )}
               {item.s.length > 0 && (
                 <div className="fs" style={{marginTop:10,display:"flex",flexDirection:"column",gap:6}}>
-                  {item.s.map(s => NAV_ROUTES[s] ? (
-                    <LocalizedLink key={s} to={NAV_ROUTES[s]} onClick={onClose}
+                  {item.s.map(s => (
+                    <LocalizedLink key={s.name} to={s.to} onClick={onClose}
                       style={{font:"inherit",fontSize:12,letterSpacing:1,color:"var(--sand-d)",cursor:"pointer",textDecoration:"none",padding:"8px 0 12px 12px"}}
-                    >{s}</LocalizedLink>
-                  ) : (
-                    <span key={s} style={{font:"inherit",fontSize:12,letterSpacing:1,color:"var(--sand-d)",padding:"8px 0 12px 12px"}}>{s}</span>
+                    >{s.name}</LocalizedLink>
                   ))}
                 </div>
               )}

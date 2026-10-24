@@ -9,12 +9,10 @@ export const PRODUCT_MENU = [
     label: 'Lounge',
     to: '/products?cat=lounge',
     items: [
-      { name: 'Upholstered', to: '/products?cat=lounge&subcat=upholstered' },
-      { name: 'Rope', to: '/products?cat=lounge&subcat=rope' },
-      { name: 'Aluminium', to: '/products?cat=lounge&subcat=aluminium' },
-      { name: 'Corner Sofas', to: '/products?cat=lounge&type=corner' },
-      { name: 'Armchairs', to: '/products?cat=lounge&type=armchair' },
-      { name: 'Modular', to: '/products?cat=lounge&type=modular' },
+      { name: 'Sofas', to: '/products?cat=lounge&type=sofa' },
+      { name: 'Corner & Modular Sofas', to: '/products?cat=lounge&type=modular' },
+      { name: 'Lounge Armchairs', to: '/products?cat=lounge&type=armchair' },
+      { name: 'Poufs & Ottomans', to: '/products?cat=lounge&type=pouf' },
     ],
   },
   {
@@ -24,9 +22,16 @@ export const PRODUCT_MENU = [
     items: [
       { name: 'Dining Tables', to: '/products?cat=dining&type=table' },
       { name: 'Dining Chairs', to: '/products?cat=dining&type=chair' },
-      { name: 'Armchairs', to: '/products?cat=dining&type=armchair' },
-      { name: 'Side Tables', to: '/products?cat=dining&type=side-table' },
       { name: 'Bar Stools', to: '/products?cat=dining&type=bar' },
+    ],
+  },
+  {
+    key: 'tables',
+    label: 'Coffee & Side Tables',
+    to: '/products?cat=tables',
+    items: [
+      { name: 'Coffee Tables', to: '/products?cat=tables&type=coffee-table' },
+      { name: 'Side Tables', to: '/products?cat=tables&type=side-table' },
     ],
   },
   {

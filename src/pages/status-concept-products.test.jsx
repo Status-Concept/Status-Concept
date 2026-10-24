@@ -6,6 +6,41 @@ import { productCollectionLabel } from "../utils/productLabels";
 import { isRattanProduct } from "../data/productExclusions";
 
 describe("product catalogue helpers", () => {
+  it("organises menu furniture by use and keeps materials as filters", () => {
+    expect(PRODUCT_MENU.find(category => category.key === 'lounge').items.map(item => item.name)).toEqual(['Sofas', 'Corner & Modular Sofas', 'Lounge Armchairs', 'Poufs & Ottomans']);
+    expect(PRODUCT_MENU.find(category => category.key === 'dining').items.map(item => item.name)).toEqual(['Dining Tables', 'Dining Chairs', 'Bar Stools']);
+    expect(PRODUCT_MENU.find(category => category.key === 'tables').items.map(item => item.name)).toEqual(['Coffee Tables', 'Side Tables']);
+  });
+
+  it("uses canonical categories and merges dining armchairs into dining chairs", () => {
+    const products = [
+      { id: 'side', name: 'Conrad Side Table', category: 'dining' },
+      { id: 'chair', name: 'Antalya Dining Armchair', category: 'dining' },
+      { id: 'lounge', name: 'Lounge Armchair', category: 'lounge' },
+    ];
+    expect(refineProductResults(products, { category: 'tables', type: 'side-table' }).map(p => p.id)).toEqual(['side']);
+    expect(refineProductResults(products, { category: 'dining', type: 'chair' }).map(p => p.id)).toEqual(['chair']);
+    expect(refineProductResults(products, { category: 'dining' }).map(p => p.id)).toEqual(['chair']);
+  });
+
+  it("does not let keyword fallbacks put sets, bar tables and detail photos into dining types", () => {
+    const products = [
+      { name: 'Dining Table with Dining Armchairs', category: 'dining' },
+      { name: 'Dining Table Wood Detail', category: 'dining' },
+      { name: 'Bar Table Reno', category: 'dining' },
+      { name: 'Dining Table', category: 'dining' },
+      { name: 'Dining Armchair', category: 'dining' },
+    ];
+    expect(refineProductResults(products, { category: 'dining', type: 'table' }).map(p => p.name)).toEqual(['Dining Table']);
+    expect(refineProductResults(products, { category: 'dining', type: 'chair' }).map(p => p.name)).toEqual(['Dining Armchair']);
+    expect(refineProductResults(products, { category: 'dining', type: 'bar' })).toEqual([]);
+  });
+
+  it("makes already published ottoman modules discoverable outside their collection", () => {
+    const products = [{ id: 'sicily-modular-set', name: 'Sicily Modular Set', category: 'lounge' }];
+    expect(refineProductResults(products, { category: 'lounge', type: 'pouf' }).map(p => p.route)).toEqual(['/product/sicily-modular-set?part=ottoman']);
+  });
+
   it("keeps the fabric library outside product categories", () => {
     expect(PRODUCT_MENU.some(category => category.to === "/fabric-library")).toBe(false);
   });

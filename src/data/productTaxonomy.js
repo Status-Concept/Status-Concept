@@ -29,8 +29,18 @@ export const PRODUCT_CATEGORIES = [
     types: [
       { value: 'table', label: 'Tables' },
       { value: 'chair', label: 'Chairs' },
-      { value: 'armchair', label: 'Armchairs' },
       { value: 'bar-stool', label: 'Bar Stools' },
+    ],
+    materials: [],
+  },
+  {
+    key: 'tables',
+    label: 'Coffee & Side Tables',
+    title: 'Coffee & Side Tables',
+    copy: 'Coffee and side tables for outdoor living.',
+    types: [
+      { value: 'coffee-table', label: 'Coffee Tables' },
+      { value: 'side-table', label: 'Side Tables' },
     ],
     materials: [],
   },
@@ -103,8 +113,8 @@ export const PRODUCT_CATEGORIES = [
 export const CATEGORY_ALIASES = {
   daybed: 'sunlounger',
   'day-beds': 'sunlounger',
-  coffee: 'dining',
-  side: 'dining',
+  coffee: 'tables',
+  side: 'tables',
   bar: 'dining',
   puffs: 'lounge',
   sofa: 'lounge',
@@ -162,12 +172,27 @@ const asValue = (value) => slugify(value)
 
 function canonicalCategory(product) {
   const candidate = asValue(product.category)
+  const name = normalized(product.name)
+  if (candidate === 'dining' && /\bliving armchair\b/.test(name)) return 'lounge'
+  if (['lounge', 'dining', 'coffee', 'side', 'tables'].includes(candidate)
+    && /\b(coffee|side) tables?\b/.test(name)
+    && !/\b(sofas?|chairs?|armchairs?|armchiars?|dining|sets?)\b/.test(name)) return 'tables'
   if (CATEGORY_KEYS.has(candidate)) return candidate
   return CATEGORY_ALIASES[candidate] || 'lounge'
 }
 
 function typeFor(product, category, text) {
+  if (category === 'tables') return [normalized(product.name).includes('side table') ? 'side-table' : 'coffee-table']
+  const name = normalized(product.name)
+  if (category === 'dining') {
+    if (/\bdetail\b/.test(name)) return ['detail']
+    if (/\btable\b/.test(name) && /\b(chairs?|armchairs?|armchiars?|barchair)\b/.test(name)) return ['dining-set']
+    if (/\bbar\b/.test(name) && /\btable\b/.test(name)) return ['bar-table']
+    if (/\bbar\b/.test(name) && /\b(stool|chair|armchair)\b/.test(name)) return ['bar-stool']
+  }
+  if (category === 'lounge' && /\b(l shaped|corner|modular) sofa\b/.test(name)) return ['sofa', 'modular']
   const explicit = unique(fieldValues(product.productType || product.type).map(asValue))
+  if (category === 'dining' && explicit.includes('armchair')) return unique([...explicit, 'chair'])
   if (explicit.length) return explicit
 
   if (category === 'lounge') {
@@ -179,7 +204,7 @@ function typeFor(product, category, text) {
 
   if (category === 'dining') {
     if (hasAny(text, ['bar stool', 'bar-stool', 'bar chair'])) return ['bar-stool']
-    if (hasAny(text, ['dining armchair', 'armchair'])) return ['armchair']
+    if (hasAny(text, ['dining armchair', 'armchair'])) return ['chair', 'armchair']
     if (hasAny(text, ['dining chair', 'chair'])) return ['chair']
     if (hasAny(text, ['dining table', 'table'])) return ['table']
   }

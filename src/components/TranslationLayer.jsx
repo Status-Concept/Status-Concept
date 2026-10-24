@@ -47,6 +47,11 @@ const translations = {
     'O nome e obrigatorio.': 'Name is required.',
   },
   pt: {
+    'Coffee & Side Tables': 'Mesas de centro e apoio',
+    'Corner & Modular Sofas': 'Sofás de canto e modulares',
+    'Lounge Armchairs': 'Poltronas lounge',
+    'Poufs & Ottomans': 'Pufes e repousa-pés',
+    'Coffee and side tables for outdoor living.': 'Mesas de centro e apoio para o exterior.',
     'Fabric Library': 'Biblioteca de tecidos',
     Sales: 'Sales',
     'Outdoor living / Algarve': 'Vida ao ar livre / Algarve',

@@ -6,6 +6,29 @@ import { validateCatalogProducts } from './catalogValidation'
 import { filterProducts, getProductFacets, productMatchesFilters } from './productTaxonomy'
 
 describe('canonical product taxonomy', () => {
+  it('separates standalone coffee and side tables without moving furniture sets', () => {
+    for (const name of ['Conrad Side Table', 'Round Coffee Table']) {
+      expect(getProductFacets({ name, category: 'dining' }).category).toBe('tables')
+    }
+    expect(getProductFacets({ name: 'Bella Sofa Set with Coffee Table', category: 'lounge' }).category).toBe('lounge')
+    expect(getProductFacets({ name: 'Armchair with modular sofa side table', category: 'lounge', productType: ['sofa'] }).category).toBe('lounge')
+    expect(productMatchesFilters({ name: 'Conrad Side Table', category: 'dining' }, { category: 'tables', type: 'side-table' })).toBe(true)
+    expect(productMatchesFilters({ name: 'Conrad Side Table', category: 'dining' }, { category: 'dining' })).toBe(false)
+  })
+
+  it('includes dining chairs with arms in the dining chair filter only in that category', () => {
+    expect(productMatchesFilters({ name: 'Antalya Dining Armchair', category: 'dining' }, { category: 'dining', type: 'chair' })).toBe(true)
+    expect(productMatchesFilters({ name: 'Lounge Armchair', category: 'lounge' }, { category: 'dining', type: 'chair' })).toBe(false)
+    expect(productMatchesFilters({ name: 'Dining Armchair', category: 'dining', productType: ['armchair'] }, { type: 'chair' })).toBe(true)
+  })
+
+  it('does not classify dining sets, detail shots or bar tables as individual dining seating', () => {
+    expect(getProductFacets({ name: 'Laguna Dining Table + Reno Dining Armchiar', category: 'dining' }).productType).toEqual(['dining-set'])
+    expect(getProductFacets({ name: 'Laguna Dining Table Wood Detail', category: 'dining' }).productType).toEqual(['detail'])
+    expect(getProductFacets({ name: 'Bar Table Reno', category: 'dining' }).productType).toEqual(['bar-table'])
+    expect(getProductFacets({ name: 'Celia Living Armchair', category: 'dining' }).category).toBe('lounge')
+  })
+
   it('validates the current catalogue without missing identity or image data', () => {
     const report = validateCatalogProducts(allProducts)
     expect(report.valid).toBe(true)

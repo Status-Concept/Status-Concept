@@ -14,7 +14,7 @@ import { berlinCollectionCover, berlinCollectionHero } from "../data/berlinColle
 import { noImageProducts } from "../data/productImageStatus";
 import { findProductCollectionMatch, searchProducts } from "../utils/productSearch";
 import { productCollectionLabel } from "../utils/productLabels";
-import { getProductFacets } from "../data/productTaxonomy";
+import { CATEGORY_ALIASES, PRODUCT_CATEGORIES, getProductFacets } from "../data/productTaxonomy";
 import { getLangFromPath, withLang } from "../utils/language";
 import kitchenHeroImg from "../assets/images/kitchen/kitchen-hero.webp";
 import furnitureSeriesImg from "../assets/images/enhanced/furniture-series-golf-hero.webp";
@@ -40,8 +40,7 @@ const COLLECTION_VIDEOS = {
 };
 
 const slug = (value) => value.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
-const VALID_CATEGORIES = ["lounge", "dining", "sunlounger", "shade", "kitchen", "carpets", "decor", "statues"];
-const CATEGORY_ALIASES = { daybed: "sunlounger", coffee: "dining", side: "dining", bar: "lounge", puffs: "lounge" };
+const VALID_CATEGORIES = PRODUCT_CATEGORIES.map(category => category.key);
 const LEGACY_CATEGORY_TYPES = { daybed: "daybed", coffee: "coffee", side: "side", bar: "bar", puffs: "pouf" };
 const SUBCATEGORIES = {
   lounge: [
@@ -103,13 +102,19 @@ export const filterKitchenProducts = (products, collection, subcategory) => prod
 
 export const refineProductResults = (products, { category, collection, subcategory, type, builtIn = false }) => {
   if (category === "kitchen" && builtIn) return [];
-  return products.filter((product) => (
-    (!category || product.category === category || (collection === "bali" && product.collectionName === "Bali"))
+  const canonicalType = { bar: 'bar-stool', coffee: 'coffee-table', side: 'side-table', daybed: 'day-bed', lounger: 'sun-lounger', corner: 'modular' }[type] || type;
+  const knownType = ['sofa', 'modular', 'armchair', 'pouf', 'chair', 'table', 'bar-stool', 'coffee-table', 'side-table', 'sun-lounger', 'day-bed'].includes(canonicalType);
+  const candidates = category === "lounge" && type === "pouf" && !collection
+    ? expandProductCollection(expandProductCollection(products, "sicily"), "bermuda")
+    : products;
+  return candidates.filter((product) => (
+    (!category || getProductFacets(product).category === category || (collection === "bali" && product.collectionName === "Bali"))
     && (!collection || slug(product.collectionName || product.collection) === collection
       || slug(product.collectionName || product.collection).startsWith(`${collection}-`))
     && (!subcategory || matchesSubcategory(product, subcategory))
-    && (!type || getProductFacets(product).productType.includes(type)
-      || `${product.name} ${product.collectionName || ""}`.toLowerCase().includes(type.replace(/-/g, " ")))
+    && (!type || getProductFacets(product).productType.includes(canonicalType)
+      || (type === "sofa" && getProductFacets(product).productType.includes("modular"))
+      || (!knownType && `${product.name} ${product.collectionName || ""}`.toLowerCase().includes(type.replace(/-/g, " "))))
   ));
 };
 
@@ -162,6 +167,7 @@ export const expandProductCollection = (products, collection) => {
 const CATEGORY_LABELS = {
   lounge: "Lounge",
   dining: "Dining",
+  tables: "Coffee & Side Tables",
   sunlounger: "Sun Loungers",
   shade: "Shade",
   kitchen: "Outdoor Kitchens",
@@ -256,7 +262,9 @@ const PRODUCTS_PAGE = () => {
   const subcategoryParam = searchParams.get("subcat")?.trim().toLowerCase() || "";
   const kitchenModeParam = searchParams.get("mode")?.trim().toLowerCase() || "";
   const currentLang = getLangFromPath(location.pathname);
-  const resolvedCategory = collectionParam === "florida" ? "dining" : CATEGORY_ALIASES[catParam] || catParam;
+  const resolvedCategory = collectionParam === "florida" ? "dining"
+    : catParam === "dining" && ["side", "side-table", "coffee", "coffee-table"].includes(typeParam) ? "tables"
+    : CATEGORY_ALIASES[catParam] || catParam;
   const activeCategory = VALID_CATEGORIES.includes(resolvedCategory) ? resolvedCategory : null;
   const viewMode = searchParams.get("view") === "list" ? "list" : "grid";
   const sortBy = searchParams.get("sort") === "name" ? "name" : "featured";
@@ -269,11 +277,12 @@ const PRODUCTS_PAGE = () => {
     setSearchInput(queryParam);
   }, [queryParam]);
 
-  const catalogImg = (category) => catalogProducts.find((product) => product.category === category)?.img || furnitureSeriesImg;
+  const catalogImg = (category) => catalogProducts.find((product) => getProductFacets(product).category === category)?.img || furnitureSeriesImg;
 
   const categories = [
     { key: "lounge", label: "Lounge", chip: sicilyCornerImg, banner: sicilyModularSetFullImg, title: "Lounge", copy: "Sofas, lounge sets and armchairs made for long Algarve afternoons." },
     { key: "dining", label: "Dining", chip: catalogImg("dining"), banner: catalogImg("dining"), title: "Dining", copy: "Outdoor dining sets, tables and chairs for terrace meals from breakfast to late dinner." },
+    { key: "tables", label: "Coffee & Side Tables", chip: catalogImg("tables"), banner: catalogImg("tables"), title: "Coffee & Side Tables", copy: "Coffee and side tables for outdoor living." },
     { key: "sunlounger", label: "Sun Loungers", chip: catalogImg("sunlounger"), banner: catalogImg("sunlounger"), title: "Sun Loungers & Day Beds", copy: "Poolside loungers and day beds built for Algarve summers." },
     { key: "shade", label: "Shade Solutions", chip: shadeChipImg, banner: shadeHeroLifestyleImg, bannerPosition: "center 34%", title: "Shade Solutions", copy: "Pergolas, parasols and awnings for gardens, terraces and outdoor rooms." },
     { key: "kitchen", label: "Outdoor Kitchens", chip: kitchenHeroImg, banner: kitchenHeroImg, title: "Modular Outdoor Kitchen", copy: "Modular kitchens, built-in kitchens, BBQs and the accessories that make outdoor cooking work." },
@@ -347,7 +356,7 @@ const PRODUCTS_PAGE = () => {
     if (activeCategory === "kitchen") return isBuiltInKitchen ? kitchenPageLabel : null;
     if (collectionParam) {
       const match = allProducts.find(
-        (product) => product.category === activeCategory
+        (product) => getProductFacets(product).category === activeCategory
           && (slug(product.collectionName || product.collection) === collectionParam
             || slug(product.collectionName || product.collection).startsWith(`${collectionParam}-`)),
       );
@@ -365,7 +374,7 @@ const PRODUCTS_PAGE = () => {
 
   const searchCategoryCounts = categories.map((category) => ({
     ...category,
-    count: searchCountProducts.filter((product) => product.category === category.key).length,
+    count: searchCountProducts.filter((product) => getProductFacets(product).category === category.key).length,
   })).filter((category) => category.count > 0);
 
   const productRoute = (product) => product.route || `/product/${product.id || slug(product.name)}`;
@@ -425,7 +434,7 @@ const PRODUCTS_PAGE = () => {
   };
 
   const categoryCollectionProducts = activeCategory && activeCategory !== "kitchen"
-    ? allProducts.filter((product) => product.category === activeCategory && (product.collectionName || product.collection))
+    ? allProducts.filter((product) => getProductFacets(product).category === activeCategory && (product.collectionName || product.collection))
     : [];
   const collectionNames = [...new Set(categoryCollectionProducts.map((product) => product.collectionName || product.collection))];
   const collectionPrefixes = collectionNames.reduce((counts, name) => {
@@ -611,7 +620,7 @@ const PRODUCTS_PAGE = () => {
                         cat: activeCategory,
                         subcat: activeSubcategory === item.key ? null : item.key,
                         collection: activeCategory === "kitchen" ? activeKitchenCollection : collectionParam,
-                        type: null,
+                        type: activeCategory === "lounge" ? typeParam : null,
                       })}
                     >
                       {item.label}
@@ -714,7 +723,9 @@ const PRODUCTS_PAGE = () => {
                   </div>
                 ) : (
                   <div className="rd-empty-state fs" role="status" style={{ textAlign: "center", padding: "64px 24px", color: "var(--text-grey)" }}>
-                    {isBuiltInKitchen
+                    {activeCategory === "tables"
+                      ? (currentLang === "pt" ? "Ainda não há mesas de centro ou apoio publicadas individualmente. Os conjuntos continuam na secção Lounge." : "No individual coffee or side tables are listed yet. Furniture sets remain in Lounge.")
+                      : isBuiltInKitchen
                       ? "Built-in kitchen products are being curated. Contact the showroom for current options."
                       : "No pieces in this category yet. Contact the showroom."}
                   </div>
