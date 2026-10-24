@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { lazy, Suspense, useEffect, useRef, useState } from "react";
 import { Navigate, useLocation, useNavigate, useParams } from "react-router-dom";
 import Layout from "../components/Layout";
 import LocalizedLink from "../components/LocalizedLink";
@@ -10,7 +10,7 @@ import { productCollectionLabel } from "../utils/productLabels";
 import { glatzProductDetails } from "../data/glatzProducts";
 import { kitchenProductDetails, kitchenCollectionHeroes } from "../data/kitchenProducts";
 import { demoProducts, demoProductIds } from "../data/demoProducts";
-import { publishedCorrectionProducts } from "../data/productCatalog";
+import { publishedCorrectionProducts, publicSearchProducts } from "../data/productCatalog";
 import { baliProductById, retiredBaliProductIds } from "../data/baliCollection";
 import { floridaProductById, retiredFloridaProductIds } from "../data/floridaCollection";
 import { berlinProductById, retiredBerlinProductIds } from "../data/berlinCollection";
@@ -20,6 +20,10 @@ import { getLangFromPath, withLang } from "../utils/language";
 import sicilyCornerImg from "../assets/images/sicily-corner.jpg";
 import sicilyCentreImg from "../assets/images/sicily-centre.jpg";
 import sicilyOttomanImg from "../assets/images/sicily-ottoman.jpg";
+import { getColourTarget, getLocalColourProduct, productColourViews } from '../dev/colour-preview/targets';
+import { finishLibrary } from '../data/fabrics';
+
+const ProductColourPicker = lazy(() => import('../dev/colour-preview/ProductColourPicker'));
 
 const displayDimension = (value) => /^(todo:|see source sheet)/i.test(String(value || '').trim())
   ? 'Available on request'
@@ -32,6 +36,10 @@ const PRODUCT_DETAIL = () => {
   const selectedPart = new URLSearchParams(location.search).get("part");
   const currentLang = getLangFromPath(location.pathname);
   const [activeImg, setActiveImg] = useState(0);
+  const [previewColour, setPreviewColour] = useState(null);
+  const [previewError, setPreviewError] = useState(false);
+  const [frameFinish, setFrameFinish] = useState('');
+  const mobileGallery = useRef(null);
   const [activeTab, setActiveTab] = useState("specs");
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [selectedSizeSku, setSelectedSizeSku] = useState(null);
@@ -41,11 +49,26 @@ const PRODUCT_DETAIL = () => {
       ? ({ corner: 0, centre: 1, ottoman: 2 }[selectedPart] ?? 0)
       : 0;
     setActiveImg(partIndex);
+    setPreviewColour(null);
+    setPreviewError(false);
+    setFrameFinish('');
     setActiveTab("specs");
     setLightboxOpen(false);
     setSelectedSizeSku(null);
     setActiveRelatedFilter(null);
   }, [id, selectedPart]);
+
+  useEffect(() => {
+    if (!productColourViews[id]) return;
+    const alignSelectedImage = () => {
+      const track = mobileGallery.current;
+      const image = track?.children[previewColour ? 0 : activeImg] || track?.firstElementChild;
+      if (image) track.scrollLeft = image.offsetLeft - track.firstElementChild.offsetLeft;
+    };
+    alignSelectedImage();
+    window.addEventListener('resize', alignSelectedImage);
+    return () => window.removeEventListener('resize', alignSelectedImage);
+  }, [id, selectedPart, activeImg, previewColour]);
 
   const demoCatalogProducts = demoProducts.filter((rawProduct) => rawProduct.category !== "kitchen" && rawProduct.category !== "shade");
   const demoKitchenProducts = demoProducts.filter((rawProduct) => rawProduct.category === "kitchen");
@@ -116,7 +139,8 @@ const PRODUCT_DETAIL = () => {
   if (retiredBerlinProductIds.has(id)) return <Navigate to={withLang("/products?cat=lounge&collection=berlin", currentLang)} replace />;
   const curatedProduct = baliProductById.get(id) || floridaProductById.get(id) || berlinProductById.get(id);
   const correction = curatedProduct || publishedCorrectionProducts.find((item) => item.id === id);
-  if (!demoProductIds.has(id) && !correction) return <NotFound />;
+  const localColourProduct = getLocalColourProduct(id);
+  if (!demoProductIds.has(id) && !correction && !localColourProduct) return <NotFound />;
   const product = correction
     ? {
         ...(allProducts[id] || {}),
@@ -127,12 +151,20 @@ const PRODUCT_DETAIL = () => {
         collection: correction.collectionName || correction.collection,
         images: correction.images,
         image: correction.img,
-        publishedCorrection: true,
+        standalone: correction.standalone,
+        publishedCorrection: !correction.originalPhotos,
       }
-    : allProducts[id];
+    : allProducts[id] || localColourProduct;
   if (!product) return <NotFound />;
-  const images = limitPageImages(product.images?.length ? product.images : [product.image || sicilyCornerImg], product);
+  const previewTarget = getColourTarget(id, selectedPart, activeImg);
+  const hasColourPreview = Boolean(previewTarget);
+  const images = hasColourPreview && previewColour
+    ? [previewColour.image]
+    : (hasColourPreview && selectedPart ? [previewTarget.original] : limitPageImages(product.images?.length ? product.images : [product.image || sicilyCornerImg], product));
   const safeActiveImg = activeImg < images.length ? activeImg : 0;
+  const previewImageError = () => {
+    if (hasColourPreview && previewColour) { setPreviewColour(null); setPreviewError(true); }
+  };
   const displayName = product.id === "sicily-modular-set"
     ? ({ corner: "Sicily Corner Module", centre: "Sicily Centre Module", ottoman: "Sicily Ottoman" }[selectedPart] || product.name)
     : product.id === "bermuda-divano"
@@ -150,7 +182,9 @@ const PRODUCT_DETAIL = () => {
   // Carry the product (and a sensible interest) into the enquiry form.
   const INTEREST_BY_CATEGORY = { shade: "Shade Solutions", kitchen: "Outdoor Kitchens", lounge: "Outdoor Furniture", dining: "Outdoor Furniture", sunlounger: "Outdoor Furniture", decor: "Decor & Leisure", leisure: "Decor & Leisure" };
   const selectedSize = product.sizeOptions?.find((option) => option.sku === selectedSizeSku) || product.sizeOptions?.[0];
-  const enquiryName = selectedSize ? `${displayName} (${selectedSize.label}, SKU: ${selectedSize.sku})` : displayName;
+  const enquiryProduct = selectedSize ? `${displayName} (${selectedSize.label}, SKU: ${selectedSize.sku})` : displayName;
+  const selectedFinishes = [previewColour && `Fabric: ${previewColour.name}`, frameFinish && `Frame: ${frameFinish}`].filter(Boolean);
+  const enquiryName = selectedFinishes.length ? `${enquiryProduct} — ${selectedFinishes.join('; ')}` : enquiryProduct;
   const enquireState = { product: enquiryName, interest: INTEREST_BY_CATEGORY[product.category] || "" };
 
   const kitchenHero = product.category === "kitchen"
@@ -173,20 +207,22 @@ const PRODUCT_DETAIL = () => {
         { id: "sicily-ottoman", name: "Sicily Ottoman", collectionName: "Sicily", category: "lounge", productType: ["pouf"], img: sicilyOttomanImg, route: "/product/sicily-modular-set" },
       ];
     }
-    const correctedProducts = publishedCorrectionProducts.map((item) => normalizeProduct({
-      ...item,
-      img: item.img || item.images?.[0],
-      images: item.images?.length ? item.images : [item.img].filter(Boolean),
-    }));
-    const candidates = [...Object.values(catalogProductDetails), ...correctedProducts, ...berlinProductById.values(), ...demoKitchenProducts, ...demoGlatzProducts];
     const currentFacets = getProductFacets(product);
-    return [...new Map(candidates
+    const isDiningTable = currentFacets.category === "dining" && currentFacets.productType.includes("table")
+      && !/\b(bar|coffee|side)\b/i.test(product.name);
+    return [...new Map(publicSearchProducts
       .filter((item) => item.id !== product.id && getProductFacets(item).category === currentFacets.category)
       .map((item) => [item.id, item])).values()]
       .map((item) => ({ item, facets: getProductFacets(item) }))
+      .filter(({ item, facets }) => !isDiningTable || (
+        (facets.productType.includes("table") && !/\b(bar|coffee|side)\b/i.test(item.name))
+        || (currentFacets.collection && facets.collection === currentFacets.collection
+          && facets.productType.some((type) => ["chair", "armchair", "dining-set"].includes(type)))
+      ))
       .sort((a, b) => {
-        const score = ({ facets }) => (facets.collection === currentFacets.collection ? 5 : 0)
-          + (facets.productType.some((type) => currentFacets.productType.includes(type)) ? 3 : 0)
+        const score = ({ facets }) => (currentFacets.collection && facets.collection === currentFacets.collection ? 5 : 0)
+          + (facets.productType.some((type) => currentFacets.productType.includes(type)) ? 6 : 0)
+          + (isDiningTable && facets.collection === currentFacets.collection && facets.productType.some((type) => ["chair", "armchair"].includes(type)) ? 2 : 0)
           + facets.materialFamilies.filter((material) => currentFacets.materialFamilies.includes(material)).length;
         return score(b) - score(a);
       })
@@ -293,7 +329,7 @@ const PRODUCT_DETAIL = () => {
       </div>
 
       <main className="rd-detail-layout">
-        <section className="rd-gallery-sticky" aria-label="Product gallery">
+        <section className={`rd-gallery-sticky${hasColourPreview ? ' colour-preview-gallery' : ''}`} aria-label="Product gallery">
           <div className="rd-thumbs">
             {images.map((image, index) => (
               <button
@@ -301,7 +337,7 @@ const PRODUCT_DETAIL = () => {
                 type="button"
                 aria-label={`View image ${index + 1}`}
                 aria-pressed={safeActiveImg === index}
-                onClick={() => setActiveImg(index)}
+                onClick={() => { if (!previewColour) { setActiveImg(index); setPreviewError(false); } }}
                 style={{ padding: 0, border: "none", background: "none", cursor: "pointer", display: "block" }}
               >
                 <img
@@ -309,7 +345,7 @@ const PRODUCT_DETAIL = () => {
                   srcSet={productSrcSet(image)}
                   sizes="72px"
                   alt={`${displayName} view ${index + 1}`}
-                  className={`rd-thumb ${activeImg === index ? "active" : ""}`}
+                  className={`rd-thumb ${safeActiveImg === index ? "active" : ""}`}
                   loading="lazy"
                   decoding="async"
                 />
@@ -318,21 +354,26 @@ const PRODUCT_DETAIL = () => {
           </div>
           <div className="rd-main-photo">
             {product.tag && <span className={`tag ${product.tag === "New" ? "tag-new" : "tag-popular"}`} style={{ position: "absolute", top: 16, left: 16, zIndex: 3 }}>{product.tag}</span>}
-            <div className="rd-mobile-gallery-track" aria-label="Swipe through product images">
+            <div ref={mobileGallery} className="rd-mobile-gallery-track" aria-label="Swipe through product images" onScroll={event => {
+              if (!productColourViews[id] || previewColour) return;
+              const track = event.currentTarget;
+              const index = [...track.children].findIndex(image => Math.abs(image.offsetLeft - track.firstElementChild.offsetLeft - track.scrollLeft) < 2);
+              if (index >= 0 && index !== activeImg) { setActiveImg(index); setPreviewError(false); }
+            }}>
               {images.map((image, index) => (
-                <button key={`${image}-mobile-${index}`} type="button" onClick={() => { setActiveImg(index); setLightboxOpen(true) }} aria-label={`Open image ${index + 1}`}>
-                  <img src={image} srcSet={productSrcSet(image)} sizes="88vw" alt={`${displayName} view ${index + 1}`} loading={index === 0 ? "eager" : "lazy"} decoding="async" />
+                <button key={`${image}-mobile-${index}`} type="button" onClick={() => { if (!previewColour) setActiveImg(index); setLightboxOpen(true) }} aria-label={`Open image ${index + 1}`}>
+                  <img src={image} srcSet={productSrcSet(image)} sizes="88vw" alt={`${displayName} view ${index + 1}`} loading={index === 0 ? "eager" : "lazy"} decoding="async" onError={previewImageError} />
                 </button>
               ))}
             </div>
             <button className="rd-desktop-main-image" type="button" aria-label="Open full-size image" onClick={() => setLightboxOpen(true)} style={{ padding: 0, border: "none", background: "none", cursor: "zoom-in", display: "block", width: "100%" }}>
-              <img src={images[safeActiveImg]} alt={displayName} />
+              <img src={images[safeActiveImg]} alt={displayName} onError={previewImageError} />
             </button>
           </div>
         </section>
 
         <aside className="rd-product-panel">
-          <span className="rd-kicker fs" style={{ marginTop: 28 }}>{product.collection} Collection</span>
+          {!product.standalone && <span className="rd-kicker fs" style={{ marginTop: 28 }}>{product.collection} Collection</span>}
           <h1 className="rd-title ff" data-no-translate style={{ color: "var(--text-dark)", fontSize: "clamp(32px, 4vw, 48px)", fontWeight: 400 }}>{displayName}</h1>
           <div className="la" style={{ marginBottom: 20 }} />
           {product.tagline && <p className="rd-lede fs">{product.tagline}</p>}
@@ -340,14 +381,29 @@ const PRODUCT_DETAIL = () => {
             ? "Imagem ilustrativa; confirme o modelo e os acabamentos com a nossa equipa."
             : "Illustrative image; please confirm the model and finishes with our team."}</p>}
 
-          <div className="rd-swatch-row" aria-label={product.colorLabel || "Colours"}>
+          {hasColourPreview && ProductColourPicker ? <Suspense fallback={null}>
+            <ProductColourPicker key={previewTarget.key} targetKey={previewTarget.key} selected={previewColour} pt={currentLang === 'pt'} onChange={colour => { setPreviewColour(colour); setPreviewError(false); }} />
+          </Suspense> : <div className="rd-swatch-row" aria-label={product.colorLabel || "Colours"}>
             {(product.colors || []).map((colour) => (
               <div key={colour.name} title={colour.name}>
                 <div className="rd-swatch" style={{ background: colour.hex }} />
                 <span className="fs" style={{ display: "block", marginTop: 8, fontSize: 10, color: "var(--sand-d)", textAlign: "center" }}>{colour.name}</span>
               </div>
             ))}
-          </div>
+          </div>}
+          {productColourViews[id] && !hasColourPreview && <p className="colour-studio-note">{currentLang === 'pt' ? 'Esta vista ainda não tem pré-visualização de cor. Selecione uma vista preparada na galeria.' : 'Colour preview is not prepared for this view yet. Select a prepared gallery view.'}</p>}
+          {productColourViews[id] && <div className="colour-frame-picker" data-no-translate>
+            <label>{currentLang === 'pt' ? 'Acabamento da estrutura' : 'Frame finish'}
+              <select value={frameFinish} onChange={event => setFrameFinish(event.target.value)}>
+                <option value="">{currentLang === 'pt' ? 'Escolher acabamento' : 'Choose a finish'}</option>
+                {finishLibrary.base.map(finish => <option key={finish.name} value={finish.name}>{finish.name}</option>)}
+              </select>
+            </label>
+            <p className="colour-studio-note">{currentLang === 'pt'
+              ? 'A estrutura escolhida fica incluída no pedido; a imagem mantém o acabamento de referência.'
+              : 'Frame finish selection is included in your enquiry; the image retains its reference frame.'}</p>
+          </div>}
+          {previewError && <p role="alert">{currentLang === 'pt' ? 'Não foi possível carregar esta cor. Mostramos o original.' : 'This colour could not load. Showing the original.'}</p>}
 
           {product.sizeOptions && product.sizeOptions.length > 0 && (
             <div style={{ marginBottom: 28 }}>

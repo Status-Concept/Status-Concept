@@ -1,0 +1,46 @@
+.fabric-library { max-width: 1440px; margin: 0 auto; padding: 56px 48px 80px; }
+.fabric-library-heading { display: flex; align-items: end; justify-content: space-between; gap: 48px; margin-bottom: 48px; }
+.fabric-library h1 { font: 400 clamp(36px, 5vw, 64px)/1.1 var(--font-heading); margin: 0 0 18px; }
+.fabric-library-heading p { margin: 0; line-height: 1.65; }
+.fabric-library-note { max-width: 310px; font-size: 13px; color: var(--text-grey); }
+.fabric-library-tools { display: flex; align-items: end; gap: 24px; padding: 24px 0; border-top: 1px solid var(--mid-grey); margin-bottom: 16px; }
+.fabric-library-tools label { display: grid; gap: 10px; font-size: 13px; }
+.fabric-library-tools label:first-child { flex: 1; max-width: 460px; }
+.fabric-library-tools input, .fabric-library-tools select { min-height: 46px; width: 100%; border: 1px solid var(--mid-grey); padding: 10px 14px; background: var(--white); color: var(--text-dark); font: inherit; border-radius: 0; }
+.fabric-library-tools p { margin: 0 0 14px auto; color: var(--text-grey); font-size: 13px; white-space: nowrap; }
+.fabric-library-tools button { min-height: 46px; padding: 10px; border: 0; background: none; text-decoration: underline; cursor: pointer; font: inherit; }
+.fabric-library-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 36px 24px; }
+.fabric-library-sample { display: block; width: 100%; padding: 0; border: 0; position: relative; cursor: zoom-in; background: var(--light-grey); overflow: hidden; }
+.fabric-library-sample img { display: block; width: 100%; height: auto; aspect-ratio: 1; object-fit: cover; }
+.fabric-library-expand { position: absolute; bottom: 12px; right: 12px; width: 32px; height: 32px; display: grid; place-items: center; background: var(--white); color: var(--text-dark); font-size: 22px; }
+.fabric-library-pending { display: grid; place-items: center; aspect-ratio: 1; padding: 24px; font-size: 13px; line-height: 1.6; color: var(--text-grey); }
+.fabric-library-caption { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px; margin-top: 16px; }
+.fabric-library-caption h2 { margin: 0; font-size: 16px; font-weight: 400; }
+.fabric-library-caption > span { color: var(--text-grey); font-size: 12px; }
+.fabric-library-empty { padding: 56px 0; }
+.fabric-library-footer { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 16px; border-top: 1px solid var(--mid-grey); margin-top: 56px; padding-top: 24px; font-size: 13px; color: var(--text-grey); }
+.fabric-library-footer p { margin: 0; }
+.fabric-library-footer a { color: inherit; text-underline-offset: 4px; }
+.fabric-library-dialog { padding: clamp(24px, 5vw, 80px); background: var(--white); color: var(--text-dark); }
+.fabric-library-dialog::backdrop { background: rgba(28,27,24,.4); }
+.fabric-library-detail { position: relative; display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 48px; align-items: center; max-width: 1200px; margin: auto; min-height: 100%; }
+.fabric-library-detail > img { width: 100%; max-height: 78dvh; object-fit: contain; }
+.fabric-library-detail--no-sample { grid-template-columns: 1fr; max-width: 640px; padding-top: 56px; }
+.fabric-library-detail h2 { font-size: clamp(28px, 4vw, 48px); font-weight: 400; margin: 12px 0 24px; }
+.fabric-library-detail p { line-height: 1.7; }
+.fabric-library-detail .cb { margin-top: 20px; }
+.fabric-library-close { position: absolute; top: 0; right: 0; width: 44px; height: 44px; font-size: 32px; border: 1px solid var(--mid-grey); background: var(--white); cursor: pointer; }
+.fabric-library :focus-visible, .fabric-library-dialog :focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+@media (max-width: 1000px) { .fabric-library-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (max-width: 700px) {
+  .fabric-library { padding: 40px 24px 56px; }
+  .fabric-library-heading { display: block; margin-bottom: 32px; }
+  .fabric-library-note { margin-top: 24px !important; max-width: none; }
+  .fabric-library-tools { flex-wrap: wrap; gap: 16px; }
+  .fabric-library-tools label:first-child { flex: 1 0 100%; max-width: none; }
+  .fabric-library-tools label:nth-child(2) { flex: 1; }
+  .fabric-library-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px 16px; }
+  .fabric-library-caption h2 { font-size: 14px; }
+  .fabric-library-detail { grid-template-columns: minmax(0, 1fr); gap: 24px; padding-top: 56px; }
+  .fabric-library-detail > img { max-height: 50dvh; }
+}

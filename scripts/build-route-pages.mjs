@@ -28,7 +28,7 @@ try {
 // the same shell. Real files let GitHub Pages serve deep links with HTTP 200.
 const pages = ['', 'products', 'images', 'sales', 'glatz-parasols', 'projects',
   'after-care', 'about', 'contact', 'login', 'register', 'registar', 'privacy',
-  'privacidade', 'cookies', 'terms',
+  'privacidade', 'cookies', 'terms', 'fabric-library',
   ...Array.from(productIds, (id) => `product/${encodeURIComponent(id)}`)]
 let count = 0
 for (const locale of ['', 'en', 'pt']) {

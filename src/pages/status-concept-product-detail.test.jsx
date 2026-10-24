@@ -2,8 +2,7 @@ import { afterEach, describe, expect, it } from 'vitest'
 import { cleanup, fireEvent, render, screen, within } from '@testing-library/react'
 import { MemoryRouter, Route, Routes } from 'react-router-dom'
 import { AuthProvider } from '../context/AuthContext'
-import { demoProducts } from '../data/demoProducts'
-import { publishedCorrectionProducts } from '../data/productCatalog'
+import { publicSearchProducts } from '../data/productCatalog'
 import { getProductFacets } from '../data/productTaxonomy'
 import { berlinProducts, retiredBerlinProductIds } from '../data/berlinCollection'
 import ProductDetail from './status-concept-product-detail'
@@ -20,6 +19,7 @@ const renderProduct = (id) => render(
 )
 
 afterEach(cleanup)
+
 
 describe('Berlin reference galleries and legacy links', () => {
   it.each(berlinProducts)('shows only studio gallery images for $name', (product) => {
@@ -41,6 +41,24 @@ describe('Berlin reference galleries and legacy links', () => {
 })
 
 describe('product recommendation filters', () => {
+  it.each(['berlin-modular-sofa', 'florida-dining'])('only recommends current public catalogue products from %s', async (id) => {
+    renderProduct(id)
+    const heading = await screen.findByRole('heading', { name: 'You may also like' })
+    const cards = [...heading.closest('section').querySelectorAll('.rd-product-card')]
+    expect(cards.length).toBeGreaterThan(0)
+    const names = new Set(publicSearchProducts.map((item) => item.name))
+    expect(cards.map((card) => card.querySelector('h3').textContent).filter((name) => !names.has(name))).toEqual([])
+  })
+
+  it('includes the current Florida dining armchair without treating bar stools as dining-table complements', async () => {
+    renderProduct('florida-dining')
+    const heading = await screen.findByRole('heading', { name: 'You may also like' })
+    const region = heading.closest('section')
+    expect(within(region).getByText('Florida Dining Armchair')).toBeTruthy()
+    const names = [...region.querySelectorAll('h3')].map((item) => item.textContent)
+    expect(names.some((name) => /bar stool|bar chair/i.test(name))).toBe(false)
+  })
+
   it('filters the Berlin modular sofa recommendations to other modular sofas', async () => {
     renderProduct('berlin-modular-sofa')
 
@@ -52,7 +70,7 @@ describe('product recommendation filters', () => {
     expect(cornerFilter.getAttribute('aria-pressed')).toBe('true')
     const cards = [...recommendations.querySelectorAll('.rd-product-card')]
     expect(cards.length).toBeGreaterThan(0)
-    const sourceProducts = [...demoProducts, ...publishedCorrectionProducts]
+    const sourceProducts = publicSearchProducts
     expect(cards.every((card) => {
       const name = card.querySelector('h3')?.textContent
       const source = sourceProducts.find((item) => item.name === name)

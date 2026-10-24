@@ -12,6 +12,7 @@ import sicilyModularSetFullImg from '../assets/images/sicily-modular-set-full.we
 import sicilyCornerImg from '../assets/images/sicily-corner.jpg'
 import sicilyCentreImg from '../assets/images/sicily-centre.jpg'
 import sicilyOttomanImg from '../assets/images/sicily-ottoman.jpg'
+import { localColourPages, getLocalColourProduct } from '../dev/colour-preview/targets'
 
 const sicilyModularSet = {
   id: 'sicily-modular-set',
@@ -43,6 +44,8 @@ const catalogueProducts = sourceProducts.filter((product) => !isRattanProduct(pr
 const localProducts = publishedLocalProducts.filter((product) => !isRattanProduct(product) && !retiredBaliProductIds.has(product.id) && !retiredFloridaProductIds.has(product.id) && !retiredBerlinProductIds.has(product.id))
 
 const withCorrectionImage = (product) => {
+  const configuredProduct = getLocalColourProduct(product.id)
+  if (configuredProduct) return { ...product, ...configuredProduct }
   if (baliProductById.has(product.id)) return baliProductById.get(product.id)
   if (floridaProductById.has(product.id)) return floridaProductById.get(product.id)
   if (berlinProductById.has(product.id)) return berlinProductById.get(product.id)
@@ -68,6 +71,7 @@ export const publicSearchProducts = [
   ...baliProducts,
   ...floridaProducts,
   ...berlinProducts,
+  ...Object.keys(localColourPages).filter(id => !demoProducts.some(product => product.id === id) && !publishedCorrectionProducts.some(product => product.id === id)).map(getLocalColourProduct),
 ]
 
 const expectedCorrectionCount = Object.keys(publishedCorrectionImages).filter((id) => !isRattanProduct({ id }) && !retiredBaliProductIds.has(id) && !retiredFloridaProductIds.has(id) && !retiredBerlinProductIds.has(id)).length

@@ -1,0 +1,31 @@
+.colour-studio { max-width: 1440px; margin: auto; padding: 40px 48px 80px; }
+.colour-studio-heading { display: flex; justify-content: space-between; align-items: end; gap: 24px; margin-bottom: 40px; }
+.colour-studio-heading h2 { font-size: clamp(24px, 3vw, 36px); font-weight: 400; margin: 12px 0 0; }
+.colour-studio-heading label { display: grid; gap: 8px; font-size: 12px; }
+.colour-studio-heading select { min-width: 200px; min-height: 46px; padding: 10px 14px; background: var(--white); border: 1px solid var(--mid-grey); font: inherit; color: inherit; }
+.colour-studio-layout { display: grid; grid-template-columns: minmax(0, 1.7fr) minmax(280px, 1fr); gap: 56px; align-items: center; border-top: 1px solid var(--mid-grey); padding-top: 32px; }
+.colour-studio-picture { position: relative; aspect-ratio: 3 / 2; display: grid; place-items: center; }
+.colour-studio-picture img { display: block; width: 100%; height: 100%; object-fit: contain; }
+.colour-studio-loading { position: absolute; bottom: 16px; padding: 8px 12px; background: var(--white); font-size: 12px; }
+.colour-studio-options h1 { font-size: clamp(32px, 4vw, 48px); font-weight: 400; margin: 16px 0 20px; }
+.colour-studio-selection { font-size: 16px; margin: 0 0 24px; }
+.colour-studio-swatches { display: flex; flex-wrap: wrap; gap: 14px; }
+.colour-studio-swatches button { display: grid; justify-items: center; gap: 10px; width: 92px; border: 0; background: none; color: inherit; font: inherit; font-size: 11px; padding: 4px; cursor: pointer; }
+.colour-studio-chip { width: 48px; height: 48px; display: block; border-radius: 50%; border: 1px solid #0002; outline: 1px solid transparent; outline-offset: 4px; }
+.colour-studio-swatches button[aria-pressed="true"] .colour-studio-chip { outline-color: var(--text-dark); }
+.colour-studio-swatches button:disabled { opacity: .35; cursor: not-allowed; }
+.colour-studio-original { margin-top: 28px; min-height: 44px; padding: 10px 0; border: 0; background: none; font: inherit; font-size: 13px; color: inherit; text-decoration: underline; text-underline-offset: 5px; cursor: pointer; }
+.colour-studio-note { font-size: 12px; line-height: 1.8; color: var(--text-grey); border-top: 1px solid var(--mid-grey); padding-top: 24px; margin-top: 24px; }
+.colour-studio :focus-visible { outline: 2px solid var(--accent); outline-offset: 5px; }
+.colour-preview-gallery .rd-main-photo { background: var(--white); }
+.colour-preview-gallery .rd-main-photo img { height: auto; aspect-ratio: 3 / 2; }
+.colour-frame-picker label { display: grid; gap: 10px; font-size: 13px; }
+.colour-frame-picker select { width: 100%; min-height: 44px; padding: 10px 12px; border: 1px solid var(--mid-grey); color: inherit; background: var(--white); font: inherit; }
+.colour-frame-picker { margin: 24px 0; }
+@media (max-width: 800px) {
+  .colour-studio { padding: 28px 24px 56px; }
+  .colour-studio-heading { align-items: start; flex-direction: column; margin-bottom: 24px; }
+  .colour-studio-heading label, .colour-studio-heading select { width: 100%; }
+  .colour-studio-layout { grid-template-columns: minmax(0, 1fr); gap: 20px; padding-top: 16px; }
+  .colour-studio-options h1 { margin-top: 12px; }
+}

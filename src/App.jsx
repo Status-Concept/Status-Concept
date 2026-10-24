@@ -14,6 +14,8 @@ import { SITE_FEATURES } from './config/sitePhase'
 const Products = lazy(() => import('./pages/status-concept-products'))
 const Images = lazy(() => import('./pages/status-concept-images'))
 const Sales = lazy(() => import('./pages/status-concept-sales'))
+const FabricLibrary = lazy(() => import('./pages/fabric-library'))
+const ColourPreview = import.meta.env.DEV ? lazy(() => import('./dev/colour-preview/ColourPreview')) : null
 const ProductDetail = lazy(() => import('./pages/status-concept-product-detail'))
 const Glatz = lazy(() => import('./pages/status-concept-glatz'))
 const Projects = lazy(() => import('./pages/status-concept-projects'))
@@ -44,6 +46,8 @@ const routesFor = (prefix = '') => (
     {SITE_FEATURES.products && <Route path={`${prefix}/products`} element={<Products />} />}
     <Route path={`${prefix}/images`} element={<Images />} />
     <Route path={`${prefix}/sales`} element={<Sales />} />
+    <Route path={`${prefix}/fabric-library`} element={<FabricLibrary />} />
+    {ColourPreview && <Route path={`${prefix}/colour-preview`} element={<ColourPreview />} />}
     {SITE_FEATURES.products && <Route path={`${prefix}/product/:id`} element={<ProductDetail />} />}
     {SITE_FEATURES.products && <Route path={`${prefix}/glatz-parasols`} element={<Glatz />} />}
     {SITE_FEATURES.projects

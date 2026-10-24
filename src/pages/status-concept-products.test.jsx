@@ -19,6 +19,13 @@ describe("product catalogue helpers", () => {
     expect(refineProductResults(kitchenProducts, { category: "kitchen", builtIn: true })).toEqual([]);
   });
 
+  it("filters by the declared product type even when the label uses another word", () => {
+    const ottoman = { name: "Sicily Ottoman", category: "lounge", collection: "Sicily", productType: ["pouf"] };
+    const sofa = { name: "Sicily Corner Module", category: "lounge", collection: "Sicily", productType: ["modular"] };
+    expect(refineProductResults([ottoman, sofa], { category: "lounge", collection: "sicily", type: "pouf" })).toEqual([ottoman]);
+    expect(refineProductResults([ottoman, sofa], { category: "lounge", collection: "sicily", type: "modular" })).toEqual([sofa]);
+  });
+
   it("does not classify a bioclimatic pergola as a parasol just because it provides shade", () => {
     expect(matchesSubcategory({ name: "Bioclimatic Pergola", description: "Shade solution" }, "parasols")).toBe(false);
   });

@@ -7,9 +7,11 @@ export default function ImageDialog({ className, label, onClose, onKeyDown, chil
   useEffect(() => {
     const previousFocus = document.activeElement
     const previousOverflow = document.body.style.overflow
+    const dialog = ref.current
     document.body.style.overflow = 'hidden'
-    ref.current.showModal()
+    dialog.showModal()
     return () => {
+      dialog.close()
       document.body.style.overflow = previousOverflow
       previousFocus?.focus?.()
     }

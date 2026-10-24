@@ -17,6 +17,16 @@ function renderProductsAt(path) {
 }
 
 describe('responsive collection presentation', () => {
+  it('filters the expanded Sicily pieces, not the parent modular set', async () => {
+    renderProductsAt('/en/products?cat=lounge&collection=sicily&type=pouf')
+    expect(await screen.findByRole('heading', { name: 'Sicily Ottoman', exact: true })).toBeTruthy()
+    expect(screen.getAllByRole('article')).toHaveLength(1)
+    expect(screen.queryByRole('heading', { name: 'Sicily Centre Module', exact: true })).toBeNull()
+    fireEvent.click(screen.getByRole('button', { name: 'Clear filters', exact: true }))
+    expect(await screen.findByRole('heading', { name: 'Sicily Centre Module', exact: true })).toBeTruthy()
+    expect(screen.getAllByRole('article')).toHaveLength(3)
+  })
+
   it.each(['berlin', 'berlin-modular'])('plays the tailored Berlin replacement, not the rejected film, for %s', async (collection) => {
     renderProductsAt(`/en/products?cat=lounge&collection=${collection}`)
     await screen.findByRole('heading', { name: 'Berlin Modular Sofa', exact: true }, { timeout: 5000 })

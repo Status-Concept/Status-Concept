@@ -34,6 +34,7 @@ const NAV_ROUTES = {
   "Projects": "/projects",
   "Images": "/images",
   "Sales": "/sales",
+  "Fabric Library": "/fabric-library",
   "Why Us": "/about",
   "After Care": "/after-care",
   "Contact": "/contact",
@@ -88,6 +89,7 @@ export default function MobileMenu({ open, onClose }) {
         <nav style={{display:"flex",flexDirection:"column"}}>
           {[
             {l:"Products",s:["Lounge","Upholstered","Rope","Aluminium","Dining","Sun Loungers","Day Beds","Coffee Tables","Bar & Patio"]},
+            {l:"Fabric Library",s:[]},
             {l:"Shade Solutions",s:["Pergolas","Glatz Parasols","Awnings"]},
             {l:"Outdoor Kitchens",s:["Modular Kitchens","Built-in Kitchens"]},
             {l:"Carpets",s:[]},

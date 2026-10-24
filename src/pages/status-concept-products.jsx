@@ -14,6 +14,7 @@ import { berlinCollectionCover, berlinCollectionHero } from "../data/berlinColle
 import { noImageProducts } from "../data/productImageStatus";
 import { findProductCollectionMatch, searchProducts } from "../utils/productSearch";
 import { productCollectionLabel } from "../utils/productLabels";
+import { getProductFacets } from "../data/productTaxonomy";
 import { getLangFromPath, withLang } from "../utils/language";
 import kitchenHeroImg from "../assets/images/kitchen/kitchen-hero.webp";
 import furnitureSeriesImg from "../assets/images/enhanced/furniture-series-golf-hero.webp";
@@ -107,7 +108,8 @@ export const refineProductResults = (products, { category, collection, subcatego
     && (!collection || slug(product.collectionName || product.collection) === collection
       || slug(product.collectionName || product.collection).startsWith(`${collection}-`))
     && (!subcategory || matchesSubcategory(product, subcategory))
-    && (!type || `${product.name} ${product.collectionName || ""}`.toLowerCase().includes(type.replace(/-/g, " ")))
+    && (!type || getProductFacets(product).productType.includes(type)
+      || `${product.name} ${product.collectionName || ""}`.toLowerCase().includes(type.replace(/-/g, " ")))
   ));
 };
 
@@ -304,7 +306,8 @@ const PRODUCTS_PAGE = () => {
 
   const filteredProducts = (() => {
     if (!activeCategory && !hasSearch) return [];
-    const base = refineProductResults(hasSearch ? searchMatches : allProducts, {
+    const candidates = expandProductCollection(hasSearch ? searchMatches : allProducts, activeCategory === "lounge" ? collectionParam : "");
+    const base = refineProductResults(candidates, {
       category: activeCategory, collection: isKitchenCategory ? activeKitchenCollection : collectionParam,
       subcategory: activeSubcategory, type: typeParam, builtIn: isBuiltInKitchen,
     });
@@ -321,7 +324,7 @@ const PRODUCTS_PAGE = () => {
   })();
   const displayedProducts = collectionSearchMatch && hasSearch
     ? []
-    : expandProductCollection(filteredProducts, activeCategory === "lounge" ? collectionParam : "");
+    : filteredProducts;
 
   const activeRefinementLabel = (() => {
     if (!activeCategory) return null;
@@ -644,6 +647,11 @@ const PRODUCTS_PAGE = () => {
                   )}
                 </div>
                 <div className="rd-toolbar-actions">
+                  {isSpecificCollectionPage && (activeSubcategory || typeParam) && (
+                    <button type="button" className="rd-filter-chip" onClick={() => updateProductQuery({ subcat: null, type: null })}>
+                      {currentLang === "pt" ? "Limpar filtros" : "Clear filters"}
+                    </button>
+                  )}
                   <label className="sr-only" htmlFor="product-sort">{currentLang === "pt" ? "Ordenar produtos" : "Sort products"}</label>
                   <select id="product-sort" className="rd-select fs" value={sortBy} onChange={(event) => updateProductQuery({ sort: event.target.value === "featured" ? null : event.target.value })}>
                     <option value="featured">{hasSearch ? "Relevance" : "Featured"}</option>

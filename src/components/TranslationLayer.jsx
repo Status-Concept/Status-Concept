@@ -47,6 +47,7 @@ const translations = {
     'O nome e obrigatorio.': 'Name is required.',
   },
   pt: {
+    'Fabric Library': 'Biblioteca de tecidos',
     Sales: 'Sales',
     'Outdoor living / Algarve': 'Vida ao ar livre / Algarve',
     'Outdoor spaces,': 'Espaços exteriores,',

@@ -7,6 +7,7 @@ const PAGE_TITLES = {
   '/products': ['Products', 'Produtos'],
   '/images': ['Images', 'Imagens'],
   '/sales': ['Sales 2026', 'Sales 2026'],
+  '/fabric-library': ['Fabric Library', 'Biblioteca de tecidos'],
   '/glatz-parasols': ['Glatz Parasols', 'Chapéus de sol Glatz'],
   '/projects': ['Projects', 'Projetos'],
   '/after-care': ['After Care', 'After Care'],
@@ -43,6 +44,7 @@ export default function RouteMetadata() {
 
     if (path === '/') pageTitle = lang === 'pt' ? 'Especialistas em mobiliário de exterior no Algarve' : 'Outdoor Furniture Specialists · Algarve'
     else if (path === '/products' && query) pageTitle = lang === 'pt' ? `Pesquisa: ${query}` : `Search: ${query}`
+    else if (import.meta.env.DEV && path === '/colour-preview') pageTitle = lang === 'pt' ? 'Pré-visualização de cores' : 'Colour Preview'
     else if (path.startsWith('/product/')) {
       const productId = path.slice('/product/'.length)
       if (!excludedRattanIds.has(productId)) pageTitle = titleizeSlug(productId)
