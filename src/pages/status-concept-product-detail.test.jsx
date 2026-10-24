@@ -53,6 +53,23 @@ describe('Berlin reference galleries and legacy links', () => {
 })
 
 describe('product recommendation filters', () => {
+  it.each([
+    ['corner', 'centre'], ['corner', 'ottoman'],
+    ['centre', 'corner'], ['centre', 'ottoman'],
+    ['ottoman', 'corner'], ['ottoman', 'centre'],
+  ])('opens the Sicily %s recommendation for %s as that individual piece', async (part, next) => {
+    const pieces = { corner: 'Sicily Corner Module', centre: 'Sicily Centre Module', ottoman: 'Sicily Ottoman' }
+    renderProduct(`sicily-modular-set?part=${part}`)
+    const region = (await screen.findByRole('heading', { name: 'Pieces that work together' })).closest('section')
+    expect(within(region).queryByRole('heading', { name: pieces[part], exact: true })).toBeNull()
+    for (const [key, name] of Object.entries(pieces)) {
+      if (key === part) continue
+      expect(within(region).getByRole('link', { name: `View ${name}`, exact: true })).toBeTruthy()
+    }
+    fireEvent.click(within(region).getByRole('link', { name: `View ${pieces[next]}`, exact: true }))
+    expect(await screen.findByRole('heading', { name: pieces[next], level: 1, exact: true })).toBeTruthy()
+  })
+
   it.each(['berlin-modular-sofa', 'florida-dining'])('only recommends current public catalogue products from %s', async (id) => {
     renderProduct(id)
     const heading = await screen.findByRole('heading', { name: 'You may also like' })
@@ -69,6 +86,15 @@ describe('product recommendation filters', () => {
     expect(within(region).getByText('Florida Dining Armchair')).toBeTruthy()
     const names = [...region.querySelectorAll('h3')].map((item) => item.textContent)
     expect(names.some((name) => /bar stool|bar chair/i.test(name))).toBe(false)
+  })
+
+  it('does not present detail photos or mixed dining sets as alternative tables', async () => {
+    renderProduct('florida-dining')
+    const region = (await screen.findByRole('heading', { name: 'You may also like' })).closest('section')
+    fireEvent.click(within(region).getByRole('button', { name: 'Table', exact: true }))
+    const names = [...region.querySelectorAll('h3')].map(item => item.textContent)
+    expect(names.length).toBeGreaterThan(0)
+    expect(names.filter(name => /\b(detail|chairs?|armchairs?|armchiars?)\b/i.test(name))).toEqual([])
   })
 
   it('filters the Berlin modular sofa recommendations to other modular sofas', async () => {

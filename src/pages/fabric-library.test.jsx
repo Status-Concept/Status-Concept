@@ -76,11 +76,19 @@ it('separates Able rope from the confirmed Divano aluminium finish names', async
   expect(screen.getByRole('link', { name: 'Ask about this finish' }).getAttribute('href')).toContain('product=Base%20')
 })
 
-it('finds the confirmed Sunbrella fabric by code', async () => {
+it.each([
+  ['3758', 'Sooty', 'Solids', 'sooty-3758'],
+  ['3756', 'Lead Chine', 'Solids', 'lead-chine-3756'],
+  ['J349', 'Savane Whisper', 'Savane', 'savane-whisper-j349'],
+  ['10040', 'Nature Grey', 'Natté', 'nature-grey-10040'],
+])('finds the confirmed Sunbrella fabric %s by code', async (code, name, range, image) => {
   openLibrary()
   await screen.findByRole('heading', { name: 'Fabric & finish library', exact: true })
-  fireEvent.change(screen.getByLabelText('Search finishes'), { target: { value: '3758' } })
+  fireEvent.change(screen.getByLabelText('Search finishes'), { target: { value: code } })
   expect(screen.getAllByRole('article')).toHaveLength(1)
-  fireEvent.click(screen.getByRole('button', { name: 'View Sooty' }))
-  expect(within(screen.getByRole('dialog')).getByText('Solids · 3758')).toBeTruthy()
+  fireEvent.click(screen.getByRole('button', { name: `View ${name}` }))
+  const dialog = screen.getByRole('dialog')
+  expect(within(dialog).getByText(`${range} · ${code}`)).toBeTruthy()
+  expect(within(dialog).getByRole('img', { name, exact: true }).getAttribute('src')).toBe(`/materials/sunbrella/${image}.webp`)
+  expect(within(dialog).getByRole('link', { name: 'Supplier reference' }).getAttribute('href')).toContain('sunbrella.dickson-constant.com/')
 })

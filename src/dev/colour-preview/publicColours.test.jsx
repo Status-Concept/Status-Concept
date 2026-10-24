@@ -4,8 +4,27 @@ import { MemoryRouter } from 'react-router-dom'
 import App from '../../App'
 import { publicSearchProducts } from '../../data/productCatalog'
 import { getColourTarget, localColourPages } from './targets'
+import { fabrics } from '../../data/fabrics'
 
 afterEach(cleanup)
+
+it.each([
+  '/en/product/berlin-modular-sofa', '/en/product/sicily-modular-set?part=centre',
+  '/en/colour-preview?model=berlin', '/pt/colour-preview?model=sicily',
+])('uses the central supplier sample images for the fabric buttons at %s', async path => {
+  render(<MemoryRouter initialEntries={[path]}><App /></MemoryRouter>)
+  const group = await screen.findByRole('group', { name: path.startsWith('/pt/') ? 'Cor do tecido' : 'Fabric colour' })
+  const buttons = [...group.querySelectorAll('button')]
+  expect(buttons).toHaveLength(3)
+  for (const button of buttons) {
+    const fabric = fabrics.find(item => item.name === button.textContent.trim())
+    const sample = button.querySelector('img.colour-studio-chip')
+    expect(sample, fabric.name).not.toBeNull()
+    expect(sample.getAttribute('src')).toBe(fabric.image)
+    expect(sample.getAttribute('alt')).toBe('')
+    expect(sample.getAttribute('aria-hidden')).toBe('true')
+  }
+})
 
 it('offers both fabric finishes on the identified Luanda armchair without changing fixed Luanda combinations', async () => {
   for (const id of ['local-product-0b480251a4ef', 'local-product-7794651d9fa7', 'local-product-cca8c97d28dc', 'local-product-2b4c98b554df']) expect(getColourTarget(id)).toBeNull()

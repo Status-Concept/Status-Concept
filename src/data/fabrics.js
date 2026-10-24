@@ -13,13 +13,25 @@ export const fabricOptionsByModel = Object.fromEntries(Object.entries({
 
 export const fabrics = [...new Set(Object.values(fabricOptionsByModel).flat())].map(name => ({
   name, kind: 'fabric', manufacturer: 'Sunbrella',
+  ...(name === 'Lead Chine' ? {
+    range: 'Solids', code: '3756',
+    image: '/materials/sunbrella/lead-chine-3756.webp',
+    source: 'https://sunbrella.dickson-constant.com/en/solids-lead-chine-3756.html',
+  } : {}),
   ...(name === 'Sooty' ? {
     range: 'Solids', code: '3758',
+    image: '/materials/sunbrella/sooty-3758.webp',
     source: 'https://sunbrella.dickson-constant.com/en/solids-sooty-3758.html',
   } : {}),
   ...(name === 'Savane Whisper' ? {
     range: 'Savane', code: 'J349',
+    image: '/materials/sunbrella/savane-whisper-j349.webp',
     source: 'https://sunbrella.dickson-constant.com/es/savane-whisper-j349.html',
+  } : {}),
+  ...(name === 'Nature Grey' ? {
+    range: 'Natté', code: '10040',
+    image: '/materials/sunbrella/nature-grey-10040.webp',
+    source: 'https://sunbrella.dickson-constant.com/en/natte-nature-grey-10040.html',
   } : {}),
   ...(name === 'Lungo 002' ? {
     image: '/materials/divano/lungo-002.webp', grade: 4,

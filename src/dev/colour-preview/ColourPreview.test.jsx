@@ -6,6 +6,7 @@ import { colourModels, colourConfigurations } from './variants'
 import { getColourTarget, getLocalColourProduct } from './targets'
 import { demoProductIds } from '../../data/demoProducts'
 import { publishedCorrectionProducts, publicSearchProducts } from '../../data/productCatalog'
+import { fabrics } from '../../data/fabrics'
 
 afterEach(cleanup)
 
@@ -87,6 +88,9 @@ it('uses only the requested models, excludes Cannes, Fiji and Ibiza, and include
   expect(colourConfigurations).toHaveLength(22)
   expect(colourConfigurations.flatMap(target => target.colours)).toHaveLength(56)
   expect(colourConfigurations.every(target => target.colours.every(colour => colour.image))).toBe(true)
+  for (const colour of colourConfigurations.flatMap(target => target.colours)) {
+    expect(colour.swatch).toBe(fabrics.find(fabric => fabric.name === colour.name).image)
+  }
 })
 
 it('resets to the correct original when choosing another configuration of the same model', async () => {

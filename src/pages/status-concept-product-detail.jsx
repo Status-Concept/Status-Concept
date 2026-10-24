@@ -29,6 +29,10 @@ const displayDimension = (value) => /^(todo:|see source sheet)/i.test(String(val
   ? 'Available on request'
   : value;
 
+const isStandaloneDiningTable = (product, facets) => facets.category === "dining"
+  && facets.productType.includes("table")
+  && !/\b(bar|coffee|side|detail|chairs?|armchairs?|armchiars?)\b/i.test(product.name);
+
 const PRODUCT_DETAIL = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -203,19 +207,21 @@ const PRODUCT_DETAIL = () => {
   const relatedProducts = (() => {
     if (product.id === "sicily-modular-set") {
       return [
-        { id: "sicily-centre-module", name: "Sicily Centre Module", collectionName: "Sicily", category: "lounge", productType: ["modular"], img: sicilyCentreImg, route: "/product/sicily-modular-set" },
-        { id: "sicily-ottoman", name: "Sicily Ottoman", collectionName: "Sicily", category: "lounge", productType: ["pouf"], img: sicilyOttomanImg, route: "/product/sicily-modular-set" },
-      ];
+        { id: "sicily-corner-module", part: "corner", name: "Sicily Corner Module", collectionName: "Sicily", category: "lounge", productType: ["modular"], img: sicilyCornerImg },
+        { id: "sicily-centre-module", part: "centre", name: "Sicily Centre Module", collectionName: "Sicily", category: "lounge", productType: ["modular"], img: sicilyCentreImg },
+        { id: "sicily-ottoman", part: "ottoman", name: "Sicily Ottoman", collectionName: "Sicily", category: "lounge", productType: ["pouf"], img: sicilyOttomanImg },
+      ].filter((piece) => piece.part !== (selectedPart || "corner"))
+        .map((piece) => ({ ...piece, route: `/product/sicily-modular-set?part=${piece.part}` }));
     }
     const currentFacets = getProductFacets(product);
-    const isDiningTable = currentFacets.category === "dining" && currentFacets.productType.includes("table")
-      && !/\b(bar|coffee|side)\b/i.test(product.name);
+    const isDiningTable = isStandaloneDiningTable(product, currentFacets);
     return [...new Map(publicSearchProducts
-      .filter((item) => item.id !== product.id && getProductFacets(item).category === currentFacets.category)
+      .filter((item) => item.id !== product.id && !/\bdetail\b/i.test(item.name)
+        && getProductFacets(item).category === currentFacets.category)
       .map((item) => [item.id, item])).values()]
       .map((item) => ({ item, facets: getProductFacets(item) }))
       .filter(({ item, facets }) => !isDiningTable || (
-        (facets.productType.includes("table") && !/\b(bar|coffee|side)\b/i.test(item.name))
+        isStandaloneDiningTable(item, facets)
         || (currentFacets.collection && facets.collection === currentFacets.collection
           && facets.productType.some((type) => ["chair", "armchair", "dining-set"].includes(type)))
       ))

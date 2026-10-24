@@ -1,18 +1,13 @@
-import { fabricOptionsByModel } from '../../data/fabrics'
+import { fabricOptionsByModel, fabrics } from '../../data/fabrics'
 import { colourTargets } from './targets'
 
 const images = import.meta.glob('./images/*.webp', { eager: true, query: '?url', import: 'default' })
 const revisedConfigurations = new Set(['antigua', 'antigua-xl', 'oxford', 'oxford-modular', 'oxford-daybed', 'gibraltar', 'crete', 'luanda', 'sicily', 'sicily-centre'])
-// Illustrative preview tones, not calibrated supplier swatches.
-export const previewColours = {
-  'Lead Chine': '#666765', 'Sooty': '#343536', 'Nature Grey': '#b6b1a7',
-  'Savane Whisper': '#ded8ca', 'Lungo 002': '#d4cfbf',
-}
 const modelNames = { berlin: 'Berlin', sicily: 'Sicily', luanda: 'Luanda', antigua: 'Antigua', oxford: 'Oxford', bali: 'Bali', gibraltar: 'Gibraltar', crete: 'Crete Daybed' }
 export const colourConfigurations = colourTargets.map(target => ({
   ...target, name: modelNames[target.model],
   colours: fabricOptionsByModel[target.model].map(name => ({
-    name, hex: previewColours[name],
+    name, swatch: fabrics.find(fabric => fabric.name === name)?.image,
     image: images[`./images/${target.key}-${(name === 'Savane Whisper' ? 'Savanna Whisper' : name).toLowerCase().replaceAll(' ', '-')}${target.key === 'luanda-armchair' ? '-v1' : target.key === 'gibraltar' ? '-v4' : revisedConfigurations.has(target.key) ? '-v3' : ''}.webp`],
   })),
 }))
