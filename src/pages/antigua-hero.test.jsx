@@ -26,8 +26,8 @@ it('uses the Antigua poster for reduced motion', async () => {
   expect(document.querySelector('.collection-hero-banner img').getAttribute('src')).toBe('/videos/antigua-collection-hero-poster.jpg')
 })
 
-it('uses the plaster-wall studio cover for the Antigua collection card', async () => {
+it.each(['Antigua', 'Oxford'])('uses the plaster-wall studio cover for the %s collection card', async (name) => {
   render(<MemoryRouter initialEntries={['/en/products?cat=lounge&browse=collections']}><App /></MemoryRouter>)
-  const card = await screen.findByRole('link', { name: /Antigua/ })
-  expect(card.querySelector('img').getAttribute('src')).toBe('/product-images/antigua-collection-cover-studio.webp')
+  const card = await screen.findByRole('link', { name: new RegExp(name) })
+  expect(card.querySelector('img').getAttribute('src')).toBe(`/product-images/${name.toLowerCase()}-collection-cover-studio.webp`)
 })
