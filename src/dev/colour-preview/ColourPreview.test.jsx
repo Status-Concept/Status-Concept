@@ -203,3 +203,11 @@ it('also switches the main product gallery in the local Berlin product page', as
   fireEvent.click(screen.getByRole('button', { name: 'Original', exact: true }))
   await waitFor(() => expect(image.getAttribute('src')).toBe(original))
 })
+
+it('keeps Sicily gallery views available when a fabric is selected', async () => {
+  render(<MemoryRouter initialEntries={['/en/product/sicily-modular-set']}><App /></MemoryRouter>)
+  fireEvent.click(await screen.findByRole('button', { name: 'Lungo 002', exact: true }))
+  expect(screen.getByRole('button', { name: 'View image 3' })).toBeTruthy()
+  fireEvent.click(screen.getByRole('button', { name: 'View image 2' }))
+  expect(screen.getByRole('button', { name: 'Open full-size image' }).querySelector('img').getAttribute('src')).toContain('sicily-centre-lungo-002')
+})

@@ -22,6 +22,7 @@ import sicilyCornerImg from "../assets/images/sicily-corner.jpg";
 import sicilyCentreImg from "../assets/images/sicily-centre.jpg";
 import sicilyOttomanImg from "../assets/images/sicily-ottoman.jpg";
 import { getColourTarget, getLocalColourProduct, productColourViews } from '../dev/colour-preview/targets';
+import { colourConfigurations } from '../dev/colour-preview/variants';
 import { finishLibrary } from '../data/fabrics';
 
 const ProductColourPicker = lazy(() => import('../dev/colour-preview/ProductColourPicker'));
@@ -67,7 +68,7 @@ const PRODUCT_DETAIL = () => {
     if (!productColourViews[id]) return;
     const alignSelectedImage = () => {
       const track = mobileGallery.current;
-      const image = track?.children[previewColour ? 0 : activeImg] || track?.firstElementChild;
+      const image = track?.children[activeImg] || track?.firstElementChild;
       if (image) track.scrollLeft = image.offsetLeft - track.firstElementChild.offsetLeft;
     };
     alignSelectedImage();
@@ -161,11 +162,14 @@ const PRODUCT_DETAIL = () => {
       }
     : allProducts[id] || localColourProduct;
   if (!product) return <NotFound />;
-  const previewTarget = getColourTarget(id, selectedPart, activeImg);
+  const previewTarget = getColourTarget(id, null, activeImg);
   const hasColourPreview = Boolean(previewTarget);
-  const images = hasColourPreview && previewColour
-    ? [previewColour.image]
-    : (hasColourPreview && selectedPart ? [previewTarget.original] : limitPageImages(product.images?.length ? product.images : [product.image || sicilyCornerImg], product));
+  const originals = limitPageImages(product.images?.length ? product.images : [product.image || sicilyCornerImg], product);
+  const images = originals.map((image, index) => {
+    if (!previewColour) return image;
+    const target = getColourTarget(id, null, index);
+    return colourConfigurations.find(item => item.key === target?.key)?.colours.find(colour => colour.name === previewColour.name)?.image || image;
+  });
   const safeActiveImg = activeImg < images.length ? activeImg : 0;
   const previewImageError = () => {
     if (hasColourPreview && previewColour) { setPreviewColour(null); setPreviewError(true); }
@@ -344,7 +348,7 @@ const PRODUCT_DETAIL = () => {
                 type="button"
                 aria-label={`View image ${index + 1}`}
                 aria-pressed={safeActiveImg === index}
-                onClick={() => { if (!previewColour) { setActiveImg(index); setPreviewError(false); } }}
+                onClick={() => { setActiveImg(index); setPreviewError(false); }}
                 style={{ padding: 0, border: "none", background: "none", cursor: "pointer", display: "block" }}
               >
                 <img
@@ -362,13 +366,13 @@ const PRODUCT_DETAIL = () => {
           <div className="rd-main-photo">
             {product.tag && <span className={`tag ${product.tag === "New" ? "tag-new" : "tag-popular"}`} style={{ position: "absolute", top: 16, left: 16, zIndex: 3 }}>{product.tag}</span>}
             <div ref={mobileGallery} className="rd-mobile-gallery-track" aria-label="Swipe through product images" onScroll={event => {
-              if (!productColourViews[id] || previewColour) return;
+              if (!productColourViews[id]) return;
               const track = event.currentTarget;
               const index = [...track.children].findIndex(image => Math.abs(image.offsetLeft - track.firstElementChild.offsetLeft - track.scrollLeft) < 2);
               if (index >= 0 && index !== activeImg) { setActiveImg(index); setPreviewError(false); }
             }}>
               {images.map((image, index) => (
-                <button key={`${image}-mobile-${index}`} type="button" onClick={() => { if (!previewColour) setActiveImg(index); setLightboxOpen(true) }} aria-label={`Open image ${index + 1}`}>
+                <button key={`${image}-mobile-${index}`} type="button" onClick={() => { setActiveImg(index); setLightboxOpen(true) }} aria-label={`Open image ${index + 1}`}>
                   <img src={image} srcSet={productSrcSet(image)} sizes="88vw" alt={`${displayName} view ${index + 1}`} loading={index === 0 ? "eager" : "lazy"} decoding="async" onError={previewImageError} />
                 </button>
               ))}
