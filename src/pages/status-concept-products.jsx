@@ -453,7 +453,7 @@ const PRODUCTS_PAGE = () => {
     const grouped = collectionPrefixes[prefix] > 1;
     const name = grouped ? prefix : originalName;
     const key = slug(name);
-    return [key, { key, name, productId: product.standalone ? product.id : null, image: product.standalone ? product.img : key === "bali" ? baliCollectionCover : key === "florida" ? floridaCollectionCover : key === "berlin" ? berlinCollectionCover : product.heroImage || product.img }];
+    return [key, { key, name, productId: product.standalone ? product.id : null, image: product.standalone ? product.img : key === "bali" ? baliCollectionCover : key === "florida" ? floridaCollectionCover : key === "berlin" ? berlinCollectionCover : key === "antigua" ? "/product-images/antigua-collection-cover-studio.webp" : product.heroImage || product.img }];
   })).values()]
     .map((collection) => ({
       ...collection,
