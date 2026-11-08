@@ -8,13 +8,13 @@ afterEach(() => {
   vi.unstubAllGlobals()
 })
 
-it.each(['en', 'pt'])('uses the Antigua film on the %s collection page', async (lang) => {
-  render(<MemoryRouter initialEntries={[`/${lang}/products?cat=lounge&collection=antigua`]}><App /></MemoryRouter>)
+it.each([['antigua', 'en'], ['antigua', 'pt'], ['oxford', 'en'], ['oxford', 'pt']])('uses the new %s film on the %s collection page', async (collection, lang) => {
+  render(<MemoryRouter initialEntries={[`/${lang}/products?cat=lounge&collection=${collection}`]}><App /></MemoryRouter>)
   await screen.findAllByRole('article')
   const video = document.querySelector('.collection-hero-banner video')
-  expect(video?.querySelector('source').getAttribute('src')).toBe('/videos/antigua-collection-hero.mp4')
-  expect(video.getAttribute('poster')).toBe('/videos/antigua-collection-hero-poster.jpg')
-  expect(video.closest('section').style.aspectRatio).toBe('2068 / 1000')
+  expect(video?.querySelector('source').getAttribute('src')).toBe(`/videos/${collection}-collection-hero-20261105.mp4`)
+  expect(video.getAttribute('poster')).toBe(`/videos/${collection}-collection-hero-20261105-poster.jpg`)
+  expect(video.closest('section').style.aspectRatio).toBe('16 / 9')
   expect(video.autoplay && video.loop && video.muted && video.hasAttribute('playsinline')).toBe(true)
 })
 
@@ -23,7 +23,7 @@ it('uses the Antigua poster for reduced motion', async () => {
   render(<MemoryRouter initialEntries={['/en/products?cat=lounge&collection=antigua']}><App /></MemoryRouter>)
   await screen.findAllByRole('article')
   expect(document.querySelector('.collection-hero-banner video')).toBeNull()
-  expect(document.querySelector('.collection-hero-banner img').getAttribute('src')).toBe('/videos/antigua-collection-hero-poster.jpg')
+  expect(document.querySelector('.collection-hero-banner img').getAttribute('src')).toBe('/videos/antigua-collection-hero-20261105-poster.jpg')
 })
 
 it.each(['Antigua', 'Oxford'])('uses the plaster-wall studio cover for the %s collection card', async (name) => {

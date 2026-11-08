@@ -36,9 +36,10 @@ const COLLECTION_VIDEOS = {
   luanda: "luanda-collection-hero",
   miami: "miami-collection-hero",
   florida: "florida-collection-hero",
-  berlin: "berlin-editorial-full-v4",
+  berlin: "berlin-collection-hero-20261105",
   maya: "maya-collection-hero",
-  antigua: "antigua-collection-hero",
+  antigua: "antigua-collection-hero-20261105",
+  oxford: "oxford-collection-hero-20261105",
 };
 
 // Reviewed families with distinct published pieces/configurations, not colour/photo counts.
@@ -505,7 +506,7 @@ const PRODUCTS_PAGE = () => {
       ) : (
         <>
           {!hasSearch && activeBanner && (
-            <section className={`prod-banner ${hasBrowseViews ? "catalogue-category-banner" : ""} ${isSpecificCollectionPage ? "collection-hero-banner" : ""} ${collectionParam === "bali" ? "bali-collection-hero" : ""} ${collectionParam === "florida" ? "florida-collection-hero" : ""} ${collectionParam === "berlin" ? "berlin-collection-hero" : ""}`} style={collectionParam === "maya" ? { height: "auto", aspectRatio: "720 / 481" } : collectionParam === "antigua" ? { height: "auto", aspectRatio: "2068 / 1000" } : undefined}>
+            <section className={`prod-banner ${hasBrowseViews ? "catalogue-category-banner" : ""} ${isSpecificCollectionPage ? "collection-hero-banner" : ""} ${collectionParam === "bali" ? "bali-collection-hero" : ""} ${collectionParam === "florida" ? "florida-collection-hero" : ""} ${collectionParam === "berlin" ? "berlin-collection-hero" : ""}`} style={collectionParam === "maya" ? { height: "auto", aspectRatio: "720 / 481" } : ["antigua", "oxford"].includes(collectionParam) ? { height: "auto", aspectRatio: "16 / 9" } : undefined}>
               {collectionHeroVideo && !prefersReducedMotion ? (
                 <video key={collectionHeroVideo} autoPlay loop muted playsInline preload="metadata" poster={collectionHeroPoster} aria-hidden="true">
                   <source src={`/videos/${collectionHeroVideo}.mp4`} type="video/mp4" />

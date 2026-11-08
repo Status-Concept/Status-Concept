@@ -84,8 +84,8 @@ describe('responsive collection presentation', () => {
     await screen.findByRole('heading', { name: 'Berlin Modular Sofa', exact: true }, { timeout: 5000 })
     const video = document.querySelector('.berlin-collection-hero video')
     expect(video).toBeTruthy()
-    expect(video.querySelector('source').getAttribute('src')).toBe('/videos/berlin-editorial-full-v4.mp4')
-    expect(video.getAttribute('poster')).toBe('/videos/berlin-editorial-full-v4-poster.jpg')
+    expect(video.querySelector('source').getAttribute('src')).toBe('/videos/berlin-collection-hero-20261105.mp4')
+    expect(video.getAttribute('poster')).toBe('/videos/berlin-collection-hero-20261105-poster.jpg')
     expect(video.autoplay && video.loop && video.muted).toBe(true)
     expect(video.hasAttribute('playsinline')).toBe(true)
     expect(video.hasAttribute('controls')).toBe(false)
@@ -97,7 +97,7 @@ describe('responsive collection presentation', () => {
     renderProductsAt('/en/products?cat=lounge&collection=berlin')
     await screen.findByRole('heading', { name: 'Berlin Modular Sofa', exact: true }, { timeout: 5000 })
     expect(document.querySelector('.berlin-collection-hero video')).toBeNull()
-    expect(document.querySelector('.berlin-collection-hero img').getAttribute('src')).toBe('/videos/berlin-editorial-full-v4-poster.jpg')
+    expect(document.querySelector('.berlin-collection-hero img').getAttribute('src')).toBe('/videos/berlin-collection-hero-20261105-poster.jpg')
   })
 
   it('retains a still poster when reduced motion is preferred', async () => {
