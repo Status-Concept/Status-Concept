@@ -2,8 +2,19 @@ import { useMemo, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import Layout from '../components/Layout'
 import ImageDialog from '../components/ImageDialog'
+import LocalizedLink from '../components/LocalizedLink'
 import { getLangFromPath } from '../utils/language'
 import images from '../data/statusConceptPublicImages.json'
+import { publicSearchProducts } from '../data/productCatalog'
+
+const featured = [
+  ['sicily-modular-set', '/photography/sicily-800.webp'],
+  ['berlin-modular-sofa', '/photography/berlin-800.webp'],
+  ['glatz-sombrano-s-plus', '/product-images/glatz/sombrano-s-plus/05.webp'],
+].flatMap(([id, image]) => {
+  const product = publicSearchProducts.find(item => item.id === id)
+  return product ? [{ id, name: product.name, image }] : []
+})
 
 const SOURCE_OPTIONS = [
   { key: 'all', label: 'All sources' },
@@ -26,6 +37,7 @@ export default function Images() {
   const [source, setSource] = useState('all')
   const [view, setView] = useState('grid')
   const [activeImage, setActiveImage] = useState(null)
+  const [archiveOpen, setArchiveOpen] = useState(false)
   const [page, setPage] = useState({ key: '', count: 36 })
 
   const letters = useMemo(() => (
@@ -66,12 +78,23 @@ export default function Images() {
   return (
     <Layout>
       <div className="rd-page-head images-page-head">
-        <span className="rd-kicker fs">Images</span>
-        <h1 className="rd-title ff">Image library</h1>
-        <p className="rd-lede fs">A working library of Status Concept imagery, organised by product name for quick review.</p>
+        <h1 className="rd-title ff">{isPortuguese ? 'Galeria' : 'Gallery'}</h1>
       </div>
 
       <main className="images-page">
+        <section className="images-featured" aria-label={isPortuguese ? 'Ambientes selecionados' : 'Selected settings'}>
+          {featured.map(({ id, name, image }) => (
+            <LocalizedLink className="collection-index-card" key={id} to={`/product/${id}`}>
+              <img src={image} alt="" loading="lazy" decoding="async" />
+              <div className="collection-index-caption"><h2 data-no-translate>{name}</h2></div>
+            </LocalizedLink>
+          ))}
+        </section>
+        <button type="button" className="cb cd images-archive-toggle" aria-expanded={archiveOpen} aria-controls="images-archive" onClick={() => { setActiveImage(null); setArchiveOpen(!archiveOpen) }}>
+          {archiveOpen ? (isPortuguese ? 'Fechar arquivo de imagens' : 'Close image archive') : (isPortuguese ? 'Ver arquivo completo' : 'View full archive')}
+        </button>
+        <div id="images-archive" hidden={!archiveOpen}>
+        {archiveOpen && <>
         <section className="images-toolbar" aria-label={isPortuguese ? 'Filtros de imagens' : 'Image filters'}>
           <div className="images-search fs">
             <label className="sr-only" htmlFor="image-library-search">{isPortuguese ? 'Pesquisar imagens' : 'Search images'}</label>
@@ -157,6 +180,8 @@ export default function Images() {
           <p role="status">{isPortuguese ? 'Imagens carregadas' : 'Images loaded'}: {Math.min(visibleCount, filteredImages.length)} / {filteredImages.length}</p>
           {visibleCount < filteredImages.length && <button type="button" className="cb cd fs" onClick={() => setPage({ key: filterKey, count: visibleCount + 36 })}>{isPortuguese ? 'Carregar mais imagens' : 'Load more images'}</button>}
         </div>}
+        </>}
+        </div>
       </main>
 
       {activeImage && (

@@ -193,9 +193,9 @@ const PRODUCT_DETAIL = () => {
   const INTEREST_BY_CATEGORY = { shade: "Shade Solutions", kitchen: "Outdoor Kitchens", lounge: "Outdoor Furniture", dining: "Outdoor Furniture", sunlounger: "Outdoor Furniture", decor: "Decor & Leisure", leisure: "Decor & Leisure" };
   const selectedSize = product.sizeOptions?.find((option) => option.sku === selectedSizeSku) || product.sizeOptions?.[0];
   const enquiryProduct = selectedSize ? `${displayName} (${selectedSize.label}, SKU: ${selectedSize.sku})` : displayName;
-  const selectedFinishes = [previewColour && `Fabric: ${previewColour.name}`, frameFinish && `Frame: ${frameFinish}`].filter(Boolean);
+  const selectedFinishes = [previewColour && `${currentLang === "pt" ? "Tecido" : "Fabric"}: ${previewColour.name}`, frameFinish && `${currentLang === "pt" ? "Estrutura" : "Frame"}: ${frameFinish}`].filter(Boolean);
   const enquiryName = selectedFinishes.length ? `${enquiryProduct} — ${selectedFinishes.join('; ')}` : enquiryProduct;
-  const enquireState = { product: enquiryName, interest: INTEREST_BY_CATEGORY[product.category] || "" };
+  const proposalPath = `/contact?${new URLSearchParams({ enquiry: "1", product: enquiryName, interest: INTEREST_BY_CATEGORY[product.category] || "" })}`;
 
   const kitchenHero = product.category === "kitchen"
     ? kitchenCollectionHeroes[product.collectionSlug || passedProduct?.collection]
@@ -347,7 +347,7 @@ const PRODUCT_DETAIL = () => {
       <div className="rd-detail-topbar">
         <button type="button" className="rd-detail-back" onClick={goBack}>
           <span aria-hidden="true">←</span>
-          <span>Back</span>
+          <span data-no-translate>{currentLang === "pt" ? "Voltar" : "Back"}</span>
         </button>
       </div>
 
@@ -396,9 +396,8 @@ const PRODUCT_DETAIL = () => {
         </section>
 
         <aside className="rd-product-panel">
-          {!product.standalone && <span className="rd-kicker fs" style={{ marginTop: 28 }}>{product.collection} Collection</span>}
+          {!product.standalone && <span className="rd-kicker fs" data-no-translate>{currentLang === "pt" ? `Conjunto ${product.collection}` : `${product.collection} Collection`}</span>}
           <h1 className="rd-title ff" data-no-translate style={{ color: "var(--text-dark)", fontSize: "clamp(32px, 4vw, 48px)", fontWeight: 400 }}>{displayName}</h1>
-          <div className="la" style={{ marginBottom: 20 }} />
           {product.tagline && <p className="rd-lede fs">{product.tagline}</p>}
           {product.publishedCorrection && <p className="rd-lede fs">{currentLang === "pt"
             ? "Imagem ilustrativa; confirme o modelo e os acabamentos com a nossa equipa."
@@ -453,9 +452,9 @@ const PRODUCT_DETAIL = () => {
             </div>
           )}
 
-          <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginBottom: 28 }}>
-            <LocalizedLink className="cb cg" to="/contact" state={enquireState}>Request a proposal</LocalizedLink>
-            <LocalizedLink className="cb cd" to="/contact" state={enquireState}>Book a showroom visit</LocalizedLink>
+          <div className="statvs-product-actions">
+            <LocalizedLink className="cb cg" to={proposalPath}>Request a proposal</LocalizedLink>
+            <LocalizedLink className="cb cd" to="/about">{currentLang === "pt" ? "Visitar showroom" : "Visit a showroom"}</LocalizedLink>
             <a className="cb cd" href={whatsappUrl(`Hello STATVS, I'm interested in the ${enquiryName}.`)} target="_blank" rel="noopener noreferrer">WhatsApp us</a>
           </div>
 
@@ -534,7 +533,7 @@ const PRODUCT_DETAIL = () => {
       </section>
 
       <div className="rd-mobile-cta">
-        <LocalizedLink className="cb cg" style={{ width: "100%", justifyContent: "center" }} to="/contact" state={enquireState}>Request a proposal</LocalizedLink>
+        <LocalizedLink className="cb cg" style={{ width: "100%", justifyContent: "center" }} to={proposalPath}>Request a proposal</LocalizedLink>
       </div>
 
       {lightboxOpen && (

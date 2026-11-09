@@ -1,27 +1,13 @@
-import { afterEach, expect, it, vi } from 'vitest'
+import { afterEach, expect, it } from 'vitest'
 import { cleanup, render, screen } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import App from '../App'
 
-afterEach(() => {
-  cleanup()
-  vi.unstubAllGlobals()
-})
+afterEach(cleanup)
 
-it.each(['en', 'pt'])('uses the MAYA film on the %s collection page', async (lang) => {
+it.each(['en', 'pt'])('redirects the discontinued MAYA collection to Lounge in %s', async (lang) => {
   render(<MemoryRouter initialEntries={[`/${lang}/products?cat=lounge&collection=maya`]}><App /></MemoryRouter>)
-  await screen.findAllByRole('article')
-  const video = document.querySelector('.collection-hero-banner video')
-  expect(video?.querySelector('source').getAttribute('src')).toBe('/videos/maya-collection-hero.mp4')
-  expect(video.getAttribute('poster')).toBe('/videos/maya-collection-hero-poster.jpg')
-  expect(video.closest('section').style.aspectRatio).toBe('720 / 481')
-  expect(video.autoplay && video.loop && video.muted && video.hasAttribute('playsinline')).toBe(true)
-})
-
-it('uses the MAYA poster instead of autoplay for reduced motion', async () => {
-  vi.stubGlobal('matchMedia', () => ({ matches: true }))
-  render(<MemoryRouter initialEntries={['/en/products?cat=lounge&collection=maya']}><App /></MemoryRouter>)
-  await screen.findAllByRole('article')
-  expect(document.querySelector('.collection-hero-banner video')).toBeNull()
-  expect(document.querySelector('.collection-hero-banner img').getAttribute('src')).toBe('/videos/maya-collection-hero-poster.jpg')
+  expect(await screen.findByRole('heading', { name: 'Duna', exact: true })).toBeTruthy()
+  expect(screen.queryByRole('heading', { name: /maya/i })).toBeNull()
+  expect(document.querySelector('.collection-hero-banner')).toBeNull()
 })

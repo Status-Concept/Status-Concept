@@ -21,7 +21,7 @@
   --max-width: 1240px;
   --max-width-wide: 1800px;
   --section-padding: clamp(60px, 10vw, 120px);
-  --header-h: 104px;
+  --header-h: 105px;
   /* Soft, layered, warm-ink shadows + easing for a premium feel */
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
   --shadow-sm: 0 1px 2px rgba(28,27,24,.04), 0 2px 8px rgba(28,27,24,.05);

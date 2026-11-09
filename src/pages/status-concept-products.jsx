@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { Navigate, useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import Layout from "../components/Layout";
+import CatalogueToolbar from "../components/CatalogueToolbar";
 import LocalizedLink from "../components/LocalizedLink";
 import NoImagePlaceholder from "../components/NoImagePlaceholder";
 import FavoriteButton from "../FavoriteButton";
@@ -8,7 +9,8 @@ import { productSrcSet } from "../utils/imageVariants";
 import { productThumbnail } from "../utils/productThumbnail";
 import { kitchenCollectionHeroes, kitchenCollectionMeta, kitchenProducts } from "../data/kitchenProducts";
 import { catalogProducts } from "../data/catalogProducts";
-import { publicSearchProducts as allProducts } from "../data/productCatalog";
+import { publicSearchProducts as allProducts, routableProducts } from "../data/productCatalog";
+import { discontinuedCatalogueProductIds } from "../data/discontinuedCatalogueProducts";
 import { baliCollectionCover, baliCollectionHero } from "../data/baliCollection";
 import { floridaCollectionCover, floridaCollectionHero } from "../data/floridaCollection";
 import { berlinCollectionCover, berlinCollectionHero } from "../data/berlinCollection";
@@ -63,6 +65,16 @@ const SUBCATEGORIES = {
     { key: "accessories", label: "Attachments & accessories" },
     { key: "bbq", label: "BBQs" },
   ],
+};
+
+const FILTER_LABELS = {
+  sofa: "Sofás", modular: "Modular", armchair: "Poltronas", pouf: "Pufes",
+  table: "Mesas", chair: "Cadeiras", "bar-stool": "Bancos de bar",
+  "coffee-table": "Mesas de centro", "side-table": "Mesas de apoio",
+  "sun-lounger": "Espreguiçadeiras", "day-bed": "Camas de exterior",
+  upholstered: "Estofado", rope: "Corda", aluminium: "Alumínio",
+  pergolas: "Pérgolas", parasols: "Chapéus de sol", awnings: "Toldos",
+  accessories: "Acessórios", bbq: "Barbecues",
 };
 
 const productSearchText = (product) => JSON.stringify({
@@ -184,75 +196,16 @@ const CATEGORY_LABELS = {
 export const productBrandLabel = (product) => product.supplier?.trim()
   || (product.category === "kitchen" ? productCollectionLabel(product) || CATEGORY_LABELS[product.category] : product.categoryLabel || CATEGORY_LABELS[product.category] || "Outdoor living");
 
-// Auto-advancing category carousel — slides right-to-left one tile every 5s, looping.
-// Fully responsive via CSS container-query units: tile width is a fraction of the
-// carousel (4/3/2/1 tiles by size), so nothing is ever cut off and the page never
-// overflows. Each tile is exactly 1/items of the track, so one step = a fixed %.
-function CategoryCarousel({ categories, onOpen }) {
-  const [idx, setIdx] = useState(0);
-  const [animate, setAnimate] = useState(true);
-  const prefersReducedMotion = typeof window !== "undefined"
-    && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
-  const [hovered, setHovered] = useState(false); // pause while the pointer is over it
-  const items = [...categories, ...categories]; // duplicated for a seamless loop
-  const stepPct = 100 / items.length; // one tile as a percentage of the whole track
-
-  useEffect(() => {
-    if (prefersReducedMotion) return;
-    // At the duplicate seam: let the slide finish, then jump back to the start instantly.
-    if (idx === categories.length) {
-      const t = setTimeout(() => { setAnimate(false); setIdx(0); }, 700);
-      return () => clearTimeout(t);
-    }
-    // Just after the instant jump: re-enable the sliding transition.
-    if (!animate) {
-      const t = setTimeout(() => setAnimate(true), 20);
-      return () => clearTimeout(t);
-    }
-    // Don't schedule the next advance while the pointer or keyboard focus is over it.
-    if (hovered) return;
-    // Normal cadence: advance one tile every 5s.
-    const t = setTimeout(() => setIdx((i) => i + 1), 5000);
-    return () => clearTimeout(t);
-  }, [idx, animate, categories.length, hovered, prefersReducedMotion]);
-
+function CategoryGrid({ categories, label }) {
   return (
-    <div
-      className="cat-carousel"
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      onFocusCapture={() => setHovered(true)}
-      onBlurCapture={(e) => { if (!e.currentTarget.contains(e.relatedTarget)) setHovered(false); }}
-    >
-      <div
-        className="cat-carousel-track"
-        style={{
-          transform: `translateX(-${idx * stepPct}%)`,
-          transition: animate ? "transform .7s cubic-bezier(0.16, 1, 0.3, 1)" : "none",
-        }}
-      >
-        {items.map((category, i) => {
-          const isClone = i >= categories.length;
-          return (
-          <button
-            key={`${category.key}-${i}`}
-            type="button"
-            className="cat-chip"
-            data-category-key={category.key}
-            aria-label={category.title}
-            aria-hidden={isClone || undefined}
-            tabIndex={isClone ? -1 : 0}
-            onClick={() => onOpen(category.key)}
-          >
-            <span className="cat-chip-img">
-              <img src={category.chip} alt="" loading="lazy" />
-            </span>
-            <span className="lbl">{category.label}</span>
-          </button>
-          );
-        })}
-      </div>
-    </div>
+    <nav className="cat-strip landing" aria-label={label}>
+      {categories.map(category => (
+        <LocalizedLink key={category.key} className="cat-chip" to={`/products?cat=${category.key}`} aria-label={category.title}>
+          <span className="cat-chip-img"><img src={category.chip} alt="" loading="lazy" /></span>
+          <span className="lbl">{category.label}<svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M4 12h15m-6-6 6 6-6 6" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" /></svg></span>
+        </LocalizedLink>
+      ))}
+    </nav>
   );
 }
 
@@ -263,6 +216,7 @@ const PRODUCTS_PAGE = () => {
   const catParam = searchParams.get("cat");
   const queryParam = searchParams.get("q")?.trim() || "";
   const collectionParam = (searchParams.get("collection")?.trim() || "").replace(/^florida-dining$/, "florida").replace(/^berlin-modular$/, "berlin");
+  const familyParam = searchParams.get("family")?.trim() || "";
   const typeParam = searchParams.get("type")?.trim().toLowerCase() || LEGACY_CATEGORY_TYPES[catParam] || "";
   const subcategoryParam = searchParams.get("subcat")?.trim().toLowerCase() || "";
   const kitchenModeParam = searchParams.get("mode")?.trim().toLowerCase() || "";
@@ -275,18 +229,17 @@ const PRODUCTS_PAGE = () => {
   const sortBy = searchParams.get("sort") === "name" ? "name" : "featured";
   const collectionView = searchParams.get("browse") === "collections";
   const [searchInput, setSearchInput] = useState(queryParam);
-  const [shareStatus, setShareStatus] = useState("");
-  const [shareUrl, setShareUrl] = useState("");
+
 
   useEffect(() => {
     setSearchInput(queryParam);
   }, [queryParam]);
 
-  const catalogImg = (category) => catalogProducts.find((product) => getProductFacets(product).category === category)?.img || furnitureSeriesImg;
+  const catalogImg = (category) => catalogProducts.find((product) => !discontinuedCatalogueProductIds.has(product.id) && getProductFacets(product).category === category)?.img || furnitureSeriesImg;
 
   const categories = [
-    { key: "lounge", label: "Lounge", chip: sicilyCornerImg, banner: sicilyModularSetFullImg, title: "Lounge", copy: "Sofas, lounge sets and armchairs made for long Algarve afternoons." },
-    { key: "dining", label: "Dining", chip: catalogImg("dining"), banner: catalogImg("dining"), title: "Dining", copy: "Outdoor dining sets, tables and chairs for terrace meals from breakfast to late dinner." },
+    { key: "lounge", label: "Lounge", chip: "/photography/berlin-800.webp", banner: sicilyModularSetFullImg, title: "Lounge", copy: "Sofas, lounge sets and armchairs made for long Algarve afternoons." },
+    { key: "dining", label: "Dining", chip: floridaCollectionCover, banner: catalogImg("dining"), title: "Dining", copy: "Outdoor dining sets, tables and chairs for terrace meals from breakfast to late dinner." },
     { key: "tables", label: "Coffee & Side Tables", chip: catalogImg("tables"), banner: catalogImg("tables"), title: "Coffee & Side Tables", copy: "Coffee and side tables for outdoor living." },
     { key: "sunlounger", label: "Sun Loungers", chip: catalogImg("sunlounger"), banner: catalogImg("sunlounger"), title: "Sun Loungers & Day Beds", copy: "Poolside loungers and day beds built for Algarve summers." },
     { key: "shade", label: "Shade Solutions", chip: shadeChipImg, banner: shadeHeroLifestyleImg, bannerPosition: "center 34%", title: "Shade Solutions", copy: "Pergolas, parasols and awnings for gardens, terraces and outdoor rooms." },
@@ -313,7 +266,7 @@ const PRODUCTS_PAGE = () => {
     : null;
 
   const hasSearch = Boolean(queryParam);
-  const isSpecificCollectionPage = Boolean(collectionParam) && !hasSearch;
+  const isSpecificCollectionPage = Boolean(collectionParam) && !hasSearch && !isKitchenCategory;
   const isLanding = !activeCategory && !hasSearch;
   const selectedCategory = categories.find((category) => category.key === activeCategory);
   const kitchenPageLabel = isBuiltInKitchen ? "Built-in Kitchens" : "Modular Kitchens";
@@ -323,7 +276,7 @@ const PRODUCTS_PAGE = () => {
     : selectedCategory?.copy;
   const searchMatches = useMemo(() => searchProducts(allProducts, queryParam), [queryParam]);
   const unfilteredCollectionMatch = useMemo(() => findProductCollectionMatch(allProducts, queryParam), [queryParam]);
-  const collectionSearchMatch = activeCategory || collectionParam || activeSubcategory || typeParam
+  const collectionSearchMatch = activeCategory || collectionParam || familyParam || activeSubcategory || typeParam
     || !EDITORIAL_COLLECTION_KEYS.has(unfilteredCollectionMatch?.key)
     ? null
     : unfilteredCollectionMatch;
@@ -334,9 +287,9 @@ const PRODUCTS_PAGE = () => {
 
   const filteredProducts = (() => {
     if (!activeCategory && !hasSearch) return [];
-    const candidates = expandProductCollection(hasSearch ? searchCountProducts : allProducts, activeCategory === "lounge" ? collectionParam : "");
+    const candidates = expandProductCollection(hasSearch ? searchCountProducts : allProducts, activeCategory === "lounge" ? (collectionParam || familyParam) : "");
     const base = refineProductResults(candidates, {
-      category: activeCategory, collection: isKitchenCategory ? activeKitchenCollection : collectionParam,
+      category: activeCategory, collection: isKitchenCategory ? activeKitchenCollection : (collectionParam || familyParam),
       subcategory: activeSubcategory, type: typeParam, builtIn: isBuiltInKitchen,
     });
 
@@ -350,33 +303,7 @@ const PRODUCTS_PAGE = () => {
       return (b.tag ? 1 : 0) - (a.tag ? 1 : 0);
     });
   })();
-  const displayedProducts = collectionSearchMatch && hasSearch
-    ? []
-    : filteredProducts;
-
-  const activeRefinementLabel = (() => {
-    if (!activeCategory) return null;
-    if (activeSubcategory) {
-      return activeSubcategories.find((item) => item.key === activeSubcategory)?.label || activeSubcategory;
-    }
-    if (activeCategory === "kitchen") return isBuiltInKitchen ? kitchenPageLabel : null;
-    if (collectionParam) {
-      const match = allProducts.find(
-        (product) => getProductFacets(product).category === activeCategory
-          && (slug(product.collectionName || product.collection) === collectionParam
-            || slug(product.collectionName || product.collection).startsWith(`${collectionParam}-`)),
-      );
-      return match
-        ? (slug(match.collectionName || match.collection) === collectionParam
-            ? (match.collectionName || match.collection)
-            : (match.collectionName || match.collection).trim().split(/\s+/)[0])
-        : null;
-    }
-    if (typeParam) {
-      return typeParam.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
-    }
-    return null;
-  })();
+  const displayedProducts = filteredProducts;
 
   const searchCategoryCounts = categories.map((category) => ({
     ...category,
@@ -387,8 +314,6 @@ const PRODUCTS_PAGE = () => {
   const favPayload = (product) => ({ id: product.id || slug(product.name), name: product.name, collection: product.collectionName || product.collection, img: productThumbnail(product), category: product.category, route: productRoute(product) });
   const goTo = (path, state) => navigate(withLang(path, currentLang), state ? { state } : undefined);
   const updateProductQuery = (changes) => {
-    setShareStatus("");
-    setShareUrl("");
     const params = new URLSearchParams(searchParams);
     Object.entries(changes).forEach(([key, value]) => {
       if (value === null || value === undefined || value === "") params.delete(key);
@@ -398,25 +323,12 @@ const PRODUCTS_PAGE = () => {
     goTo(`/products${query ? `?${query}` : ""}`);
   };
 
-  const scrollToProducts = () => {
-    const layout = document.querySelector(".rd-products-layout");
-    if (!layout) return;
-    const headerH = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--header-h")) || 104;
-    const target = layout.getBoundingClientRect().top + window.scrollY - headerH - 12;
-    if (window.scrollY > target) window.scrollTo({ top: target, behavior: "smooth" });
-  };
-
-  const openCategory = (key) => goTo(`/products?cat=${key}`);
   const goBackFromProducts = () => {
     if (window.history.state?.idx > 0) {
       navigate(-1);
       return;
     }
     goTo(collectionParam && activeCategory ? `/products?cat=${activeCategory}` : "/products");
-  };
-  const selectKitchenCollection = (key) => {
-    updateProductQuery({ cat: "kitchen", mode: null, collection: key, type: null });
-    requestAnimationFrame(scrollToProducts);
   };
   const setSearchScope = (key) => {
     const query = encodeURIComponent(queryParam);
@@ -426,17 +338,6 @@ const PRODUCTS_PAGE = () => {
     event.preventDefault();
     const cleanQuery = searchInput.trim();
     updateProductQuery({ q: cleanQuery || null });
-  };
-
-  const shareSelection = async () => {
-    const url = window.location.href;
-    try {
-      await navigator.clipboard.writeText(url);
-      setShareStatus(currentLang === "pt" ? "Ligação copiada" : "Link copied");
-    } catch {
-      setShareUrl(url);
-      setShareStatus(currentLang === "pt" ? "Selecione e copie a ligação abaixo." : "Select and copy the link below.");
-    }
   };
 
   const categoryCollectionProducts = activeCategory && activeCategory !== "kitchen"
@@ -462,15 +363,23 @@ const PRODUCTS_PAGE = () => {
         || slug(product.collectionName || product.collection).startsWith(`${collection.key}-`)).length
         + (activeCategory === "lounge" && ["sicily", "bermuda"].includes(collection.key) ? 2 : 0),
     }));
-  const collections = collectionGroups.map((collection) => collection.name);
   const hasBrowseViews = ["lounge", "dining", "sunlounger"].includes(activeCategory) && !hasSearch && !collectionParam;
   const editorialCollections = collectionGroups.filter(collection => !collection.productId
-    && EDITORIAL_COLLECTION_KEYS.has(collection.key)
-    && refineProductResults(categoryCollectionProducts, { category: activeCategory, collection: collection.key, subcategory: activeSubcategory, type: typeParam }).length > 0);
-  const showCollectionChooser = hasBrowseViews && collectionView;
+    && EDITORIAL_COLLECTION_KEYS.has(collection.key));
 
+  const pt = currentLang === "pt";
+  const categoryTypes = PRODUCT_CATEGORIES.find(category => category.key === activeCategory)?.types || [];
+  const typeOptions = !isKitchenCategory && activeCategory !== "shade" ? categoryTypes : [];
+  const familyOptions = collectionGroups
+    .filter(group => !group.productId && (activeCategory === "lounge" ? EDITORIAL_COLLECTION_KEYS.has(group.key) : group.count > 1))
+    .map(({ key, name }) => ({ value: key, label: name }));
+  const fields = [
+    ...(typeOptions.length || typeParam ? [{ key: "type", label: pt ? "Tipo de produto" : "Product type", value: typeParam, options: typeOptions.map(({ value, label }) => ({ value, label: pt ? (FILTER_LABELS[value] || label) : label })) }] : []),
+    ...(!isBuiltInKitchen && activeSubcategories.length ? [{ key: "subcat", label: activeCategory === "lounge" ? "Material" : (pt ? "Tipo de produto" : "Product type"), value: activeSubcategory, options: activeSubcategories.map(({ key, label }) => ({ value: key, label: pt ? (FILTER_LABELS[key] || label) : label })) }] : []),
+    ...(!isKitchenCategory && !isSpecificCollectionPage && (familyOptions.length > 1 || familyParam || collectionParam) ? [{ key: collectionParam ? "collection" : "family", label: pt ? "Conjunto" : "Collection", value: collectionParam || familyParam, options: familyOptions }] : []),
+    ...(isKitchenCategory && !isBuiltInKitchen ? [{ key: "collection", label: pt ? "Gama" : "Range", value: collectionParam, emptyLabel: !hasSearch ? kitchenCollections[0]?.label : undefined, options: kitchenCollections.filter(({ key }, index) => hasSearch || index > 0 || key === collectionParam).map(({ key, label }) => ({ value: key, label })) }] : []),
+  ];
   const hasImage = productHasImage;
-  const activeRange = kitchenCollections.find((collection) => collection.key === activeKitchenCollection);
   const activeBanner = isKitchenCategory && activeKitchenCollection
     ? (kitchenCollectionHeroes[activeKitchenCollection] || selectedCategory.banner)
     : collectionParam === "bali" ? baliCollectionHero : collectionParam === "florida" ? floridaCollectionHero : collectionParam === "berlin" ? berlinCollectionHero : selectedCategory?.banner;
@@ -478,8 +387,16 @@ const PRODUCTS_PAGE = () => {
     ? COLLECTION_VIDEOS[collectionParam]
     : null;
   const collectionHeroPoster = collectionHeroVideo ? `/videos/${collectionHeroVideo}-poster.jpg` : activeBanner;
+  const compactCollection = isSpecificCollectionPage && displayedProducts.length <= 4 && !typeParam && !activeSubcategory && !familyParam;
   const prefersReducedMotion = typeof window !== "undefined"
     && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+
+  if (isSpecificCollectionPage && activeCategory && !isKitchenCategory) {
+    const scope = { category: activeCategory, collection: collectionParam };
+    if (!refineProductResults(allProducts, scope).length && refineProductResults(routableProducts, scope).length) {
+      return <Navigate to={withLang(`/products?cat=${activeCategory}`, currentLang)} replace />;
+    }
+  }
 
   const standaloneProduct = allProducts.find((product) => product.standalone && product.collection === collectionParam);
   if (standaloneProduct) return <Navigate to={withLang(`/product/${standaloneProduct.id}`, currentLang)} replace />;
@@ -487,26 +404,55 @@ const PRODUCTS_PAGE = () => {
     ? refineProductResults(allProducts, { category: activeCategory, collection: collectionParam }) : [];
   if (singletonCollection.length === 1) return <Navigate to={withLang(`/product/${singletonCollection[0].id}`, currentLang)} replace />;
 
+  if (hasBrowseViews && collectionView) {
+    const productsQuery = new URLSearchParams(searchParams);
+    productsQuery.delete("browse");
+    return (
+      <Layout>
+        <main className="collection-index">
+          <header className="collection-index-intro statvs-frame">
+            <h1>{pt ? "Conjuntos" : "Collections"}</h1>
+            <LocalizedLink className="collection-index-link statvs-text-link" to={`/products?${productsQuery}`}>{pt ? "Ver produtos" : "View products"}</LocalizedLink>
+          </header>
+          <section className="collection-index-grid statvs-frame" aria-label={pt ? "Conjuntos" : "Collections"}>
+            {editorialCollections.map(({ key, name, image }, index) => (
+              <LocalizedLink key={key} className="collection-index-card" to={`/products?${new URLSearchParams({ cat: activeCategory, collection: key })}`}>
+                {image && <img src={image} alt="" loading={index ? "lazy" : "eager"} decoding="async" />}
+                <div className="collection-index-caption">
+                  <h2>{key === "luanda" ? "Luanda" : name}</h2>
+                  <svg aria-hidden="true" viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.25">
+                    <path d="M2.5 8h10.75M9 3.75 13.25 8 9 12.25" />
+                  </svg>
+                </div>
+              </LocalizedLink>
+            ))}
+            {!editorialCollections.length && <p>{pt ? "Não há conjuntos nesta categoria." : "There are no collections in this category."}</p>}
+          </section>
+        </main>
+      </Layout>
+    );
+  }
+
   return (
     <Layout>
       {isLanding ? (
-        <>
-          <section className="prod-banner">
-            <img src={productsOverviewImg} alt="" decoding="async" fetchPriority="high" style={{ objectPosition: "center 40%" }} />
+        <main className="statvs-catalogue">
+          <section className="statvs-catalogue-hero statvs-frame" aria-labelledby="catalogue-title">
+            <div className="rd-page-head">
+              <h1 id="catalogue-title" className="rd-title ff">Products</h1>
+              <p className="rd-lede fs">Explore furniture, shade and outdoor kitchens selected for the Algarve lifestyle.</p>
+            </div>
+            <img src={productsOverviewImg} alt="" decoding="async" fetchPriority="high" />
           </section>
-          <div className="rd-page-head">
-            <span className="rd-kicker fs">Products</span>
-            <h1 className="rd-title ff">Products</h1>
-            <p className="rd-lede fs">Explore furniture, shade and outdoor kitchens selected for the Algarve lifestyle.</p>
+          <div className="rd-products-layout">
+            <CategoryGrid categories={categories} label={currentLang === "pt" ? "Categorias de produtos" : "Product categories"} />
           </div>
-          <main className="rd-products-layout">
-            <CategoryCarousel categories={categories} onOpen={openCategory} />
-          </main>
-        </>
+        </main>
       ) : (
         <>
-          {!hasSearch && activeBanner && (
-            <section className={`prod-banner ${hasBrowseViews ? "catalogue-category-banner" : ""} ${isSpecificCollectionPage ? "collection-hero-banner" : ""} ${collectionParam === "bali" ? "bali-collection-hero" : ""} ${collectionParam === "florida" ? "florida-collection-hero" : ""} ${collectionParam === "berlin" ? "berlin-collection-hero" : ""}`} style={collectionParam === "maya" ? { height: "auto", aspectRatio: "720 / 481" } : ["antigua", "oxford"].includes(collectionParam) ? { height: "auto", aspectRatio: "16 / 9" } : undefined}>
+          <div className={compactCollection ? "collection-compact-intro statvs-frame" : undefined}>
+          {!hasSearch && activeBanner && (isSpecificCollectionPage || isKitchenCategory || activeCategory === "statues") && (
+            <section className={`prod-banner ${isSpecificCollectionPage ? "collection-hero-banner" : "catalogue-category-banner"} ${compactCollection ? "collection-hero-compact" : ""} ${collectionParam === "bali" ? "bali-collection-hero" : ""} ${collectionParam === "florida" ? "florida-collection-hero" : ""} ${collectionParam === "berlin" ? "berlin-collection-hero" : ""}`} style={collectionParam === "maya" ? { height: "auto", aspectRatio: "720 / 481" } : ["antigua", "oxford"].includes(collectionParam) ? { height: "auto", aspectRatio: "16 / 9" } : undefined}>
               {collectionHeroVideo && !prefersReducedMotion ? (
                 <video key={collectionHeroVideo} autoPlay loop muted playsInline preload="metadata" poster={collectionHeroPoster} aria-hidden="true">
                   <source src={`/videos/${collectionHeroVideo}.mp4`} type="video/mp4" />
@@ -516,10 +462,13 @@ const PRODUCTS_PAGE = () => {
               )}
             </section>
           )}
-          <div className={`rd-page-head ${hasBrowseViews ? "catalogue-category-head" : ""} ${hasSearch ? "search-head" : ""} ${isKitchenCategory && !hasSearch ? "kitchen-page-head" : ""} ${isSpecificCollectionPage ? "collection-page-head" : ""}`}>
-            <button type="button" className="rd-back-to-cats" onClick={goBackFromProducts}>
+          <div className={`rd-page-head catalogue-results-heading ${hasBrowseViews ? "catalogue-category-head" : ""} ${hasSearch ? "search-head" : ""} ${isKitchenCategory && !hasSearch ? "kitchen-page-head" : ""} ${isSpecificCollectionPage ? "collection-page-head" : ""}`}>
+            {isSpecificCollectionPage && EDITORIAL_COLLECTION_KEYS.has(collectionParam) ? (
+              <LocalizedLink className="statvs-text-link" to={`/products?cat=${activeCategory}&browse=collections`}>{pt ? "Voltar aos conjuntos" : "Back to collections"}</LocalizedLink>
+            ) : <button type="button" className="rd-back-to-cats" onClick={goBackFromProducts}>
               <span aria-hidden="true">←</span> Products
-            </button>
+            </button>}
+            {hasBrowseViews && editorialCollections.length > 0 && <LocalizedLink className="statvs-text-link catalogue-collections-link" to={`/products?cat=${activeCategory}&browse=collections`}>{pt ? "Explorar conjuntos" : "Explore collections"}</LocalizedLink>}
             {hasSearch ? (
               <>
                 <span className="rd-kicker fs">Search</span>
@@ -528,21 +477,16 @@ const PRODUCTS_PAGE = () => {
               </>
             ) : (
               <>
-                {!hasBrowseViews && <span className="rd-kicker fs">Products / {isKitchenCategory ? kitchenPageLabel : selectedCategory.label}</span>}
-                <h1 className="rd-title ff">{isKitchenCategory ? kitchenPageTitle : selectedCategory.title}</h1>
-                {!hasBrowseViews && <p className="rd-lede fs">{isKitchenCategory ? kitchenPageCopy : selectedCategory.copy}</p>}
+                {!hasBrowseViews && !isSpecificCollectionPage && <span className="rd-kicker fs">Products / {isKitchenCategory ? kitchenPageLabel : selectedCategory.label}</span>}
+                <h1 className="rd-title ff">{isKitchenCategory ? kitchenPageTitle : isSpecificCollectionPage ? collectionGroups.find(item => item.key === collectionParam)?.name || selectedCategory.title : selectedCategory.title}</h1>
+                {!hasBrowseViews && !isSpecificCollectionPage && <p className="rd-lede fs">{isKitchenCategory ? kitchenPageCopy : selectedCategory.copy}</p>}
               </>
             )}
           </div>
+          </div>
 
-          <main className={`rd-products-layout ${isKitchenCategory && !hasSearch ? "kitchen-products-layout" : ""} ${isSpecificCollectionPage ? "collection-products-layout" : ""}`}>
+          <main className={`rd-products-layout ${isKitchenCategory && !hasSearch ? "kitchen-products-layout" : ""} ${isSpecificCollectionPage ? "collection-products-layout" : ""} catalogue-results-layout`}>
             <section>
-              {hasBrowseViews && <div className="rd-catalogue-browse">
-                <nav aria-label={currentLang === "pt" ? "Explorar catálogo" : "Browse catalogue"}>
-                  <button type="button" aria-pressed={!collectionView} onClick={() => updateProductQuery({ browse: null })}>{currentLang === "pt" ? "Produtos" : "Products"}</button>
-                  <button type="button" aria-pressed={collectionView} onClick={() => updateProductQuery({ browse: "collections" })}>{currentLang === "pt" ? "Coleções" : "Collections"}</button>
-                </nav>
-              </div>}
               {hasSearch && (
                 <>
                   <form className="rd-results-search" role="search" onSubmit={submitResultsSearch}>
@@ -550,14 +494,14 @@ const PRODUCTS_PAGE = () => {
                       <circle cx="10.8" cy="10.8" r="6.5" stroke="currentColor" strokeWidth="1.5" />
                       <path d="m15.7 15.7 4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
                     </svg>
-                    <label className="sr-only" htmlFor="results-search-input">{currentLang === "pt" ? "Pesquisar produtos, coleções ou materiais" : "Search products, collections or materials"}</label>
+                    <label className="sr-only" htmlFor="results-search-input">{currentLang === "pt" ? "Pesquisar produtos, conjuntos ou materiais" : "Search products, collections or materials"}</label>
                     <input
                       id="results-search-input"
                       className="ff"
                       type="search"
                       value={searchInput}
                       autoComplete="off"
-                      placeholder={currentLang === "pt" ? "Pesquisar produtos, coleções ou materiais" : "Search products, collections or materials"}
+                      placeholder={currentLang === "pt" ? "Pesquisar produtos, conjuntos ou materiais" : "Search products, collections or materials"}
                       onChange={(event) => setSearchInput(event.target.value)}
                     />
                     <button type="submit" className="fs">Search <span aria-hidden="true">→</span></button>
@@ -594,121 +538,17 @@ const PRODUCTS_PAGE = () => {
                 </div>
               )}
 
-              {isKitchenCategory && !isBuiltInKitchen && (
-                <div className="rd-range-strip" role="group" aria-label="Kitchen ranges">
-                  {kitchenCollections.map((collection) => (
-                    <button key={collection.key} type="button" data-no-translate className={`rd-range-chip ${activeKitchenCollection === collection.key ? "active" : ""}`} aria-pressed={activeKitchenCollection === collection.key} onClick={() => selectKitchenCollection(collection.key)}>
-                      {collection.label}
-                    </button>
-                  ))}
-                </div>
-              )}
+              {!compactCollection && <CatalogueToolbar
+                fields={fields}
+                count={displayedProducts.length}
+                hasSearch={hasSearch}
+                pt={pt}
+                sort={sortBy}
+                view={viewMode}
+                onChange={(changes) => updateProductQuery({ ...(activeCategory && Object.hasOwn(changes, "type") ? { cat: activeCategory } : {}), ...changes })}
+              />}
 
-              {activeSubcategories.length > 0 && !isBuiltInKitchen && !isSpecificCollectionPage && (
-                <div className="rd-filter-strip" role="group" aria-label="Filter by product type or material">
-                  {!hasBrowseViews && <span className="rd-filter-label fs">Browse by</span>}
-                  {activeSubcategories.map((item) => (
-                    <button
-                      key={item.key}
-                      type="button"
-                      className={`rd-filter-chip ${activeSubcategory === item.key ? "active" : ""}`}
-                      aria-pressed={activeSubcategory === item.key}
-                      onClick={() => updateProductQuery({
-                        cat: activeCategory,
-                        subcat: activeSubcategory === item.key ? null : item.key,
-                        collection: activeCategory === "kitchen" ? activeKitchenCollection : collectionParam,
-                        type: activeCategory === "lounge" ? typeParam : null,
-                      })}
-                    >
-                      {item.label}
-                    </button>
-                  ))}
-                </div>
-              )}
-
-              {!isSpecificCollectionPage && <div className="rd-discovery-tools fs">
-                {!showCollectionChooser && !isKitchenCategory && collections.length > 1 && (
-                  <label> {currentLang === "pt" ? "Coleção" : "Collection"}
-                    <select className="rd-select fs" value={collectionParam} onChange={(event) => updateProductQuery({ collection: event.target.value })}>
-                      <option value="">{currentLang === "pt" ? "Todas as coleções" : "All collections"}</option>
-                      {collections.map((name) => <option key={name} value={slug(name)}>{name}</option>)}
-                    </select>
-                  </label>
-                )}
-                {(collectionParam || activeSubcategory || typeParam) && <button type="button" className="rd-filter-chip" onClick={() => updateProductQuery({ collection: null, subcat: null, type: null })}>{currentLang === "pt" ? "Limpar filtros" : "Clear filters"}</button>}
-                <button type="button" className="rd-filter-chip" onClick={shareSelection} title={currentLang === "pt" ? "Partilhar seleção" : "Share selection"}>
-                  {hasBrowseViews && <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M12 16V3m-4 4 4-4 4 4M5 13v7h14v-7" /></svg>}
-                  <span className={hasBrowseViews ? "sr-only" : undefined}>{currentLang === "pt" ? "Partilhar seleção" : "Share selection"}</span>
-                </button>
-                <span role="status">{shareStatus}</span>
-                {shareUrl && <input aria-label={currentLang === "pt" ? "Ligação para partilhar" : "Link to share"} readOnly value={shareUrl} onFocus={(event) => event.target.select()} />}
-              </div>}
-
-              <div className="rd-products-toolbar">
-                <div>
-                  {hasSearch ? (
-                    <>
-                      <span className="rd-kicker fs" data-no-translate>“{queryParam}”</span>
-                      <p className="rd-count fs" aria-live="polite">{collectionSearchMatch ? "1 collection" : `${displayedProducts.length} results`}</p>
-                    </>
-                  ) : (
-                    <>
-                      {(!hasBrowseViews || activeRefinementLabel) && <span className="rd-kicker fs">
-                        {!hasBrowseViews && (collectionParam === "bali" ? "Bali" : collectionParam === "florida" ? "Florida" : isKitchenCategory ? (activeRange?.label || selectedCategory.label) : selectedCategory.label)}
-                        {activeRefinementLabel && !isSpecificCollectionPage && (
-                          <span data-no-translate style={{ display: "inline-flex", alignItems: "center", gap: 6, marginLeft: 10, padding: "2px 6px 2px 10px", background: "var(--light-grey)", borderRadius: 2, textTransform: "none", letterSpacing: 0 }}>
-                            {activeRefinementLabel}
-                            <button
-                              type="button"
-                              className="rd-clear-filter"
-                              aria-label={currentLang === "pt" ? "Limpar filtro" : "Clear filter"}
-                              onClick={() => updateProductQuery(activeSubcategory || typeParam ? { type: null, subcat: null } : { collection: null })}
-                            >×</button>
-                          </span>
-                        )}
-                      </span>}
-                      <p className="rd-count fs" aria-live="polite">{showCollectionChooser
-                        ? `${editorialCollections.length} ${currentLang === "pt" ? "coleções" : "collections"}`
-                        : `${displayedProducts.length} products shown`}</p>
-                    </>
-                  )}
-                </div>
-                {!showCollectionChooser && <div className="rd-toolbar-actions">
-                  {isSpecificCollectionPage && (activeSubcategory || typeParam) && (
-                    <button type="button" className="rd-filter-chip" onClick={() => updateProductQuery({ subcat: null, type: null })}>
-                      {currentLang === "pt" ? "Limpar filtros" : "Clear filters"}
-                    </button>
-                  )}
-                  <label className="sr-only" htmlFor="product-sort">{currentLang === "pt" ? "Ordenar produtos" : "Sort products"}</label>
-                  <select id="product-sort" className="rd-select fs" value={sortBy} onChange={(event) => updateProductQuery({ sort: event.target.value === "featured" ? null : event.target.value })}>
-                    <option value="featured">{hasSearch ? "Relevance" : "Featured"}</option>
-                    <option value="name">Name</option>
-                  </select>
-                  <div className="rd-view-toggle" role="group" aria-label={currentLang === "pt" ? "Modo de visualização" : "View mode"}>
-                    <button type="button" className={viewMode === "grid" ? "active" : ""} onClick={() => updateProductQuery({ view: null })} aria-label={currentLang === "pt" ? "Vista em grelha" : "Grid view"} aria-pressed={viewMode === "grid"}>
-                      <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M5 5h5v5H5zM14 5h5v5h-5zM5 14h5v5H5zM14 14h5v5h-5z" /></svg>
-                    </button>
-                    <button type="button" className={viewMode === "list" ? "active" : ""} onClick={() => updateProductQuery({ view: "list" })} aria-label={currentLang === "pt" ? "Vista em lista" : "List view"} aria-pressed={viewMode === "list"}>
-                      <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M5 7h14M5 12h14M5 17h14" /></svg>
-                    </button>
-                  </div>
-                </div>}
-              </div>
-
-              {showCollectionChooser ? (
-                <section className="rd-collection-choice rd-editorial-collections" aria-label={currentLang === "pt" ? "Coleções" : "Collections"}>
-                  {editorialCollections.map(collection => <LocalizedLink key={collection.key}
-                    className="rd-collection-choice-card"
-                    to={`/products?${new URLSearchParams({ ...Object.fromEntries(searchParams), collection: collection.key, browse: "products" })}`}>
-                    {collection.image && <img src={collection.image} alt="" loading="lazy" decoding="async" />}
-                    <div>
-                      <h3 className="ff">{collection.name}</h3>
-                      <span className="rd-collection-arrow" aria-hidden="true">↗</span>
-                    </div>
-                  </LocalizedLink>)}
-                  {!editorialCollections.length && <p className="rd-empty-state">{currentLang === "pt" ? "Nenhuma coleção corresponde aos filtros. Experimente a vista Produtos ou limpe os filtros." : "No collections match these filters. Try Products or clear the filters."}</p>}
-                </section>
-              ) : hasSearch && collectionSearchMatch ? (
+              {hasSearch && collectionSearchMatch && (
                 <section className="rd-collection-choice search-collection-choice" aria-label="Matching collection">
                   <button
                     type="button"
@@ -723,7 +563,8 @@ const PRODUCTS_PAGE = () => {
                     </div>
                   </button>
                 </section>
-              ) : displayedProducts.length === 0 ? (
+              )}
+              {displayedProducts.length === 0 ? (
                 hasSearch ? (
                   <div className="rd-search-empty" role="status">
                     <span className="rd-kicker fs">No results for</span>
@@ -738,7 +579,9 @@ const PRODUCTS_PAGE = () => {
                   </div>
                 ) : (
                   <div className="rd-empty-state fs" role="status" style={{ textAlign: "center", padding: "64px 24px", color: "var(--text-grey)" }}>
-                    {activeCategory === "tables"
+                    {fields.some(field => field.value && field.key !== "collection")
+                      ? (pt ? "Não há produtos com estes filtros. Experimente retirar um deles." : "No products match these filters. Try removing one.")
+                      : activeCategory === "tables"
                       ? (currentLang === "pt" ? "Ainda não há mesas de centro ou apoio publicadas individualmente. Os conjuntos continuam na secção Lounge." : "No individual coffee or side tables are listed yet. Furniture sets remain in Lounge.")
                       : isBuiltInKitchen
                       ? "Built-in kitchen products are being curated. Contact the showroom for current options."
@@ -746,8 +589,10 @@ const PRODUCTS_PAGE = () => {
                   </div>
                 )
               ) : viewMode === "grid" ? (
-                <div className="rd-product-grid editorial">
-                  {displayedProducts.map((product, index) => (
+                <div className={`rd-product-grid editorial${compactCollection && displayedProducts.length === 2 ? " collection-pair" : ""}`}>
+                  {displayedProducts.map((product, index) => {
+                    const thumbnail = compactCollection && product.curatedImages ? product.img : productThumbnail(product);
+                    return (
                     <article key={product.id || product.name} className="rd-product-card studio-product product-white-card">
                       <div className="rd-product-media">
                         <FavoriteButton
@@ -756,7 +601,7 @@ const PRODUCTS_PAGE = () => {
                           style={{ position: "absolute", top: 12, right: 12 }}
                         />
                         {hasImage(product)
-                          ? <img src={productThumbnail(product)} srcSet={productSrcSet(productThumbnail(product))} sizes="(max-width: 760px) calc(100vw - 48px), (max-width: 1100px) 50vw, 33vw" alt={product.name} loading={index < 3 ? "eager" : "lazy"} fetchPriority={index < 3 ? "high" : "auto"} decoding="async" />
+                          ? <img src={thumbnail} srcSet={productSrcSet(thumbnail)} sizes={compactCollection ? "(max-width: 760px) 90vw, 50vw" : "(max-width: 760px) calc(100vw - 48px), (max-width: 1100px) 50vw, 33vw"} alt={product.name} loading={index < 3 ? "eager" : "lazy"} fetchPriority={index < 3 ? "high" : "auto"} decoding="async" />
                           : <NoImagePlaceholder />}
                         <span className="rd-product-view fs">View product <span aria-hidden="true">↗</span></span>
                       </div>
@@ -765,7 +610,8 @@ const PRODUCTS_PAGE = () => {
                         <h3 className="ff"><LocalizedLink className="rd-card-link" data-no-translate to={productRoute(product)} state={{ product }}>{product.name}</LocalizedLink></h3>
                       </div>
                     </article>
-                  ))}
+                    );
+                  })}
                 </div>
               ) : (
                 <div className="rd-product-list">

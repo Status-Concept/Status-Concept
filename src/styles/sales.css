@@ -100,15 +100,13 @@
 }
 @media (max-width: 700px) {
   .sales-page { padding: 12px 20px 48px; }
-  .sales-intro { grid-template-columns: 1fr; margin-bottom: 42px; }
-  .sales-intro-copy { padding: 30px 24px 24px; }
-  .sales-intro h1 { font-size: clamp(50px, 12vw, 76px); }
-  .sales-lead { font-size: 20px; }
-  .sales-intro-actions { margin-top: 24px; gap: 12px 24px; }
-  .sales-hero-photo { padding: 0 20px 18px; }
-  .sales-hero-photo img { aspect-ratio: 1.7; }
+  .sales-intro { grid-template-columns: 1fr; margin-bottom: 24px; }
+  .sales-intro-copy { padding: 20px; }
+  .sales-intro h1 { font-size: clamp(36px, 10vw, 52px); margin-bottom: 8px; }
+  .sales-lead, .sales-browse, .sales-hero-photo { display: none; }
+  .sales-intro-actions { margin-top: 10px; gap: 12px; }
   .sales-catalogue { scroll-margin-top: 90px; }
-  .sales-catalogue-heading { display: block; margin-bottom: 22px; }
+  .sales-catalogue-heading { display: block; margin-bottom: 12px; }
   .sales-catalogue-heading p { margin-top: 10px; max-width: 43ch; }
   .sales-toolbar { grid-template-columns: 1fr; gap: 6px; padding: 12px 0; }
   .sales-filter { justify-content: space-between; }

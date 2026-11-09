@@ -48,7 +48,7 @@ export default function SearchPanel({ open, onClose }) {
   const [query, setQuery] = useState('')
   const [activeIndex, setActiveIndex] = useState(-1)
   const isPortuguese = getLangFromPath(location.pathname) === 'pt'
-  const searchPlaceholder = isPortuguese ? 'Pesquisar produtos, coleções ou materiais' : 'Search products, collections or materials'
+  const searchPlaceholder = isPortuguese ? 'Pesquisar produtos, conjuntos ou materiais' : 'Search products, collections or materials'
 
   const collectionMatch = useMemo(() => findProductCollectionMatch(publicSearchProducts, query), [query])
   const fullProductResults = useMemo(() => searchProducts(publicSearchProducts, query), [query])

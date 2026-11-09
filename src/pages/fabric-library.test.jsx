@@ -43,6 +43,8 @@ it('opens a named sample with its source and a prefilled enquiry', async () => {
   fireEvent.click(trigger)
   const dialog = screen.getByRole('dialog', { name: 'Lungo 002' })
   expect(dialog.querySelector('img').getAttribute('src')).toBe('/materials/divano/lungo-002.webp')
+  fireEvent.click(within(dialog).getByText(/^Compatible pieces/))
+  expect(within(dialog).getByRole('link', { name: 'Sicily Modular Set' }).getAttribute('href')).toBe('/en/product/sicily-modular-set')
   expect(screen.getByRole('link', { name: 'Ask about this finish' }).getAttribute('href'))
     .toContain('product=Fabric%20%E2%80%94%20Lungo%20002')
   fireEvent.click(screen.getByRole('button', { name: 'Close sample' }))

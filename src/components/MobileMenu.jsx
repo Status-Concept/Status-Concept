@@ -91,6 +91,7 @@ export default function MobileMenu({ open, onClose }) {
         <nav style={{display:"flex",flexDirection:"column"}}>
           {[
             {l:"Products",s:[]},
+            {l:"Collections",to:"/products?cat=lounge&browse=collections",s:[]},
             {l:"Fabric Library",s:[]},
             ...PRODUCT_MENU.map(category => ({l:category.label,to:category.to,s:category.items})),
             ...(SITE_FEATURES.projects ? [{l:"Projects",s:[]}] : []),

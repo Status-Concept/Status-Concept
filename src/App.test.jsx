@@ -26,13 +26,16 @@ describe('routing', () => {
     const articles = await screen.findAllByRole('article')
     expect(articles.length).toBeGreaterThan(0)
     expect(articles.every((article) => article.textContent.includes('Teak Carbon Line'))).toBe(true)
-    fireEvent.click(screen.getByRole('button', { name: 'Teak', exact: true }))
-    expect(screen.getByRole('button', { name: 'Attachments & accessories', exact: true }).getAttribute('aria-pressed')).toBe('true')
-    expect(screen.getAllByRole('article').every((article) => !article.textContent.includes('Teak Carbon Line'))).toBe(true)
+    fireEvent.click(screen.getByRole('button', { name: /Remove filter:.*Carbon Line/i }))
+    expect(screen.getByRole('button', { name: 'Remove filter: Attachments & accessories' })).toBeTruthy()
+    expect(screen.getAllByRole('article').some((article) => !article.textContent.includes('Teak Carbon Line'))).toBe(true)
   })
 
   it('loads the image library in batches and resets the batch when filtering', async () => {
     renderAt('/en/images')
+    expect(within(await screen.findByRole('region', { name: 'Selected settings' })).getByRole('link', { name: 'Berlin Modular Sofa' }).getAttribute('href')).toBe('/en/product/berlin-modular-sofa')
+    expect(screen.queryByRole('region', { name: 'Image gallery' })).toBeNull()
+    fireEvent.click(screen.getByRole('button', { name: 'View full archive' }))
     const gallery = await screen.findByRole('region', { name: 'Image gallery' })
     expect(within(gallery).getAllByRole('article')).toHaveLength(36)
     fireEvent.click(screen.getByRole('button', { name: 'Load more images' }))
@@ -60,6 +63,14 @@ describe('routing', () => {
     // The heading translates to PT via TranslationLayer; assert the page mounted
     // by its stable structure rather than copy.
     expect(await screen.findAllByText(/Almancil/i)).not.toHaveLength(0)
+  })
+
+  it('opens the proposal form directly with the selected product', async () => {
+    renderAt('/pt/contact?enquiry=1&product=Sicily+%E2%80%94+Lungo+002')
+    expect(await screen.findByRole('heading', { level: 1, name: 'Pedir proposta' })).toBeTruthy()
+    expect(document.querySelector('.contact-intro')).toBeNull()
+    expect(screen.getByText('Sicily — Lungo 002')).toBeTruthy()
+    expect(screen.getByRole('textbox', { name: /Message|Mensagem/ }).value).toContain('Gostaria de pedir uma proposta para: Sicily — Lungo 002')
   })
 
   it('switches showroom details and photography without losing an enquiry', async () => {
@@ -118,18 +129,18 @@ describe('routing', () => {
     const { container } = renderAt('/en/products')
     expect(await screen.findByRole('heading', { name: 'Products', level: 1 })).toBeTruthy()
 
-    const carousel = container.querySelector('.cat-carousel')
+    const carousel = within(container).getByRole('navigation', { name: 'Product categories' })
     expect(carousel).toBeTruthy()
     const categoryImages = []
     for (const name of ['Carpets', 'Decor', 'Statues']) {
-      const category = within(carousel).getByRole('button', { name })
+      const category = within(carousel).getByRole('link', { name })
       const image = category.querySelector('img')
       expect(image).toBeTruthy()
       expect(image.getAttribute('src')).toContain(`category-${name.toLowerCase()}-studio`)
       categoryImages.push(image.getAttribute('src'))
     }
     expect(new Set(categoryImages).size).toBe(3)
-    expect(within(carousel).getByRole('button', { name: 'Lounge' }).querySelector('img')).toBeTruthy()
+    expect(within(carousel).getByRole('link', { name: 'Lounge' }).getAttribute('href')).toBe('/en/products?cat=lounge')
   })
 
   it('keeps the statues URL available with its own category image', async () => {

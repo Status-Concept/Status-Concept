@@ -1,23 +1,23 @@
 import { describe, expect, it } from 'vitest'
 import { existsSync } from 'node:fs'
 import { floridaProducts, retiredFloridaProductIds, floridaCollectionCover, floridaCollectionHero } from './floridaCollection'
-import { allProducts, publicSearchProducts } from './productCatalog'
+import { allProducts, publicSearchProducts, routableProducts } from './productCatalog'
 import { findProductCollectionMatch } from '../utils/productSearch'
 
 describe('reference-based Florida collection', () => {
-  it('publishes exactly the five referenced models under Dining', () => {
+  it('keeps the five referenced Dining models routable but out of discovery', () => {
     expect(floridaProducts.map((p) => p.name)).toEqual([
       'Florida Dining', 'Florida Dining Armchair',
       'Florida Dining Table with Miami Dining Armchairs',
       'Florida Dining Table with Orlando Dining Armchairs', 'Florida Dining Set',
     ])
-    for (const products of [allProducts, publicSearchProducts]) {
+    for (const products of [allProducts, routableProducts]) {
       expect(products.filter((p) => p.collectionName === 'Florida').map((p) => p.id).sort())
         .toEqual(floridaProducts.map((p) => p.id).sort())
       expect(products.some((p) => retiredFloridaProductIds.has(p.id))).toBe(false)
     }
     expect(floridaProducts.every((p) => p.category === 'dining')).toBe(true)
-    expect(findProductCollectionMatch(publicSearchProducts, 'Florida')).toMatchObject({ count: 5, category: 'dining' })
+    expect(findProductCollectionMatch(publicSearchProducts, 'Florida')).toBeNull()
   })
 
   it('retains both Miami finishes as gallery photos, never the hover setting', () => {

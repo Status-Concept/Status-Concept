@@ -13,8 +13,8 @@ const server = await createServer({
 })
 const productIds = new Set()
 try {
-  const { publicSearchProducts } = await server.ssrLoadModule('/src/data/productCatalog.js')
-  for (const product of publicSearchProducts) productIds.add(product.id)
+  const { routableProducts } = await server.ssrLoadModule('/src/data/productCatalog.js')
+  for (const product of routableProducts) productIds.add(product.id)
   for (const name of ['bali', 'florida', 'berlin']) {
     const collection = await server.ssrLoadModule(`/src/data/${name}Collection.js`)
     const retiredIds = collection[`retired${name[0].toUpperCase()}${name.slice(1)}ProductIds`]

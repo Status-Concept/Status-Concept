@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useLayoutEffect, useRef, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import Header from './Header'
 import MobileMenu from './MobileMenu'
@@ -10,6 +10,20 @@ export default function Layout({ children }) {
   const location = useLocation()
   const navigate = useNavigate()
   const pagePath = stripLangFromPath(location.pathname)
+  const isHome = pagePath === '/'
+  const contentRef = useRef(null)
+  const query = new URLSearchParams(location.search)
+  const catalogueView = pagePath === '/products'
+    ? [query.get('cat'), query.get('browse'), query.get('collection')].join('/')
+    : ''
+
+  useLayoutEffect(() => {
+    if (window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) return
+    const entrance = contentRef.current?.animate?.([{ opacity: .88 }, { opacity: 1 }], {
+      duration: 200, easing: 'ease-out',
+    })
+    return () => entrance?.cancel()
+  }, [location.pathname, catalogueView])
   const hasPageSpecificBack = pagePath === '/products'
     || pagePath.startsWith('/product/')
     || /^\/staff\/deliveries\/[^/]+$/.test(pagePath)
@@ -24,14 +38,14 @@ export default function Layout({ children }) {
   }
 
   return (
-    <div style={{ fontFamily: "var(--font-body)", color: "var(--text-dark)", background: "var(--white)", minHeight: "100vh", overflowX: "clip", paddingTop: "var(--header-h)" }}>
+    <div style={{ fontFamily: "var(--font-body)", color: "var(--text-dark)", background: "var(--white)", minHeight: "100vh", overflowX: "clip", paddingTop: isHome ? 0 : "var(--header-h)" }}>
       <a href="#main" className="skip-link" onClick={(event) => {
         event.preventDefault()
         const content = document.getElementById('main')
         content?.focus({ preventScroll: true })
         content?.scrollIntoView({ block: 'start' })
       }}>Skip to content</a>
-      <Header onOpenMenu={() => setMenuOpen(true)} />
+      <Header overlayOnHome={isHome} onOpenMenu={() => setMenuOpen(true)} />
       <MobileMenu open={menuOpen} onClose={() => setMenuOpen(false)} />
       {showHistoryBack && (
         <div className="site-history-back-wrap">
@@ -41,7 +55,7 @@ export default function Layout({ children }) {
           </button>
         </div>
       )}
-      <div id="main" tabIndex={-1} style={{ scrollMarginTop: 'var(--header-h)' }}>{children}</div>
+      <div ref={contentRef} id="main" className="statvs-content" tabIndex={-1} style={{ scrollMarginTop: 'var(--header-h)' }}>{children}</div>
       <Footer />
     </div>
   )

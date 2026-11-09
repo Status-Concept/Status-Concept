@@ -24,8 +24,8 @@ const isExternal = (href) => href?.startsWith("tel:") || href?.startsWith("mailt
 
 export default function Footer() {
   return (
-    <footer style={{background:"var(--black)",color:"#fff",padding:"72px 48px 36px"}}>
-      <div className="footer-grid" style={{display:"grid",gridTemplateColumns:"1.5fr 1fr 1fr 1fr 1fr",gap:40,maxWidth:"var(--max-width)",margin:"0 auto",paddingBottom:48,borderBottom:"1px solid rgba(255,255,255,.1)"}}>
+    <footer className="statvs-footer">
+      <div className="footer-grid statvs-footer-grid">
         <div>
           <div style={{marginBottom:20}}>
             <LocalizedLink to="/" aria-label="STATVS home" className="brand-logo-link brand-logo-link--footer">
@@ -40,8 +40,7 @@ export default function Footer() {
         {[
           {t:"Products",ls:["Lounge","Dining","Sun Loungers","Day Beds","Coffee & Side Tables","Bar Stools"]},
           {t:"Solutions",ls:["Glatz Parasols","Bioclimatic Pergolas","Outdoor Kitchens"]},
-          {t:"Company",ls:["Why Us"]},
-          {t:"Contact",ls:["Showroom Quinta do Lago","Showroom Almancil",CONTACT.phone,CONTACT.email]},
+          {t:"Contact",ls:["Showroom Quinta do Lago","Showroom Almancil",CONTACT.phone,CONTACT.email,"Why Us"]},
         ].map(c => (
           <div key={c.t}>
             <h4 className="fs" style={{fontSize:11,letterSpacing:2.5,textTransform:"uppercase",color:"#fff",marginBottom:16,fontWeight:400}}>{c.t}</h4>

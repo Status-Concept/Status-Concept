@@ -4,7 +4,9 @@ import Layout from '../components/Layout'
 import LocalizedLink from '../components/LocalizedLink'
 import ImageDialog from '../components/ImageDialog'
 import { getLangFromPath } from '../utils/language'
-import { finishLibrary } from '../data/fabrics'
+import { fabricOptionsByModel, finishLibrary } from '../data/fabrics'
+import { publicSearchProducts } from '../data/productCatalog'
+import { getColourTarget } from '../dev/colour-preview/targets'
 import '../styles/fabric-library.css'
 
 export default function FabricLibrary() {
@@ -15,6 +17,10 @@ export default function FabricLibrary() {
   const shown = finishLibrary[material].filter(finish => [finish.name, finish.code, finish.range, finish.manufacturer, finish.supplier, finish.material].filter(Boolean).join(' ').toLowerCase().includes(query.trim().toLowerCase()))
   const clearFilters = () => { setQuery(''); setMaterial('fabric') }
   const labels = pt ? { fabric: 'Tecidos', rope: 'Cordas', base: 'Bases e estruturas' } : { fabric: 'Fabrics', rope: 'Rope', base: 'Bases & frames' }
+  const compatible = selected?.kind === 'fabric' ? publicSearchProducts.filter(({ id }) => {
+    const model = getColourTarget(id)?.model
+    return model && fabricOptionsByModel[model]?.includes(selected.name)
+  }) : []
 
   return (
     <Layout>
@@ -75,6 +81,10 @@ export default function FabricLibrary() {
             {selected.kind === 'rope' && <p>{pt ? 'Modelo Able e referência da corda ainda por confirmar.' : 'Able model and rope reference still to be confirmed.'}</p>}
             <p>{pt ? 'Confirme as amostras disponíveis com a nossa equipa antes de escolher. A compatibilidade depende do modelo.' : 'Confirm available samples with our team before choosing. Compatibility depends on the model.'}</p>
             {selected.source && <p><a href={selected.source} target="_blank" rel="noopener noreferrer">{pt ? 'Referência do fornecedor' : 'Supplier reference'}</a></p>}
+            {compatible.length > 0 && <details className="fabric-compatible">
+              <summary>{pt ? 'Peças compatíveis' : 'Compatible pieces'} ({compatible.length})</summary>
+              <ul>{compatible.map(({ id, name }) => <li key={id}><LocalizedLink to={`/product/${id}`}>{name}</LocalizedLink></li>)}</ul>
+            </details>}
             <LocalizedLink className="cb cd" to={`/contact?product=${encodeURIComponent(`${{ rope: 'Rope', base: 'Base', fabric: 'Fabric' }[selected.kind]} — ${selected.name}`)}`}>
               {pt ? 'Pedir informações sobre este acabamento' : 'Ask about this finish'}
             </LocalizedLink>

@@ -89,11 +89,11 @@ describe('product recommendation filters', () => {
     expect(cards.map((card) => card.querySelector('h3').textContent).filter((name) => !names.has(name))).toEqual([])
   })
 
-  it('includes the current Florida dining armchair without treating bar stools as dining-table complements', async () => {
+  it('does not recommend discontinued Florida chairs or bar stools as dining-table complements', async () => {
     renderProduct('florida-dining')
     const heading = await screen.findByRole('heading', { name: 'You may also like' })
     const region = heading.closest('section')
-    expect(within(region).getByText('Florida Dining Armchair')).toBeTruthy()
+    expect(within(region).queryByText('Florida Dining Armchair')).toBeNull()
     const names = [...region.querySelectorAll('h3')].map((item) => item.textContent)
     expect(names.some((name) => /bar stool|bar chair/i.test(name))).toBe(false)
   })

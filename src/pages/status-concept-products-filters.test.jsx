@@ -12,10 +12,11 @@ function open(path) {
 }
 
 describe('combined catalogue search filters', () => {
-  it.each(['Sicily', 'Bermuda'])('counts and scopes the three separate %s pieces consistently', async (collection) => {
-    open(`/en/products?q=${collection}`)
+  it('counts and scopes the three separate Sicily pieces consistently', async () => {
+    open('/en/products?q=Sicily')
     expect(await screen.findByRole('region', { name: 'Matching collection' })).toBeTruthy()
     expect(screen.getByRole('button', { name: /^All\s*3$/ })).toBeTruthy()
+    expect(screen.getAllByRole('article')).toHaveLength(3)
     fireEvent.click(screen.getByRole('button', { name: /^Lounge\s*3$/ }))
     expect(await screen.findByText('3 results')).toBeTruthy()
     expect(screen.getAllByRole('article')).toHaveLength(3)
@@ -35,7 +36,7 @@ describe('combined catalogue search filters', () => {
       expect(screen.queryByRole('region', { name: 'Collections' })).toBeNull()
       expect(screen.queryAllByRole('article')).toHaveLength(0)
       fireEvent.click(screen.getByRole('button', { name: 'Clear filters', exact: true }))
-      expect(await screen.findByRole('heading', { name: 'Macau Lounge', exact: true })).toBeTruthy()
+      expect(await screen.findByRole('heading', { name: 'Duna', exact: true })).toBeTruthy()
       expect(screen.queryByRole('region', { name: 'Collections' })).toBeNull()
     },
   )
@@ -50,12 +51,17 @@ describe('combined catalogue search filters', () => {
   it.each([
     ['q=Berlin&cat=lounge&collection=berlin&subcat=upholstered&type=modular', 'Berlin Modular Sofa'],
     ['q=Sicily&cat=lounge&collection=sicily&subcat=upholstered&type=pouf', 'Sicily Ottoman'],
-    ['q=Bermuda&cat=lounge&type=pouf', 'Bermuda Ottoman'],
   ])('renders the exact positive intersection for %s', async (query, name) => {
     open(`/en/products?${query}`)
     expect(await screen.findByRole('heading', { name, exact: true })).toBeTruthy()
     expect(screen.getAllByRole('article')).toHaveLength(1)
     expect(screen.getByText('1 results')).toBeTruthy()
+  })
+
+  it('does not reintroduce discontinued Bermuda pieces through the pouf filter', async () => {
+    open('/en/products?q=Bermuda&cat=lounge&type=pouf')
+    expect(await screen.findByText('0 results')).toBeTruthy()
+    expect(screen.queryAllByRole('article')).toHaveLength(0)
   })
 
   it('does not offer a Lounge collection in an empty Dining search', async () => {

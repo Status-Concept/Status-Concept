@@ -4,6 +4,7 @@ import { kitchenProducts } from './kitchenProducts'
 import { demoProducts } from './demoProducts'
 import { publishedCorrectionImages, publishedLocalProducts } from './publishedCorrections.generated'
 import { isRattanProduct } from './productExclusions'
+import { discontinuedCatalogueProductIds } from './discontinuedCatalogueProducts'
 import { minimalProductHeroes } from './minimalProductHeroes.generated'
 import { baliProducts, baliProductById, retiredBaliProductIds } from './baliCollection'
 import { floridaProducts, floridaProductById, retiredFloridaProductIds } from './floridaCollection'
@@ -80,7 +81,7 @@ export const dunaProduct = {
   heroVideo: '/videos/duna-collection-hero-20261105.mp4',
 }
 
-export const publicSearchProducts = [
+export const routableProducts = [
   dunaProduct,
   ...demoProducts.filter((product) => !isRattanProduct(product) && !retiredBaliProductIds.has(product.id) && !baliProductById.has(product.id) && !retiredFloridaProductIds.has(product.id) && !floridaProductById.has(product.id) && !retiredBerlinProductIds.has(product.id) && !berlinProductById.has(product.id)).map(withCorrectionImage),
   ...publishedCorrectionProducts.filter((product) => !demoProducts.some((demo) => demo.id === product.id)),
@@ -89,6 +90,8 @@ export const publicSearchProducts = [
   ...berlinProducts,
   ...Object.keys(localColourPages).filter(id => !demoProducts.some(product => product.id === id) && !publishedCorrectionProducts.some(product => product.id === id)).map(getLocalColourProduct),
 ]
+
+export const publicSearchProducts = routableProducts.filter(({ id }) => !discontinuedCatalogueProductIds.has(id))
 
 const expectedCorrectionCount = Object.keys(publishedCorrectionImages).filter((id) => !isRattanProduct({ id }) && !retiredBaliProductIds.has(id) && !retiredFloridaProductIds.has(id) && !retiredBerlinProductIds.has(id)).length
 if (import.meta.env.DEV && correctedIds.size !== expectedCorrectionCount) {

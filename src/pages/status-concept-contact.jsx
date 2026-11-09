@@ -5,6 +5,7 @@ import { getSupabase, isSupabaseConfigured } from "../lib/supabase";
 import { sanitizePhone, sanitizeText } from "../utils/sanitize";
 import { SHOWROOMS, CONTACT, HOURS } from "../data/showrooms";
 import { whatsappUrl } from "../utils/whatsapp";
+import { getLangFromPath } from "../utils/language";
 import "../styles/contact.css";
 const showroomAlmancilImg = "/photography/showroom-almancil-original-clean-1440.webp";
 const showroomQuintaImg = "/photography/showroom-quinta-1440.webp";
@@ -14,6 +15,8 @@ const telHref = (n) => "tel:" + n.replace(/[^\d+]/g, "");
 const CONTACT_PAGE = () => {
   const [searchParams] = useSearchParams();
   const location = useLocation();
+  const pt = getLangFromPath(location.pathname) === "pt";
+  const directEnquiry = searchParams.get("enquiry") === "1";
   // A product enquiry can arrive via ?product= or router state (from a product page).
   const enquiryProduct = searchParams.get("product") || location.state?.product || "";
   const enquiryInterest = searchParams.get("interest") || location.state?.interest || "";
@@ -26,9 +29,9 @@ const CONTACT_PAGE = () => {
     setFormData((prev) => ({
       ...prev,
       interest: prev.interest || enquiryInterest,
-      message: prev.message || (enquiryProduct ? `I'd like a proposal for the ${enquiryProduct}.` : prev.message),
+      message: prev.message || (enquiryProduct ? (pt ? `Gostaria de pedir uma proposta para: ${enquiryProduct}.` : `I'd like a proposal for the ${enquiryProduct}.`) : prev.message),
     }));
-  }, [enquiryProduct, enquiryInterest]);
+  }, [enquiryProduct, enquiryInterest, pt]);
 
   // Shared name/address/phone/maps come from the single-source data module;
   // the contact-page-specific fields (mobile, gps and image) stay here.
@@ -80,7 +83,8 @@ const CONTACT_PAGE = () => {
 
   return (
     <Layout>
-      <div className="contact-page">
+      <div className={`contact-page${directEnquiry ? " contact-page--direct" : ""}`}>
+        {!directEnquiry && <>
         <section className="contact-intro" aria-labelledby="contact-title">
           <div className="contact-intro-copy">
             <h1 id="contact-title" className="ff">Let's plan outside.</h1>
@@ -114,18 +118,19 @@ const CONTACT_PAGE = () => {
           </figure>
         </section>
 
+        </>}
         <section id="contact-enquiry" className="contact-enquiry" aria-labelledby="enquiry-heading">
-          <div className="contact-enquiry-copy">
+          {!directEnquiry && <div className="contact-enquiry-copy">
             <h2 className="ff">Get in touch</h2>
             <div className="contact-direct fs">
               <a href={CONTACT.phoneHref}><span>Call the team</span><span data-no-translate>{CONTACT.phone}</span></a>
               <a href={CONTACT.emailHref}><span>Email us</span><span data-no-translate>{CONTACT.email}</span></a>
               <a href={whatsappUrl("Hello STATVS, I'd like help with my outdoor space.")} target="_blank" rel="noopener noreferrer"><span>WhatsApp</span><span>Send a message ↗</span></a>
             </div>
-          </div>
+          </div>}
         <div className="contact-form-panel">
           {enquiryProduct && <p className="contact-form-context fs" data-no-translate title={enquiryProduct}>{enquiryProduct}</p>}
-          <h2 id="enquiry-heading" className="ff">Tell us what you need</h2>
+          {directEnquiry ? <h1 id="enquiry-heading" className="ff">{pt ? "Pedir proposta" : "Request a proposal"}</h1> : <h2 id="enquiry-heading" className="ff">Tell us what you need</h2>}
 
           {status === "sent" ? (
             <div className="rd-form-success" style={{ padding: "32px 0" }}>

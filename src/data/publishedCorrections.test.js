@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { existsSync } from 'node:fs'
-import { allProducts, publicSearchProducts, publishedCorrectionProducts, isRattanProduct } from './productCatalog'
+import { allProducts, publicSearchProducts, routableProducts, publishedCorrectionProducts, isRattanProduct } from './productCatalog'
 import { demoProductIds } from './demoProducts'
 import { publishedCorrectionImages, publishedLocalProducts } from './publishedCorrections.generated'
 import { minimalProductHeroes } from './minimalProductHeroes.generated'
@@ -10,8 +10,8 @@ import { retiredBerlinProductIds, berlinProductById } from './berlinCollection'
 
 describe('public correction release', () => {
   it('maps every hover product to an existing minimal photo and responsive variants', () => {
-    const hoverProducts = publicSearchProducts.filter((product) => product.heroImage && !product.curatedImages)
-    expect(Object.keys(minimalProductHeroes).filter((id) => !publicSearchProducts.some((product) => product.id === id && product.originalPhotos) && !retiredBaliProductIds.has(id) && !retiredFloridaProductIds.has(id) && !floridaProductById.has(id) && !retiredBerlinProductIds.has(id) && !berlinProductById.has(id)).sort()).toEqual(hoverProducts.map((product) => product.id).sort())
+    const hoverProducts = routableProducts.filter((product) => product.heroImage && !product.curatedImages)
+    expect(Object.keys(minimalProductHeroes).filter((id) => !routableProducts.some((product) => product.id === id && product.originalPhotos) && !retiredBaliProductIds.has(id) && !retiredFloridaProductIds.has(id) && !floridaProductById.has(id) && !retiredBerlinProductIds.has(id) && !berlinProductById.has(id)).sort()).toEqual(hoverProducts.map((product) => product.id).sort())
     for (const product of hoverProducts) {
       expect(product.heroImage, product.id).toBe(minimalProductHeroes[product.id])
       for (const suffix of ['', '-w400', '-w800']) {
@@ -26,7 +26,7 @@ describe('public correction release', () => {
       expect(existsSync(`public${product.heroImage}`), product.id).toBe(true)
     }
   })
-  it('maps every corrected image to one searchable, routable product', () => {
+  it('maps every corrected image to one routable product', () => {
     const ids = Object.keys(publishedCorrectionImages)
     expect(ids).toHaveLength(139)
     expect(new Set(ids).size).toBe(139)
@@ -39,7 +39,7 @@ describe('public correction release', () => {
       }
       const product = publishedCorrectionProducts.find((item) => item.id === id)
       expect(allProducts.filter((item) => item.id === id)).toHaveLength(1)
-      expect(publicSearchProducts.filter((item) => item.id === id)).toHaveLength(1)
+      expect(routableProducts.filter((item) => item.id === id)).toHaveLength(1)
       if (product?.originalPhotos) {
         expect(product.id).toBe('macau-lounge')
         expect(product.images).toHaveLength(4)
@@ -52,8 +52,6 @@ describe('public correction release', () => {
       }
       expect(product?.img).toBe(publishedCorrectionImages[id])
       expect(product?.images).toEqual([publishedCorrectionImages[id]])
-      expect(allProducts.filter((item) => item.id === id)).toHaveLength(1)
-      expect(publicSearchProducts.filter((item) => item.id === id)).toHaveLength(1)
       expect(product.img).toMatch(/^\/product-images\/corrections\/\d+-[a-z0-9-]+\.webp$/)
     }
   })

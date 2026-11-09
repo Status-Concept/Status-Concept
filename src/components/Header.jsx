@@ -1,4 +1,4 @@
-import { lazy, Suspense, useEffect, useState } from 'react'
+import { lazy, Suspense, useEffect, useLayoutEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import { getLangFromPath, stripLangFromPath, withLang } from '../utils/language'
@@ -11,25 +11,28 @@ import { SITE_FEATURES } from '../config/sitePhase'
 
 const SearchPanel = lazy(() => import('./SearchPanel'))
 
-export default function Header({ onOpenMenu }) {
+export default function Header({ onOpenMenu, overlayOnHome }) {
   const navigate = useNavigate()
   const location = useLocation()
   const { isAuthenticated, profile, user } = useAuth()
   const firstName = (profile?.name || user?.email || "").split(/[\s@]/)[0]
-  const [scrolled, setScrolled] = useState(false)
   const [langOpen, setLangOpen] = useState(false)
   const [productsOpen, setProductsOpen] = useState(false)
   const [hoverCat, setHoverCat] = useState(null)
   const [searchOpen, setSearchOpen] = useState(false)
+  const [atTop, setAtTop] = useState(true)
+  const overHero = overlayOnHome && atTop
   const closeProducts = () => { setProductsOpen(false); setHoverCat(null) }
   const activeSub = PRODUCT_MENU.find((category) => category.key === hoverCat)
   const currentLang = getLangFromPath(location.pathname)
 
-  useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 8)
-    window.addEventListener('scroll', handleScroll, { passive: true })
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
+  useLayoutEffect(() => {
+    if (!overlayOnHome) return
+    const update = () => setAtTop(window.scrollY < 40)
+    update()
+    window.addEventListener('scroll', update, { passive: true })
+    return () => window.removeEventListener('scroll', update)
+  }, [overlayOnHome])
 
   useEffect(() => {
     const handleSearchShortcut = (event) => {
@@ -49,18 +52,16 @@ export default function Header({ onOpenMenu }) {
 
   return (
     <>
-    <header style={{
+    <header className={overHero ? "header-over-hero" : undefined} style={{
       position: "fixed", top: 0, left: 0, right: 0, zIndex: 100,
-      background: "var(--cream)",
-      boxShadow: scrolled ? "0 1px 0 rgba(0,0,0,.08)" : "none",
-      borderBottom: scrolled ? "none" : "1px solid var(--light-grey)",
-      transition: "box-shadow .3s ease",
+      background: overHero ? "transparent" : "var(--cream)",
+      borderBottom: overHero ? "1px solid transparent" : "1px solid var(--light-grey)",
     }}>
       <div className="fs header-top" style={{
         display: "flex", justifyContent: "space-between", alignItems: "center",
-        padding: "7px 48px", fontSize: "11px", letterSpacing: "1px",
-        color: "var(--text-grey)",
-        background: "var(--light-grey)",
+        fontSize: "11px", letterSpacing: "1px",
+        color: overHero ? "var(--white)" : "var(--text-grey)",
+        background: overHero ? "transparent" : "var(--light-grey)",
       }}>
         <div style={{ display: "flex", gap: "24px", alignItems: "center" }}>
           <a href={CONTACT.phoneHref} data-no-translate style={{ color: "inherit", textDecoration: "none" }}>{CONTACT.phone}</a>
@@ -76,7 +77,7 @@ export default function Header({ onOpenMenu }) {
               padding: "6px 16px",
               border: "1px solid var(--mid-grey)",
               background: "transparent",
-              color: "var(--text-dark)",
+              color: overHero ? "var(--white)" : "var(--text-dark)",
               textDecoration: "none",
               borderRadius: 2, cursor: "pointer", fontSize: 12, letterSpacing: 1.5,
               textTransform: "uppercase", transition: "color .3s, border-color .3s",
@@ -93,19 +94,15 @@ export default function Header({ onOpenMenu }) {
             {isAuthenticated ? (firstName || "A Minha Conta") : "Login"}
           </LocalizedLink>}
           <div style={{ display: "flex", gap: "2px", alignItems: "center" }}>
-            <SocialLinks linkStyle={{ color: "var(--text-dark)" }} />
+            <SocialLinks linkStyle={{ color: overHero ? "var(--white)" : "var(--text-dark)" }} />
           </div>
         </div>
       </div>
-      <div className="header-main" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "12px 48px", maxWidth: "var(--max-width)", margin: "0 auto" }}>
+      <div className="header-main">
         <LocalizedLink to="/" aria-label="STATVS home" className="brand-logo-link brand-logo-link--header">
-          <BrandLogo className="brand-logo--header" alt="" fetchPriority="high" />
+          <BrandLogo variant={overHero ? "footer" : "default"} className="brand-logo--header" alt="" fetchPriority="high" />
         </LocalizedLink>
-        <nav className="fs nav-desktop" style={{
-          display: "flex", gap: "32px", alignItems: "center", fontSize: "12px",
-          letterSpacing: "2px", textTransform: "uppercase",
-          color: "var(--text-dark)",
-        }}>
+        <nav className="fs nav-desktop">
           <div
             style={{ position: "relative" }}
             onMouseEnter={() => setProductsOpen(true)}
@@ -120,14 +117,13 @@ export default function Header({ onOpenMenu }) {
               aria-expanded={productsOpen}
               to="/products"
               onClick={closeProducts}
-              style={{ color: "inherit", font: "inherit", letterSpacing: "inherit", textTransform: "inherit", cursor: "pointer", padding: "8px 0", display: "inline-flex", alignItems: "center", gap: 6 }}
             >
               Products
-              <span aria-hidden="true" style={{ fontSize: 8, opacity: .6, transform: productsOpen ? "rotate(180deg)" : "none", transition: "transform .2s" }}>▾</span>
+              <Chevron />
             </LocalizedLink>
             {productsOpen && (
               <div style={{ position: "absolute", top: "100%", left: 0, paddingTop: 8, zIndex: 120 }}>
-                <div style={{ display: "flex", alignItems: "stretch", background: "var(--white)", border: "1px solid var(--mid-grey)", boxShadow: "var(--shadow-md)", borderRadius: 2 }}>
+                <div className="header-products-popover" style={{ display: "flex", alignItems: "stretch", background: "var(--white)", border: "1px solid var(--mid-grey)", boxShadow: "var(--shadow-md)", borderRadius: 2 }}>
                   {/* Level 1 — categories */}
                   <div role="menu" aria-label="Products" style={{ padding: "10px 0", minWidth: 236, flex: "0 0 auto" }}>
                     {PRODUCT_MENU.map((category) => {
@@ -171,8 +167,8 @@ export default function Header({ onOpenMenu }) {
               </div>
             )}
           </div>
-          {[["Fabric Library", "/fabric-library"], ["Sales", "/sales"], ["Images", "/images"], ...(SITE_FEATURES.projects ? [["Projects", "/projects"]] : []), ["Showrooms", "/about"], ["Contact", "/contact"]].map(([label, path]) => (
-            <LocalizedLink key={label} className="nl" to={path} style={{ color: "inherit" }}>{label}</LocalizedLink>
+          {[["Collections", "/products?cat=lounge&browse=collections"], ["Fabric Library", "/fabric-library"], ["Sales", "/sales"], ["Images", "/images"], ...(SITE_FEATURES.projects ? [["Projects", "/projects"]] : []), ["Showrooms", "/about"], ["Contact", "/contact"]].map(([label, path]) => (
+            <LocalizedLink key={label} className="nl" to={path}>{label}</LocalizedLink>
           ))}
         </nav>
         <div className="header-actions">
@@ -180,6 +176,7 @@ export default function Header({ onOpenMenu }) {
             type="button"
             className="header-search-trigger fs"
             aria-label={currentLang === 'pt' ? 'Pesquisar' : 'Search'}
+            title={currentLang === 'pt' ? 'Pesquisar' : 'Search'}
             aria-haspopup="dialog"
             aria-expanded={searchOpen}
             aria-keyshortcuts="Control+K Meta+K"
@@ -189,26 +186,21 @@ export default function Header({ onOpenMenu }) {
               <circle cx="10.8" cy="10.8" r="6.5" stroke="currentColor" strokeWidth="1.5" />
               <path d="m15.7 15.7 4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
             </svg>
-            <span>Search</span>
           </button>
           <div data-no-translate style={{ position: "relative" }}>
             <button
               type="button"
-              className="fs"
+              className="fs header-language-trigger"
               aria-label={currentLang === 'pt' ? 'Escolher idioma' : 'Choose language'}
               aria-haspopup="menu"
               aria-expanded={langOpen}
               onClick={() => setLangOpen(!langOpen)}
               onKeyDown={(event) => { if (event.key === 'Escape') setLangOpen(false) }}
-              style={{
-              background: "none", border: "none", cursor: "pointer", fontSize: "12px",
-              letterSpacing: "2px", color: "var(--text-grey)", padding: "10px 12px",
-              }}
             >
-              {currentLang.toUpperCase()} v
+              {currentLang.toUpperCase()} <Chevron />
             </button>
             {langOpen && (
-              <div role="menu" aria-label={currentLang === 'pt' ? 'Idiomas' : 'Languages'} style={{ position: "absolute", top: "100%", right: 0, marginTop: 8, background: "var(--cream)", border: "1px solid var(--mid-grey)", padding: "8px 0", minWidth: 80, boxShadow: "0 8px 24px rgba(0,0,0,.08)" }}>
+              <div className="header-language-popover" role="menu" aria-label={currentLang === 'pt' ? 'Idiomas' : 'Languages'} style={{ position: "absolute", top: "100%", right: 0, marginTop: 8, background: "var(--cream)", border: "1px solid var(--mid-grey)", padding: "8px 0", minWidth: 80, boxShadow: "0 8px 24px rgba(0,0,0,.08)" }}>
                 {["EN", "PT"].map(l => (
                   <button key={l} type="button" role="menuitemradio" aria-checked={currentLang === l.toLowerCase()} className="fs" style={{ display: 'block', width: '100%', padding: "8px 16px", border: 0, background: 'transparent', textAlign: 'left', fontSize: "11px", letterSpacing: "2px", cursor: "pointer", color: "var(--text-body)", transition: "color .2s" }}
                     onClick={() => changeLanguage(l.toLowerCase())}
@@ -222,7 +214,7 @@ export default function Header({ onOpenMenu }) {
           <button onClick={onOpenMenu} className="nav-burger" aria-label={currentLang === 'pt' ? 'Abrir menu' : 'Open menu'} aria-haspopup="dialog" style={{
             background: "none", border: "none", cursor: "pointer", padding: 0,
             width: 44, height: 44,
-            color: "var(--text-dark)",
+            color: overHero ? "var(--white)" : "var(--text-dark)",
             display: "none", flexDirection: "column", justifyContent: "center", alignItems: "flex-end", gap: "5px",
           }}>
             <div style={{ width: 24, height: 1.5, background: "currentColor" }} />
@@ -237,5 +229,13 @@ export default function Header({ onOpenMenu }) {
       </Suspense>
     )}
     </>
+  )
+}
+
+function Chevron() {
+  return (
+    <svg aria-hidden="true" width="10" height="10" viewBox="0 0 12 12" fill="none">
+      <path d="m3 4.5 3 3 3-3" stroke="currentColor" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
   )
 }

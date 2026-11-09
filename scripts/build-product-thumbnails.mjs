@@ -23,9 +23,9 @@ if (process.argv[1] && import.meta.url === pathToFileURL(resolve(process.argv[1]
   const { createServer } = await import('vite')
   const server = await createServer({ server: { middlewareMode: true }, appType: 'custom' })
   try {
-    const { publicSearchProducts } = await server.ssrLoadModule('/src/data/productCatalog.js')
+    const { routableProducts } = await server.ssrLoadModule('/src/data/productCatalog.js')
     const { expandProductCollection, productHasImage } = await server.ssrLoadModule('/src/pages/status-concept-products.jsx')
-    const products = expandProductCollection(expandProductCollection(publicSearchProducts, 'sicily'), 'bermuda').filter(productHasImage)
+    const products = expandProductCollection(expandProductCollection(routableProducts, 'sicily'), 'bermuda').filter(productHasImage)
     const cutouts = new Set(['sicily-corner-module', 'sicily-centre-module', 'sicily-ottoman', 'bermuda-left-chair', 'bermuda-ottoman', 'bermuda-right-chair', 'glatz-sombrano-s-plus', 'glatz-alu-smart', 'glatz-alu-twist', 'glatz-castello-pro', 'glatz-palazzo-noblesse'])
     const target = 'public/product-images/cards-white-v1'
     await mkdir(target, { recursive: true })
@@ -42,7 +42,7 @@ if (process.argv[1] && import.meta.url === pathToFileURL(resolve(process.argv[1]
     }
     thumbnails['sicily-modular-set'] = thumbnails['sicily-corner-module']
     thumbnails['bermuda-divano'] = '/product-images/cards-white-v1/bermuda-divano.webp'
-    const bermuda = publicSearchProducts.find(p => p.id === 'bermuda-divano')
+    const bermuda = routableProducts.find(p => p.id === 'bermuda-divano')
     const { buffer } = await frameProductImage(`public${bermuda.img}`)
     await writeFile(`public${thumbnails['bermuda-divano']}`, buffer)
     for (const size of [400, 800]) await sharp(buffer).resize(size).webp({ quality: 86 }).toFile(`public${thumbnails['bermuda-divano'].slice(0, -5)}-w${size}.webp`)

@@ -1,9 +1,13 @@
 import Layout from "../components/Layout";
 import LocalizedLink from "../components/LocalizedLink";
+import { useLocation } from "react-router-dom";
+import { SHOWROOMS, HOURS } from "../data/showrooms";
+import { getLangFromPath } from "../utils/language";
 const showroomQuintaImg = "/photography/showroom-quinta-1440.webp";
 import whyStatusImg from "../assets/images/why-status.jpg";
 
 const ABOUT_PAGE = () => {
+  const pt = getLangFromPath(useLocation().pathname) === "pt";
 
   const timeline = [
     { year: "2013", title: "The first outdoor vision", desc: "Statvs begins with a focused idea: bring high-quality outdoor furniture to the Algarve with proper guidance, materials and service." },
@@ -31,15 +35,30 @@ const ABOUT_PAGE = () => {
 
   return (
     <Layout>
-      <section className="rd-page-hero">
-        <img className="rd-hero-img" src={showroomQuintaImg} alt="" />
+      <section className="statvs-showrooms statvs-frame" aria-labelledby="statvs-showrooms-title" data-no-translate>
+        <div className="statvs-section-heading">
+          <div>
+            <h1 id="statvs-showrooms-title">{pt ? "Showrooms no Algarve" : "Algarve showrooms"}</h1>
+            <p>{pt ? "Experimente as peças e compare os materiais ao vivo." : "Try the furniture and compare finishes in person."}</p>
+          </div>
+          <LocalizedLink to="/contact" className="statvs-text-link">{pt ? "Falar com a equipa" : "Talk to our team"}</LocalizedLink>
+        </div>
+        <div className="statvs-showroom-grid">
+          {SHOWROOMS.map((showroom, index) => (
+            <article key={showroom.key}>
+              <img src={index ? "/photography/showroom-almancil-original-clean-1440.webp" : showroomQuintaImg} alt={`Showroom ${showroom.name}`} loading={index ? "lazy" : "eager"} decoding="async" />
+              <h2>{showroom.name}</h2>
+              <address>{showroom.address}</address>
+              <a href={`tel:${showroom.phone.replaceAll(" ", "")}`}>{showroom.phone}</a>
+              <a href={showroom.maps} target="_blank" rel="noopener noreferrer">{pt ? "Obter direções" : "Get directions"}</a>
+            </article>
+          ))}
+        </div>
+        <p className="statvs-showroom-hours">{pt ? "Segunda a sábado" : HOURS[0].label} · {HOURS[0].value} <span>{pt ? "Domingo: encerrado" : `${HOURS[1].label}: ${HOURS[1].value}`}</span></p>
       </section>
-      <div className="rd-page-head">
-        <span className="rd-kicker fs">About Statvs</span>
-        <h1 className="rd-title ff">Outdoor excellence since 2013</h1>
-        <p className="rd-lede fs">A decade of furnishing terraces, gardens and poolside spaces for the Algarve lifestyle.</p>
-      </div>
 
+      <details className="statvs-showroom-story">
+        <summary className="statvs-frame">{pt ? "Conhecer a história da STATVS" : "Explore the STATVS story"}</summary>
       <section className="rd-section">
         <div className="rd-section-head">
           <div>
@@ -108,11 +127,12 @@ const ABOUT_PAGE = () => {
 
       <section className="rd-partner-marquee" aria-label="Partners">
         <div className="rd-partner-track">
-          {[...partners, ...partners, ...partners].map((partner, index) => (
-            <span key={`${partner}-${index}`} className="fs">{partner}</span>
+          {partners.map((partner) => (
+            <span key={partner} className="fs">{partner}</span>
           ))}
         </div>
       </section>
+      </details>
 
       <section className="rd-section" style={{ textAlign: "center" }}>
         <span className="rd-kicker fs">Visit us</span>

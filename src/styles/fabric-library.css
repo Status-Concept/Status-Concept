@@ -44,3 +44,7 @@
   .fabric-library-detail { grid-template-columns: minmax(0, 1fr); gap: 24px; padding-top: 56px; }
   .fabric-library-detail > img { max-height: 50dvh; }
 }
+.fabric-compatible { margin-block: 16px; }
+.fabric-compatible summary { cursor: pointer; min-height: 32px; }
+.fabric-compatible ul { margin: 8px 0; padding-inline-start: 20px; }
+.fabric-compatible a { color: inherit; text-underline-offset: 3px; }
