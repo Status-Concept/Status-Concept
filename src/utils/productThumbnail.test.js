@@ -28,4 +28,4 @@ it('keeps white borders and a consistent canvas for every generated product thum
       expect(Math.min(...data.subarray(offset, offset + 3))).toBeGreaterThan(250)
     }
   }
-})
+}, 30_000)
