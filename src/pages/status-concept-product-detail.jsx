@@ -11,7 +11,7 @@ import { productCollectionLabel } from "../utils/productLabels";
 import { glatzProductDetails } from "../data/glatzProducts";
 import { kitchenProductDetails, kitchenCollectionHeroes } from "../data/kitchenProducts";
 import { demoProducts, demoProductIds } from "../data/demoProducts";
-import { publishedCorrectionProducts, publicSearchProducts } from "../data/productCatalog";
+import { dunaProduct, publishedCorrectionProducts, publicSearchProducts } from "../data/productCatalog";
 import { baliProductById, retiredBaliProductIds } from "../data/baliCollection";
 import { floridaProductById, retiredFloridaProductIds } from "../data/floridaCollection";
 import { berlinProductById, retiredBerlinProductIds } from "../data/berlinCollection";
@@ -146,7 +146,8 @@ const PRODUCT_DETAIL = () => {
   const curatedProduct = baliProductById.get(id) || floridaProductById.get(id) || berlinProductById.get(id);
   const correction = curatedProduct || publishedCorrectionProducts.find((item) => item.id === id);
   const localColourProduct = getLocalColourProduct(id);
-  if (!demoProductIds.has(id) && !correction && !localColourProduct) return <NotFound />;
+  const newProduct = id === dunaProduct.id ? dunaProduct : null;
+  if (!demoProductIds.has(id) && !correction && !localColourProduct && !newProduct) return <NotFound />;
   const product = correction
     ? {
         ...(allProducts[id] || {}),
@@ -160,7 +161,7 @@ const PRODUCT_DETAIL = () => {
         standalone: correction.standalone,
         publishedCorrection: !correction.originalPhotos,
       }
-    : allProducts[id] || localColourProduct;
+    : allProducts[id] || localColourProduct || newProduct;
   if (!product) return <NotFound />;
   const previewTarget = getColourTarget(id, null, activeImg);
   const hasColourPreview = Boolean(previewTarget);
@@ -321,6 +322,17 @@ const PRODUCT_DETAIL = () => {
 
   return (
     <Layout>
+      {product.heroVideo && (
+        <section className="prod-banner collection-hero-banner" style={{ height: "auto", aspectRatio: "16 / 9" }}>
+          {window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ? (
+            <img src={product.img} alt={product.name} />
+          ) : (
+            <video autoPlay muted loop playsInline preload="metadata" poster={product.img} aria-hidden="true">
+              <source src={product.heroVideo} type="video/mp4" />
+            </video>
+          )}
+        </section>
+      )}
       {kitchenHero && (
         <section className="rd-kitchen-hero" aria-label={`${product.collection} complete outdoor kitchen`}>
           <img src={kitchenHero} alt={`${product.collection} modular outdoor kitchen, fully assembled`} />

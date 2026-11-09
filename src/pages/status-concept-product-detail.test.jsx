@@ -20,6 +20,16 @@ const renderProduct = (id) => render(
 
 afterEach(cleanup)
 
+it('lists Duna and opens its product page with the supplied hero video', () => {
+  expect(publicSearchProducts.find(product => product.id === 'duna')?.category).toBe('lounge')
+  renderProduct('duna')
+  expect(screen.getByRole('heading', { name: 'Duna', level: 1 })).toBeTruthy()
+  const video = document.querySelector('.collection-hero-banner video')
+  expect(video?.querySelector('source').getAttribute('src')).toBe('/videos/duna-collection-hero-20261105.mp4')
+  expect(video.poster).toContain('/videos/duna-collection-hero-20261105-poster.jpg')
+  expect(video.muted && video.loop && video.autoplay).toBe(true)
+})
+
 it('shows all four original Macau photos in one product gallery', () => {
   renderProduct('macau-lounge')
   const gallery = screen.getByRole('region', { name: 'Product gallery' })

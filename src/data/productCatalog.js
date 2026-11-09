@@ -73,7 +73,15 @@ export const publishedCorrectionProducts = [
 export const allProducts = [...catalogueProducts.map(withCorrectionImage), ...localProducts.map(withCorrectionImage)]
 
 const correctedIds = new Set(publishedCorrectionProducts.map((product) => product.id))
+export const dunaProduct = {
+  id: 'duna', name: 'Duna', category: 'lounge', collection: 'Duna', standalone: true,
+  img: '/videos/duna-collection-hero-20261105-poster.jpg',
+  images: ['/videos/duna-collection-hero-20261105-poster.jpg'],
+  heroVideo: '/videos/duna-collection-hero-20261105.mp4',
+}
+
 export const publicSearchProducts = [
+  dunaProduct,
   ...demoProducts.filter((product) => !isRattanProduct(product) && !retiredBaliProductIds.has(product.id) && !baliProductById.has(product.id) && !retiredFloridaProductIds.has(product.id) && !floridaProductById.has(product.id) && !retiredBerlinProductIds.has(product.id) && !berlinProductById.has(product.id)).map(withCorrectionImage),
   ...publishedCorrectionProducts.filter((product) => !demoProducts.some((demo) => demo.id === product.id)),
   ...baliProducts,
